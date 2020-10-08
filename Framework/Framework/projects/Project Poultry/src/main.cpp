@@ -58,7 +58,7 @@ int main()
 		return 1;
 
 	//Main Loop//
-	while (!glfwWindowShouldClose(window)) {
+	while (!glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE)) {
 		glfwPollEvents();
 
 		glClearColor(0.5f, 0.5f, 0.5f, 1.0);
