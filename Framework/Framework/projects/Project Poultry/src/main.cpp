@@ -6,6 +6,7 @@
 
 using namespace std;
 
+void processInput(GLFWwindow* window);
 
 GLFWwindow* window;
 
@@ -46,7 +47,6 @@ bool initGLAD() {
 	}
 }
 
-
 int main()
 {
 	//Initialize GLFW
@@ -58,17 +58,22 @@ int main()
 		return 1;
 
 	//Main Loop//
-	while (!glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE)) {
+	while (!glfwWindowShouldClose(window)) {
+
+		//Close the window
+		processInput(window);
+
 		glfwPollEvents();
 
 		glClearColor(0.5f, 0.5f, 0.5f, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-
-
-
-
-
 		glfwSwapBuffers(window);
 	}
+}
+
+void processInput(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
 }
