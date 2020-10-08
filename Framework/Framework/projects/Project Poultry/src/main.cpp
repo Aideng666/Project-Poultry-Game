@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <GLM/glm.hpp>
 #include <wtypes.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 using namespace std;
 
@@ -56,6 +57,14 @@ int main()
 	//Initialize GLAD
 	if (!initGLAD())
 		return 1;
+
+
+	// Camera matrix
+	glm::mat4 View = glm::lookAt(
+		glm::vec3(0, 0, 3), // Camera is at (0,0,3), in World Space
+		glm::vec3(0, 0, 0), // and looks at the origin
+		glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
+	);
 
 	//Main Loop//
 	while (!glfwWindowShouldClose(window)) {
