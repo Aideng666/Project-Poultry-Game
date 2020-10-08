@@ -7,9 +7,13 @@
 
 using namespace std;
 
-void processInput(GLFWwindow* window);
-
 GLFWwindow* window;
+
+void processInput(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
+}
 
 void GetDesktopResolution(int& horizontal, int& vertical)
 {
@@ -25,7 +29,13 @@ void GetDesktopResolution(int& horizontal, int& vertical)
 	vertical = desktop.bottom;
 }
 
+void GlfwWindowResizedCallback(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
+}
+
 bool initGLFW() {
+
+	//Initialize GLFW
 	if (glfwInit() == GLFW_FALSE) {
 		std::cout << "Failed to Initialize GLFW" << std::endl;
 		return false;
@@ -37,6 +47,8 @@ bool initGLFW() {
 	window = glfwCreateWindow(horiz, vert, "Project Poultry Game", nullptr, nullptr);
 	
 	glfwMakeContextCurrent(window);
+
+	glfwSetWindowSizeCallback(window, GlfwWindowResizedCallback);
 
 	return true;
 }
@@ -79,10 +91,4 @@ int main()
 
 		glfwSwapBuffers(window);
 	}
-}
-
-void processInput(GLFWwindow* window)
-{
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
 }
