@@ -1,9 +1,16 @@
+#include <Logging.h>
 #include <iostream>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <GLM/glm.hpp>
-#include <wtypes.h>
 #include <GLM\gtc\matrix_transform.hpp>
+
+#include <wtypes.h>
+
+#include <filesystem>
+#include <fstream>
+#include <Shader.h>
 
 using namespace std;
 
@@ -59,6 +66,8 @@ bool initGLAD() {
 		return false;
 	}
 }
+
+GLuint shader_program;
 
 int main()
 {
