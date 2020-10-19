@@ -1,6 +1,7 @@
 #include "Camera.h" 
 
 #include <GLM/gtc/matrix_transform.hpp> 
+#include <iostream>
 
 Camera::Camera() :
 	nearPlane(0.1f),
@@ -53,7 +54,6 @@ void Camera::SetFovDegrees(float value) {
 }
 
 const glm::mat4& Camera::GetViewProjection() const {
-	// TODO: implement 
 	if (isDirty) {
 		viewProj = projection * view;
 		isDirty = false;
@@ -63,13 +63,11 @@ const glm::mat4& Camera::GetViewProjection() const {
 
 void Camera::__CalculateProjection()
 {
-	// TODO: implement 
 	projection = glm::perspective(fovRads, aspectRatio, nearPlane, farPlane);
 	isDirty = true;
 }
 
 void Camera::__CalculateView() {
-	// TODO: implement 
-	view = glm::lookAt(pos, pos + normal, up);
+	view = glm::lookAt(pos, pos + normal, up);;
 	isDirty = true;
 }
