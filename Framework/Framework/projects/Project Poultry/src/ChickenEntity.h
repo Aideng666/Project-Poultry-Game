@@ -9,8 +9,9 @@ class ChickenEntity
 public: 
 
 
-	entt::entity Create();
+	ChickenEntity Create();
 
+	ChickenEntity(entt::entity ent);
 
 
 
@@ -22,5 +23,5 @@ private:
 protected:
 
 	entt::registry ECS;
-
+	entt::entity entID;
 };
