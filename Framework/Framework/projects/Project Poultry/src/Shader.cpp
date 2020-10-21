@@ -1,3 +1,5 @@
+//From Shawn's Week 5 Intro to Computer Graphics tutorial
+
 #include "Shader.h"
 #include "Logging.h"
 #include <fstream>

@@ -1,3 +1,5 @@
+//From Shawn's Week 5 Intro to Computer Graphics tutorial
+
 #include "VertexArrayObject.h"
 #include "IndexBuffer.h"
 #include "Logging.h"

@@ -119,23 +119,19 @@ int main()
 	if (!initGLAD())
 		return 1;
 
-
 	LOG_INFO(glGetString(GL_RENDERER));
 	LOG_INFO(glGetString(GL_VERSION));
 
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(GlDebugMessage, nullptr);
 
-
 	//Vectors for the verticies, uvs, and normals to render (start off empty)
 	std::vector< glm::vec3 > vertices;
 	std::vector< glm::vec2 > uvs;
 	std::vector< glm::vec3 > normals;
 
-
 	//Loads the Obj file into an object
 	bool load = ObjLoader::LoadFromFile("Models/Monkey.obj", vertices, uvs, normals);
-
 
 	//Creating the VAO and buffers
 	VertexArrayObject::sptr	meshVao = VertexArrayObject::Create();
@@ -153,24 +149,6 @@ int main()
 	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	shader->Link();
 
-	glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 2.0f);
-	glm::vec3 lightCol = glm::vec3(1.0f, 1.0f, 1.0f);
-	float     lightAmbientPow = 0.05f;
-	float     lightSpecularPow = 1.0f;
-	glm::vec3 ambientCol = glm::vec3(1.0f);
-	float     ambientPow = 0.1f;
-	float     shininess = 4.0f;
-
-	// These are our application / scene level uniforms that don't necessarily update
-	// every frame
-	shader->SetUniform("u_LightPos", lightPos);
-	shader->SetUniform("u_LightCol", lightCol);
-	shader->SetUniform("u_AmbientLightStrength", lightAmbientPow);
-	shader->SetUniform("u_SpecularLightStrength", lightSpecularPow);
-	shader->SetUniform("u_AmbientCol", ambientCol);
-	shader->SetUniform("u_AmbientStrength", ambientPow);
-	shader->SetUniform("u_Shininess", shininess);
-
 	glEnable(GL_DEPTH_TEST);
 
 	//Creating transformation matricies
@@ -183,9 +161,6 @@ int main()
 	transform = glm::translate(transform, glm::vec3(0.0f, 0.0f, 0.0f));
 	transform2 = transform * glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(0, 1, 0));
 	transform2 = transform2 * glm::rotate(glm::mat4(1.0f), glm::radians(230.0f), glm::vec3(1, 0, 0));
-	//transform2 = transform2 * glm::rotate(glm::mat4(1.0f), glm::radians(125.0f), glm::vec3(1, 0, 0));
-	//transform3 = glm::translate(transform, glm::vec3(3.0f, 0.0f, 0.0f));
-
 
 	camera = Camera::Create();
 	camera->SetPosition(glm::vec3(0, 3, 3)); // Set initial position
@@ -230,21 +205,17 @@ int main()
 			transform2 = transform2 * glm::rotate(glm::mat4(1.0f), glm::radians(230.0f), glm::vec3(1, 0, 0));
 		}
 
-		//transform4 = transform3 * glm::rotate(glm::mat4(1.0f), static_cast<float>(thisFrame), glm::vec3(0, 1, 0));
-
 		glClearColor(0.5f, 0.5f, 0.5f, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader->Bind();
 		//Renders the first obj in the correct position with rotation
 		shader->SetUniformMatrix("u_ModelViewProjection", camera->GetViewProjection() * transform2);
-		shader->SetUniformMatrix("u_Model", transform2);
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transform2));
 		meshVao->Render();
-
 
 		glfwSwapBuffers(window);
 	}
+
 	Logger::Uninitialize();
 	return 0;
 }
