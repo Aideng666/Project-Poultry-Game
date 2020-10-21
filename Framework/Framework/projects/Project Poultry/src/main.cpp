@@ -11,7 +11,6 @@
 #include <filesystem>
 #include <fstream>
 #include <Shader.h>
-#include <ObjLoader.h>
 #include <VertexArrayObject.h>
 #include <Camera.h>
 #include <Mesh.h>
@@ -126,45 +125,48 @@ int main()
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(GlDebugMessage, nullptr);
 
-	////Vectors for the verticies, uvs, and normals to render (start off empty)
-	//std::vector< glm::vec3 > vertices;
-	//std::vector< glm::vec2 > uvs;
-	//std::vector< glm::vec3 > normals;
-
-	////Loads the Obj file into an object
-	//bool load = ObjLoader::LoadFromFile("Models/Monkey.obj", vertices, uvs, normals);
-
-	////Creating the VAO and buffers
-	//VertexArrayObject::sptr	meshVao = VertexArrayObject::Create();
-
-	//VertexBuffer::sptr positions = VertexBuffer::Create();
-	//positions->LoadData(vertices.data(), vertices.size());
-
-	//meshVao->AddVertexBuffer(positions, {
-	//	BufferAttribute(0, 3, GL_FLOAT, false, 0, NULL)
-	//	});
-
+	//Test object
 	Mesh monkey("Models/Monkey.obj");
 	VertexArrayObject::sptr monkeyMesh = monkey.loadMesh();
 
+	Mesh monkey2("Models/Monkey.obj");
+	VertexArrayObject::sptr monkeyMesh2 = monkey2.loadMesh();
+
 	// Load our shaders
 	Shader::sptr shader = Shader::Create();
-	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	shader->LoadShaderPartFromFile("Shaders/vertex_shader_test.glsl", GL_VERTEX_SHADER);
+	shader->LoadShaderPartFromFile("Shaders/frag_shader_test.glsl", GL_FRAGMENT_SHADER);
 	shader->Link();
 
-	glEnable(GL_DEPTH_TEST);
+	Shader::sptr shader2 = Shader::Create();
+	shader2->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	shader2->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	shader2->Link();
 
+	//Shader tests
+	glm::vec3 objCol = glm::vec3(1.0f, 0.5f, 0.31f);
+	shader->SetUniform("objectColor", objCol);
+	glm::vec3 lightCol = glm::vec3(1.0f, 1.0f, 1.0f);
+	shader->SetUniform("lightColor", lightCol);
+	
+	glEnable(GL_DEPTH_TEST);
+	
 	//Creating transformation matricies
 	glm::mat4 transform = glm::mat4(1.0f);
 	glm::mat4 transform2 = glm::mat4(1.0f);
-	glm::mat4 transform3 = glm::mat4(1.0f);
-	glm::mat4 transform4 = glm::mat4(1.0f);
 
-	//Sets the inital positions of the 2 objs
+	//Sets the inital positions of object
 	transform = glm::translate(transform, glm::vec3(0.0f, 0.0f, 0.0f));
 	transform2 = transform * glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(0, 1, 0));
 	transform2 = transform2 * glm::rotate(glm::mat4(1.0f), glm::radians(230.0f), glm::vec3(1, 0, 0));
+	
+	glm::mat4 monkeyTransform = glm::mat4(1.0f);
+	glm::mat4 monkeyTransform2 = glm::mat4(1.0f);
+
+	monkeyTransform2 = monkeyTransform * glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(0, 1, 0));
+	monkeyTransform2 = monkeyTransform2 * glm::rotate(glm::mat4(1.0f), glm::radians(230.0f), glm::vec3(1, 0, 0));
+	monkeyTransform2 = glm::translate(monkeyTransform2, glm::vec3(1.5f, 1.0f, 0.0f));
+	monkeyTransform2 = glm::scale(monkeyTransform2, glm::vec3(0.8f, 0.8f, 0.8f));
 
 	camera = Camera::Create();
 	camera->SetPosition(glm::vec3(0, 3, 3)); // Set initial position
@@ -185,7 +187,7 @@ int main()
 		// Calculate the time since our last frame (dt)
 		double thisFrame = glfwGetTime();
 		float dt = static_cast<float>(thisFrame - lastFrame);
-
+		
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
 			transform = glm::translate(transform, glm::vec3(0.0001f * dt, 0.0f, 0.0f));
 			transform2 = transform * glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0, 1, 0));
@@ -207,14 +209,17 @@ int main()
 			transform2 = transform2 * glm::rotate(glm::mat4(1.0f), glm::radians(230.0f), glm::vec3(1, 0, 0));
 		}
 
-		glClearColor(0.5f, 0.5f, 0.5f, 1.0);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader->Bind();
 		//Renders the first obj in the correct position with rotation
 		shader->SetUniformMatrix("u_ModelViewProjection", camera->GetViewProjection() * transform2);
-		//meshVao->Render();
 		monkeyMesh->Render();
+
+		shader2->Bind();
+		shader2->SetUniformMatrix("u_ModelViewProjection", camera->GetViewProjection() * monkeyTransform2);
+		monkeyMesh2->Render();
 
 		glfwSwapBuffers(window);
 	}
