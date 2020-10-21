@@ -1,7 +1,6 @@
 #include "ChickenTransform.h"
 #include "GLM/gtx/transform.hpp"
 
-
 ChickenTransform::ChickenTransform() {
 
     position = glm::vec3(0.0f, 0.0f, 0.0f);

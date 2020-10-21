@@ -14,6 +14,7 @@
 #include <ObjLoader.h>
 #include <VertexArrayObject.h>
 #include <Camera.h>
+#include <Mesh.h>
 
 using namespace std;
 
@@ -125,23 +126,26 @@ int main()
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(GlDebugMessage, nullptr);
 
-	//Vectors for the verticies, uvs, and normals to render (start off empty)
-	std::vector< glm::vec3 > vertices;
-	std::vector< glm::vec2 > uvs;
-	std::vector< glm::vec3 > normals;
+	////Vectors for the verticies, uvs, and normals to render (start off empty)
+	//std::vector< glm::vec3 > vertices;
+	//std::vector< glm::vec2 > uvs;
+	//std::vector< glm::vec3 > normals;
 
-	//Loads the Obj file into an object
-	bool load = ObjLoader::LoadFromFile("Models/Monkey.obj", vertices, uvs, normals);
+	////Loads the Obj file into an object
+	//bool load = ObjLoader::LoadFromFile("Models/Monkey.obj", vertices, uvs, normals);
 
-	//Creating the VAO and buffers
-	VertexArrayObject::sptr	meshVao = VertexArrayObject::Create();
+	////Creating the VAO and buffers
+	//VertexArrayObject::sptr	meshVao = VertexArrayObject::Create();
 
-	VertexBuffer::sptr positions = VertexBuffer::Create();
-	positions->LoadData(vertices.data(), vertices.size());
+	//VertexBuffer::sptr positions = VertexBuffer::Create();
+	//positions->LoadData(vertices.data(), vertices.size());
 
-	meshVao->AddVertexBuffer(positions, {
-		BufferAttribute(0, 3, GL_FLOAT, false, 0, NULL)
-		});
+	//meshVao->AddVertexBuffer(positions, {
+	//	BufferAttribute(0, 3, GL_FLOAT, false, 0, NULL)
+	//	});
+
+	Mesh monkey("Models/Monkey.obj");
+	VertexArrayObject::sptr monkeyMesh = monkey.loadMesh();
 
 	// Load our shaders
 	Shader::sptr shader = Shader::Create();
@@ -168,7 +172,6 @@ int main()
 	camera->LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera->SetFovDegrees(90.0f); // Set an initial FOV
 
-
 	double lastFrame = glfwGetTime();
 
 	//Main Loop//
@@ -182,7 +185,6 @@ int main()
 		// Calculate the time since our last frame (dt)
 		double thisFrame = glfwGetTime();
 		float dt = static_cast<float>(thisFrame - lastFrame);
-
 
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
 			transform = glm::translate(transform, glm::vec3(0.0001f * dt, 0.0f, 0.0f));
@@ -211,7 +213,8 @@ int main()
 		shader->Bind();
 		//Renders the first obj in the correct position with rotation
 		shader->SetUniformMatrix("u_ModelViewProjection", camera->GetViewProjection() * transform2);
-		meshVao->Render();
+		//meshVao->Render();
+		monkeyMesh->Render();
 
 		glfwSwapBuffers(window);
 	}
