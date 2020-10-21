@@ -1,8 +1,14 @@
 #include "ChickenEntity.h"
 
-entt::entity ChickenEntity::Create()
+ChickenEntity::ChickenEntity(entt::entity ent)
+{
+	entID = ent;
+}
+
+ChickenEntity ChickenEntity::Create()
 {
 	auto entity = ECS.create();
 
-	return entity;
+	return ChickenEntity(entity);
 }
+
