@@ -1,9 +1,11 @@
 #pragma once
 
+#define GLM_ENABLE_EXPERIMENTAL
+
 #include "GLM/glm.hpp"
+#include "GLM/gtx/quaternion.hpp"
 #include <vector>
 
-#define GLM_ENABLE_EXPERIMENTAL
 
 //Transform class for transformations in main
 /*

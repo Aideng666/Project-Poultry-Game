@@ -1,7 +1,5 @@
 #include "ChickenTransform.h"
 #include "GLM/gtx/transform.hpp"
-#include <GLM\gtx\quaternion.hpp>
-
 
 ChickenTransform::ChickenTransform() {
 
