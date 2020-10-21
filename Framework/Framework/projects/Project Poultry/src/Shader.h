@@ -1,3 +1,5 @@
+//From Shawn's Week 5 Intro to Computer Graphics tutorial
+
 #pragma once
 #include <glad/glad.h>
 #include <memory>
