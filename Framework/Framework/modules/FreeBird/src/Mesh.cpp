@@ -1,7 +1,7 @@
 //Mesh class to laod our objects
 /*
     Tyler Wong
-    2020-10-21
+    2020-10-24
 */
 
 #include "Mesh.h"
@@ -31,128 +31,118 @@ static inline void trim(std::string& s) {
 }
 
 namespace freebird
-{ 
-    //Sets the filename of the .obj file
+{
     Mesh::Mesh(const std::string& fileName)
     {
-        this->fileName = fileName;
-    }
-    
-    //Loads the .obj file
-    VertexArrayObject::sptr Mesh::loadMesh()
-    {
-        //Open our file in binary mode
         std::ifstream file;
         file.open(fileName, std::ios::binary);
-    
-        // If our file fails to open, we will throw an error
+
         if (!file) {
-            throw std::runtime_error("File failed to open");
+            throw std::runtime_error("Failed to open file");
         }
-    
-        //Temporary vectors to store our obj's data
-        std::vector<glm::vec3> temp_verticies, temp_normals;
-        std::vector<glm::vec2> temp_uvs;
-    
-        //Used to read the file
-        std::string line;
-    
-        //Reads through the file
+
+        std::vector< glm::fvec3 > temp_vertices;
+        std::vector< glm::fvec2 > temp_uvs;
+        std::vector< glm::fvec3 > temp_normals;
+
+        std::string line, id;
+
+        // Iterate as long as there is content to read
         while (std::getline(file, line))
         {
             trim(line);
-    
-            //Check for hashtags
-            if (line.substr(0, 1) == "#")
+            if (line.substr(0, 2) == "# ")
             {
-                //Do nothing becasue # is a comment
+                // Comment, no-op
             }
-            //Check for any lines containing verticies
             else if (line.substr(0, 2) == "v ")
             {
-                //Reads from the line and gets each value of the vertex
                 std::istringstream ss = std::istringstream(line.substr(2));
                 glm::vec3 pos;
                 ss >> pos.x >> pos.y >> pos.z;
-                //Adds vertex to the vector
-                temp_verticies.push_back(pos);
+                temp_vertices.push_back(pos);
             }
-            //Check for any lines containing uvs/texture coordinates
-            else if (line.substr(0, 2) == "vt")
+            else if (line.substr(0, 3) == "vt ")
             {
-                //Reads from the line and gets each value of the UV
-                std::istringstream ss = std::istringstream(line.substr(2));
+                std::istringstream ss = std::istringstream(line.substr(3));
                 glm::vec2 uv;
                 ss >> uv.x >> uv.y;
-                //Adds uv to the vector
                 temp_uvs.push_back(uv);
             }
-            //Check for any lines containing normals
-            else if (line.substr(0, 2) == "vn")
+            else if (line.substr(0, 3) == "vn ")
             {
-                //Reads from the line and gets each value of the Normal
-                std::istringstream ss = std::istringstream(line.substr(2));
-                glm::vec3 norm;
-                ss >> norm.x >> norm.y >> norm.z;
-                //Adds normal to the vector
-                temp_normals.push_back(norm);
+                std::istringstream ss = std::istringstream(line.substr(3));
+                glm::vec3 normal;
+                ss >> normal.x >> normal.y >> normal.z;
+                temp_normals.push_back(normal);
             }
-            //Checks for any lines containing faces and thus their sets of data
             else if (line.substr(0, 2) == "f ")
             {
                 std::istringstream ss = std::istringstream(line.substr(2));
-                char s1;
-                int v, uv, n;
-    
-                for (int i = 0; i < 3; i++)
-                {
-                    ss >> v >> s1 >> uv >> s1 >> n;
-                    vertexIndices.push_back(v);
-                    uvIndices.push_back(uv);
-                    normalIndices.push_back(n);
-                }
+
+                std::string v1, v2, v3;
+                char tempIgnoreChar;
+
+                unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
+
+                ss >> vertexIndex[0] >> tempIgnoreChar >> uvIndex[0] >> tempIgnoreChar >> normalIndex[0] >> vertexIndex[1] >> tempIgnoreChar >> uvIndex[1] >> tempIgnoreChar >> normalIndex[1] >> vertexIndex[2] >> tempIgnoreChar >> uvIndex[2] >> tempIgnoreChar >> normalIndex[2];
+
+                vertIndices.push_back(vertexIndex[0]);
+                vertIndices.push_back(vertexIndex[1]);
+                vertIndices.push_back(vertexIndex[2]);
+                uvIndices.push_back(uvIndex[0]);
+                uvIndices.push_back(uvIndex[1]);
+                uvIndices.push_back(uvIndex[2]);
+                normIndices.push_back(normalIndex[0]);
+                normIndices.push_back(normalIndex[1]);
+                normIndices.push_back(normalIndex[2]);
+
             }
             else {}
         }
-    
-        //Gets the attributes and arranges the index of the faces
-        for (unsigned int i = 0; i < vertexIndices.size(); i++)
+
+        for (unsigned int i = 0; i < vertIndices.size(); i++)
         {
-            out_Verts.push_back(temp_verticies[vertexIndices[i] - 1]);
-            out_UVs.push_back(temp_verticies[vertexIndices[i] - 1]);
-            if (i < normalIndices.size())
-            {
-                out_Norms.push_back(temp_verticies[vertexIndices[i] - 1]);
-            }
+            unsigned int vertexIndex = vertIndices[i];
+            unsigned int uvIndex = uvIndices[i];
+            unsigned int normIndex = normIndices[i];
+
+            interleaved.push_back(temp_vertices[vertexIndex - 1].x);
+            interleaved.push_back(temp_vertices[vertexIndex - 1].y);
+            interleaved.push_back(temp_vertices[vertexIndex - 1].z);
+            interleaved.push_back(1.0f);
+            interleaved.push_back(1.0f);
+            interleaved.push_back(1.0f);
+            interleaved.push_back(temp_uvs[uvIndex - 1].x);
+            interleaved.push_back(temp_uvs[uvIndex - 1].y);
+            interleaved.push_back(temp_normals[normIndex - 1].x);
+            interleaved.push_back(temp_normals[normIndex - 1].y);
+            interleaved.push_back(temp_normals[normIndex - 1].z);
         }
-    
-        return makeVAO();
+
+        makeVAO();
     }
-    
-    //Loads the data from the obj file into a VAO
+
+
     VertexArrayObject::sptr Mesh::makeVAO()
     {
-        VertexBuffer::sptr pos_VBO = VertexBuffer::Create();
-        pos_VBO->LoadData(out_Verts.data(), out_Verts.size());
-    
-        VertexBuffer::sptr uvs_VBO = VertexBuffer::Create();
-        uvs_VBO->LoadData(out_UVs.data(), out_UVs.size());
-    
-        VertexBuffer::sptr norm_VBO = VertexBuffer::Create();
-        norm_VBO->LoadData(out_Norms.data(), out_Norms.size());
-    
-        VertexArrayObject::sptr meshVAO = VertexArrayObject::Create();
-    
-        meshVAO->AddVertexBuffer(pos_VBO, {
-            BufferAttribute(0, 3, GL_FLOAT, false, 0, NULL)
+        VertexBuffer::sptr vbo = VertexBuffer::Create();
+        vbo->LoadData(interleaved.data(), interleaved.size());
+
+        size_t stride = sizeof(float) * 11;
+
+        vao->AddVertexBuffer(vbo, {
+        BufferAttribute(0, 3, GL_FLOAT, false, stride, NULL),
+        BufferAttribute(1, 3, GL_FLOAT, false, stride, sizeof(float) * 3),
+        BufferAttribute(2, 2, GL_FLOAT, false, stride, sizeof(float) * 6),
+        BufferAttribute(3, 3, GL_FLOAT, false, stride, sizeof(float) * 8)
             });
-        meshVAO->AddVertexBuffer(uvs_VBO, {
-            BufferAttribute(1, 2, GL_FLOAT, false, 0, NULL)
-            });
-        meshVAO->AddVertexBuffer(norm_VBO, {
-            BufferAttribute(2, 3, GL_FLOAT, false, 0, NULL)
-            });
-    
-        return meshVAO;
+
+        return vao;    
+    }
+
+    void Mesh::Render()
+    {
+        vao->Render();
     }
 }
