@@ -9,6 +9,8 @@
 #include <wtypes.h>
 
 #include <filesystem>
+#include "ChickenTransform.h"
+#include "ChickenEntity.h"
 #include <fstream>
 #include <Shader.h>
 #include <VertexArrayObject.h>
@@ -132,6 +134,14 @@ int main()
 	Mesh monkey2("Models/Monkey.obj");
 	VertexArrayObject::sptr monkeyMesh2 = monkey2.loadMesh();
 
+	ChickenEntity mainPlayer = ChickenEntity::Create();
+	ChickenEntity camEntity = ChickenEntity::Create();
+	auto& playerTrans = mainPlayer.Add<ChickenTransform>();
+
+
+	
+
+
 	// Load our shaders
 	Shader::sptr shader = Shader::Create();
 	shader->LoadShaderPartFromFile("Shaders/vertex_shader_test.glsl", GL_VERTEX_SHADER);
@@ -216,10 +226,10 @@ int main()
 		//Renders the first obj in the correct position with rotation
 		shader->SetUniformMatrix("u_ModelViewProjection", camera->GetViewProjection() * transform2);
 		monkeyMesh->Render();
-
-		shader2->Bind();
+		
+		/*shader2->Bind();
 		shader2->SetUniformMatrix("u_ModelViewProjection", camera->GetViewProjection() * monkeyTransform2);
-		monkeyMesh2->Render();
+		monkeyMesh2->Render();*/
 
 		glfwSwapBuffers(window);
 	}
