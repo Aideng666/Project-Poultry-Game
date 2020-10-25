@@ -10,12 +10,12 @@
 
 #include <filesystem>
 #include <fstream>
-#include <Camera.h>
 
 #include "Mesh.h"
 #include "Shader.h"
+#include "Camera.h"
 
-using namespace freebird;
+using namespace freebird; //referencing the module's includes/src's
 
 using namespace std;
 
