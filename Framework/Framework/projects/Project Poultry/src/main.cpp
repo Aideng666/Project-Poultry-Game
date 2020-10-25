@@ -10,10 +10,10 @@
 
 #include <filesystem>
 #include <fstream>
-#include <Shader.h>
 #include <Camera.h>
 
 #include "Mesh.h"
+#include "Shader.h"
 
 using namespace freebird;
 
