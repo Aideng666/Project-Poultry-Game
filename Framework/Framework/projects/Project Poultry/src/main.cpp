@@ -9,8 +9,6 @@
 #include <wtypes.h>
 
 #include <filesystem>
-#include "ChickenTransform.h"
-#include "ChickenEntity.h"
 #include <fstream>
 
 #include "Mesh.h"
@@ -58,7 +56,6 @@ void GlDebugMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsi
 }
 
 GLFWwindow* window;
-Camera::sptr camera = nullptr;
 
 void processInput(GLFWwindow* window)
 {
@@ -131,7 +128,13 @@ int main()
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(GlDebugMessage, nullptr);
 
+	Entity mainPlayer = Entity::Create();
 	Mesh test("Models/Monkey.obj");
+	auto& playerMesh = mainPlayer.Add<Mesh>(test);
+	auto& playerTrans = mainPlayer.Add<Transform>();
+
+	Entity camEntity = Entity::Create();
+	auto& camera = camEntity.Add<Camera>();
 
 	// Load our shaders
 	Shader::sptr shader = Shader::Create();
@@ -157,13 +160,11 @@ int main()
 	
 	glEnable(GL_DEPTH_TEST);
 
-	glm::mat4 transform = glm::mat4(1.0f);
 
-	camera = Camera::Create();
-	camera->SetPosition(glm::vec3(0, 3, 3)); // Set initial position
-	camera->SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
-	camera->LookAt(glm::vec3(0.0f)); // Look at center of the screen
-	camera->SetFovDegrees(90.0f); // Set an initial FOV
+	camera.SetPosition(glm::vec3(0, 3, 3)); // Set initial position
+	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
+	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
+	camera.SetFovDegrees(90.0f); // Set an initial FOV
 
 	double lastFrame = glfwGetTime();
 
@@ -175,21 +176,53 @@ int main()
 
 		glfwPollEvents();
 
+		glm::mat4 transform = playerTrans.GetModelMatrix();
+
+
+
 		// Calculate the time since our last frame (dt)
 		double thisFrame = glfwGetTime();
 		float dt = static_cast<float>(thisFrame - lastFrame);
+
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		{
+			playerTrans.SetPositionX(playerTrans.GetPositionX() - 2 * dt);
+		}
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		{
+			playerTrans.SetPositionX(playerTrans.GetPositionX() + 2 * dt);
+		}
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		{
+			playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 2 * dt);
+		}
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		{
+			playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 2 * dt);
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		{
+			playerTrans.SetRotationY(playerTrans.GetRotation().y + 100 * dt);
+		}
+		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		{
+			playerTrans.SetRotationY(playerTrans.GetRotation().y - 100 * dt);
+		}
+
 
 		glClearColor(0.08f, 0.17f, 0.31f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader->Bind();
 		//Renders the first obj in the correct position with rotation
-		test.Render();
 
 		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transform));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera->GetViewProjection() * transform);
+		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transform);
 		shader->SetUniformMatrix("u_Model", transform);
-		shader->SetUniform("u_CamPos", camera->GetPosition());
+		shader->SetUniform("u_CamPos", camera.GetPosition());
+
+		playerMesh.Render();
 
 		glfwSwapBuffers(window);
 		lastFrame = thisFrame;

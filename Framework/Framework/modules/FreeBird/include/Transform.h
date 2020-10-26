@@ -25,8 +25,7 @@ namespace freebird
 		glm::vec3 GetScale();
 
 		//Rotation-Getters
-		glm::quat GetRotation();
-		glm::mat3 GetRotationMatrix();
+		glm::vec3& GetRotation();
 
 		//Position-Setters
 		void SetPosition(glm::vec3 newPos);
@@ -39,8 +38,8 @@ namespace freebird
 		void SetScale(float x, float y, float z);
 
 		//Rotation-Setters
-		void SetRotation(glm::quat newRot);
-		void SetRotation(glm::mat3 newRot);
+		void SetRotation(float x, float y, float z);
+		void SetRotation(glm::vec3 euler);
 		void SetRotationX(float newAngle);
 		void SetRotationY(float newAngle);
 		void SetRotationZ(float newAngle);
@@ -53,6 +52,7 @@ namespace freebird
 		glm::vec3 position;
 		glm::vec3 scale;
 		glm::quat rotation;
+		glm::vec3 eulerRot;
 		glm::mat4 model;
 	};
 }
