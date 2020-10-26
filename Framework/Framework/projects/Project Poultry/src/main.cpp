@@ -14,6 +14,8 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "Entity.h"
+#include "Transform.h"
 
 using namespace freebird; //referencing the module's includes/src's
 
