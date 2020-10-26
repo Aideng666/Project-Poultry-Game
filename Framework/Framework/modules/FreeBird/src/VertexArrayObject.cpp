@@ -2,7 +2,7 @@
 
 #include "VertexArrayObject.h"
 #include "IndexBuffer.h"
-//#include "Logging.h"
+#include "Logging.h"
 #include "VertexBuffer.h"
 
 namespace freebird
@@ -37,7 +37,7 @@ namespace freebird
 			_vertexCount = buffer->GetElementCount();
 		}
 		else {
-			//LOG_ASSERT(buffer->GetElementCount() == _vertexCount, "All buffers bound to a VAO should be of the same size in our implementation!");
+			LOG_ASSERT(buffer->GetElementCount() == _vertexCount, "All buffers bound to a VAO should be of the same size in our implementation!");
 		}
 		VertexBufferBinding binding;
 		binding.Buffer = buffer;
