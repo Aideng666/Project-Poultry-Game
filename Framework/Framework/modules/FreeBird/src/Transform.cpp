@@ -7,6 +7,8 @@ namespace freebird
 		position = glm::vec3(0.0f, 0.0f, 0.0f);
 		scale = glm::vec3(1.0f, 1.0f, 1.0f);
 		rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+		eulerRot = glm::vec3(0.0f);
+		model = glm::mat4(1.0f);
 	}
 
 	glm::vec3 Transform::GetPosition()
@@ -34,19 +36,15 @@ namespace freebird
 		return scale;
 	}
 
-	glm::quat Transform::GetRotation()
+	glm::vec3& Transform::GetRotation()
 	{
-		return rotation;
+		return eulerRot;
 	}
 
-	glm::mat3 Transform::GetRotationMatrix()
-	{
-		return glm::toMat3(rotation);
-	}
 
 	glm::mat4 Transform::GetModelMatrix()
 	{
-		return glm::mat4(glm::translate(glm::mat4(1.0f), position) * glm::toMat4(rotation) * glm::scale(glm::mat4(1.0f), scale));	
+		return glm::mat4(glm::translate(glm::mat4(1.0f), position) * glm::toMat4(glm::normalize(rotation)) * glm::scale(glm::mat4(1.0f), scale));	
 	}
 
 	void Transform::SetPosition(glm::vec3 newPos)
@@ -81,28 +79,41 @@ namespace freebird
 		scale.z = z;
 	}
 
-	void Transform::SetRotation(glm::quat newRot)
+	void Transform::SetRotation(float x, float y, float z)
 	{
-		rotation = newRot;
+		eulerRot.x = x;
+		eulerRot.y = y;
+		eulerRot.z = z;
+
+		rotation = glm::quat(glm::radians(eulerRot));
 	}
 
-	void Transform::SetRotation(glm::mat3 newRot)
+	void Transform::SetRotation(glm::vec3 euler)
 	{
-		rotation = newRot;
+		eulerRot = euler;
+
+		rotation = glm::quat(glm::radians(eulerRot));
 	}
 
 	void Transform::SetRotationX(float newAngle)
 	{
-		rotation.x = newAngle;
+		eulerRot.x = newAngle;
+
+		rotation = glm::quat(glm::radians(eulerRot));
 	}	
 
 	void Transform::SetRotationY(float newAngle)
 	{
-		rotation.y = newAngle;
+
+		eulerRot.y = newAngle;
+
+		rotation = glm::quat(glm::radians(eulerRot));
 	}	
 
 	void Transform::SetRotationZ(float newAngle)
 	{
-		rotation.z = newAngle;
+		eulerRot.z = newAngle;
+
+		rotation = glm::quat(glm::radians(eulerRot));
 	}
 }
