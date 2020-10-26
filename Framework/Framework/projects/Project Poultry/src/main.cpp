@@ -137,9 +137,7 @@ int main()
 	ChickenEntity mainPlayer = ChickenEntity::Create();
 	ChickenEntity camEntity = ChickenEntity::Create();
 	auto& playerTrans = mainPlayer.Add<ChickenTransform>();
-
-
-	
+	auto& camComponent = camEntity.Add<Camera>();
 
 
 	// Load our shaders

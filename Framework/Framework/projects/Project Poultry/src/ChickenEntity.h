@@ -19,6 +19,7 @@ public:
 		return ECS.emplace<T>(entID, std::forward<Args>(arg)...);
 	}
 
+
 	//Gets a component from an entity to edit
 	template<typename T>
 	static T& Get();
