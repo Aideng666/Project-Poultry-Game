@@ -126,6 +126,7 @@ namespace freebird
 
     VertexArrayObject::sptr Mesh::makeVAO()
     {
+        vao = VertexArrayObject::Create();
         VertexBuffer::sptr vbo = VertexBuffer::Create();
         vbo->LoadData(interleaved.data(), interleaved.size());
 

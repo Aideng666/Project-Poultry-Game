@@ -129,12 +129,19 @@ int main()
 	glDebugMessageCallback(GlDebugMessage, nullptr);
 
 	Entity mainPlayer = Entity::Create();
-	Mesh test("Models/Monkey.obj");
-	auto& playerMesh = mainPlayer.Add<Mesh>(test);
+	Mesh monkey("Models/Monkey.obj");
+	auto& playerMesh = mainPlayer.Add<Mesh>(monkey);
+	Mesh meshMain = playerMesh;
 	auto& playerTrans = mainPlayer.Add<Transform>();
 
 	Entity camEntity = Entity::Create();
 	auto& camera = camEntity.Add<Camera>();
+
+	Entity testPlane = Entity::Create();
+	Mesh plane("Models/TestPlane.obj");
+	auto& planeMesh = testPlane.Add<Mesh>(plane);
+	Mesh meshPlane = planeMesh;
+
 
 	// Load our shaders
 	Shader::sptr shader = Shader::Create();
@@ -222,7 +229,14 @@ int main()
 		shader->SetUniformMatrix("u_Model", transform);
 		shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		playerMesh.Render();
+		meshMain.Render();
+
+		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(1.0f));
+		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection());
+		shader->SetUniformMatrix("u_Model", glm::mat4(1.0f));
+		shader->SetUniform("u_CamPos", camera.GetPosition());
+
+		meshPlane.Render();
 
 		glfwSwapBuffers(window);
 		lastFrame = thisFrame;
