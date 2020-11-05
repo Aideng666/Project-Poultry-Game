@@ -18,7 +18,6 @@
 #include "Level2.h"
 #include "Application.h"
 
-
 using namespace freebird; //referencing the module's includes/src's
 
 using namespace std;
@@ -58,6 +57,7 @@ int main()
 
 	SetActiveScene(1);
 	
+	//Calculates our timer
 	Application::Tick();
 
 	//Main Loop//
@@ -66,8 +66,10 @@ int main()
 		//Close the window
 		Application::ProcessInput(window);
 
+		//Updates the window
 		Application::Update();
 
+		//Grabs the time
 		float dt = Application::GetDT();
 
 		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
@@ -84,7 +86,9 @@ int main()
 		Application::SwapBuffers();
 	}
 
+	//Cleans up the window and glfw
 	Application::Cleanup();
+
 	Logger::Uninitialize();
 	return 0;
 }
