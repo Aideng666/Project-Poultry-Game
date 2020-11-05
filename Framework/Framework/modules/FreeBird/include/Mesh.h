@@ -1,4 +1,4 @@
-//Mesh class to laod our objects
+//Mesh class to load our objects
 /*
 	Tyler Wong
 	2020-10-24
@@ -16,6 +16,7 @@ namespace freebird
 	{
 	public:
 		Mesh(const std::string& fileName);
+		Mesh();
 		VertexArrayObject::sptr makeVAO();
 		VertexArrayObject::sptr vao;
 		void Render();
