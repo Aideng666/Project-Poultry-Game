@@ -6,7 +6,7 @@
 #include <GLM/glm.hpp>
 #include <GLM\gtc\matrix_transform.hpp>
 
-#include <wtypes.h>
+//#include <wtypes.h>
 
 #include <filesystem>
 #include <fstream>
@@ -22,40 +22,6 @@
 using namespace freebird; //referencing the module's includes/src's
 
 using namespace std;
-
-#define LOG_GL_NOTIFICATIONS
-
-/*
-	Handles debug messages from OpenGL
-	https://www.khronos.org/opengl/wiki/Debug_Output#Message_Components
-	@param source    Which part of OpenGL dispatched the message
-	@param type      The type of message (ex: error, performance issues, deprecated behavior)
-	@param id        The ID of the error or message (to distinguish between different types of errors, like nullref or index out of range)
-	@param severity  The severity of the message (from High to Notification)
-	@param length    The length of the message
-	@param message   The human readable message from OpenGL
-	@param userParam The pointer we set with glDebugMessageCallback (should be the game pointer)
-*/
-void GlDebugMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
-	std::string sourceTxt;
-	switch (source) {
-	case GL_DEBUG_SOURCE_API: sourceTxt = "DEBUG"; break;
-	case GL_DEBUG_SOURCE_WINDOW_SYSTEM: sourceTxt = "WINDOW"; break;
-	case GL_DEBUG_SOURCE_SHADER_COMPILER: sourceTxt = "SHADER"; break;
-	case GL_DEBUG_SOURCE_THIRD_PARTY: sourceTxt = "THIRD PARTY"; break;
-	case GL_DEBUG_SOURCE_APPLICATION: sourceTxt = "APP"; break;
-	case GL_DEBUG_SOURCE_OTHER: default: sourceTxt = "OTHER"; break;
-	}
-	switch (severity) {
-	case GL_DEBUG_SEVERITY_LOW:          LOG_INFO("[{}] {}", sourceTxt, message); break;
-	case GL_DEBUG_SEVERITY_MEDIUM:       LOG_WARN("[{}] {}", sourceTxt, message); break;
-	case GL_DEBUG_SEVERITY_HIGH:         LOG_ERROR("[{}] {}", sourceTxt, message); break;
-		#ifdef LOG_GL_NOTIFICATIONS
-	case GL_DEBUG_SEVERITY_NOTIFICATION: LOG_INFO("[{}] {}", sourceTxt, message); break;
-		#endif
-	default: break;
-	}
-}
 
 GLFWwindow* window;
 
@@ -135,21 +101,18 @@ void SetActiveScene(int sceneNum)
 
 int main()
 {
-	Logger::Init();
-
-	//Initialize GLFW
-	if (!initGLFW())
+	if (!(window = Application::Init("Project Poultry", 800, 800)))
+	{
 		return 1;
+	}
 
-	//Initialize GLAD
-	if (!initGLAD())
-		return 1;
+	Application::SetClearColor(glm::vec4(0.08f, 0.17f, 0.31f, 1.0f));
 
-	LOG_INFO(glGetString(GL_RENDERER));
-	LOG_INFO(glGetString(GL_VERSION));
+	auto mainPlayer = Entity::Create();
+	Mesh monkey = mainPlayer.Add<Mesh>("Models/Monkey.obj");
+	Transform playerTrans = mainPlayer.Add<Transform>();
 
-	glEnable(GL_DEBUG_OUTPUT);
-	glDebugMessageCallback(GlDebugMessage, nullptr);
+	playerTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 
 	scenes.push_back(new Level1("Level 1", window));
 	scenes.push_back(new Level2("Level 2", window));
@@ -166,7 +129,7 @@ int main()
 		//Close the window
 		processInput(window);
 
-		glfwPollEvents();
+		Application::Update();
 
 		// Calculate the time since our last frame (dt)
 		double thisFrame = glfwGetTime();

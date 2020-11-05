@@ -1,4 +1,4 @@
-//Mesh class to laod our objects
+//Mesh class to load our objects
 /*
 	Tyler Wong
 	2020-10-24
