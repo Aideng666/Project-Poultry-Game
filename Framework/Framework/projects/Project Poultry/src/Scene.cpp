@@ -40,20 +40,3 @@ entt::registry* Scene::GetScene()
 {
 	return scene;
 }
-
-
-//Mesh* Scene::GetRenders(int index)
-//{
-//	return &renders[index];
-//}
-//
-//std::vector<Mesh>* Scene::GetRenders()
-//{
-//	return &renders;
-//}
-//
-//Transform *Scene::GetTransform(int index)
-//{
-//	return &transforms[index];
-//}
-

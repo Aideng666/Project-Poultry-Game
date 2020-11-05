@@ -37,6 +37,8 @@ namespace freebird
 	}
 
 	GLFWwindow* Application::m_window = nullptr;
+	float Application::m_thisFrame = 0.0f;
+	float Application::m_dt = 0.0f;
 
 	void GlfwWindowResizedCallback(GLFWwindow* window, int width, int height) 
 	{
@@ -89,13 +91,44 @@ namespace freebird
 
 	void Application::Update()
 	{		
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		Tick();
 
 		glfwPollEvents();
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	void Application::SwapBuffers()
 	{
 		glfwSwapBuffers(m_window);
+	}
+
+	void Application::ProcessInput(GLFWwindow* window)
+	{
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+			glfwSetWindowShouldClose(window, true);
+	}
+
+	void Application::Cleanup()
+	{
+		glfwDestroyWindow(m_window);
+		glfwTerminate();
+	}
+
+	float Application::GetDT()
+	{
+		return m_dt;
+	}
+
+	void Application::Tick()
+	{
+		float lastFrame = glfwGetTime();
+		m_dt = lastFrame - m_thisFrame;
+		m_thisFrame = lastFrame;
+	}
+
+	bool Application::IsClosing()
+	{
+		return glfwWindowShouldClose(m_window);
 	}
 }

@@ -19,6 +19,8 @@ namespace freebird
 	class Application
 	{
 	public:
+		~Application() = default;
+
 		//Inits a window
 		//static void Init(const std::string name, int w, int h);
 		static GLFWwindow* Init(std::string name, int w, int h);
@@ -28,8 +30,20 @@ namespace freebird
 
 		static void Update();
 		static void SwapBuffers();
+		static void ProcessInput(GLFWwindow* window);
 
-	private:
+		static void Cleanup();
+
+		static float GetDT();
+		static void Tick();
+		static void FrameStart();
+		
+		static bool IsClosing();
+
+	protected:
+		Application() = default;
 		static GLFWwindow* m_window;
+		static float m_dt;
+		static float m_thisFrame;
 	};
 }
