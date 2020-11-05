@@ -16,6 +16,7 @@ namespace freebird
 	{
 	public:
 		Mesh(const std::string& fileName);
+		Mesh();
 		VertexArrayObject::sptr makeVAO();
 		VertexArrayObject::sptr vao;
 		void Render();
