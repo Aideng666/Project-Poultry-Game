@@ -22,5 +22,8 @@ public:
 private:
 	Entity mainPlayer;
 	Entity camEnt;
-	Entity testPlane;
+	Entity ground, leftWall, rightWall, backWall;
+
+	bool camClose = false;
+	bool camFar = false;
 };

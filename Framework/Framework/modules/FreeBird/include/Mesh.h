@@ -15,7 +15,7 @@ namespace freebird
 	class Mesh
 	{
 	public:
-		Mesh(const std::string& fileName);
+		Mesh(const std::string& fileName, const glm::vec3& inColor = glm::vec3(1.0f));
 		Mesh();
 		VertexArrayObject::sptr makeVAO();
 		VertexArrayObject::sptr vao;

@@ -32,7 +32,7 @@ static inline void trim(std::string& s) {
 
 namespace freebird
 {
-    Mesh::Mesh(const std::string& fileName)
+    Mesh::Mesh(const std::string& fileName, const glm::vec3& inColor)
     {
         std::ifstream file;
         file.open(fileName, std::ios::binary);
@@ -110,9 +110,9 @@ namespace freebird
             interleaved.push_back(temp_vertices[vertexIndex - 1].x);
             interleaved.push_back(temp_vertices[vertexIndex - 1].y);
             interleaved.push_back(temp_vertices[vertexIndex - 1].z);
-            interleaved.push_back(1.0f);
-            interleaved.push_back(1.0f);
-            interleaved.push_back(1.0f);
+            interleaved.push_back(inColor.x);
+            interleaved.push_back(inColor.y);
+            interleaved.push_back(inColor.z);
             interleaved.push_back(temp_uvs[uvIndex - 1].x);
             interleaved.push_back(temp_uvs[uvIndex - 1].y);
             interleaved.push_back(temp_normals[normIndex - 1].x);

@@ -9,7 +9,10 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 {
 	mainPlayer = Entity::Create();
 	camEnt = Entity::Create();
-	testPlane = Entity::Create();
+	ground = Entity::Create();
+	leftWall = Entity::Create();
+	rightWall = Entity::Create();
+	backWall = Entity::Create();
 }
 
 void Level2::InitScene()
@@ -21,26 +24,25 @@ void Level2::InitScene()
 	//Set Up Camera
 	auto& camera = camEnt.Add<Camera>();
 
-	camera.SetPosition(glm::vec3(0, 3, 3)); // Set initial position
+	camera.SetPosition(glm::vec3(0, 8, 10)); // Set initial position
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
 
-	Mesh monkey("Models/Monkey.obj");
+	Mesh monkey("Models/Monkey.obj", glm::vec3(1.0f, 0.0f, 0.0f));
 	auto& playerTrans = mainPlayer.Add<Transform>();
 	auto& playerMesh = mainPlayer.Add<Mesh>(monkey);
 
-	playerTrans.SetPositionY(1.0f);
+	playerTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	playerTrans.SetRotationY(0.0f);
 
 	Mesh test("Models/TestPlane.obj");
-	auto& planeTrans = testPlane.Add<Transform>();
-	auto& planeMesh = testPlane.Add<Mesh>(test);
 
-
-
-
-	//renders.push_back(meshMain);
-	//transforms.push_back(playerTrans);
+	//meshes
+	auto& groundMesh = ground.Add<Mesh>(test);
+	auto& leftMesh = leftWall.Add<Mesh>(test);
+	auto& rightMesh = rightWall.Add<Mesh>(test);
+	auto& backMesh = backWall.Add<Mesh>(test);
 
 	shader = Shader::Create();
 	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
@@ -71,76 +73,116 @@ void Level2::Update(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//Transforms
-	auto& playerTrans = mainPlayer.Get<Transform>();
-	auto& planeTrans = testPlane.Get<Transform>();
+	auto& playerTrans = mainPlayer.Add<Transform>();
+	auto& groundTrans = ground.Add<Transform>();
+	auto& leftTrans = leftWall.Add<Transform>();
+	auto& rightTrans = rightWall.Add<Transform>();
+	auto& backTrans = backWall.Add<Transform>();
+
+	backTrans.SetPositionZ(-10.4f);
+	backTrans.SetPositionY(10.4f);
+	backTrans.SetRotationX(90.0f);
+
+	leftTrans.SetRotationZ(90.0f);
+	leftTrans.SetRotationY(180.0f);
+	leftTrans.SetPositionX(-10.4f);
+	leftTrans.SetPositionY(10.4f);
+
+	rightTrans.SetRotationZ(90.0f);
+	rightTrans.SetPositionX(10.4f);
+	rightTrans.SetPositionY(10.4f);
 
 	//Camera
 	auto& camera = camEnt.Get<Camera>();
 
 	//Meshes
 	auto& meshMain = mainPlayer.Get<Mesh>();
-	auto& planeMesh = testPlane.Get<Mesh>();
+	auto& groundMesh = ground.Get<Mesh>();
+	auto& leftMesh = leftWall.Get<Mesh>();
+	auto& rightMesh = rightWall.Get<Mesh>();
+	auto& backMesh = backWall.Get<Mesh>();
+
+	camera.LookAt(glm::vec3(playerTrans.GetPosition())); // Look at center of the screen
+
+	//Gets the transforms of the objects
+	glm::mat4 transform = playerTrans.GetModelMatrix();
+	glm::mat4 transformGround = groundTrans.GetModelMatrix();
+	glm::mat4 transformLeft = leftTrans.GetModelMatrix();
+	glm::mat4 transformRight = rightTrans.GetModelMatrix();
+	glm::mat4 transformBack = backTrans.GetModelMatrix();
 
 
-	//camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 3, playerTrans.GetPositionZ() + 3));
-	//camera.LookAt(glm::vec3(currentScene->GetTransform(0)->GetPosition())); // Look at center of the screen
+	if (camera.GetPosition().z - playerTrans.GetPositionZ() < 7.5f)
+		camClose = true;
+	else
+		camClose = false;
 
-	shader->Bind();
+	if (camera.GetPosition().z - playerTrans.GetPositionZ() > 15.0f)
+		camFar = true;
+	else
+		camFar = false;
 
-	
-		glm::mat4 transform = playerTrans.GetModelMatrix();
-		glm::mat4 transformPlane = planeTrans.GetModelMatrix();
-
+#pragma region PlayerMovement
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 		{
-			playerTrans.SetPositionX(playerTrans.GetPositionX() - 2 * dt);
+			playerTrans.SetPositionX(playerTrans.GetPositionX() - 5 * dt);
+			playerTrans.SetRotationY(270.0f);
+			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
 		}
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		{
-			playerTrans.SetPositionX(playerTrans.GetPositionX() + 2 * dt);
+			playerTrans.SetPositionX(playerTrans.GetPositionX() + 5 * dt);
+			playerTrans.SetRotationY(90.0f);
+			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
 		}
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		{
-			playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 2 * dt);
+			playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 5 * dt);
+			playerTrans.SetRotationY(180.0f);
+
+			if (camFar)
+				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 5 * dt));
 		}
 		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		{
-			playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 2 * dt);
-		}
+			playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 5 * dt);
+			playerTrans.SetRotationY(0.0f);
 
-		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		{
-			playerTrans.SetRotationY(playerTrans.GetRotation().y + 100 * dt);
+			if (camClose)
+				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 5 * dt));
 		}
-		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		{
-			playerTrans.SetRotationY(playerTrans.GetRotation().y - 100 * dt);
-		}
+#pragma endregion
+		
+#pragma region CameraMovement
 		if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
 		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x - 2 * dt, camera.GetPosition().y, camera.GetPosition().z));
+			camera.SetPosition(glm::vec3(camera.GetPosition().x - 5 * dt, camera.GetPosition().y, camera.GetPosition().z));
 		}
 		if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
 		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x + 2 * dt, camera.GetPosition().y, camera.GetPosition().z));
+			camera.SetPosition(glm::vec3(camera.GetPosition().x + 5 * dt, camera.GetPosition().y, camera.GetPosition().z));
 		}
 		if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
 		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 2 * dt));
+			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 5 * dt));
 		}
 		if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
 		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 2 * dt));
+			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 5 * dt));
 		}
 		if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
 		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y + 2 * dt, camera.GetPosition().z));
+			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y + 5 * dt, camera.GetPosition().z));
 		}
 		if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
 		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y - 2 * dt, camera.GetPosition().z));
+			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y - 5 * dt, camera.GetPosition().z));
 		}
+#pragma endregion
 
+ #pragma region Renders
+
+		shader->Bind();
 
 		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transform));
 		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transform);
@@ -149,12 +191,34 @@ void Level2::Update(float dt)
 
 		meshMain.Render();
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformPlane));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformPlane);
-		shader->SetUniformMatrix("u_Model", transformPlane);
+		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformGround));
+		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformGround);
+		shader->SetUniformMatrix("u_Model", transformGround);
 		shader->SetUniform("u_CamPos", camera.GetPosition());
-		planeMesh.Render();
-	
+
+		groundMesh.Render();
+
+		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformLeft));
+		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformLeft);
+		shader->SetUniformMatrix("u_Model", transformLeft);
+		shader->SetUniform("u_CamPos", camera.GetPosition());
+
+		leftMesh.Render();
+
+		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformRight));
+		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformRight);
+		shader->SetUniformMatrix("u_Model", transformRight);
+		shader->SetUniform("u_CamPos", camera.GetPosition());
+
+		rightMesh.Render();
+
+		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformBack));
+		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformBack);
+		shader->SetUniformMatrix("u_Model", transformBack);
+		shader->SetUniform("u_CamPos", camera.GetPosition());
+
+		backMesh.Render();
+#pragma endregion	
 }
 
 void Level2::Unload()
