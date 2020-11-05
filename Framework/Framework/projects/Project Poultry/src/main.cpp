@@ -6,8 +6,6 @@
 #include <GLM/glm.hpp>
 #include <GLM\gtc\matrix_transform.hpp>
 
-//#include <wtypes.h>
-
 #include <filesystem>
 #include <fstream>
 
@@ -19,7 +17,6 @@
 #include "Level1.h"
 #include "Level2.h"
 #include "Application.h"
-
 
 using namespace freebird; //referencing the module's includes/src's
 
@@ -33,13 +30,6 @@ entt::registry* ECS = nullptr;
 //Scenes
 Scene* currentScene = nullptr;
 std::vector<Scene*> scenes;
-
-
-void processInput(GLFWwindow* window)
-{
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-}
 
 void SetActiveScene(int sceneNum)
 {
@@ -66,36 +56,38 @@ int main()
 	scenes.push_back(new Level2("Level 2", window));
 
 	SetActiveScene(1);
-
-	double lastFrame = glfwGetTime();
+	
+	//Calculates our timer
+	Application::Tick();
 
 	//Main Loop//
-	while (!glfwWindowShouldClose(window)) {
+	while (!Application::IsClosing()) {
 
 		//Close the window
-		processInput(window);
+		Application::ProcessInput(window);
 
+		//Updates the window
 		Application::Update();
 
-		// Calculate the time since our last frame (dt)
-		double thisFrame = glfwGetTime();
-		float dt = static_cast<float>(thisFrame - lastFrame);
+		//Grabs the time
+		float dt = Application::GetDT();
 
-			if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-			{
-				SetActiveScene(1);
-			}
-			if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
-			{
-				SetActiveScene(0);
-			}
+		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+		{
+			SetActiveScene(1);
+		}
+		if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
+		{
+			SetActiveScene(0);
+		}
 
 		currentScene->Update(dt);
 
-
-		glfwSwapBuffers(window);
-		lastFrame = thisFrame;
+		Application::SwapBuffers();
 	}
+
+	//Cleans up the window and glfw
+	Application::Cleanup();
 
 	Logger::Uninitialize();
 	return 0;
