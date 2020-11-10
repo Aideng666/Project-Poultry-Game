@@ -1,16 +1,17 @@
 #include "AndGate.h"
+
 namespace freebird
 {
-    AndGate::AndGate()
-        : LogicGate()
+    AndGate::AndGate(Entity ent1, Entity ent2)
+        : LogicGate(ent1, ent2)
     {
     }
 
     void AndGate::Update()
     {
-        if (GetInput1() && GetInput2())
-            SetOutput(true);
+        if (inputEnt1.Has<Wire>() && inputEnt1.Get<Wire>().GetIsPowered() && inputEnt2.Has<Wire>() && inputEnt2.Get<Wire>().GetIsPowered())
+            output = true;
         else
-            SetOutput(false);
+            output = false;
     }
 }

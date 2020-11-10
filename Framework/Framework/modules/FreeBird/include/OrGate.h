@@ -1,5 +1,6 @@
 #pragma once
 #include "LogicGate.h"
+#include "Header.h"
 
 namespace freebird
 {
@@ -7,13 +8,10 @@ namespace freebird
 	{
 	public:
 
-		OrGate();
+		OrGate(Entity ent1, Entity ent2);
 
 		void Update();
 
 	private:
 	};
 }
-
-
-

@@ -2,16 +2,16 @@
 
 namespace freebird
 {
-    OrGate::OrGate()
-        : LogicGate()
+    OrGate::OrGate(Entity ent1, Entity ent2)
+        : LogicGate(ent1, ent2)
     {
     }
 
     void OrGate::Update()
     {
-        if (GetInput1() || GetInput2())
-            SetOutput(true);
+        if (input1 || input2)
+            output = true;
         else
-            SetOutput(false);
+            output = false;
     }
 }

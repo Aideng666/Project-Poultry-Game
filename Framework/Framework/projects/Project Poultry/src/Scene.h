@@ -5,6 +5,8 @@
 #include "Mesh.h"
 #include "Transform.h"
 #include "Shader.h"
+#include "AndGate.h"
+#include "OrGate.h"
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
 

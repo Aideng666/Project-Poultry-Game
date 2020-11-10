@@ -32,10 +32,4 @@ namespace freebird
 	{
 		ECS.remove<T>(entID);
 	}
-
-	/*Entity::~Entity()
-	{
-		if (entID != entt::null)
-			ECS.destroy(entID);
-	}*/
 }
