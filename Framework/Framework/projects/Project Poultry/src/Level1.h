@@ -11,9 +11,4 @@ public:
 	void InitScene();
 
 	void Update(float dt);
-
-
-private:
-
-
 };

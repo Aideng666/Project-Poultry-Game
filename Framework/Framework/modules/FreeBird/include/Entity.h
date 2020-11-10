@@ -30,6 +30,12 @@ namespace freebird
 			return ECS.get<T>(entID);
 		}
 
+		//Checks if an entity has a component
+		template<typename T>
+		bool Has() {
+			return ECS.has<T>(entID);
+		}
+
 		//Removes a component from an entity
 		template<typename T>
 		void Remove();

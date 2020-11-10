@@ -36,7 +36,6 @@ namespace freebird
 
 		static float GetDT();
 		static void Tick();
-		static void FrameStart();
 		
 		static bool IsClosing();
 

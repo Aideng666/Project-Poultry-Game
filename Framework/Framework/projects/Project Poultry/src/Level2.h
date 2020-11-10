@@ -18,11 +18,13 @@ public:
 	void Unload();
 
 
-
 private:
 	Entity mainPlayer;
 	Entity camEnt;
 	Entity ground, leftWall, rightWall, backWall;
+	Entity andEnt;
+	Entity wireEnt, wireEnt2;
+	Entity leverEnt, leverEnt2;
 
 	bool camClose = false;
 	bool camFar = false;
