@@ -4,6 +4,8 @@
 #include "Wire.h"
 #include "Lever.h"
 
+#include "Application.h"
+
 using namespace freebird;
 
 Level2::Level2(std::string sceneName, GLFWwindow* wind)
@@ -24,6 +26,8 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 
 void Level2::InitScene()
 {
+	Application::SetClearColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+
 	scene = new entt::registry();
 
 	Entity::SetReg(scene);
@@ -97,13 +101,12 @@ void Level2::InitScene()
 	shader->SetUniform("u_AmbientCol", ambientCol);
 	shader->SetUniform("u_AmbientStrength", ambientPow);
 	shader->SetUniform("u_Shininess", shininess);
-
 }
 
 void Level2::Update(float dt)
 {
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -163,7 +166,6 @@ void Level2::Update(float dt)
 	glm::mat4 transformLever = leverTrans.GetModelMatrix();
 	glm::mat4 transformWire2 = wireTrans2.GetModelMatrix();
 	glm::mat4 transformLever2 = leverTrans2.GetModelMatrix();
-
 
 	if (camera.GetPosition().z - playerTrans.GetPositionZ() < 7.5f)
 		camClose = true;
@@ -347,10 +349,3 @@ void Level2::Unload()
 		scene = nullptr;	
 	}
 }
-
-
-
-
-
-
-

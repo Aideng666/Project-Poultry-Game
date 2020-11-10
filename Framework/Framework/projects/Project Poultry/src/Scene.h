@@ -37,5 +37,4 @@ protected:
 
 	Shader::sptr shader;
 	GLFWwindow* window;
-
 };
