@@ -45,6 +45,7 @@ namespace freebird
 		glViewport(0, 0, width, height);
 	}
 
+	//Initializes a window
 	GLFWwindow* Application::Init(std::string name, int w, int h)
 	{
 		Logger::Init();
@@ -84,11 +85,13 @@ namespace freebird
 		return m_window;
 	}
 
+	//Sets the clear color of the window
 	void Application::SetClearColor(const glm::vec4& color)
 	{
 		glClearColor(color.r, color.g, color.b, color.a);
 	}
 
+	//Polls events and updates timer
 	void Application::Update()
 	{		
 		Tick();
@@ -103,6 +106,7 @@ namespace freebird
 		glfwSwapBuffers(m_window);
 	}
 
+	//Allows use of ESC key to close screen
 	void Application::ProcessInput(GLFWwindow* window)
 	{
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
