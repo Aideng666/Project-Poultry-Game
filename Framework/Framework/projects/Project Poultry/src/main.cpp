@@ -9,11 +9,6 @@
 #include <filesystem>
 #include <fstream>
 
-#include "Mesh.h"
-#include "Shader.h"
-#include "Camera.h"
-#include "Entity.h"
-#include "Transform.h"
 #include "Level1.h"
 #include "Level2.h"
 #include "Application.h"

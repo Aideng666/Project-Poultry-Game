@@ -5,6 +5,8 @@
 #include "Mesh.h"
 #include "Transform.h"
 #include "Shader.h"
+#include "AndGate.h"
+#include "OrGate.h"
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
 
@@ -28,19 +30,10 @@ public:
 
 	entt::registry* GetScene();
 
-	/*std::vector<Mesh>* GetRenders();
-	Mesh* Scene::GetRenders(int index);
-	Transform *GetTransform(int index);*/
-
 protected:
 
 	entt::registry* scene = nullptr;
 	std::string name = " ";
-
-	//std::vector<Mesh> renders;
-	//std::vector<Transform> transforms;
-
-	GLfloat clearcolor[4] = { 1.0, 1.0, 1.0, 1.0 };
 
 	Shader::sptr shader;
 	GLFWwindow* window;
