@@ -84,6 +84,8 @@ int main()
 	//Cleans up the window and glfw
 	Application::Cleanup();
 
+	currentScene->ShutdownImGui();
+
 	Logger::Uninitialize();
 	return 0;
 }

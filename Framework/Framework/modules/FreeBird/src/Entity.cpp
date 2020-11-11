@@ -20,6 +20,7 @@ namespace freebird
 		return entID;
 	}
 
+
 	Entity Entity::Create()
 	{
 		entt::entity entity = ECS.create();

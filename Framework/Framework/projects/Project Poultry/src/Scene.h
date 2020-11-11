@@ -9,6 +9,10 @@
 #include "OrGate.h"
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 
 using namespace freebird;
 
@@ -28,6 +32,10 @@ public:
 
 	virtual void Unload();
 
+	void InitImGui();
+	void ShutdownImGui();
+	void RenderImGui();
+
 	entt::registry* GetScene();
 
 protected:
@@ -37,4 +45,8 @@ protected:
 
 	Shader::sptr shader;
 	GLFWwindow* window;
+
+	std::vector<std::function<void()>> imGuiCallbacks;
+
+	std::vector<Entity> ents;
 };
