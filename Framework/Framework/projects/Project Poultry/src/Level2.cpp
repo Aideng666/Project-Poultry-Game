@@ -1,10 +1,9 @@
 #include "Level2.h"
 #include <iostream>
 #include <GLFW\glfw3.h>
-#include "Wire.h"
-#include "Lever.h"
 
 #include "Application.h"
+#include <imgui.h>
 
 using namespace freebird;
 
@@ -35,21 +34,47 @@ void Level2::InitScene()
 	//Set Up Camera
 	auto& camera = camEnt.Add<Camera>();
 
-	camera.SetPosition(glm::vec3(0, 8, 10)); // Set initial position
+	camera.SetPosition(glm::vec3(0, 8, 15)); // Set initial position
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
 
 	//Transforms
-	auto& gateTrans = andEnt.Add<Transform>();
-	auto& leverTrans = leverEnt.Add<Transform>();
-	auto& wireTrans = wireEnt.Add<Transform>();
-	auto& leverTrans2 = leverEnt2.Add<Transform>();
-	auto& wireTrans2 = wireEnt2.Add<Transform>();
-	auto& playerTrans = mainPlayer.Add<Transform>();
+	auto& groundTrans = ground.Add<Transform>();
+	groundTrans.SetScale(glm::vec3(2.0f, 1.0f, 2.0f));
 
-	playerTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	auto& leftTrans = leftWall.Add<Transform>();
+	leftTrans.SetScale(glm::vec3(1.0f, 1.0f, 2.0f));
+
+	auto& rightTrans = rightWall.Add<Transform>();
+	rightTrans.SetScale(glm::vec3(1.0f, 1.0f, 2.0f));
+
+	auto& backTrans = backWall.Add<Transform>();
+	backTrans.SetScale(glm::vec3(2.0f, 1.0f, 1.0f));
+
+	auto& playerTrans = mainPlayer.Add<Transform>();
+	playerTrans.SetPosition(glm::vec3(0.0f, 1.0f, 5.0f));
 	playerTrans.SetRotationY(0.0f);
+
+	auto& gateTrans = andEnt.Add<Transform>();
+	gateTrans.SetPosition(glm::vec3(0.0f, 1.0f, 2.0f));
+	gateTrans.SetRotationY(90.0f);
+
+	auto& wireTrans = wireEnt.Add<Transform>();
+	wireTrans.SetPosition(glm::vec3(-2.0f, 1.0f, 5.0f));
+	wireTrans.SetRotationY(90.0f);
+
+	auto& leverTrans = leverEnt.Add<Transform>();
+	leverTrans.SetPosition(glm::vec3(-4.0f, 1.0f, 8.0f));
+	leverTrans.SetRotationY(90.0f);
+
+	auto& wireTrans2 = wireEnt2.Add<Transform>();
+	wireTrans2.SetPosition(glm::vec3(2.0f, 1.0f, 5.0f));
+	wireTrans2.SetRotationY(90.0f);
+
+	auto& leverTrans2 = leverEnt2.Add<Transform>();
+	leverTrans2.SetPosition(glm::vec3(4.0f, 1.0f, 8.0f));
+	leverTrans2.SetRotationY(90.0f);
 
 	//Gates
 	auto& andGate = andEnt.Add<AndGate>(wireEnt, wireEnt2);
@@ -101,42 +126,336 @@ void Level2::InitScene()
 	shader->SetUniform("u_AmbientCol", ambientCol);
 	shader->SetUniform("u_AmbientStrength", ambientPow);
 	shader->SetUniform("u_Shininess", shininess);
+
+#pragma region Entity ImGui Editor
+	glm::vec3 position = playerTrans.GetPosition();
+	glm::vec3 rotation = playerTrans.GetRotation();
+	glm::vec3 positionGround = groundTrans.GetPosition();
+	glm::vec3 rotationGround = groundTrans.GetRotation();
+	glm::vec3 positionLeft = leftTrans.GetPosition();
+	glm::vec3 rotationLeft = leftTrans.GetRotation();
+	glm::vec3 positionRight = rightTrans.GetPosition();
+	glm::vec3 rotationRight = rightTrans.GetRotation();
+	glm::vec3 positionBack = backTrans.GetPosition();
+	glm::vec3 rotationBack = backTrans.GetRotation();
+	glm::vec3 positionWire = wireTrans.GetPosition();
+	glm::vec3 rotationWire = wireTrans.GetRotation();
+	glm::vec3 positionWire2 = wireTrans2.GetPosition();
+	glm::vec3 rotationWire2 = wireTrans2.GetRotation();
+	glm::vec3 positionLever = leverTrans.GetPosition();
+	glm::vec3 rotationLever = leverTrans.GetRotation();
+	glm::vec3 positionLever2 = leverTrans2.GetPosition();
+	glm::vec3 rotationLever2 = leverTrans2.GetRotation();
+	glm::vec3 positionGate = gateTrans.GetPosition();
+	glm::vec3 rotationGate = gateTrans.GetRotation();
+
+	imGuiCallbacks.push_back([&]() {
+		if (ImGui::CollapsingHeader("Entities"))
+		{
+			if (ImGui::CollapsingHeader("Chicken"))
+			{
+				if (ImGui::SliderFloat("PosX", &position.x, -10.0f, 10.0f))
+				{
+					mainPlayer.Get<Transform>().SetPositionX(position.x);
+				}
+				if (ImGui::SliderFloat("PosY", &position.y, -10.0f, 10.0f))
+				{
+					mainPlayer.Get<Transform>().SetPositionY(position.y);
+				}
+				if (ImGui::SliderFloat("PosZ", &position.z, -10.0f, 10.0f))
+				{
+					mainPlayer.Get<Transform>().SetPositionZ(position.z);
+				}
+				if (ImGui::SliderFloat("RotX", &rotation.x, -360.0f, 360.0f))
+				{
+					mainPlayer.Get<Transform>().SetRotationX(rotation.x);
+				}
+				if (ImGui::SliderFloat("RotY", &rotation.y, -360.0f, 360.0f))
+				{
+					mainPlayer.Get<Transform>().SetRotationY(rotation.y);
+				}
+				if (ImGui::SliderFloat("RotZ", &rotation.z, -360.0f, 360.0f))
+				{
+					mainPlayer.Get<Transform>().SetRotationZ(rotation.z);
+				}
+			}
+			if (ImGui::CollapsingHeader("Ground"))
+			{
+				if (ImGui::SliderFloat("PosX", &positionGround.x, -10.0f, 10.0f))
+				{
+					ground.Get<Transform>().SetPositionX(positionGround.x);
+				}
+				if (ImGui::SliderFloat("PosY", &positionGround.y, -10.0f, 10.0f))
+				{
+					ground.Get<Transform>().SetPositionY(positionGround.y);
+				}
+				if (ImGui::SliderFloat("PosZ", &positionGround.z, -10.0f, 10.0f))
+				{
+					ground.Get<Transform>().SetPositionZ(positionGround.z);
+				}
+				if (ImGui::SliderFloat("RotX", &rotationGround.x, -360.0f, 360.0f))
+				{
+					ground.Get<Transform>().SetRotationX(rotationGround.x);
+				}
+				if (ImGui::SliderFloat("RotY", &rotationGround.y, -360.0f, 360.0f))
+				{
+					ground.Get<Transform>().SetRotationY(rotationGround.y);
+				}
+				if (ImGui::SliderFloat("RotZ", &rotationGround.z, -360.0f, 360.0f))
+				{
+					ground.Get<Transform>().SetRotationZ(rotationGround.z);
+				}
+			}
+			if (ImGui::CollapsingHeader("Left Wall"))
+			{
+				if (ImGui::SliderFloat("PosX", &positionLeft.x, -10.0f, 10.0f))
+				{
+					leftWall.Get<Transform>().SetPositionX(positionLeft.x);
+				}
+				if (ImGui::SliderFloat("PosY", &positionLeft.y, -10.0f, 10.0f))
+				{
+					leftWall.Get<Transform>().SetPositionY(positionLeft.y);
+				}
+				if (ImGui::SliderFloat("PosZ", &positionLeft.z, -10.0f, 10.0f))
+				{
+					leftWall.Get<Transform>().SetPositionZ(positionLeft.z);
+				}
+				if (ImGui::SliderFloat("RotX", &rotationLeft.x, -360.0f, 360.0f))
+				{
+					leftWall.Get<Transform>().SetRotationX(rotationLeft.x);
+				}
+				if (ImGui::SliderFloat("RotY", &rotationLeft.y, -360.0f, 360.0f))
+				{
+					leftWall.Get<Transform>().SetRotationY(rotationLeft.y);
+				}
+				if (ImGui::SliderFloat("RotZ", &rotationLeft.z, -360.0f, 360.0f))
+				{
+					leftWall.Get<Transform>().SetRotationZ(rotationLeft.z);
+				}
+			}
+			if (ImGui::CollapsingHeader("Right Wall"))
+			{
+				if (ImGui::SliderFloat("PosX", &positionRight.x, -10.0f, 10.0f))
+				{
+					rightWall.Get<Transform>().SetPositionX(positionRight.x);
+				}
+				if (ImGui::SliderFloat("PosY", &positionRight.y, -10.0f, 10.0f))
+				{
+					rightWall.Get<Transform>().SetPositionY(positionRight.y);
+				}
+				if (ImGui::SliderFloat("PosZ", &positionRight.z, -10.0f, 10.0f))
+				{
+					rightWall.Get<Transform>().SetPositionZ(positionRight.z);
+				}
+				if (ImGui::SliderFloat("RotX", &rotationRight.x, -360.0f, 360.0f))
+				{
+					rightWall.Get<Transform>().SetRotationX(rotationRight.x);
+				}
+				if (ImGui::SliderFloat("RotY", &rotationRight.y, -360.0f, 360.0f))
+				{
+					rightWall.Get<Transform>().SetRotationY(rotationRight.y);
+				}
+				if (ImGui::SliderFloat("RotZ", &rotationRight.z, -360.0f, 360.0f))
+				{
+					rightWall.Get<Transform>().SetRotationZ(rotationRight.z);
+				}
+			}
+			if (ImGui::CollapsingHeader("Back Wall"))
+			{
+				if (ImGui::SliderFloat("PosX", &positionBack.x, -10.0f, 10.0f))
+				{
+					backWall.Get<Transform>().SetPositionX(positionBack.x);
+				}
+				if (ImGui::SliderFloat("PosY", &positionBack.y, -10.0f, 10.0f))
+				{
+					backWall.Get<Transform>().SetPositionY(positionBack.y);
+				}
+				if (ImGui::SliderFloat("PosZ", &positionBack.z, -10.0f, 10.0f))
+				{
+					backWall.Get<Transform>().SetPositionZ(positionBack.z);
+				}
+				if (ImGui::SliderFloat("RotX", &rotationBack.x, -360.0f, 360.0f))
+				{
+					backWall.Get<Transform>().SetRotationX(rotationBack.x);
+				}
+				if (ImGui::SliderFloat("RotY", &rotationBack.y, -360.0f, 360.0f))
+				{
+					backWall.Get<Transform>().SetRotationY(rotationBack.y);
+				}
+				if (ImGui::SliderFloat("RotZ", &rotationBack.z, -360.0f, 360.0f))
+				{
+					backWall.Get<Transform>().SetRotationZ(rotationBack.z);
+				}
+			}
+			if (ImGui::CollapsingHeader("Gate"))
+			{
+				if (ImGui::SliderFloat("PosX", &positionGate.x, -10.0f, 10.0f))
+				{
+					andEnt.Get<Transform>().SetPositionX(positionGate.x);
+				}
+				if (ImGui::SliderFloat("PosY", &positionGate.y, -10.0f, 10.0f))
+				{
+					andEnt.Get<Transform>().SetPositionY(positionGate.y);
+				}
+				if (ImGui::SliderFloat("PosZ", &positionGate.z, -10.0f, 10.0f))
+				{
+					andEnt.Get<Transform>().SetPositionZ(positionGate.z);
+				}
+				if (ImGui::SliderFloat("RotX", &rotationGate.x, -360.0f, 360.0f))
+				{
+					andEnt.Get<Transform>().SetRotationX(rotationGate.x);
+				}
+				if (ImGui::SliderFloat("RotY", &rotationGate.y, -360.0f, 360.0f))
+				{
+					andEnt.Get<Transform>().SetRotationY(rotationGate.y);
+				}
+				if (ImGui::SliderFloat("RotZ", &rotationGate.z, -360.0f, 360.0f))
+				{
+					andEnt.Get<Transform>().SetRotationZ(rotationGate.z);
+				}
+			}
+			if (ImGui::CollapsingHeader("Wire 1"))
+			{
+				if (ImGui::SliderFloat("PosX", &positionWire.x, -10.0f, 10.0f))
+				{
+					wireEnt.Get<Transform>().SetPositionX(positionWire.x);
+				}
+				if (ImGui::SliderFloat("PosY", &positionWire.y, -10.0f, 10.0f))
+				{
+					wireEnt.Get<Transform>().SetPositionY(positionWire.y);
+				}
+				if (ImGui::SliderFloat("PosZ", &positionWire.z, -10.0f, 10.0f))
+				{
+					wireEnt.Get<Transform>().SetPositionZ(positionWire.z);
+				}
+				if (ImGui::SliderFloat("RotX", &rotationWire.x, -360.0f, 360.0f))
+				{
+					wireEnt.Get<Transform>().SetRotationX(rotationWire.x);
+				}
+				if (ImGui::SliderFloat("RotY", &rotationWire.y, -360.0f, 360.0f))
+				{
+					wireEnt.Get<Transform>().SetRotationY(rotationWire.y);
+				}
+				if (ImGui::SliderFloat("RotZ", &rotationWire.z, -360.0f, 360.0f))
+				{
+					wireEnt.Get<Transform>().SetRotationZ(rotationWire.z);
+				}
+			}
+			if (ImGui::CollapsingHeader("Wire 2"))
+			{
+				if (ImGui::SliderFloat("PosX", &positionWire2.x, -10.0f, 10.0f))
+				{
+					wireEnt2.Get<Transform>().SetPositionX(positionWire2.x);
+				}
+				if (ImGui::SliderFloat("PosY", &positionWire2.y, -10.0f, 10.0f))
+				{
+					wireEnt2.Get<Transform>().SetPositionY(positionWire2.y);
+				}
+				if (ImGui::SliderFloat("PosZ", &positionWire2.z, -10.0f, 10.0f))
+				{
+					wireEnt2.Get<Transform>().SetPositionZ(positionWire2.z);
+				}
+				if (ImGui::SliderFloat("RotX", &rotationWire2.x, -360.0f, 360.0f))
+				{
+					wireEnt2.Get<Transform>().SetRotationX(rotationWire2.x);
+				}
+				if (ImGui::SliderFloat("RotY", &rotationWire2.y, -360.0f, 360.0f))
+				{
+					wireEnt2.Get<Transform>().SetRotationY(rotationWire2.y);
+				}
+				if (ImGui::SliderFloat("RotZ", &rotationWire2.z, -360.0f, 360.0f))
+				{
+					wireEnt2.Get<Transform>().SetRotationZ(rotationWire2.z);
+				}
+			}
+			if (ImGui::CollapsingHeader("Lever 1"))
+			{
+				if (ImGui::SliderFloat("PosX", &positionLever.x, -10.0f, 10.0f))
+				{
+					leverEnt.Get<Transform>().SetPositionX(positionLever.x);
+				}
+				if (ImGui::SliderFloat("PosY", &positionLever.y, -10.0f, 10.0f))
+				{
+					leverEnt.Get<Transform>().SetPositionY(positionLever.y);
+				}
+				if (ImGui::SliderFloat("PosZ", &positionLever.z, -10.0f, 10.0f))
+				{
+					leverEnt.Get<Transform>().SetPositionZ(positionLever.z);
+				}
+				if (ImGui::SliderFloat("RotX", &rotationLever.x, -360.0f, 360.0f))
+				{
+					leverEnt.Get<Transform>().SetRotationX(rotationLever.x);
+				}
+				if (ImGui::SliderFloat("RotY", &rotationLever.y, -360.0f, 360.0f))
+				{
+					leverEnt.Get<Transform>().SetRotationY(rotationLever.y);
+				}
+				if (ImGui::SliderFloat("RotZ", &rotationLever.z, -360.0f, 360.0f))
+				{
+					leverEnt.Get<Transform>().SetRotationZ(rotationLever.z);
+				}
+			}
+			if (ImGui::CollapsingHeader("Lever 2"))
+			{
+				if (ImGui::SliderFloat("PosX", &positionLever2.x, -10.0f, 10.0f))
+				{
+					leverEnt2.Get<Transform>().SetPositionX(positionLever2.x);
+				}
+				if (ImGui::SliderFloat("PosY", &positionLever2.y, -10.0f, 10.0f))
+				{
+					leverEnt2.Get<Transform>().SetPositionY(positionLever2.y);
+				}
+				if (ImGui::SliderFloat("PosZ", &positionLever2.z, -10.0f, 10.0f))
+				{
+					leverEnt2.Get<Transform>().SetPositionZ(positionLever2.z);
+				}
+				if (ImGui::SliderFloat("RotX", &rotationLever2.x, -360.0f, 360.0f))
+				{
+					leverEnt2.Get<Transform>().SetRotationX(rotationLever2.x);
+				}
+				if (ImGui::SliderFloat("RotY", &rotationLever2.y, -360.0f, 360.0f))
+				{
+					leverEnt2.Get<Transform>().SetRotationY(rotationLever2.y);
+				}
+				if (ImGui::SliderFloat("RotZ", &rotationLever2.z, -360.0f, 360.0f))
+				{
+					leverEnt2.Get<Transform>().SetRotationZ(rotationLever2.z);
+				}
+			}
+		}
+		});
+#pragma endregion
+
+	InitImGui();
 }
 
 void Level2::Update(float dt)
 {
-	//glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
-	auto& groundTrans = ground.Add<Transform>();
-	auto& leftTrans = leftWall.Add<Transform>();
-	auto& rightTrans = rightWall.Add<Transform>();
-	auto& backTrans = backWall.Add<Transform>();
+	auto& groundTrans = ground.Get<Transform>();
+	auto& leftTrans = leftWall.Get<Transform>();
+	auto& rightTrans = rightWall.Get<Transform>();
+	auto& backTrans = backWall.Get<Transform>();
 	auto& gateTrans = andEnt.Get<Transform>();
 	auto& leverTrans = leverEnt.Get<Transform>();
 	auto& wireTrans = wireEnt.Get<Transform>();
 	auto& leverTrans2 = leverEnt2.Get<Transform>();
 	auto& wireTrans2 = wireEnt2.Get<Transform>();
 
+
 	backTrans.SetPositionZ(-10.4f);
 	backTrans.SetPositionY(10.4f);
 	backTrans.SetRotationX(90.0f);
 
 	leftTrans.SetRotationZ(90.0f);
-	leftTrans.SetPositionX(-10.4f);
+	leftTrans.SetPositionX(-20.8f);
 	leftTrans.SetPositionY(10.4f);
 
 	rightTrans.SetRotationZ(90.0f);
-	rightTrans.SetPositionX(10.4f);
+	rightTrans.SetPositionX(20.8f);
 	rightTrans.SetPositionY(10.4f);
-
-	gateTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
-	wireTrans.SetPosition(glm::vec3(1.0f, 1.0f, 0.0f));
-	leverTrans.SetPosition(glm::vec3(2.0f, 1.0f, 0.0f));
-	wireTrans2.SetPosition(glm::vec3(-1.0f, 1.0f, 0.0f));
-	leverTrans2.SetPosition(glm::vec3(-2.0f, 1.0f, 0.0f));
 
 	//Camera
 	auto& camera = camEnt.Get<Camera>();
@@ -172,33 +491,21 @@ void Level2::Update(float dt)
 	else
 		camClose = false;
 
-	if (camera.GetPosition().z - playerTrans.GetPositionZ() > 15.0f)
+	if (camera.GetPosition().z - playerTrans.GetPositionZ() > 10.0f)
 		camFar = true;
 	else
 		camFar = false;
 
-	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
-	{
-		leverEnt.Get<Lever>().SetPowered(true);
-		std::cout << "Lever 1 is powered" << std::endl;
-	}
-	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
-	{
-		leverEnt.Get<Lever>().SetPowered(false);
-		std::cout << "Lever 1 is off" << std::endl;
-	}
-	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
-	{
-		leverEnt2.Get<Lever>().SetPowered(true);
-		std::cout << "Lever 2 is powered" << std::endl;
-	}
-	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
-	{
-		leverEnt2.Get<Lever>().SetPowered(false);
-		std::cout << "Lever 2 is off" << std::endl;
-	}
 
-	std::cout << andEnt.Get<AndGate>().GetOutput() << std::endl;
+	if (playerTrans.GetPositionX() - leverTrans.GetPositionX() < 1.5f && playerTrans.GetPositionX() - leverTrans.GetPositionX() > -1.5f
+		&& playerTrans.GetPositionZ() - leverTrans.GetPositionZ() < 1.0f && playerTrans.GetPositionZ() - leverTrans.GetPositionZ() > -1.0f)
+			lever1Watch.Poll(window);
+
+	if (playerTrans.GetPositionX() - leverTrans2.GetPositionX() < 1.5f && playerTrans.GetPositionX() - leverTrans2.GetPositionX() > -1.5f
+		&& playerTrans.GetPositionZ() - leverTrans2.GetPositionZ() < 1.0f && playerTrans.GetPositionZ() - leverTrans2.GetPositionZ() > -1.0f)
+			lever2Watch.Poll(window);
+
+	gateWatch.Poll(window);
 
 #pragma region PlayerMovement
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
@@ -338,6 +645,8 @@ void Level2::Update(float dt)
 		wireEnt.Get<Wire>().Update();
 		wireEnt2.Get<Wire>().Update();
 		andEnt.Get<AndGate>().Update();
+
+		RenderImGui();
 }
 
 void Level2::Unload()
