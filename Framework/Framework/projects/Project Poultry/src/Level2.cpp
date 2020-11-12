@@ -497,11 +497,11 @@ void Level2::Update(float dt)
 		camFar = false;
 
 
-	if (playerTrans.GetPositionX() - leverTrans.GetPositionX() < 1.5f && playerTrans.GetPositionX() - leverTrans.GetPositionX() > -1.5f
+	if (playerTrans.GetPositionX() - leverTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - leverTrans.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - leverTrans.GetPositionZ() < 1.0f && playerTrans.GetPositionZ() - leverTrans.GetPositionZ() > -1.0f)
 			lever1Watch.Poll(window);
 
-	if (playerTrans.GetPositionX() - leverTrans2.GetPositionX() < 1.5f && playerTrans.GetPositionX() - leverTrans2.GetPositionX() > -1.5f
+	if (playerTrans.GetPositionX() - leverTrans2.GetPositionX() < 2.0f && playerTrans.GetPositionX() - leverTrans2.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - leverTrans2.GetPositionZ() < 1.0f && playerTrans.GetPositionZ() - leverTrans2.GetPositionZ() > -1.0f)
 			lever2Watch.Poll(window);
 
