@@ -35,17 +35,17 @@ private:
 
 	bool imguiStarted = false;
 
-	KeyPressWatcher lever1Watch = KeyPressWatcher(GLFW_KEY_K, [&]() {
+	KeyPressWatcher lever1Watch = KeyPressWatcher(GLFW_KEY_Q, [&]() {
 		leverEnt.Get<Lever>().SetPowered(!leverEnt.Get<Lever>().GetPowered());
 		std::cout << "Lever 1 Power: " << leverEnt.Get<Lever>().GetPowered() << std::endl;
 		});
 
-	KeyPressWatcher lever2Watch = KeyPressWatcher(GLFW_KEY_L, [&]() {
+	KeyPressWatcher lever2Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		leverEnt2.Get<Lever>().SetPowered(!leverEnt2.Get<Lever>().GetPowered());
 		std::cout << "Lever 2 Power: " << leverEnt2.Get<Lever>().GetPowered() << std::endl;
 		});
 
-	KeyPressWatcher gateWatch = KeyPressWatcher(GLFW_KEY_J, [&]() {
+	KeyPressWatcher gateWatch = KeyPressWatcher(GLFW_KEY_R, [&]() {
 		std::cout << "Gate Power: " << andEnt.Get<AndGate>().GetOutput() << std::endl;
 		});
 };

@@ -4,6 +4,7 @@
 
 #include "Application.h"
 #include <imgui.h>
+#include <AABB.h>
 
 using namespace freebird;
 
@@ -86,6 +87,11 @@ void Level2::InitScene()
 	//Wires
 	auto& wire = wireEnt.Add<Wire>(leverEnt, andEnt);
 	auto& wire2 = wireEnt2.Add<Wire>(leverEnt2, andEnt);
+
+	//AABB
+	auto& leftCol = leftWall.Add<AABB>(leftWall, mainPlayer);
+	auto& rightCol = rightWall.Add<AABB>(rightWall, mainPlayer);
+	auto& backCol = backWall.Add<AABB>(backWall, mainPlayer);
 
 
 	//meshes
@@ -497,11 +503,11 @@ void Level2::Update(float dt)
 		camFar = false;
 
 
-	if (playerTrans.GetPositionX() - leverTrans.GetPositionX() < 1.5f && playerTrans.GetPositionX() - leverTrans.GetPositionX() > -1.5f
+	if (playerTrans.GetPositionX() - leverTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - leverTrans.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - leverTrans.GetPositionZ() < 1.0f && playerTrans.GetPositionZ() - leverTrans.GetPositionZ() > -1.0f)
 			lever1Watch.Poll(window);
 
-	if (playerTrans.GetPositionX() - leverTrans2.GetPositionX() < 1.5f && playerTrans.GetPositionX() - leverTrans2.GetPositionX() > -1.5f
+	if (playerTrans.GetPositionX() - leverTrans2.GetPositionX() < 2.0f && playerTrans.GetPositionX() - leverTrans2.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - leverTrans2.GetPositionZ() < 1.0f && playerTrans.GetPositionZ() - leverTrans2.GetPositionZ() > -1.0f)
 			lever2Watch.Poll(window);
 
@@ -645,6 +651,9 @@ void Level2::Update(float dt)
 		wireEnt.Get<Wire>().Update();
 		wireEnt2.Get<Wire>().Update();
 		andEnt.Get<AndGate>().Update();
+		leftWall.Get<AABB>().Update();
+		rightWall.Get<AABB>().Update();
+		backWall.Get<AABB>().Update();
 
 		RenderImGui();
 }
