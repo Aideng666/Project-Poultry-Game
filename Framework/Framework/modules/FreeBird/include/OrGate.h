@@ -1,6 +1,5 @@
 #pragma once
 #include "LogicGate.h"
-#include "Header.h"
 
 namespace freebird
 {
