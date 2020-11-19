@@ -7,7 +7,7 @@ namespace freebird
 	{
 	public:
 
-		Wire(Entity last, Entity next);
+		Wire(Entity input);
 
 		void Update();
 

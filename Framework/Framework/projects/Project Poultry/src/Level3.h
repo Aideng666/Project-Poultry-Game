@@ -9,11 +9,11 @@
 
 using namespace freebird;
 
-class Level2 : public Scene
+class Level3 : public Scene
 {
 public:
 
-	Level2(std::string sceneName, GLFWwindow* wind);
+	Level3(std::string sceneName, GLFWwindow* wind);
 
 	void InitScene();
 
@@ -26,8 +26,9 @@ private:
 	Entity mainPlayer;
 	Entity camEnt;
 	Entity ground, leftWall, rightWall, backWall;
-	Entity andEnt, andEnt2;
-	Entity wires[6];
+	Entity notEnt;
+	Entity andEnts[3];
+	Entity wires[5];
 	Entity levers[3];
 	Entity doorEnt;
 

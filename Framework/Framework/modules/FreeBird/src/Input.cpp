@@ -1,5 +1,7 @@
 #include "Input.h"
 #include <GLFW/glfw3.h>
+#include <Lever.h>
+#include <iostream>
 
 namespace freebird
 {
@@ -8,8 +10,8 @@ namespace freebird
 		_isPressed = false;
 		_keyCode = keyCode;
 		_onPressed = onPressed;
+		
 	}
-
 	bool KeyPressWatcher::Poll(GLFWwindow* window) const
 	{
 		if (glfwGetKey(window, _keyCode) == GLFW_PRESS) {

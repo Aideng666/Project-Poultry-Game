@@ -11,6 +11,7 @@
 
 #include "Level1.h"
 #include "Level2.h"
+#include "Level3.h"
 #include "Application.h"
 
 using namespace freebird; //referencing the module's includes/src's
@@ -26,6 +27,8 @@ entt::registry* ECS = nullptr;
 Scene* currentScene = nullptr;
 std::vector<Scene*> scenes;
 
+int level = 0;
+
 void SetActiveScene(int sceneNum)
 {
 	if (currentScene != nullptr)
@@ -36,10 +39,12 @@ void SetActiveScene(int sceneNum)
 	scenes[sceneNum]->InitScene();
 	ECS = scenes[sceneNum]->GetScene();
 	currentScene = scenes[sceneNum];
+	level = sceneNum + 1;
 }
 
 int main()
 {
+
 	if (!(window = Application::Init("Project Poultry", 800, 800)))
 	{
 		return 1;
@@ -49,8 +54,9 @@ int main()
 
 	scenes.push_back(new Level1("Level 1", window));
 	scenes.push_back(new Level2("Level 2", window));
+	scenes.push_back(new Level3("Level 3", window));
 
-	SetActiveScene(1);
+	SetActiveScene(0);
 	
 	//Calculates our timer
 	Application::Tick();
@@ -67,6 +73,10 @@ int main()
 		//Grabs the time
 		float dt = Application::GetDT();
 
+		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+		{
+			SetActiveScene(2);
+		}
 		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 		{
 			SetActiveScene(1);
@@ -74,6 +84,12 @@ int main()
 		if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
 		{
 			SetActiveScene(0);
+		}
+
+		if (currentScene->GetComplete())
+		{
+			currentScene->SetComplete(false);
+			SetActiveScene(level);
 		}
 
 		currentScene->Update(dt);

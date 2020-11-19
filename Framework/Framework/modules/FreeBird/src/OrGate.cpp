@@ -2,16 +2,19 @@
 
 namespace freebird
 {
-    OrGate::OrGate(Entity ent1, Entity ent2)
-        : LogicGate(ent1, ent2)
+    OrGate::OrGate(Entity ent1, Entity ent2, Entity out)
+        : LogicGate(ent1, ent2, out)
     {
     }
 
     void OrGate::Update()
     {
-        if (input1 || input2)
+        if (inputEnt1.Has<Wire>() && inputEnt1.Get<Wire>().GetIsPowered() && inputEnt2.Has<Wire>() && inputEnt2.Get<Wire>().GetIsPowered())
             output = true;
         else
             output = false;
+
+        if (outputEnt.Has<Door>() && output)
+            outputEnt.Get<Door>().SetOpen(true);
     }
 }

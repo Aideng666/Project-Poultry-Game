@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Wire.h"
+#include "Door.h"
 
 namespace freebird
 {
@@ -8,7 +9,8 @@ namespace freebird
 	{
 	public:
 
-		LogicGate(Entity ent1, Entity ent2);
+		LogicGate(Entity ent1, Entity ent2, Entity out);
+		LogicGate(Entity in, Entity out);
 
 		virtual void Update() {}
 
@@ -32,5 +34,6 @@ namespace freebird
 		bool input1, input2, output, isFinal;
 
 		Entity inputEnt1, inputEnt2;
+		Entity outputEnt;
 	};
 }

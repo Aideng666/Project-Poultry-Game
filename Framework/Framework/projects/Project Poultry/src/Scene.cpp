@@ -110,6 +110,16 @@ void Scene::RenderImGui() {
 	}
 }
 
+bool Scene::GetComplete()
+{
+	return levelComplete;
+}
+
+void Scene::SetComplete(bool complete)
+{
+	levelComplete = complete;
+}
+
 entt::registry* Scene::GetScene()
 {
 	return scene;

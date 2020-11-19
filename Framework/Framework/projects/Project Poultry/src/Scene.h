@@ -7,6 +7,7 @@
 #include "Shader.h"
 #include "AndGate.h"
 #include "OrGate.h"
+#include "NotGate.h"
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
 #include "imgui.h"
@@ -36,6 +37,9 @@ public:
 	void ShutdownImGui();
 	void RenderImGui();
 
+	bool GetComplete();
+	void SetComplete(bool complete);
+
 	entt::registry* GetScene();
 
 protected:
@@ -49,4 +53,6 @@ protected:
 	std::vector<std::function<void()>> imGuiCallbacks;
 
 	std::vector<Entity> ents;
+
+	bool levelComplete = false;
 };
