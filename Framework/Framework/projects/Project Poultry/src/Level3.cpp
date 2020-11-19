@@ -1,14 +1,14 @@
-#include "Level2.h"
+#include "Level3.h"
 #include <iostream>
 #include <GLFW\glfw3.h>
 
 #include "Application.h"
-//#include <imgui.h>
+#include <imgui.h>
 #include <AABB.h>
 
 using namespace freebird;
 
-Level2::Level2(std::string sceneName, GLFWwindow* wind)
+Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	: Scene(sceneName, wind)
 {
 	mainPlayer = Entity::Create();
@@ -17,9 +17,8 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	leftWall = Entity::Create();
 	rightWall = Entity::Create();
 	backWall = Entity::Create();
-	andEnt = Entity::Create();
-	andEnt2 = Entity::Create();
-	for (int i = 0; i < 6; ++i)
+	notEnt = Entity::Create();
+	for (int i = 0; i < 5; ++i)
 	{
 		wires[i] = Entity::Create();
 	}
@@ -27,10 +26,14 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	{
 		levers[i] = Entity::Create();
 	}
+	for (int i = 0; i < 3; ++i)
+	{
+		andEnts[i] = Entity::Create();
+	}
 	doorEnt = Entity::Create();
 }
 
-void Level2::InitScene()
+void Level3::InitScene()
 {
 	Application::SetClearColor(glm::vec4(0.75f, 0.75f, 0.75f, 1.0f));
 
@@ -63,37 +66,41 @@ void Level2::InitScene()
 	playerTrans.SetPosition(glm::vec3(0.0f, 1.0f, 5.0f));
 	playerTrans.SetRotationY(0.0f);
 
-	auto& gateTrans = andEnt.Add<Transform>();
-	gateTrans.SetPosition(glm::vec3(-3.0f, 1.0f, 2.0f));
-	gateTrans.SetRotationY(90.0f);
+	auto& andTrans = andEnts[0].Add<Transform>();
+	andTrans.SetPosition(glm::vec3(-6.0f, 1.0f, 2.0f));
+	andTrans.SetRotationY(90.0f);
 
-	auto& gateTrans2 = andEnt2.Add<Transform>();
-	gateTrans2.SetPosition(glm::vec3(0.0f, 1.0f, -4.0f));
-	gateTrans2.SetRotationY(90.0f);
+	auto& andTrans2 = andEnts[1].Add<Transform>();
+	andTrans2.SetPosition(glm::vec3(6.0f, 1.0f, 2.0f));
+	andTrans2.SetRotationY(90.0f);
+
+	auto& andTrans3 = andEnts[2].Add<Transform>();
+	andTrans3.SetPosition(glm::vec3(0.0f, 1.0f, -5.0f));
+	andTrans3.SetRotationY(90.0f);
+
+	auto& notTrans = notEnt.Add<Transform>();
+	notTrans.SetPosition(glm::vec3(0.0f, 1.0f, 5.0f));
+	notTrans.SetRotationY(90.0f);
 
 	auto& wireTrans = wires[0].Add<Transform>();
 	wireTrans.SetPosition(glm::vec3(-6.0f, 1.0f, 5.0f));
 	wireTrans.SetRotationY(90.0f);
 
 	auto& wireTrans2 = wires[1].Add<Transform>();
-	wireTrans2.SetPosition(glm::vec3(0.0f, 1.0f, 5.0f));
+	wireTrans2.SetPosition(glm::vec3(6.0f, 1.0f, 5.0f));
 	wireTrans2.SetRotationY(90.0f);
 
 	auto& wireTrans3 = wires[2].Add<Transform>();
-	wireTrans3.SetPosition(glm::vec3(6.0f, 1.0f, 5.0f));
+	wireTrans3.SetPosition(glm::vec3(0.0f, 1.0f, 2.0f));
 	wireTrans3.SetRotationY(90.0f);
 
 	auto& wireTrans4 = wires[3].Add<Transform>();
-	wireTrans4.SetPosition(glm::vec3(6.0f, 1.0f, 2.0f));
+	wireTrans4.SetPosition(glm::vec3(-3.0f, 1.0f, -1.0f));
 	wireTrans4.SetRotationY(90.0f);
 
 	auto& wireTrans5 = wires[4].Add<Transform>();
-	wireTrans5.SetPosition(glm::vec3(-3.0f, 1.0f, -1.0f));
+	wireTrans5.SetPosition(glm::vec3(3.0f, 1.0f, -1.0f));
 	wireTrans5.SetRotationY(90.0f);
-
-	auto& wireTrans6 = wires[5].Add<Transform>();
-	wireTrans6.SetPosition(glm::vec3(4.0f, 1.0f, -1.0f));
-	wireTrans6.SetRotationY(90.0f);
 
 	auto& leverTrans = levers[0].Add<Transform>();
 	leverTrans.SetPosition(glm::vec3(-6.0f, 1.0f, 8.0f));
@@ -112,25 +119,25 @@ void Level2::InitScene()
 	doorTrans.SetRotationY(90.0f);
 
 	//Gates
-	auto& andGate = andEnt.Add<AndGate>(wires[0], wires[1], wires[4]);
-	auto& andGate2 = andEnt2.Add<AndGate>(wires[4], wires[5], doorEnt);
-	
+	auto& andGate = andEnts[0].Add<AndGate>(wires[0], wires[2], wires[3]);
+	auto& andGate2 = andEnts[1].Add<AndGate>(wires[1], wires[2], wires[4]);
+	auto& andGate3 = andEnts[2].Add<AndGate>(wires[3], wires[4], doorEnt);
+	auto& notGate = notEnt.Add<NotGate>(levers[1], wires[2]);
+
 	//Levers
 	auto& lever = levers[0].Add<Lever>(wires[0]);
 	lever.SetPowered(false);
-	auto& lever2 = levers[1].Add<Lever>(wires[1]);
+	auto& lever2 = levers[1].Add<Lever>(notEnt);
 	lever2.SetPowered(false);
-	auto& lever3 = levers[2].Add<Lever>(wires[2]);
+	auto& lever3 = levers[2].Add<Lever>(wires[1]);
 	lever3.SetPowered(false);
-
 
 	//Wires
 	auto& wire = wires[0].Add<Wire>(levers[0]);
-	auto& wire2 = wires[1].Add<Wire>(levers[1]);
-	auto& wire3 = wires[2].Add<Wire>(levers[2]);
-	auto& wire4 = wires[3].Add<Wire>(wires[2]);
-	auto& wire5 = wires[4].Add<Wire>(andEnt);
-	auto& wire6 = wires[5].Add<Wire>(wires[3]);
+	auto& wire2 = wires[1].Add<Wire>(levers[2]);
+	auto& wire3 = wires[2].Add<Wire>(notEnt);
+	auto& wire4 = wires[3].Add<Wire>(andEnts[0]);
+	auto& wire5 = wires[4].Add<Wire>(andEnts[1]);
 
 	//AABB
 	auto& leftCol = leftWall.Add<AABB>(leftWall, mainPlayer);
@@ -148,6 +155,7 @@ void Level2::InitScene()
 	Mesh monkey("Models/Monkey.obj", glm::vec3(1.0f, 0.0f, 0.0f));
 	Mesh test("Models/TestPlane.obj");
 	Mesh gate("Models/invalid.obj", glm::vec3(1.0f, 0.0f, 0.0f));
+	Mesh not("Models/invalid.obj", glm::vec3(1.0f, 1.0f, 0.0f));
 	Mesh lev("Models/invalid.obj", glm::vec3(0.0f, 1.0f, 0.0f));
 	Mesh wir("Models/invalid.obj", glm::vec3(0.0f, 0.0f, 1.0f));
 	Mesh doorM("Models/invalid.obj", glm::vec3(1.0f, 0.0f, 1.0f));
@@ -157,17 +165,18 @@ void Level2::InitScene()
 	auto& leftMesh = leftWall.Add<Mesh>(test);
 	auto& rightMesh = rightWall.Add<Mesh>(test);
 	auto& backMesh = backWall.Add<Mesh>(test);
-	auto& gateMesh = andEnt.Add<Mesh>(gate);
-	auto& gateMesh2 = andEnt2.Add<Mesh>(gate);
-	auto& leverMesh = levers[0].Add<Mesh>(lev);
-	auto& leverMesh2 = levers[1].Add<Mesh>(lev);
-	auto& leverMesh3 = levers[2].Add<Mesh>(lev);
+	auto& gateMesh = andEnts[0].Add<Mesh>(gate);
+	auto& gateMesh2 = andEnts[1].Add<Mesh>(gate);
+	auto& gateMesh3 = andEnts[2].Add<Mesh>(gate);
+	auto& notMesh = notEnt.Add<Mesh>(not);
 	auto& wireMesh = wires[0].Add<Mesh>(wir);
 	auto& wireMesh2 = wires[1].Add<Mesh>(wir);
 	auto& wireMesh3 = wires[2].Add<Mesh>(wir);
 	auto& wireMesh4 = wires[3].Add<Mesh>(wir);
 	auto& wireMesh5 = wires[4].Add<Mesh>(wir);
-	auto& wireMesh6 = wires[5].Add<Mesh>(wir);
+	auto& leverMesh = levers[0].Add<Mesh>(lev);
+	auto& leverMesh2 = levers[1].Add<Mesh>(lev);
+	auto& leverMesh3 = levers[2].Add<Mesh>(lev);
 	auto& doorMesh = doorEnt.Add<Mesh>(doorM);
 
 	shader = Shader::Create();
@@ -191,8 +200,8 @@ void Level2::InitScene()
 	shader->SetUniform("u_AmbientStrength", ambientPow);
 	shader->SetUniform("u_Shininess", shininess);
 
-	//Imgui Commented out
-/*
+	//Commented ImGui
+	/*
 #pragma region Entity ImGui Editor
 	glm::vec3 position = playerTrans.GetPosition();
 	glm::vec3 rotation = playerTrans.GetRotation();
@@ -212,8 +221,8 @@ void Level2::InitScene()
 	glm::vec3 rotationLever = leverTrans.GetRotation();
 	glm::vec3 positionLever2 = leverTrans2.GetPosition();
 	glm::vec3 rotationLever2 = leverTrans2.GetRotation();
-	glm::vec3 positionGate = gateTrans.GetPosition();
-	glm::vec3 rotationGate = gateTrans.GetRotation();
+	glm::vec3 positionGate = andTrans.GetPosition();
+	glm::vec3 rotationGate = andTrans.GetRotation();
 
 	imGuiCallbacks.push_back([&]() {
 		if (ImGui::CollapsingHeader("Entities"))
@@ -493,14 +502,15 @@ void Level2::InitScene()
 #pragma endregion
 		*/
 
-		/*if (!imguiStarted)
-		{
-			InitImGui();
-			imguiStarted = true;
-		}*/
+
+	/*if (!imguiStarted)
+	{
+		InitImGui();
+		imguiStarted = true;
+	}*/
 }
 
-void Level2::Update(float dt)
+void Level3::Update(float dt)
 {
 
 	//Transforms
@@ -509,8 +519,10 @@ void Level2::Update(float dt)
 	auto& leftTrans = leftWall.Get<Transform>();
 	auto& rightTrans = rightWall.Get<Transform>();
 	auto& backTrans = backWall.Get<Transform>();
-	auto& gateTrans = andEnt.Get<Transform>();
-	auto& gateTrans2 = andEnt2.Get<Transform>();
+	auto& andTrans = andEnts[0].Get<Transform>();
+	auto& andTrans2 = andEnts[1].Get<Transform>();
+	auto& andTrans3 = andEnts[2].Get<Transform>();
+	auto& notTrans = notEnt.Get<Transform>();
 	auto& leverTrans = levers[0].Get<Transform>();
 	auto& leverTrans2 = levers[1].Get<Transform>();
 	auto& leverTrans3 = levers[2].Get<Transform>();
@@ -519,7 +531,6 @@ void Level2::Update(float dt)
 	auto& wireTrans3 = wires[2].Get<Transform>();
 	auto& wireTrans4 = wires[3].Get<Transform>();
 	auto& wireTrans5 = wires[4].Get<Transform>();
-	auto& wireTrans6 = wires[5].Get<Transform>();
 	auto& doorTrans = doorEnt.Get<Transform>();
 
 
@@ -544,8 +555,10 @@ void Level2::Update(float dt)
 	auto& leftMesh = leftWall.Get<Mesh>();
 	auto& rightMesh = rightWall.Get<Mesh>();
 	auto& backMesh = backWall.Get<Mesh>();
-	auto& gateMesh = andEnt.Get<Mesh>();
-	auto& gateMesh2 = andEnt2.Get<Mesh>();
+	auto& andMesh = andEnts[0].Get<Mesh>();
+	auto& andMesh2 = andEnts[1].Get<Mesh>();
+	auto& andMesh3 = andEnts[2].Get<Mesh>();
+	auto& notMesh = notEnt.Get<Mesh>();
 	auto& leverMesh = levers[0].Get<Mesh>();
 	auto& leverMesh2 = levers[1].Get<Mesh>();
 	auto& leverMesh3 = levers[2].Get<Mesh>();
@@ -554,7 +567,6 @@ void Level2::Update(float dt)
 	auto& wireMesh3 = wires[2].Get<Mesh>();
 	auto& wireMesh4 = wires[3].Get<Mesh>();
 	auto& wireMesh5 = wires[4].Get<Mesh>();
-	auto& wireMesh6 = wires[5].Get<Mesh>();
 	auto& doorMesh = doorEnt.Get<Mesh>();
 
 	camera.LookAt(glm::vec3(playerTrans.GetPosition())); // Look at center of the screen
@@ -565,14 +577,15 @@ void Level2::Update(float dt)
 	glm::mat4 transformLeft = leftTrans.GetModelMatrix();
 	glm::mat4 transformRight = rightTrans.GetModelMatrix();
 	glm::mat4 transformBack = backTrans.GetModelMatrix();
-	glm::mat4 transformGate = gateTrans.GetModelMatrix();
-	glm::mat4 transformGate2 = gateTrans2.GetModelMatrix();
+	glm::mat4 transformGate = andTrans.GetModelMatrix();
+	glm::mat4 transformGate2 = andTrans2.GetModelMatrix();
+	glm::mat4 transformGate3 = andTrans3.GetModelMatrix();
+	glm::mat4 transformNot = notTrans.GetModelMatrix();
 	glm::mat4 transformWire = wireTrans.GetModelMatrix();
 	glm::mat4 transformWire2 = wireTrans2.GetModelMatrix();
 	glm::mat4 transformWire3 = wireTrans3.GetModelMatrix();
 	glm::mat4 transformWire4 = wireTrans4.GetModelMatrix();
 	glm::mat4 transformWire5 = wireTrans5.GetModelMatrix();
-	glm::mat4 transformWire6 = wireTrans6.GetModelMatrix();
 	glm::mat4 transformLever = leverTrans.GetModelMatrix();
 	glm::mat4 transformLever2 = leverTrans2.GetModelMatrix();
 	glm::mat4 transformLever3 = leverTrans3.GetModelMatrix();
@@ -602,219 +615,228 @@ void Level2::Update(float dt)
 				lever2Watch.Poll(window);
 			if (i == 2)
 				lever3Watch.Poll(window);
-
-			std::cout << andEnt2.Get<AndGate>().GetOutput() << std::endl;
 		}
 	}
 
 #pragma region PlayerMovement
-		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		{
-			playerTrans.SetPositionX(playerTrans.GetPositionX() - 5 * dt);
-			playerTrans.SetRotationY(270.0f);
-			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
-		}
-		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		{
-			playerTrans.SetPositionX(playerTrans.GetPositionX() + 5 * dt);
-			playerTrans.SetRotationY(90.0f);
-			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
-		}
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		{
-			playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 5 * dt);
-			playerTrans.SetRotationY(180.0f);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	{
+		playerTrans.SetPositionX(playerTrans.GetPositionX() - 5 * dt);
+		playerTrans.SetRotationY(270.0f);
+		camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	{
+		playerTrans.SetPositionX(playerTrans.GetPositionX() + 5 * dt);
+		playerTrans.SetRotationY(90.0f);
+		camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+	}
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+		playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 5 * dt);
+		playerTrans.SetRotationY(180.0f);
 
-			if (camFar)
-				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 5 * dt));
-		}
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		{
-			playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 5 * dt);
-			playerTrans.SetRotationY(0.0f);
-
-			if (camClose)
-				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 5 * dt));
-		}
-#pragma endregion
-		
-#pragma region CameraMovement
-		if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
-		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x - 5 * dt, camera.GetPosition().y, camera.GetPosition().z));
-		}
-		if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x + 5 * dt, camera.GetPosition().y, camera.GetPosition().z));
-		}
-		if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
-		{
+		if (camFar)
 			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 5 * dt));
-		}
-		if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
-		{
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
+		playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 5 * dt);
+		playerTrans.SetRotationY(0.0f);
+
+		if (camClose)
 			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 5 * dt));
-		}
-		if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
-		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y + 5 * dt, camera.GetPosition().z));
-		}
-		if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
-		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y - 5 * dt, camera.GetPosition().z));
-		}
+	}
 #pragma endregion
 
- #pragma region Renders
+#pragma region CameraMovement
+	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+	{
+		camera.SetPosition(glm::vec3(camera.GetPosition().x - 5 * dt, camera.GetPosition().y, camera.GetPosition().z));
+	}
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+	{
+		camera.SetPosition(glm::vec3(camera.GetPosition().x + 5 * dt, camera.GetPosition().y, camera.GetPosition().z));
+	}
+	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
+	{
+		camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 5 * dt));
+	}
+	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+	{
+		camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 5 * dt));
+	}
+	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
+	{
+		camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y + 5 * dt, camera.GetPosition().z));
+	}
+	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
+	{
+		camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y - 5 * dt, camera.GetPosition().z));
+	}
+#pragma endregion
 
-		shader->Bind();
+#pragma region Renders
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transform));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transform);
-		shader->SetUniformMatrix("u_Model", transform);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	shader->Bind();
 
-		meshMain.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transform));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transform);
+	shader->SetUniformMatrix("u_Model", transform);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformGround));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformGround);
-		shader->SetUniformMatrix("u_Model", transformGround);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	meshMain.Render();
 
-		groundMesh.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformGround));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformGround);
+	shader->SetUniformMatrix("u_Model", transformGround);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformLeft));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformLeft);
-		shader->SetUniformMatrix("u_Model", transformLeft);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	groundMesh.Render();
 
-		leftMesh.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformLeft));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformLeft);
+	shader->SetUniformMatrix("u_Model", transformLeft);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformRight));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformRight);
-		shader->SetUniformMatrix("u_Model", transformRight);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	leftMesh.Render();
 
-		rightMesh.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformRight));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformRight);
+	shader->SetUniformMatrix("u_Model", transformRight);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformBack));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformBack);
-		shader->SetUniformMatrix("u_Model", transformBack);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	rightMesh.Render();
 
-		backMesh.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformBack));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformBack);
+	shader->SetUniformMatrix("u_Model", transformBack);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformWire));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformWire);
-		shader->SetUniformMatrix("u_Model", transformWire);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	backMesh.Render();
 
-		wireMesh.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformWire));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformWire);
+	shader->SetUniformMatrix("u_Model", transformWire);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformWire2));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformWire2);
-		shader->SetUniformMatrix("u_Model", transformWire2);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	wireMesh.Render();
 
-		wireMesh2.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformWire2));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformWire2);
+	shader->SetUniformMatrix("u_Model", transformWire2);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformWire3));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformWire3);
-		shader->SetUniformMatrix("u_Model", transformWire3);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	wireMesh2.Render();
 
-		wireMesh3.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformWire3));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformWire3);
+	shader->SetUniformMatrix("u_Model", transformWire3);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformWire4));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformWire4);
-		shader->SetUniformMatrix("u_Model", transformWire4);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	wireMesh3.Render();
 
-		wireMesh4.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformWire4));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformWire4);
+	shader->SetUniformMatrix("u_Model", transformWire4);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformWire5));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformWire5);
-		shader->SetUniformMatrix("u_Model", transformWire5);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	wireMesh4.Render();
 
-		wireMesh5.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformWire5));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformWire5);
+	shader->SetUniformMatrix("u_Model", transformWire5);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformWire6));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformWire6);
-		shader->SetUniformMatrix("u_Model", transformWire6);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	wireMesh5.Render();
 
-		wireMesh6.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformLever));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformLever);
+	shader->SetUniformMatrix("u_Model", transformLever);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformLever));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformLever);
-		shader->SetUniformMatrix("u_Model", transformLever);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	leverMesh.Render();
 
-		leverMesh.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformLever2));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformLever2);
+	shader->SetUniformMatrix("u_Model", transformLever2);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformLever2));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformLever2);
-		shader->SetUniformMatrix("u_Model", transformLever2);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	leverMesh2.Render();
 
-		leverMesh2.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformLever3));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformLever3);
+	shader->SetUniformMatrix("u_Model", transformLever3);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformLever3));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformLever3);
-		shader->SetUniformMatrix("u_Model", transformLever3);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	leverMesh3.Render();
 
-		leverMesh3.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformGate));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformGate);
+	shader->SetUniformMatrix("u_Model", transformGate);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformGate));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformGate);
-		shader->SetUniformMatrix("u_Model", transformGate);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	andMesh.Render();
 
-		gateMesh.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformGate2));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformGate2);
+	shader->SetUniformMatrix("u_Model", transformGate2);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformGate2));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformGate2);
-		shader->SetUniformMatrix("u_Model", transformGate2);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	andMesh2.Render();
 
-		gateMesh2.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformGate3));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection()* transformGate3);
+	shader->SetUniformMatrix("u_Model", transformGate3);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
 
-		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformDoor));
-		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformDoor);
-		shader->SetUniformMatrix("u_Model", transformDoor);
-		shader->SetUniform("u_CamPos", camera.GetPosition());
+	andMesh3.Render();
 
-		doorMesh.Render();
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformNot));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformNot);
+	shader->SetUniformMatrix("u_Model", transformNot);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
+
+	notMesh.Render();
+
+	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformDoor));
+	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformDoor);
+	shader->SetUniformMatrix("u_Model", transformDoor);
+	shader->SetUniform("u_CamPos", camera.GetPosition());
+
+	doorMesh.Render();
 #pragma endregion	
 
-		for (int i = 0; i < 3; ++i)
-		{
-			levers[i].Get<Lever>().Update();
-		}
-		for (int i = 0; i < 6; ++i)
-		{
-			wires[i].Get<Wire>().Update();
-		}
-		andEnt.Get<AndGate>().Update();
-		andEnt2.Get<AndGate>().Update();
-		leftWall.Get<AABB>().Update();
-		rightWall.Get<AABB>().Update();
-		backWall.Get<AABB>().Update();
-		doorEnt.Get<AABB>().Update();
+	for (int i = 0; i < 3; ++i)
+	{
+		levers[i].Get<Lever>().Update();
+	}
+	for (int i = 0; i < 5; ++i)
+	{
+		wires[i].Get<Wire>().Update();
+	}
+	andEnts[0].Get<AndGate>().Update();
+	andEnts[1].Get<AndGate>().Update();
+	andEnts[2].Get<AndGate>().Update();
+	notEnt.Get<NotGate>().Update();
+	leftWall.Get<AABB>().Update();
+	rightWall.Get<AABB>().Update();
+	backWall.Get<AABB>().Update();
+	doorEnt.Get<AABB>().Update();
 
-		if (doorEnt.Get<AABB>().GetComplete())
-			levelComplete = true;
+	if (doorEnt.Get<AABB>().GetComplete())
+		levelComplete = true;
 
+	/*RenderImGui();*/
 }
 
-void Level2::Unload()
+void Level3::Unload()
 {
 	if (scene != nullptr)
 	{
 		delete scene;
 
-		scene = nullptr;	
+		scene = nullptr;
 	}
 }
+

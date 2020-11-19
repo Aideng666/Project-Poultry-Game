@@ -2,7 +2,7 @@
 
 namespace freebird
 {
-	LogicGate::LogicGate(Entity ent1, Entity ent2)
+	LogicGate::LogicGate(Entity ent1, Entity ent2, Entity out)
 	{
 		input1 = false;
 		input2 = false;
@@ -10,6 +10,13 @@ namespace freebird
 		isFinal = false;
 		inputEnt1 = ent1;
 		inputEnt2 = ent2;
+		outputEnt = out;
+	}
+
+	LogicGate::LogicGate(Entity in, Entity out)
+	{
+		inputEnt1 = in;
+		outputEnt = out;
 	}
 
 	bool LogicGate::GetInput1()

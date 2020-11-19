@@ -7,7 +7,7 @@ namespace freebird
 	{
 	public:
 
-		AndGate(Entity ent1, Entity ent2);
+		AndGate(Entity ent1, Entity ent2, Entity out);
 
 		void Update();
 

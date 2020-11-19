@@ -2,8 +2,8 @@
 
 namespace freebird
 {
-    AndGate::AndGate(Entity ent1, Entity ent2)
-        : LogicGate(ent1, ent2)
+    AndGate::AndGate(Entity ent1, Entity ent2, Entity out)
+        : LogicGate(ent1, ent2, out)
     {
     }
 
@@ -13,5 +13,11 @@ namespace freebird
             output = true;
         else
             output = false;
+
+        if (outputEnt.Has<Door>() && output)
+            outputEnt.Get<Door>().SetOpen(true);
+
+        if (outputEnt.Has<Wire>() && output)
+            outputEnt.Get<Wire>().SetIsPowered(true);
     }
 }

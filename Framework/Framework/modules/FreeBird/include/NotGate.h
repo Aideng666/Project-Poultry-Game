@@ -3,11 +3,11 @@
 
 namespace freebird
 {
-	class OrGate : public LogicGate
+	class NotGate : public LogicGate
 	{
 	public:
 
-		OrGate(Entity ent1, Entity ent2, Entity out);
+		NotGate(Entity in, Entity out);
 
 		void Update();
 

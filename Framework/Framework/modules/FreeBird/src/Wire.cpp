@@ -1,20 +1,32 @@
 #include "Wire.h"
+#include <AndGate.h>
+#include <OrGate.h>
+#include <NotGate.h>
+#include <Lever.h>
 
 namespace freebird
 {
-	Wire::Wire(Entity last, Entity next)
+
+	Wire::Wire(Entity input)
 	{
-		lastEnt = last;
-		nextEnt = next;
+		lastEnt = input;
 		isPowered = false;
 	}
 
 	void Wire::Update()
 	{
-		if (nextEnt.Has<Wire>() && isPowered)
-		{
-			nextEnt.Get<Wire>().SetIsPowered(true);
-		}
+		if (lastEnt.Has<Wire>() && lastEnt.Get<Wire>().GetIsPowered())
+			isPowered = true;
+		else if (lastEnt.Has<AndGate>() && lastEnt.Get<AndGate>().GetOutput())
+			isPowered = true;
+		else if (lastEnt.Has<OrGate>() && lastEnt.Get<OrGate>().GetOutput())
+			isPowered = true;
+		else if (lastEnt.Has<NotGate>() && lastEnt.Get<NotGate>().GetOutput())
+			isPowered = true;
+		else if (lastEnt.Has<Lever>() && lastEnt.Get<Lever>().GetPowered())
+			isPowered = true;
+		else
+			isPowered = false;
 	}
 
 	bool Wire::GetIsPowered()

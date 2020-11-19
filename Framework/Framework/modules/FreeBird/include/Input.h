@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <Entity.h>
 
 struct GLFWwindow;
 
