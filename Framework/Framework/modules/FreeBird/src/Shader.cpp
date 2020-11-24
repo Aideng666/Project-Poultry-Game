@@ -19,6 +19,7 @@ namespace freebird
 		if (_handle != 0) {
 			glDeleteProgram(_handle);
 			_handle = 0;
+			LOG_INFO("Deleting shader program");
 		}
 	}
 
@@ -176,7 +177,7 @@ namespace freebird
 		glProgramUniform4i(location, value->x, value->y, value->z, value->w, 1);
 	}
 
-	int Shader::__GetUniformLocation(const std::string& name) {
+	int Shader::GetUniformLocation(const std::string& name) {
 		// Search the map for the given name
 		std::unordered_map<std::string, int>::const_iterator it = _uniformLocs.find(name);
 		int result = -1;
@@ -185,6 +186,10 @@ namespace freebird
 		if (it == _uniformLocs.end()) {
 			result = glGetUniformLocation(_handle, name.c_str());
 			_uniformLocs[name] = result;
+
+			if (result == -1) {
+				LOG_WARN("Ignoring uniform \"{}\"", name);
+			}
 		}
 		// Otherwise, we had a value in the map, return it
 		else {

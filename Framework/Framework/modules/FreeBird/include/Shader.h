@@ -15,6 +15,7 @@ namespace freebird
 	class Shader final
 	{
 	public:
+
 		typedef std::shared_ptr<Shader> sptr;
 		static inline sptr Create() {
 			return std::make_shared<Shader>();
@@ -70,24 +71,32 @@ namespace freebird
 		/// </summary>
 		GLuint GetHandle() const { return _handle; }
 
+		int GetUniformLocation(const std::string& name);
+
 		template <typename T>
 		void SetUniform(const std::string& name, const T& value) {
-			int location = __GetUniformLocation(name);
+			int location = GetUniformLocation(name);
 			if (location != -1) {
 				SetUniform(location, &value, 1);
-			}
-			else {
-				LOG_WARN("Ignoring uniform \"{}\"", name);
 			}
 		}
 		template <typename T>
 		void SetUniformMatrix(const std::string& name, const T& value, bool transposed = false) {
-			int location = __GetUniformLocation(name);
+			int location = GetUniformLocation(name);
 			if (location != -1) {
 				SetUniformMatrix(location, &value, 1, transposed);
 			}
-			else {
-				LOG_WARN("Ignoring uniform \"{}\"", name);
+		}
+		template <typename T>
+		void SetUniform(int location, const T& value) {
+			if (location != -1) {
+				SetUniform(location, &value, 1);
+			}
+		}
+		template <typename T>
+		void SetUniformMatrix(int location, const T& value, bool transposed = false) {
+			if (location != -1) {
+				SetUniformMatrix(location, &value, 1, transposed);
 			}
 		}
 
@@ -113,7 +122,5 @@ namespace freebird
 		GLuint _handle;
 
 		std::unordered_map<std::string, int> _uniformLocs;
-
-		int __GetUniformLocation(const std::string& name);
 	};
 }

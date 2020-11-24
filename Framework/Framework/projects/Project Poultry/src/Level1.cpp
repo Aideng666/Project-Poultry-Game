@@ -33,6 +33,10 @@ void Level1::InitScene()
 
 	Entity::SetReg(scene);
 
+	float distance = glm::distance(point2, point1);
+
+	totalTime =  distance / speed;
+
 	//Set Up Camera
 	auto& camera = camEnt.Add<Camera>();
 
@@ -131,22 +135,20 @@ void Level1::InitScene()
 	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
 	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	shader->Link();
-
-	glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 2.0f);
+	
+	glm::vec3 lightPos = glm::vec3(0.0f, 2.0f, -9.0f);
+	glm::vec3 lightPos2 = glm::vec3(0.0f, 5.0f, 3.0f);
+	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 1.0f);
+	glm::vec3 lightDir2 = glm::vec3(0.0f, -1.0f, 0.0f);
 	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
 	float     lightAmbientPow = 0.05f;
 	float     lightSpecularPow = 1.0f;
+	float     lightSpecularPow2 = 0.2f;
 	glm::vec3 ambientCol = glm::vec3(1.0f);
 	float     ambientPow = 0.1f;
 	float     shininess = 4.0f;
 
-	shader->SetUniform("u_LightPos", lightPos);
-	shader->SetUniform("u_LightCol", lightCol);
-	shader->SetUniform("u_AmbientLightStrength", lightAmbientPow);
-	shader->SetUniform("u_SpecularLightStrength", lightSpecularPow);
-	shader->SetUniform("u_AmbientCol", ambientCol);
-	shader->SetUniform("u_AmbientStrength", ambientPow);
-	shader->SetUniform("u_Shininess", shininess);
+	SetShaderValues(shader, lightPos, lightPos2, lightDir, lightDir2, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
 
 #pragma region Entity ImGui Editor
 	glm::vec3 position = playerTrans.GetPosition();
@@ -456,6 +458,27 @@ void Level1::InitScene()
 
 void Level1::Update(float dt)
 {
+	time += dt;
+	shader->SetUniform("u_Time", time);
+
+	if (forwards)
+		t += dt / totalTime;
+	else
+		t -= dt / totalTime;
+
+	if (t < 0.0f)
+		t = 0.0f;
+
+	if (t > 1.0f)
+		t = 1.0f;
+
+	if (t >= 1.0f || t <= 0.0f)
+		forwards = !forwards;
+
+	shader->SetUniform("t", t);
+	shader->SetUniform("u_Point1", point1);
+	shader->SetUniform("u_Point2", point2);
+
 
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -597,82 +620,17 @@ void Level1::Update(float dt)
 
 	shader->Bind();
 
-	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transform));
-	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transform);
-	shader->SetUniformMatrix("u_Model", transform);
-	shader->SetUniform("u_CamPos", camera.GetPosition());
-
-	meshMain.Render();
-
-	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformGround));
-	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformGround);
-	shader->SetUniformMatrix("u_Model", transformGround);
-	shader->SetUniform("u_CamPos", camera.GetPosition());
-
-	groundMesh.Render();
-
-	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformLeft));
-	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformLeft);
-	shader->SetUniformMatrix("u_Model", transformLeft);
-	shader->SetUniform("u_CamPos", camera.GetPosition());
-
-	leftMesh.Render();
-
-	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformRight));
-	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformRight);
-	shader->SetUniformMatrix("u_Model", transformRight);
-	shader->SetUniform("u_CamPos", camera.GetPosition());
-
-	rightMesh.Render();
-
-	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformBack));
-	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformBack);
-	shader->SetUniformMatrix("u_Model", transformBack);
-	shader->SetUniform("u_CamPos", camera.GetPosition());
-
-	backMesh.Render();
-
-	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformWire));
-	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformWire);
-	shader->SetUniformMatrix("u_Model", transformWire);
-	shader->SetUniform("u_CamPos", camera.GetPosition());
-
-	wireMesh.Render();
-
-	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformLever));
-	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformLever);
-	shader->SetUniformMatrix("u_Model", transformLever);
-	shader->SetUniform("u_CamPos", camera.GetPosition());
-
-	leverMesh.Render();
-
-	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformGate));
-	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformGate);
-	shader->SetUniformMatrix("u_Model", transformGate);
-	shader->SetUniform("u_CamPos", camera.GetPosition());
-
-	gateMesh.Render();
-
-	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformWire2));
-	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformWire2);
-	shader->SetUniformMatrix("u_Model", transformWire2);
-	shader->SetUniform("u_CamPos", camera.GetPosition());
-
-	wireMesh2.Render();
-
-	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformLever2));
-	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformLever2);
-	shader->SetUniformMatrix("u_Model", transformLever2);
-	shader->SetUniform("u_CamPos", camera.GetPosition());
-
-	leverMesh2.Render();
-
-	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transformDoor));
-	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transformDoor);
-	shader->SetUniformMatrix("u_Model", transformDoor);
-	shader->SetUniform("u_CamPos", camera.GetPosition());
-
-	doorMesh.Render();
+	RenderVAO(shader, meshMain, camera, transform);
+	RenderVAO(shader, groundMesh, camera, transformGround);
+	RenderVAO(shader, leftMesh, camera, transformLeft);
+	RenderVAO(shader, rightMesh, camera, transformRight);
+	RenderVAO(shader, backMesh, camera, transformBack);
+	RenderVAO(shader, wireMesh, camera, transformWire);
+	RenderVAO(shader, wireMesh2, camera, transformWire2);
+	RenderVAO(shader, leverMesh, camera, transformLever);
+	RenderVAO(shader, leverMesh2, camera, transformLever2);
+	RenderVAO(shader, gateMesh, camera, transformGate);
+	RenderVAO(shader, doorMesh, camera, transformDoor);
 #pragma endregion	
 
 	leverEnt.Get<Lever>().Update();
