@@ -24,7 +24,6 @@ public:
 
 private:
 	Entity mainPlayer;
-	Entity camEnt;
 	Entity ground, leftWall, rightWall, backWall;
 	Entity andEnt, andEnt2;
 	Entity wires[6];

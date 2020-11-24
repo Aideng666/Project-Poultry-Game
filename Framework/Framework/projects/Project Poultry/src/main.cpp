@@ -12,6 +12,7 @@
 #include "Level1.h"
 #include "Level2.h"
 #include "Level3.h"
+#include "MainMenu.h"
 #include "Application.h"
 
 using namespace freebird; //referencing the module's includes/src's
@@ -52,11 +53,12 @@ int main()
 
 	Application::SetClearColor(glm::vec4(0.08f, 0.17f, 0.31f, 1.0f));
 
+	scenes.push_back(new MainMenu("Main Menu", window));
 	scenes.push_back(new Level1("Level 1", window));
 	scenes.push_back(new Level2("Level 2", window));
 	scenes.push_back(new Level3("Level 3", window));
 
-	SetActiveScene(0);
+	SetActiveScene(1);
 	
 	//Calculates our timer
 	Application::Tick();
