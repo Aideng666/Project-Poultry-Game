@@ -38,6 +38,27 @@ void Level2::InitScene()
 
 	Entity::SetReg(scene);
 
+	float distance = glm::distance(point2, point1);
+
+	totalTime = distance / speed;
+
+	shader = Shader::Create();
+	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	shader->Link();
+
+	glm::vec3 lightPos = glm::vec3(0.0f, 2.0f, -9.0f);
+	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
+	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
+	float     lightAmbientPow = 0.05f;
+	float     lightSpecularPow = 1.0f;
+	float     lightSpecularPow2 = 0.2f;
+	glm::vec3 ambientCol = glm::vec3(1.0f);
+	float     ambientPow = 0.1f;
+	float     shininess = 4.0f;
+
+	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+
 	//Set Up Camera
 	auto& camera = camEnt.Add<Camera>();
 
@@ -152,42 +173,23 @@ void Level2::InitScene()
 	Mesh wir("Models/invalid.obj", glm::vec3(0.0f, 0.0f, 1.0f));
 	Mesh doorM("Models/invalid.obj", glm::vec3(1.0f, 0.0f, 1.0f));
 
-	auto& playerMesh = mainPlayer.Add<Mesh>(monkey);
-	auto& groundMesh = ground.Add<Mesh>(test);
-	auto& leftMesh = leftWall.Add<Mesh>(test);
-	auto& rightMesh = rightWall.Add<Mesh>(test);
-	auto& backMesh = backWall.Add<Mesh>(test);
-	auto& gateMesh = andEnt.Add<Mesh>(gate);
-	auto& gateMesh2 = andEnt2.Add<Mesh>(gate);
-	auto& leverMesh = levers[0].Add<Mesh>(lev);
-	auto& leverMesh2 = levers[1].Add<Mesh>(lev);
-	auto& leverMesh3 = levers[2].Add<Mesh>(lev);
-	auto& wireMesh = wires[0].Add<Mesh>(wir);
-	auto& wireMesh2 = wires[1].Add<Mesh>(wir);
-	auto& wireMesh3 = wires[2].Add<Mesh>(wir);
-	auto& wireMesh4 = wires[3].Add<Mesh>(wir);
-	auto& wireMesh5 = wires[4].Add<Mesh>(wir);
-	auto& wireMesh6 = wires[5].Add<Mesh>(wir);
-	auto& doorMesh = doorEnt.Add<Mesh>(doorM);
-
-	shader = Shader::Create();
-	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	shader->Link();
-
-	glm::vec3 lightPos = glm::vec3(0.0f, 2.0f, -9.0f);
-	glm::vec3 lightPos2 = glm::vec3(0.0f, 5.0f, 3.0f);
-	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 1.0f);
-	glm::vec3 lightDir2 = glm::vec3(0.0f, -1.0f, 0.0f);
-	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
-	float     lightAmbientPow = 0.05f;
-	float     lightSpecularPow = 1.0f;
-	float     lightSpecularPow2 = 0.2f;
-	glm::vec3 ambientCol = glm::vec3(1.0f);
-	float     ambientPow = 0.1f;
-	float     shininess = 4.0f;
-
-	SetShaderValues(shader, lightPos, lightPos2, lightDir, lightDir2, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+	auto& playerMesh = mainPlayer.Add<MeshRenderer>(mainPlayer, monkey, shader);
+	auto& groundMesh = ground.Add<MeshRenderer>(ground, test, shader);
+	auto& leftMesh = leftWall.Add<MeshRenderer>(leftWall, test, shader);
+	auto& rightMesh = rightWall.Add<MeshRenderer>(rightWall, test, shader);
+	auto& backMesh = backWall.Add<MeshRenderer>(backWall, test, shader);
+	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, gate, shader);
+	auto& gateMesh2 = andEnt2.Add<MeshRenderer>(andEnt2, gate, shader);
+	auto& leverMesh = levers[0].Add<MeshRenderer>(levers[0], lev, shader);
+	auto& leverMesh2 = levers[1].Add<MeshRenderer>(levers[1], lev, shader);
+	auto& leverMesh3 = levers[2].Add<MeshRenderer>(levers[2], lev, shader);
+	auto& wireMesh = wires[0].Add<MeshRenderer>(wires[0], wir, shader);
+	auto& wireMesh2 = wires[1].Add<MeshRenderer>(wires[1], wir, shader);
+	auto& wireMesh3 = wires[2].Add<MeshRenderer>(wires[2], wir, shader);
+	auto& wireMesh4 = wires[3].Add<MeshRenderer>(wires[3], wir, shader);
+	auto& wireMesh5 = wires[4].Add<MeshRenderer>(wires[4], wir, shader);
+	auto& wireMesh6 = wires[5].Add<MeshRenderer>(wires[5], wir, shader);
+	auto& doorMesh = doorEnt.Add<MeshRenderer>(doorEnt, doorM, shader);
 
 	//Imgui Commented out
 /*
@@ -496,10 +498,34 @@ void Level2::InitScene()
 			InitImGui();
 			imguiStarted = true;
 		}*/
+
+
 }
 
 void Level2::Update(float dt)
 {
+
+	time += dt;
+	shader->SetUniform("u_Time", time);
+
+	if (forwards)
+		t += dt / totalTime;
+	else
+		t -= dt / totalTime;
+
+	if (t < 0.0f)
+		t = 0.0f;
+
+	if (t > 1.0f)
+		t = 1.0f;
+
+	if (t >= 1.0f || t <= 0.0f)
+		forwards = !forwards;
+
+	currentPos = glm::mix(point1, point2, t);
+
+	shader->SetUniform("u_Position", currentPos);
+
 
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -537,23 +563,23 @@ void Level2::Update(float dt)
 	auto& camera = camEnt.Get<Camera>();
 
 	//Meshes
-	auto& meshMain = mainPlayer.Get<Mesh>();
-	auto& groundMesh = ground.Get<Mesh>();
-	auto& leftMesh = leftWall.Get<Mesh>();
-	auto& rightMesh = rightWall.Get<Mesh>();
-	auto& backMesh = backWall.Get<Mesh>();
-	auto& gateMesh = andEnt.Get<Mesh>();
-	auto& gateMesh2 = andEnt2.Get<Mesh>();
-	auto& leverMesh = levers[0].Get<Mesh>();
-	auto& leverMesh2 = levers[1].Get<Mesh>();
-	auto& leverMesh3 = levers[2].Get<Mesh>();
-	auto& wireMesh = wires[0].Get<Mesh>();
-	auto& wireMesh2 = wires[1].Get<Mesh>();
-	auto& wireMesh3 = wires[2].Get<Mesh>();
-	auto& wireMesh4 = wires[3].Get<Mesh>();
-	auto& wireMesh5 = wires[4].Get<Mesh>();
-	auto& wireMesh6 = wires[5].Get<Mesh>();
-	auto& doorMesh = doorEnt.Get<Mesh>();
+	auto& meshMain = mainPlayer.Get<MeshRenderer>();
+	auto& groundMesh = ground.Get<MeshRenderer>();
+	auto& leftMesh = leftWall.Get<MeshRenderer>();
+	auto& rightMesh = rightWall.Get<MeshRenderer>();
+	auto& backMesh = backWall.Get<MeshRenderer>();
+	auto& gateMesh = andEnt.Get<MeshRenderer>();
+	auto& gateMesh2 = andEnt2.Get<MeshRenderer>();
+	auto& leverMesh = levers[0].Get<MeshRenderer>();
+	auto& leverMesh2 = levers[1].Get<MeshRenderer>();
+	auto& leverMesh3 = levers[2].Get<MeshRenderer>();
+	auto& wireMesh = wires[0].Get<MeshRenderer>();
+	auto& wireMesh2 = wires[1].Get<MeshRenderer>();
+	auto& wireMesh3 = wires[2].Get<MeshRenderer>();
+	auto& wireMesh4 = wires[3].Get<MeshRenderer>();
+	auto& wireMesh5 = wires[4].Get<MeshRenderer>();
+	auto& wireMesh6 = wires[5].Get<MeshRenderer>();
+	auto& doorMesh = doorEnt.Get<MeshRenderer>();
 
 	camera.LookAt(glm::vec3(playerTrans.GetPosition())); // Look at center of the screen
 
@@ -600,8 +626,6 @@ void Level2::Update(float dt)
 				lever2Watch.Poll(window);
 			if (i == 2)
 				lever3Watch.Poll(window);
-
-			std::cout << andEnt2.Get<AndGate>().GetOutput() << std::endl;
 		}
 	}
 
@@ -667,23 +691,23 @@ void Level2::Update(float dt)
 
 		shader->Bind();
 
-		RenderVAO(shader, meshMain, camera, transform);
-		RenderVAO(shader, groundMesh, camera, transformGround);
-		RenderVAO(shader, leftMesh, camera, transformLeft);
-		RenderVAO(shader, rightMesh, camera, transformRight);
-		RenderVAO(shader, backMesh, camera, transformBack);
-		RenderVAO(shader, wireMesh, camera, transformWire);
-		RenderVAO(shader, wireMesh2, camera, transformWire2);
-		RenderVAO(shader, wireMesh3, camera, transformWire3);
-		RenderVAO(shader, wireMesh4, camera, transformWire4);
-		RenderVAO(shader, wireMesh5, camera, transformWire5);
-		RenderVAO(shader, wireMesh6, camera, transformWire6);
-		RenderVAO(shader, leverMesh, camera, transformLever);
-		RenderVAO(shader, leverMesh2, camera, transformLever2);
-		RenderVAO(shader, leverMesh3, camera, transformLever3);
-		RenderVAO(shader, gateMesh, camera, transformGate);
-		RenderVAO(shader, gateMesh2, camera, transformGate2);
-		RenderVAO(shader, doorMesh, camera, transformDoor);
+		meshMain.Render(camera, transform);
+		groundMesh.Render(camera, transformGround);
+		leftMesh.Render(camera, transformLeft);
+		rightMesh.Render(camera, transformRight);
+		backMesh.Render(camera, transformBack);
+		wireMesh.Render(camera, transformWire);
+		wireMesh2.Render(camera, transformWire2);
+		wireMesh3.Render(camera, transformWire3);
+		wireMesh4.Render(camera, transformWire4);
+		wireMesh5.Render(camera, transformWire5);
+		wireMesh6.Render(camera, transformWire6);
+		leverMesh.Render(camera, transformLever);
+		leverMesh2.Render(camera, transformLever2);
+		leverMesh3.Render(camera, transformLever3);
+		gateMesh.Render(camera, transformGate);
+		gateMesh2.Render(camera, transformGate2);
+		doorMesh.Render(camera, transformDoor);
 #pragma endregion	
 
 		for (int i = 0; i < 3; ++i)

@@ -41,6 +41,23 @@ void Level3::InitScene()
 
 	Entity::SetReg(scene);
 
+	shader = Shader::Create();
+	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	shader->Link();
+
+	glm::vec3 lightPos = glm::vec3(0.0f, 2.0f, -9.0f);
+	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
+	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
+	float     lightAmbientPow = 0.05f;
+	float     lightSpecularPow = 1.0f;
+	float     lightSpecularPow2 = 0.2f;
+	glm::vec3 ambientCol = glm::vec3(1.0f);
+	float     ambientPow = 0.1f;
+	float     shininess = 4.0f;
+
+	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+
 	//Set Up Camera
 	auto& camera = camEnt.Add<Camera>();
 
@@ -160,43 +177,24 @@ void Level3::InitScene()
 	Mesh wir("Models/invalid.obj", glm::vec3(0.0f, 0.0f, 1.0f));
 	Mesh doorM("Models/invalid.obj", glm::vec3(1.0f, 0.0f, 1.0f));
 
-	auto& playerMesh = mainPlayer.Add<Mesh>(monkey);
-	auto& groundMesh = ground.Add<Mesh>(test);
-	auto& leftMesh = leftWall.Add<Mesh>(test);
-	auto& rightMesh = rightWall.Add<Mesh>(test);
-	auto& backMesh = backWall.Add<Mesh>(test);
-	auto& gateMesh = andEnts[0].Add<Mesh>(gate);
-	auto& gateMesh2 = andEnts[1].Add<Mesh>(gate);
-	auto& gateMesh3 = andEnts[2].Add<Mesh>(gate);
-	auto& notMesh = notEnt.Add<Mesh>(not);
-	auto& wireMesh = wires[0].Add<Mesh>(wir);
-	auto& wireMesh2 = wires[1].Add<Mesh>(wir);
-	auto& wireMesh3 = wires[2].Add<Mesh>(wir);
-	auto& wireMesh4 = wires[3].Add<Mesh>(wir);
-	auto& wireMesh5 = wires[4].Add<Mesh>(wir);
-	auto& leverMesh = levers[0].Add<Mesh>(lev);
-	auto& leverMesh2 = levers[1].Add<Mesh>(lev);
-	auto& leverMesh3 = levers[2].Add<Mesh>(lev);
-	auto& doorMesh = doorEnt.Add<Mesh>(doorM);
-
-	shader = Shader::Create();
-	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	shader->Link();
-
-	glm::vec3 lightPos = glm::vec3(0.0f, 2.0f, -9.0f);
-	glm::vec3 lightPos2 = glm::vec3(0.0f, 5.0f, 3.0f);
-	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 1.0f);
-	glm::vec3 lightDir2 = glm::vec3(0.0f, -1.0f, 0.0f);
-	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
-	float     lightAmbientPow = 0.05f;
-	float     lightSpecularPow = 1.0f;
-	float     lightSpecularPow2 = 0.2f;
-	glm::vec3 ambientCol = glm::vec3(1.0f);
-	float     ambientPow = 0.1f;
-	float     shininess = 4.0f;
-
-	SetShaderValues(shader, lightPos, lightPos2, lightDir, lightDir2, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+	auto& playerMesh = mainPlayer.Add<MeshRenderer>(mainPlayer, monkey, shader);
+	auto& groundMesh = ground.Add<MeshRenderer>(ground, test, shader);
+	auto& leftMesh = leftWall.Add<MeshRenderer>(leftWall, test, shader);
+	auto& rightMesh = rightWall.Add<MeshRenderer>(rightWall, test, shader);
+	auto& backMesh = backWall.Add<MeshRenderer>(backWall, test, shader);
+	auto& gateMesh = andEnts[0].Add<MeshRenderer>(andEnts[0], gate, shader);
+	auto& gateMesh2 = andEnts[1].Add<MeshRenderer>(andEnts[1], gate, shader);
+	auto& gateMesh3 = andEnts[2].Add<MeshRenderer>(andEnts[2], gate, shader);
+	auto& notMesh = notEnt.Add<MeshRenderer>(notEnt, not, shader);
+	auto& wireMesh = wires[0].Add<MeshRenderer>(wires[0], wir, shader);
+	auto& wireMesh2 = wires[1].Add<MeshRenderer>(wires[1], wir, shader);
+	auto& wireMesh3 = wires[2].Add<MeshRenderer>(wires[2], wir, shader);
+	auto& wireMesh4 = wires[3].Add<MeshRenderer>(wires[3], wir, shader);
+	auto& wireMesh5 = wires[4].Add<MeshRenderer>(wires[4], wir, shader);
+	auto& leverMesh = levers[0].Add<MeshRenderer>(levers[0], lev, shader);
+	auto& leverMesh2 = levers[1].Add<MeshRenderer>(levers[1], lev, shader);
+	auto& leverMesh3 = levers[2].Add<MeshRenderer>(levers[2], lev, shader);
+	auto& doorMesh = doorEnt.Add<MeshRenderer>(doorEnt, doorM, shader);
 
 	//Commented ImGui
 	/*
@@ -506,10 +504,90 @@ void Level3::InitScene()
 		InitImGui();
 		imguiStarted = true;
 	}*/
+
+
+	points.push_back(glm::vec3(3.0f, 5.0f, 6.0f));
+	points.push_back(glm::vec3(-3.0f, 5.0f, 6.0f));
+	points.push_back(glm::vec3(-3.0f, 5.0f, 0.0f));
+	points.push_back(glm::vec3(3.0f, 5.0f, 0.0f));
+
+	sampleInterval = 1.0f / float(samples);
+
+	if (points.size() > 0)
+		currentPos = points[0];
+
+	if (points.size() >= 4)
+		Reparameterize();
+
 }
 
 void Level3::Update(float dt)
 {
+
+	timer += dt;
+
+	if (points.size() >= 4 && totalCurveLength > 0.0f)
+	{
+
+		distanceTravelled = speed * dt;
+
+		if (distanceTravelled >= totalCurveLength)
+		{
+			currentSegment = 0;
+			currentSample = 0;
+
+			while (distanceTravelled > totalCurveLength)
+			{
+				distanceTravelled -= totalCurveLength;
+			}
+		}
+
+		bool correctIndices = curveTable[currentSegment].samples[currentSample + 1].accumulated > distanceTravelled;
+
+		while (!correctIndices)
+		{
+			++currentSample;
+
+			if (currentSample >= samples)
+			{
+				currentSample = 0;
+				++currentSegment;
+
+				if (currentSegment >= curveTable.size())
+					currentSegment = 0;
+			}
+
+			correctIndices = curveTable[currentSegment].samples[currentSample + 1].accumulated > distanceTravelled;
+		}
+
+		float insideT = InverseLerp(distanceTravelled,
+			curveTable[currentSegment].samples[currentSample].accumulated,
+			curveTable[currentSegment].samples[currentSample + 1].accumulated);
+
+
+		float t = glm::mix(curveTable[currentSegment].samples[currentSample].t,
+			curveTable[currentSegment].samples[currentSample + 1].t,
+			insideT);
+
+		int p1 = currentSegment;
+
+		int p0 = p1 - 1;
+		if (p0 < 0)
+			p0 = points.size() - 1;
+
+		int p2 = p1 + 1;
+		if (p2 >= points.size())
+			p2 = 0;
+
+		int p3 = p2 + 1;
+		if (p3 >= points.size())
+			p3 = 0;
+
+		currentPos = Catmull(points[p0], points[p1], points[p2], points[p3], t);
+	}
+
+	shader->SetUniform("u_Position", currentPos);
+	shader->SetUniform("u_Time", timer);
 
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -548,24 +626,24 @@ void Level3::Update(float dt)
 	auto& camera = camEnt.Get<Camera>();
 
 	//Meshes
-	auto& meshMain = mainPlayer.Get<Mesh>();
-	auto& groundMesh = ground.Get<Mesh>();
-	auto& leftMesh = leftWall.Get<Mesh>();
-	auto& rightMesh = rightWall.Get<Mesh>();
-	auto& backMesh = backWall.Get<Mesh>();
-	auto& andMesh = andEnts[0].Get<Mesh>();
-	auto& andMesh2 = andEnts[1].Get<Mesh>();
-	auto& andMesh3 = andEnts[2].Get<Mesh>();
-	auto& notMesh = notEnt.Get<Mesh>();
-	auto& leverMesh = levers[0].Get<Mesh>();
-	auto& leverMesh2 = levers[1].Get<Mesh>();
-	auto& leverMesh3 = levers[2].Get<Mesh>();
-	auto& wireMesh = wires[0].Get<Mesh>();
-	auto& wireMesh2 = wires[1].Get<Mesh>();
-	auto& wireMesh3 = wires[2].Get<Mesh>();
-	auto& wireMesh4 = wires[3].Get<Mesh>();
-	auto& wireMesh5 = wires[4].Get<Mesh>();
-	auto& doorMesh = doorEnt.Get<Mesh>();
+	auto& meshMain = mainPlayer.Get<MeshRenderer>();
+	auto& groundMesh = ground.Get<MeshRenderer>();
+	auto& leftMesh = leftWall.Get<MeshRenderer>();
+	auto& rightMesh = rightWall.Get<MeshRenderer>();
+	auto& backMesh = backWall.Get<MeshRenderer>();
+	auto& andMesh = andEnts[0].Get<MeshRenderer>();
+	auto& andMesh2 = andEnts[1].Get<MeshRenderer>();
+	auto& andMesh3 = andEnts[2].Get<MeshRenderer>();
+	auto& notMesh = notEnt.Get<MeshRenderer>();
+	auto& leverMesh = levers[0].Get<MeshRenderer>();
+	auto& leverMesh2 = levers[1].Get<MeshRenderer>();
+	auto& leverMesh3 = levers[2].Get<MeshRenderer>();
+	auto& wireMesh = wires[0].Get<MeshRenderer>();
+	auto& wireMesh2 = wires[1].Get<MeshRenderer>();
+	auto& wireMesh3 = wires[2].Get<MeshRenderer>();
+	auto& wireMesh4 = wires[3].Get<MeshRenderer>();
+	auto& wireMesh5 = wires[4].Get<MeshRenderer>();
+	auto& doorMesh = doorEnt.Get<MeshRenderer>();
 
 	camera.LookAt(glm::vec3(playerTrans.GetPosition())); // Look at center of the screen
 
@@ -678,24 +756,25 @@ void Level3::Update(float dt)
 
 	shader->Bind();
 
-	RenderVAO(shader, meshMain, camera, transform);
-	RenderVAO(shader, groundMesh, camera, transformGround);
-	RenderVAO(shader, leftMesh, camera, transformLeft);
-	RenderVAO(shader, rightMesh, camera, transformRight);
-	RenderVAO(shader, backMesh, camera, transformBack);
-	RenderVAO(shader, wireMesh, camera, transformWire);
-	RenderVAO(shader, wireMesh2, camera, transformWire2);
-	RenderVAO(shader, wireMesh3, camera, transformWire3);
-	RenderVAO(shader, wireMesh4, camera, transformWire4);
-	RenderVAO(shader, wireMesh5, camera, transformWire5);
-	RenderVAO(shader, leverMesh, camera, transformLever);
-	RenderVAO(shader, leverMesh2, camera, transformLever2);
-	RenderVAO(shader, leverMesh3, camera, transformLever3);
-	RenderVAO(shader, andMesh, camera, transformGate);
-	RenderVAO(shader, andMesh2, camera, transformGate2);
-	RenderVAO(shader, andMesh3, camera, transformGate3);
-	RenderVAO(shader, notMesh, camera, transformNot);
-	RenderVAO(shader, doorMesh, camera, transformDoor);
+	meshMain.Render(camera, transform);
+	groundMesh.Render(camera, transformGround);
+	leftMesh.Render(camera, transformLeft);
+	rightMesh.Render(camera, transformRight);
+	backMesh.Render(camera, transformBack);
+	wireMesh.Render(camera, transformWire);
+	wireMesh2.Render(camera, transformWire2);
+	wireMesh3.Render(camera, transformWire3);
+	wireMesh4.Render(camera, transformWire4);
+	wireMesh5.Render(camera, transformWire5);
+	leverMesh.Render(camera, transformLever);
+	leverMesh2.Render(camera, transformLever2);
+	leverMesh3.Render(camera, transformLever3);
+	andMesh.Render(camera, transformGate);
+	andMesh2.Render(camera, transformGate2);
+	andMesh3.Render(camera, transformGate3);
+	notMesh.Render(camera, transformNot);
+	doorMesh.Render(camera, transformDoor);
+
 #pragma endregion	
 
 	for (int i = 0; i < 3; ++i)
@@ -729,5 +808,72 @@ void Level3::Unload()
 
 		scene = nullptr;
 	}
+}
+
+glm::vec3 Level3::Catmull(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, float t)
+{
+	return 0.5f * (2.0f * p1 + t * (-p0 + p2)
+		+ t * t * (2.0f * p0 - 5.0f * p1 + 4.0f * p2 - p3)
+		+ t * t * t * (-p0 + 3.0f * p1 - 3.0f * p2 + p3));
+}
+
+float Level3::InverseLerp(float p, float p0, float p1)
+{
+	return (p - p0) / (p1 - p0);
+}
+
+void Level3::Reparameterize()
+{
+
+	curveTable.clear();
+
+	float totalAccumulated = 0.0f;
+	int p0, p1, p2, p3;
+
+	for (int i = 0; i < points.size(); ++i)
+	{
+		p1 = i;
+
+		p0 = p1 - 1;
+		if (p0 < 0)
+			p0 = points.size() - 1;
+
+		p2 = p1 + 1;
+		if (p2 >= points.size())
+			p2 = 0;
+
+		p3 = p2 + 1;
+		if (p3 >= points.size())
+			p3 = 0;
+
+		Segment seg = Segment();
+		seg.samples = sampleVec;
+
+		Sample start = Sample();
+		start.t = 0.0f;
+		start.pt = points[i];
+		start.accumulated = totalAccumulated;
+
+		seg.samples.push_back(start);
+
+		for (int j = 1; j <= samples; ++j)
+		{
+			float sampleT = j * sampleInterval;
+
+			Sample s = Sample();
+			s.t = sampleT;
+			s.pt = Catmull(points[p0], points[p1], points[p2], points[p3], sampleT);
+
+			totalAccumulated = glm::length(seg.samples[j - 1].pt - s.pt);
+			s.accumulated = totalAccumulated;
+
+			seg.samples.push_back(s);
+
+		}
+
+		curveTable.push_back(seg);
+	}
+
+	totalCurveLength = totalAccumulated;
 }
 

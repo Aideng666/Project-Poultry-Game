@@ -135,20 +135,18 @@ Shader::sptr Scene::GetShader()
 	return shader;
 }
 
-void Scene::RenderVAO(Shader::sptr& shader, Mesh& vao, Camera& camera, glm::mat4 transform)
-{
-	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transform));
-	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transform);
-	shader->SetUniformMatrix("u_Model", transform);
-	vao.Render();
-}
+//void Scene::RenderVAO(Shader::sptr& shader, MeshRenderer& vao, Camera& camera, glm::mat4 transform)
+//{
+//	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transform));
+//	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transform);
+//	shader->SetUniformMatrix("u_Model", transform);
+//	vao.Render();
+//}
 
-void Scene::SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos, glm::vec3 lightPos2, glm::vec3 lightDir, glm::vec3 lightDir2, glm::vec3 lightCol, float lightAmbientPow, float lightSpecularPow, float lightSpecularPow2, glm::vec3 ambientCol, float ambientPow, float shininess)
+void Scene::SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos, glm::vec3 lightDir, glm::vec3 lightCol, float lightAmbientPow, float lightSpecularPow, float lightSpecularPow2, glm::vec3 ambientCol, float ambientPow, float shininess)
 {
 	shader->SetUniform("u_LightPos", lightPos);
-	shader->SetUniform("u_LightPos2", lightPos2);
 	shader->SetUniform("u_LightDir", lightDir);
-	shader->SetUniform("u_LightDir2", lightDir2);
 	shader->SetUniform("u_LightCol", lightCol);
 	shader->SetUniform("u_AmbientLightStrength", lightAmbientPow);
 	shader->SetUniform("u_SpecularLightStrength", lightSpecularPow);

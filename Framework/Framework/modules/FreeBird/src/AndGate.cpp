@@ -17,7 +17,13 @@ namespace freebird
         if (outputEnt.Has<Door>() && output)
             outputEnt.Get<Door>().SetOpen(true);
 
+        if (outputEnt.Has<Door>() && !output)
+            outputEnt.Get<Door>().SetOpen(false);
+
         if (outputEnt.Has<Wire>() && output)
             outputEnt.Get<Wire>().SetIsPowered(true);
+
+        if (outputEnt.Has<Wire>() && !output)
+            outputEnt.Get<Wire>().SetIsPowered(false);
     }
 }

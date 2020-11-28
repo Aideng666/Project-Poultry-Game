@@ -13,6 +13,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include <MeshRenderer.h>
 
 
 using namespace freebird;
@@ -45,12 +46,12 @@ public:
 	entt::registry* GetScene();
 	Shader::sptr GetShader();
 
-	void RenderVAO(Shader::sptr& shader, Mesh& vao, Camera& camera, glm::mat4 transform);
+	//void RenderVAO(Shader::sptr& shader, MeshRenderer& vao, Camera& camera, glm::mat4 transform);
 
-	void SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos = glm::vec3(0.f, 0.f, 0.f), glm::vec3 lightPos2 = glm::vec3(0.f, 0.f, 0.f), 
-		glm::vec3 lightDir = glm::vec3(0.f, 0.f, 0.f), glm::vec3 lightDir2 = glm::vec3(0.f, 0.f, 0.f), glm::vec3 lightCol = glm::vec3(1.0f, 1.0f, 1.0f),
-		float lightAmbientPow = 0.f, float lightSpecularPow = 0.f, float lightSpecularPow2 = 0.f, glm::vec3 ambientCol = glm::vec3(0.f, 0.f, 0.f),
-		float ambientPow = 0.f, float shininess = 0.f);
+	void SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos = glm::vec3(0.f, 0.f, 0.f), 
+		glm::vec3 lightDir = glm::vec3(0.f, 0.f, 0.f), glm::vec3 lightCol = glm::vec3(1.0f, 1.0f, 1.0f),
+		float lightAmbientPow = 0.f, float lightSpecularPow = 0.f, float lightSpecularPow2 = 0.f,
+		glm::vec3 ambientCol = glm::vec3(0.f, 0.f, 0.f), float ambientPow = 0.f, float shininess = 0.f);
 
 protected:
 
@@ -58,6 +59,7 @@ protected:
 	std::string name = " ";
 
 	Shader::sptr shader;
+
 	GLFWwindow* window;
 
 	Entity camEnt;

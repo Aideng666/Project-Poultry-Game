@@ -22,7 +22,7 @@ namespace freebird
 		{
 		public:
 
-			std::vector<const Mesh*> frames;
+			std::vector<Mesh*> frames;
 			float frameTime;
 
 			MorphData();

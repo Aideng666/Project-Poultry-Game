@@ -30,6 +30,20 @@ private:
 	Entity levers[3];
 	Entity doorEnt;
 
+	GLfloat time = 0.0f;
+	
+	float t = 0.0f;
+	float totalTime;
+
+	float speed = 4.0f;
+
+	glm::vec3 point1 = glm::vec3(-3.0f, 5.0f, 3.0f);
+	glm::vec3 point2 = glm::vec3(3.0f, 5.0f, 3.0f);
+
+	glm::vec3 currentPos = glm::vec3(3.0f, 5.0f, 3.0f);
+
+	bool forwards = true;
+
 	bool camClose = false;
 	bool camFar = false;
 

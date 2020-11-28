@@ -5,6 +5,7 @@
 #include "Application.h"
 #include <imgui.h>
 #include <AABB.h>
+#include <MeshRenderer.h>
 
 using namespace freebird;
 
@@ -37,6 +38,23 @@ void Level1::InitScene()
 
 	totalTime =  distance / speed;
 
+	shader = Shader::Create();
+	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	shader->Link();
+
+	glm::vec3 lightPos = glm::vec3(0.0f, 2.0f, -9.0f);
+	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
+	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
+	float     lightAmbientPow = 0.05f;
+	float     lightSpecularPow = 1.0f;
+	float     lightSpecularPow2 = 0.2f;
+	glm::vec3 ambientCol = glm::vec3(1.0f);
+	float     ambientPow = 0.1f;
+	float     shininess = 4.0f;
+
+	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+
 	//Set Up Camera
 	auto& camera = camEnt.Add<Camera>();
 
@@ -68,7 +86,7 @@ void Level1::InitScene()
 
 	auto& wireTrans = wireEnt.Add<Transform>();
 	wireTrans.SetPosition(glm::vec3(-2.0f, 1.0f, 5.0f));
-	wireTrans.SetRotationY(90.0f);
+	wireTrans.SetRotationY(-90.0f);
 
 	auto& leverTrans = leverEnt.Add<Transform>();
 	leverTrans.SetPosition(glm::vec3(-4.0f, 1.0f, 8.0f));
@@ -119,36 +137,17 @@ void Level1::InitScene()
 	Mesh wir("Models/invalid.obj", glm::vec3(0.0f, 0.0f, 1.0f));
 	Mesh doorM("Models/invalid.obj", glm::vec3(1.0f, 0.0f, 1.0f));
 
-	auto& playerMesh = mainPlayer.Add<Mesh>(monkey);
-	auto& groundMesh = ground.Add<Mesh>(test);
-	auto& leftMesh = leftWall.Add<Mesh>(test);
-	auto& rightMesh = rightWall.Add<Mesh>(test);
-	auto& backMesh = backWall.Add<Mesh>(test);
-	auto& gateMesh = andEnt.Add<Mesh>(gate);
-	auto& leverMesh = leverEnt.Add<Mesh>(lev);
-	auto& wireMesh = wireEnt.Add<Mesh>(wir);
-	auto& leverMesh2 = leverEnt2.Add<Mesh>(lev);
-	auto& wireMesh2 = wireEnt2.Add<Mesh>(wir);
-	auto& doorMesh = doorEnt.Add<Mesh>(doorM);
-
-	shader = Shader::Create();
-	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	shader->Link();
-	
-	glm::vec3 lightPos = glm::vec3(0.0f, 2.0f, -9.0f);
-	glm::vec3 lightPos2 = glm::vec3(0.0f, 5.0f, 3.0f);
-	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 1.0f);
-	glm::vec3 lightDir2 = glm::vec3(0.0f, -1.0f, 0.0f);
-	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
-	float     lightAmbientPow = 0.05f;
-	float     lightSpecularPow = 1.0f;
-	float     lightSpecularPow2 = 0.2f;
-	glm::vec3 ambientCol = glm::vec3(1.0f);
-	float     ambientPow = 0.1f;
-	float     shininess = 4.0f;
-
-	SetShaderValues(shader, lightPos, lightPos2, lightDir, lightDir2, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+	auto& playerMesh = mainPlayer.Add<MeshRenderer>(mainPlayer, monkey, shader);
+	auto& groundMesh = ground.Add<MeshRenderer>(ground, test, shader);
+	auto& leftMesh = leftWall.Add<MeshRenderer>(leftWall, test, shader);
+	auto& rightMesh = rightWall.Add<MeshRenderer>(rightWall, test, shader);
+	auto& backMesh = backWall.Add<MeshRenderer>(backWall, test, shader);
+	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, gate, shader);
+	auto& leverMesh = leverEnt.Add<MeshRenderer>(leverEnt, lev, shader);
+	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, wir, shader);
+	auto& leverMesh2 = leverEnt2.Add<MeshRenderer>(leverEnt2, lev, shader);
+	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, wir, shader);
+	auto& doorMesh = doorEnt.Add<MeshRenderer>(doorEnt, doorM, shader);
 
 #pragma region Entity ImGui Editor
 	glm::vec3 position = playerTrans.GetPosition();
@@ -475,9 +474,9 @@ void Level1::Update(float dt)
 	if (t >= 1.0f || t <= 0.0f)
 		forwards = !forwards;
 
-	shader->SetUniform("t", t);
-	shader->SetUniform("u_Point1", point1);
-	shader->SetUniform("u_Point2", point2);
+	currentPos = glm::mix(point1, point2, t);
+
+	shader->SetUniform("u_Position", currentPos);
 
 
 	//Transforms
@@ -510,17 +509,17 @@ void Level1::Update(float dt)
 	auto& camera = camEnt.Get<Camera>();
 
 	//Meshes
-	auto& meshMain = mainPlayer.Get<Mesh>();
-	auto& groundMesh = ground.Get<Mesh>();
-	auto& leftMesh = leftWall.Get<Mesh>();
-	auto& rightMesh = rightWall.Get<Mesh>();
-	auto& backMesh = backWall.Get<Mesh>();
-	auto& gateMesh = andEnt.Get<Mesh>();
-	auto& leverMesh = leverEnt.Get<Mesh>();
-	auto& wireMesh = wireEnt.Get<Mesh>();
-	auto& leverMesh2 = leverEnt2.Get<Mesh>();
-	auto& wireMesh2 = wireEnt2.Get<Mesh>();
-	auto& doorMesh = doorEnt.Get<Mesh>();
+	auto& meshMain = mainPlayer.Get<MeshRenderer>();
+	auto& groundMesh = ground.Get<MeshRenderer>();
+	auto& leftMesh = leftWall.Get<MeshRenderer>();
+	auto& rightMesh = rightWall.Get<MeshRenderer>();
+	auto& backMesh = backWall.Get<MeshRenderer>();
+	auto& gateMesh = andEnt.Get<MeshRenderer>();
+	auto& leverMesh = leverEnt.Get<MeshRenderer>();
+	auto& wireMesh = wireEnt.Get<MeshRenderer>();
+	auto& leverMesh2 = leverEnt2.Get<MeshRenderer>();
+	auto& wireMesh2 = wireEnt2.Get<MeshRenderer>();
+	auto& doorMesh = doorEnt.Get<MeshRenderer>();
 
 	camera.LookAt(glm::vec3(playerTrans.GetPosition())); // Look at center of the screen
 
@@ -555,8 +554,6 @@ void Level1::Update(float dt)
 	if (playerTrans.GetPositionX() - leverTrans2.GetPositionX() < 2.0f && playerTrans.GetPositionX() - leverTrans2.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - leverTrans2.GetPositionZ() < 1.0f && playerTrans.GetPositionZ() - leverTrans2.GetPositionZ() > -1.0f)
 		lever2Watch.Poll(window);
-
-	gateWatch.Poll(window);
 
 #pragma region PlayerMovement
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
@@ -620,17 +617,30 @@ void Level1::Update(float dt)
 
 	shader->Bind();
 
-	RenderVAO(shader, meshMain, camera, transform);
-	RenderVAO(shader, groundMesh, camera, transformGround);
-	RenderVAO(shader, leftMesh, camera, transformLeft);
-	RenderVAO(shader, rightMesh, camera, transformRight);
-	RenderVAO(shader, backMesh, camera, transformBack);
-	RenderVAO(shader, wireMesh, camera, transformWire);
-	RenderVAO(shader, wireMesh2, camera, transformWire2);
-	RenderVAO(shader, leverMesh, camera, transformLever);
-	RenderVAO(shader, leverMesh2, camera, transformLever2);
-	RenderVAO(shader, gateMesh, camera, transformGate);
-	RenderVAO(shader, doorMesh, camera, transformDoor);
+	meshMain.Render(camera, transform);
+	groundMesh.Render(camera, transformGround);
+	leftMesh.Render(camera, transformLeft);
+	rightMesh.Render(camera, transformRight);
+	backMesh.Render(camera, transformBack);
+	wireMesh.Render(camera, transformWire);
+	wireMesh2.Render(camera, transformWire2);
+	leverMesh.Render(camera, transformLever);
+	leverMesh2.Render(camera, transformLever2);
+	gateMesh.Render(camera, transformGate);
+	doorMesh.Render(camera, transformDoor);
+
+
+	//RenderVAO(shader, meshMain, camera, transform);
+	//RenderVAO(shader, groundMesh, camera, transformGround);
+	//RenderVAO(shader, leftMesh, camera, transformLeft);
+	//RenderVAO(shader, rightMesh, camera, transformRight);
+	//RenderVAO(shader, backMesh, camera, transformBack);
+	//RenderVAO(shader, wireMesh, camera, transformWire);
+	//RenderVAO(shader, wireMesh2, camera, transformWire2);
+	//RenderVAO(shader, leverMesh, camera, transformLever);
+	//RenderVAO(shader, leverMesh2, camera, transformLever2);
+	//RenderVAO(shader, gateMesh, camera, transformGate);
+	//RenderVAO(shader, doorMesh, camera, transformDoor);
 #pragma endregion	
 
 	leverEnt.Get<Lever>().Update();
