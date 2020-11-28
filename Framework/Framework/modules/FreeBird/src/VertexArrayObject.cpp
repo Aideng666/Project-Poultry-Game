@@ -39,7 +39,6 @@ namespace freebird
 		else {
 			LOG_ASSERT(buffer->GetElementCount() == _vertexCount, "All buffers bound to a VAO should be of the same size in our implementation!");
 		}
-		VertexBufferBinding binding;
 		binding.Buffer = buffer;
 		binding.Attributes = attributes;
 		_vertexBuffers.push_back(binding);
@@ -51,7 +50,23 @@ namespace freebird
 			glVertexAttribPointer(attrib.Slot, attrib.Size, attrib.Type, attrib.Normalized, attrib.Stride, (void*)attrib.Offset);
 		}
 		UnBind();
-	
+	}
+
+	void VertexArrayObject::ClearVertexBuffers()
+	{
+		Bind();
+
+		for (auto& buffer : _vertexBuffers)
+		{
+			for (const BufferAttribute& attrib : buffer.Attributes)
+			{
+				glDisableVertexArrayAttrib(_handle, attrib.Slot);
+			}
+		}
+
+		_vertexBuffers.clear();
+
+		UnBind();
 	}
 	
 	void VertexArrayObject::Bind() const {
@@ -71,5 +86,10 @@ namespace freebird
 			glDrawArrays(GL_TRIANGLES, 0, _vertexCount);
 		}
 		UnBind();
+	}
+
+	VertexArrayObject::VertexBufferBinding VertexArrayObject::GetBufferBinding()
+	{
+		return this->binding;
 	}
 }

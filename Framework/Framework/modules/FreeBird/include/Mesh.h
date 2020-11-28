@@ -17,13 +17,14 @@ namespace freebird
 	public:
 		Mesh(const std::string& fileName, const glm::vec3& inColor = glm::vec3(1.0f));
 		Mesh();
-		VertexArrayObject::sptr makeVAO();
 		VertexArrayObject::sptr vao;
-		void Render();
+
+		VertexBuffer::sptr GetVBO();
 		
 	protected:
 		std::vector<float> interleaved;
 		std::vector<unsigned int> vertIndices, uvIndices, normIndices; 
-		static const std::vector<BufferAttribute> buffAttibs; 
+
+		VertexBuffer::sptr vbo;
 	};
 }

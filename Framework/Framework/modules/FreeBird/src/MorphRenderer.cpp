@@ -3,30 +3,41 @@
 
 namespace freebird
 {
-	MorphRenderer::MorphRenderer(Entity& ent, Mesh& base, Material& mat, Scene& scene)
-		: MeshRenderer(ent, base, mat, scene)
+	MorphRenderer::MorphRenderer(Entity& ent, Mesh& base, Shader::sptr& shader/*Material& mat*/)
+		: MeshRenderer(ent, base, shader)
 	{
-		thisEnt = &ent;
-		thisMat = &mat;
 		vao = std::make_unique<VertexArrayObject>();
 
 		UpdateData(base, base, 0.0f);
-
-
 	}
-	void MorphRenderer::UpdateData(const Mesh& frame0, const Mesh& frame1, float t)
+	void MorphRenderer::UpdateData(Mesh& frame0, Mesh& frame1, float t)
 	{
-		
-		//TODO: Complete This Function IDK how
+		size_t stride = sizeof(float) * 11;
+
+		vao->ClearVertexBuffers();
+
+		vao->AddVertexBuffer(frame0.GetVBO(), {
+			BufferAttribute(0, 3, GL_FLOAT, false, stride, NULL, AttribUsage::Position),
+			BufferAttribute(1, 3, GL_FLOAT, false, stride, sizeof(float) * 3, AttribUsage::Color),
+			BufferAttribute(2, 2, GL_FLOAT, false, stride, sizeof(float) * 6, AttribUsage::Texture),
+			BufferAttribute(3, 3, GL_FLOAT, false, stride, sizeof(float) * 8, AttribUsage::Normal)
+			});
+
+		vao->AddVertexBuffer(frame1.GetVBO(), {
+			BufferAttribute(4, 3, GL_FLOAT, false, stride, NULL, AttribUsage::Position),
+			BufferAttribute(5, 3, GL_FLOAT, false, stride, sizeof(float) * 8, AttribUsage::Normal)
+			});
+
+		this->t = t;
 	}
-	void MorphRenderer::Draw()
+	void MorphRenderer::Render()
 	{
 		thisMat->Apply();
 
 		auto& trans = thisEnt->Get<Transform>();
 
-		thisScene->RenderVAO(thisScene->GetShader(), *thisMesh, thisScene->GetCamera().Get<Camera>(), trans.GetModelMatrix());
+		/*thisScene->GetShader()->SetUniform("MorphT", t);*/
 
-		thisScene->GetShader()->SetUniform("u_MorphT", t);
+		vao->Render();
 	}
 }

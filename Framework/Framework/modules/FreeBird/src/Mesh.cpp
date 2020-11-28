@@ -9,6 +9,7 @@
 #include <sstream>
 #include <iostream>
 #include <glad/glad.h>
+#include "MeshRenderer.h"
 
 // Trim from start (in place)
 static inline void ltrim(std::string& s) {
@@ -120,30 +121,12 @@ namespace freebird
             interleaved.push_back(temp_normals[normIndex - 1].z);
         }
 
-        makeVAO();
-    }
-
-
-    VertexArrayObject::sptr Mesh::makeVAO()
-    {
-        vao = VertexArrayObject::Create();
-        VertexBuffer::sptr vbo = VertexBuffer::Create();
+        vbo = VertexBuffer::Create();
         vbo->LoadData(interleaved.data(), interleaved.size());
-
-        size_t stride = sizeof(float) * 11;
-
-        vao->AddVertexBuffer(vbo, {
-        BufferAttribute(0, 3, GL_FLOAT, false, stride, NULL),
-        BufferAttribute(1, 3, GL_FLOAT, false, stride, sizeof(float) * 3),
-        BufferAttribute(2, 2, GL_FLOAT, false, stride, sizeof(float) * 6),
-        BufferAttribute(3, 3, GL_FLOAT, false, stride, sizeof(float) * 8)
-            });
-
-        return vao;    
     }
 
-    void Mesh::Render()
+    VertexBuffer::sptr Mesh::GetVBO()
     {
-        vao->Render();
+        return vbo;
     }
 }
