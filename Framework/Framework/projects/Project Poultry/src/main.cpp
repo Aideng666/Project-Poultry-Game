@@ -46,7 +46,7 @@ void SetActiveScene(int sceneNum)
 int main()
 {
 
-	if (!(window = Application::Init("Project Poultry", 800, 800)))
+	if (!(window = Application::Init("Project Poultry", 1200, 1000)))
 	{
 		return 1;
 	}
@@ -58,7 +58,7 @@ int main()
 	scenes.push_back(new Level2("Level 2", window));
 	scenes.push_back(new Level3("Level 3", window));
 
-	SetActiveScene(1);
+	SetActiveScene(0);
 	
 	//Calculates our timer
 	Application::Tick();
@@ -105,8 +105,6 @@ int main()
 
 	//Cleans up the window and glfw
 	Application::Cleanup();
-
-	currentScene->ShutdownImGui();
 
 	Logger::Uninitialize();
 	return 0;
