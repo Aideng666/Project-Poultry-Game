@@ -24,8 +24,10 @@ namespace freebird
 
 		MorphRenderer() = default;
 
+		VertexArrayObject::sptr MakeVAO(Mesh& mesh);
+
 		void UpdateData(Mesh& frame0, Mesh& frame1, float t);
-		virtual void Render();
+		virtual void Render(Camera& camera, glm::mat4 transform);
 
 	protected:
 

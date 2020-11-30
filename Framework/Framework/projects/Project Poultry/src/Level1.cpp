@@ -6,6 +6,11 @@
 #include <imgui.h>
 #include <AABB.h>
 #include <MeshRenderer.h>
+#include <MorphRenderer.h>
+#include "Texture2DData.h"
+#include "Texture2D.h"
+#include <stb_image.h>
+#include <MorphAnimation.h>
 
 using namespace freebird;
 
@@ -24,6 +29,7 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	wireEnt2 = Entity::Create();
 	leverEnt2 = Entity::Create();
 	doorEnt = Entity::Create();
+	boxEnt = Entity::Create();
 }
 
 void Level1::InitScene()
@@ -38,11 +44,6 @@ void Level1::InitScene()
 
 	totalTime =  distance / speed;
 
-	shader = Shader::Create();
-	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	shader->Link();
-
 	glm::vec3 lightPos = glm::vec3(0.0f, 2.0f, -9.0f);
 	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
 	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
@@ -53,7 +54,77 @@ void Level1::InitScene()
 	float     ambientPow = 0.1f;
 	float     shininess = 4.0f;
 
+	shader = Shader::Create();
+	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	shader->Link();
+
 	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+
+	morphShader = Shader::Create();
+	morphShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
+	morphShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	morphShader->Link();
+
+	SetShaderValues(morphShader, glm::vec3(0.0f, 2.0f, -9.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), 0.05f, 1.0f, 0.2f, glm::vec3(1.0f), 0.1f, 4.0f);
+
+	playerShader = Shader::Create();
+	playerShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
+	playerShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	playerShader->Link();
+
+	SetShaderValues(playerShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+
+	wallShader = Shader::Create();
+	wallShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	wallShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	wallShader->Link();
+
+	SetShaderValues(wallShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+
+	wireShader = Shader::Create();
+	wireShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	wireShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	wireShader->Link();
+
+	SetShaderValues(wireShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+
+	gateShader = Shader::Create();
+	gateShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	gateShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	gateShader->Link();
+
+	SetShaderValues(gateShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+
+	leverShader = Shader::Create();
+	leverShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	leverShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	leverShader->Link();
+
+	SetShaderValues(leverShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+
+	doorShader = Shader::Create();
+	doorShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	doorShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	doorShader->Link();
+
+	SetShaderValues(doorShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+
+	Texture2DData::sptr diffuseMap = Texture2DData::LoadFromFile("Textures/box.bmp");
+	
+	Texture2D::sptr diffuse = Texture2D::Create();
+	diffuse->LoadData(diffuseMap);
+
+	Texture2DDescription desc = Texture2DDescription();
+	desc.Width = 1;
+	desc.Height = 1;
+	desc.Format = InternalFormat::RGB8;
+	Texture2D::sptr texture2 = Texture2D::Create(desc);
+	texture2->Clear();
+
+	material.Albedo = diffuse;
+	material.Shininess = 4.0;
+
 
 	//Set Up Camera
 	auto& camera = camEnt.Add<Camera>();
@@ -62,6 +133,8 @@ void Level1::InitScene()
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
+
+
 
 	//Transforms
 	auto& groundTrans = ground.Add<Transform>();
@@ -104,6 +177,9 @@ void Level1::InitScene()
 	doorTrans.SetPosition(glm::vec3(0.0f, 1.0f, -10.0f));
 	doorTrans.SetRotationY(90.0f);
 
+	auto& boxTrans = boxEnt.Add<Transform>();
+	boxTrans.SetPosition(glm::vec3(0.0f, 2.0f, 5.0f));
+
 	//Gates
 	auto& andGate = andEnt.Add<AndGate>(wireEnt, wireEnt2, doorEnt);
 
@@ -136,18 +212,30 @@ void Level1::InitScene()
 	Mesh lev("Models/invalid.obj", glm::vec3(0.0f, 1.0f, 0.0f));
 	Mesh wir("Models/invalid.obj", glm::vec3(0.0f, 0.0f, 1.0f));
 	Mesh doorM("Models/invalid.obj", glm::vec3(1.0f, 0.0f, 1.0f));
+	Mesh morphTemp("Models/morph01.obj");
+	morph0 = std::make_unique<Mesh>("Models/morph01.obj");
+	morph1 = std::make_unique<Mesh>("Models/morph02.obj");
 
-	auto& playerMesh = mainPlayer.Add<MeshRenderer>(mainPlayer, monkey, shader);
-	auto& groundMesh = ground.Add<MeshRenderer>(ground, test, shader);
-	auto& leftMesh = leftWall.Add<MeshRenderer>(leftWall, test, shader);
-	auto& rightMesh = rightWall.Add<MeshRenderer>(rightWall, test, shader);
-	auto& backMesh = backWall.Add<MeshRenderer>(backWall, test, shader);
-	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, gate, shader);
-	auto& leverMesh = leverEnt.Add<MeshRenderer>(leverEnt, lev, shader);
-	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, wir, shader);
-	auto& leverMesh2 = leverEnt2.Add<MeshRenderer>(leverEnt2, lev, shader);
-	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, wir, shader);
-	auto& doorMesh = doorEnt.Add<MeshRenderer>(doorEnt, doorM, shader);
+	morphFrames.push_back(std::move(morph0));
+	morphFrames.push_back(std::move(morph1));
+	
+	auto& boxMorph = boxEnt.Add<MorphRenderer>(boxEnt, morphTemp, morphShader);
+	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, monkey, playerShader);
+	auto& groundMesh = ground.Add<MeshRenderer>(ground, test, wallShader);
+	auto& leftMesh = leftWall.Add<MeshRenderer>(leftWall, test, wallShader);
+	auto& rightMesh = rightWall.Add<MeshRenderer>(rightWall, test, wallShader);
+	auto& backMesh = backWall.Add<MeshRenderer>(backWall, test, wallShader);
+	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, gate, gateShader);
+	auto& leverMesh = leverEnt.Add<MeshRenderer>(leverEnt, lev, leverShader);
+	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, wir, wireShader);
+	auto& leverMesh2 = leverEnt2.Add<MeshRenderer>(leverEnt2, lev, leverShader);
+	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, wir, wireShader);
+	auto& doorMesh = doorEnt.Add<MeshRenderer>(doorEnt, doorM, doorShader);
+
+
+	auto& boxAnimator = boxEnt.Add<MorphAnimation>(boxEnt);
+	boxAnimator.SetTime(0.5f);
+	boxAnimator.SetFrames(morphFrames);
 
 #pragma region Entity ImGui Editor
 	glm::vec3 position = playerTrans.GetPosition();
@@ -478,7 +566,6 @@ void Level1::Update(float dt)
 
 	shader->SetUniform("u_Position", currentPos);
 
-
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
 	auto& groundTrans = ground.Get<Transform>();
@@ -491,6 +578,7 @@ void Level1::Update(float dt)
 	auto& leverTrans2 = leverEnt2.Get<Transform>();
 	auto& wireTrans2 = wireEnt2.Get<Transform>();
 	auto& doorTrans = doorEnt.Get<Transform>();
+	auto& boxTrans = boxEnt.Get<Transform>();
 
 
 	backTrans.SetPositionZ(-10.4f);
@@ -509,7 +597,8 @@ void Level1::Update(float dt)
 	auto& camera = camEnt.Get<Camera>();
 
 	//Meshes
-	auto& meshMain = mainPlayer.Get<MeshRenderer>();
+	auto& boxMesh = boxEnt.Get<MorphRenderer>();
+	auto& meshMain = mainPlayer.Get<MorphRenderer>();
 	auto& groundMesh = ground.Get<MeshRenderer>();
 	auto& leftMesh = leftWall.Get<MeshRenderer>();
 	auto& rightMesh = rightWall.Get<MeshRenderer>();
@@ -535,6 +624,7 @@ void Level1::Update(float dt)
 	glm::mat4 transformWire2 = wireTrans2.GetModelMatrix();
 	glm::mat4 transformLever2 = leverTrans2.GetModelMatrix();
 	glm::mat4 transformDoor = doorTrans.GetModelMatrix();
+	glm::mat4 transformBox = boxTrans.GetModelMatrix();
 
 	if (camera.GetPosition().z - playerTrans.GetPositionZ() < 7.5f)
 		camClose = true;
@@ -613,36 +703,45 @@ void Level1::Update(float dt)
 	}
 #pragma endregion
 
+
 #pragma region Renders
 
-	shader->Bind();
 
-	meshMain.Render(camera, transform);
+	morphShader->Bind();
+	boxMesh.Render(camera, transformBox);
+
+	wallShader->Bind();
 	groundMesh.Render(camera, transformGround);
 	leftMesh.Render(camera, transformLeft);
 	rightMesh.Render(camera, transformRight);
 	backMesh.Render(camera, transformBack);
+
+	wireShader->Bind();
 	wireMesh.Render(camera, transformWire);
 	wireMesh2.Render(camera, transformWire2);
+
+	leverShader->Bind();
 	leverMesh.Render(camera, transformLever);
 	leverMesh2.Render(camera, transformLever2);
+
+	gateShader->Bind();
 	gateMesh.Render(camera, transformGate);
+
+	doorShader->Bind();
 	doorMesh.Render(camera, transformDoor);
 
+	playerShader->Bind();
 
-	//RenderVAO(shader, meshMain, camera, transform);
-	//RenderVAO(shader, groundMesh, camera, transformGround);
-	//RenderVAO(shader, leftMesh, camera, transformLeft);
-	//RenderVAO(shader, rightMesh, camera, transformRight);
-	//RenderVAO(shader, backMesh, camera, transformBack);
-	//RenderVAO(shader, wireMesh, camera, transformWire);
-	//RenderVAO(shader, wireMesh2, camera, transformWire2);
-	//RenderVAO(shader, leverMesh, camera, transformLever);
-	//RenderVAO(shader, leverMesh2, camera, transformLever2);
-	//RenderVAO(shader, gateMesh, camera, transformGate);
-	//RenderVAO(shader, doorMesh, camera, transformDoor);
-#pragma endregion	
+	playerShader->SetUniform("s_Diffuse", 0);
+	material.Albedo->Bind(0);
+	playerShader->SetUniform("u_Shininess", material.Shininess);
 
+	meshMain.Render(camera, transform);
+
+	material.Albedo->UnBind(0);
+#pragma endregion
+
+	boxEnt.Get<MorphAnimation>().Update(dt);
 	leverEnt.Get<Lever>().Update();
 	leverEnt2.Get<Lever>().Update();
 	wireEnt.Get<Wire>().Update();

@@ -4,6 +4,11 @@
 
 namespace freebird
 {
+	MorphAnimation::MorphData::MorphData()
+	{
+		frameTime = 1.0f;
+	}
+
 	MorphAnimation::MorphAnimation(Entity& ent)
 	{
 		data = std::make_unique<MorphData>();
@@ -57,11 +62,6 @@ namespace freebird
 	void MorphAnimation::SetTime(float time)
 	{
 		data->frameTime = time;
-	}
-
-	MorphAnimation::MorphData::MorphData()
-	{
-		frameTime = 1.0f;
 	}
 
 }

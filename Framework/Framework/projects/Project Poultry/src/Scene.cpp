@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include <iostream>
+#include <stb_image.h>
 
 using namespace freebird;
 
@@ -154,4 +155,16 @@ void Scene::SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos, glm::vec3 
 	shader->SetUniform("u_AmbientCol", ambientCol);
 	shader->SetUniform("u_AmbientStrength", ambientPow);
 	shader->SetUniform("u_Shininess", shininess);
+}
+
+void Scene::LoadTexImage()
+{
+		int channels;
+		stbi_set_flip_vertically_on_load(true);
+
+		image = stbi_load(fileName, &width, &height, &channels, 0);
+
+		if (image)
+			std::cout << "Image loaded: " << width << " x " << height << std::endl;
+		else std::cout << "Failed to load image" << std::endl;
 }

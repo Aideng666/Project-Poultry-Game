@@ -16,7 +16,7 @@ namespace freebird
 	{
 	public:
 		Mesh(const std::string& fileName, const glm::vec3& inColor = glm::vec3(1.0f));
-		Mesh();
+		Mesh() = default;
 		VertexArrayObject::sptr vao;
 
 		VertexBuffer::sptr GetVBO();
@@ -24,6 +24,7 @@ namespace freebird
 	protected:
 		std::vector<float> interleaved;
 		std::vector<unsigned int> vertIndices, uvIndices, normIndices; 
+
 
 		VertexBuffer::sptr vbo;
 	};
