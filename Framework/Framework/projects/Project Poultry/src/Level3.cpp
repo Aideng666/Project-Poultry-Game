@@ -511,79 +511,46 @@ void Level3::InitScene()
 	points.push_back(glm::vec3(-3.0f, 5.0f, 0.0f));
 	points.push_back(glm::vec3(3.0f, 5.0f, 0.0f));
 
-	sampleInterval = 1.0f / float(samples);
+
+	segmentTime = 1.0f;
 
 	if (points.size() > 0)
 		currentPos = points[0];
 
-	if (points.size() >= 4)
-		Reparameterize();
-
+	StartSegment(0);
 }
 
 void Level3::Update(float dt)
 {
-
 	timer += dt;
 
-	if (points.size() >= 4 && totalCurveLength > 0.0f)
+	if (points.size() >= 4)
 	{
+		t = glm::min(t + dt / segmentTime, 1.0f);
 
-		distanceTravelled = speed * dt;
+		int p1 = currentIndex;
 
-		if (distanceTravelled >= totalCurveLength)
-		{
-			currentSegment = 0;
-			currentSample = 0;
+		int p0 = currentIndex - 1;
 
-			while (distanceTravelled > totalCurveLength)
-			{
-				distanceTravelled -= totalCurveLength;
-			}
-		}
-
-		bool correctIndices = curveTable[currentSegment].samples[currentSample + 1].accumulated > distanceTravelled;
-
-		while (!correctIndices)
-		{
-			++currentSample;
-
-			if (currentSample >= samples)
-			{
-				currentSample = 0;
-				++currentSegment;
-
-				if (currentSegment >= curveTable.size())
-					currentSegment = 0;
-			}
-
-			correctIndices = curveTable[currentSegment].samples[currentSample + 1].accumulated > distanceTravelled;
-		}
-
-		float insideT = InverseLerp(distanceTravelled,
-			curveTable[currentSegment].samples[currentSample].accumulated,
-			curveTable[currentSegment].samples[currentSample + 1].accumulated);
-
-
-		float t = glm::mix(curveTable[currentSegment].samples[currentSample].t,
-			curveTable[currentSegment].samples[currentSample + 1].t,
-			insideT);
-
-		int p1 = currentSegment;
-
-		int p0 = p1 - 1;
 		if (p0 < 0)
+		{
 			p0 = points.size() - 1;
+		}
 
-		int p2 = p1 + 1;
+		int p2 = currentIndex + 1;
+
 		if (p2 >= points.size())
 			p2 = 0;
 
 		int p3 = p2 + 1;
+
 		if (p3 >= points.size())
 			p3 = 0;
 
 		currentPos = Catmull(points[p0], points[p1], points[p2], points[p3], t);
+
+		if (t >= 1.0f)
+			StartSegment(currentIndex + 1);
 	}
 
 	shader->SetUniform("u_Position", currentPos);
@@ -822,58 +789,14 @@ float Level3::InverseLerp(float p, float p0, float p1)
 	return (p - p0) / (p1 - p0);
 }
 
-void Level3::Reparameterize()
+void Level3::StartSegment(int startInd)
 {
+	currentIndex = startInd;
 
-	curveTable.clear();
+	if (currentIndex >= points.size())
+		currentIndex = 0;
 
-	float totalAccumulated = 0.0f;
-	int p0, p1, p2, p3;
-
-	for (int i = 0; i < points.size(); ++i)
-	{
-		p1 = i;
-
-		p0 = p1 - 1;
-		if (p0 < 0)
-			p0 = points.size() - 1;
-
-		p2 = p1 + 1;
-		if (p2 >= points.size())
-			p2 = 0;
-
-		p3 = p2 + 1;
-		if (p3 >= points.size())
-			p3 = 0;
-
-		Segment seg = Segment();
-		seg.samples = sampleVec;
-
-		Sample start = Sample();
-		start.t = 0.0f;
-		start.pt = points[i];
-		start.accumulated = totalAccumulated;
-
-		seg.samples.push_back(start);
-
-		for (int j = 1; j <= samples; ++j)
-		{
-			float sampleT = j * sampleInterval;
-
-			Sample s = Sample();
-			s.t = sampleT;
-			s.pt = Catmull(points[p0], points[p1], points[p2], points[p3], sampleT);
-
-			totalAccumulated = glm::length(seg.samples[j - 1].pt - s.pt);
-			s.accumulated = totalAccumulated;
-
-			seg.samples.push_back(s);
-
-		}
-
-		curveTable.push_back(seg);
-	}
-
-	totalCurveLength = totalAccumulated;
+	t = 0.0f;
 }
+
 

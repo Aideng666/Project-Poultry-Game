@@ -34,10 +34,4 @@ namespace freebird
 		size_t frame;
 		Entity* thisEnt;
 	};
-
-
-
-
-
-
 }

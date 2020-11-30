@@ -4,6 +4,8 @@ layout(location = 1) in vec3 inColor;
 layout(location = 2) in vec2 inUV;
 layout(location = 3) in vec3 inNormal;
 
+uniform sampler2D s_Diffuse;
+
 uniform vec3  u_AmbientCol;
 uniform float u_AmbientStrength;
 
@@ -87,11 +89,13 @@ vec3 Lerp(vec3 p0, vec3 p1, float t)
 
 void main() { 
 
+	vec4 textureColor = texture(s_Diffuse, inUV);
+
 	float strength  = max(min(((2 * cos(u_Time * radians(180.0f))) + (4 * sin((u_Time * radians(180.0f)) / 4)) + (3 *cos(u_Time * radians(180.0f) * 3))) + (4 * sin(u_Time * radians(180.0f) * 3)), 1), 0);
 
 	vec3 result = CreateSpotlight(u_Position, u_LightDir, strength, cos(radians(60.0f)));
 
 	result += CreateDirectionLight(u_LightPos, u_SpecularLightStrength2);
 
-	frag_color = vec4(result  * inColor, 1.0);
+	frag_color = vec4(result  * inColor * textureColor.rgb, 1.0);
 }

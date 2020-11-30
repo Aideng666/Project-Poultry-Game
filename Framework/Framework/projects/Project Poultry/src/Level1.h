@@ -29,8 +29,18 @@ private:
 	Entity wireEnt, wireEnt2;
 	Entity leverEnt, leverEnt2;
 	Entity doorEnt;
+	Entity boxEnt;
+
+	Shader::sptr playerShader, wallShader, gateShader, wireShader, doorShader, leverShader;
+
+	std::vector<std::unique_ptr<Mesh>> morphFrames;
 
 	GLfloat time = 0.0f;
+
+	Mat material;
+
+	std::unique_ptr<Mesh> morph0;
+	std::unique_ptr<Mesh> morph1;
 	
 	float t = 0.0f;
 	float totalTime;

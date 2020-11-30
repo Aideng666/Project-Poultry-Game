@@ -9,7 +9,6 @@
 #include <sstream>
 #include <iostream>
 #include <glad/glad.h>
-#include "MeshRenderer.h"
 
 // Trim from start (in place)
 static inline void ltrim(std::string& s) {

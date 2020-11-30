@@ -8,6 +8,7 @@
 #include "AndGate.h"
 #include "OrGate.h"
 #include "NotGate.h"
+#include "Texture2D.h"
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
 #include "imgui.h"
@@ -53,12 +54,20 @@ public:
 		float lightAmbientPow = 0.f, float lightSpecularPow = 0.f, float lightSpecularPow2 = 0.f,
 		glm::vec3 ambientCol = glm::vec3(0.f, 0.f, 0.f), float ambientPow = 0.f, float shininess = 0.f);
 
+	struct Mat
+	{
+		Texture2D::sptr Albedo;
+		float Shininess;
+	};
+
+	void LoadTexImage();
+
 protected:
 
 	entt::registry* scene = nullptr;
 	std::string name = " ";
 
-	Shader::sptr shader;
+	Shader::sptr shader, morphShader;
 
 	GLFWwindow* window;
 
@@ -69,4 +78,8 @@ protected:
 	std::vector<Entity> ents;
 
 	bool levelComplete = false;
+
+	unsigned char* image;
+	const char* fileName;
+	int width, height;
 };

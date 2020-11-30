@@ -25,7 +25,7 @@ public:
 
 	float InverseLerp(float p, float p0, float p1);
 
-	void Reparameterize();
+	void StartSegment(int startInd);
 
 	struct Sample
 	{
@@ -53,22 +53,10 @@ private:
 
 	std::vector<glm::vec3> points;
 
-	float speed = 10.0f;
+	float segmentTime;
 
-	int samples = 8;
-
-	float sampleInterval;
-
-	int currentSegment = 0;
-	int currentSample = 0;
-
-	float distanceTravelled = 0.0f;
-
-	std::vector<Segment> curveTable;
-
-	std::vector<Sample> sampleVec;
-
-	float totalCurveLength = 0.0f;
+	int currentIndex = 0;
+	float t;
 
 	glm::vec3 currentPos;
 
