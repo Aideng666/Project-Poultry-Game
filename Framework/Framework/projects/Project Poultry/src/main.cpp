@@ -41,6 +41,9 @@ void SetActiveScene(int sceneNum)
 	ECS = scenes[sceneNum]->GetScene();
 	currentScene = scenes[sceneNum];
 	level = sceneNum + 1;
+
+	if (level > 3)
+		level = 1;
 }
 
 int main()
@@ -58,7 +61,7 @@ int main()
 	scenes.push_back(new Level2("Level 2", window));
 	scenes.push_back(new Level3("Level 3", window));
 
-	SetActiveScene(0);
+	SetActiveScene(1);
 	
 	//Calculates our timer
 	Application::Tick();

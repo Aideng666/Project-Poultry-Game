@@ -25,8 +25,9 @@ private:
 	Entity mainPlayer;
 	Entity floorEnt;
 	Entity leftEnt, rightEnt, backEnt;
-	Entity andEnt, andEnt2;
-	Entity wireEnt, wireEnt2, wireEnt3, wireEnt4, wireEnt5;
+	Entity andEnt, andEnt2, andEnt3;
+	Entity notEnt;
+	Entity wireEnt, wireEnt2, wireEnt3, wireEnt4, wireEnt5, wireEnt6, wireEnt7;
 	Entity buttonEnt, buttonEnt2, buttonEnt3;
 	Entity doorEnt;
 	Entity coilEnt;

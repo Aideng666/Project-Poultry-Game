@@ -75,11 +75,11 @@
 
 using namespace freebird;
 
-class MainMenu : public Scene
+class Level2 : public Scene
 {
 public:
 
-	MainMenu(std::string sceneName, GLFWwindow* wind);
+	Level2(std::string sceneName, GLFWwindow* wind);
 
 	void InitScene();
 
