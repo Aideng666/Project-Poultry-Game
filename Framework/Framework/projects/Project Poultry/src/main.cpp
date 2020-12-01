@@ -41,12 +41,15 @@ void SetActiveScene(int sceneNum)
 	ECS = scenes[sceneNum]->GetScene();
 	currentScene = scenes[sceneNum];
 	level = sceneNum + 1;
+
+	if (level > 3)
+		level = 1;
 }
 
 int main()
 {
 
-	if (!(window = Application::Init("Project Poultry", 800, 800)))
+	if (!(window = Application::Init("Project Poultry", 1200, 1000)))
 	{
 		return 1;
 	}
@@ -105,8 +108,6 @@ int main()
 
 	//Cleans up the window and glfw
 	Application::Cleanup();
-
-	currentScene->ShutdownImGui();
 
 	Logger::Uninitialize();
 	return 0;

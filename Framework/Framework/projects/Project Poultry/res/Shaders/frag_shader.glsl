@@ -95,7 +95,7 @@ void main() {
 
 	vec3 result = CreateSpotlight(u_Position, u_LightDir, strength, cos(radians(60.0f)));
 
-	result += CreateDirectionLight(u_LightPos, u_SpecularLightStrength2);
+	result += CreateDirectionLight(u_LightPos, u_SpecularLightStrength);
 
-	frag_color = vec4(result  * inColor * textureColor.rgb, 1.0);
+	frag_color = vec4(result  * inColor /** textureColor.rgb*/, 1.0);
 }
