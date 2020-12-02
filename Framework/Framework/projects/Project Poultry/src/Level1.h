@@ -114,6 +114,20 @@ private:
 
 	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, wireMat, coilMat, gateMat;
 
+	std::vector<std::unique_ptr<Mesh>> doorFrames;
+
+	std::unique_ptr<Mesh> door0;
+	std::unique_ptr<Mesh> door1;
+	std::unique_ptr<Mesh> door2;
+	std::unique_ptr<Mesh> door3;
+	std::unique_ptr<Mesh> door4;
+	std::unique_ptr<Mesh> door5;
+	std::unique_ptr<Mesh> door6;
+	std::unique_ptr<Mesh> door7;
+	std::unique_ptr<Mesh> door8;
+	std::unique_ptr<Mesh> door9;
+	std::unique_ptr<Mesh> door10;
+
 	ParticleParam particleData;
 
 	float t = 0.0f;

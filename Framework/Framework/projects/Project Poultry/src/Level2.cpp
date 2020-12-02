@@ -995,7 +995,7 @@ void Level2::InitScene()
 	Mesh drumstick("Models/Drumstick.obj");
 	Mesh floor("Models/Floor.obj");
 	Mesh wall("Models/Wall.obj");
-	Mesh doorM("Models/Door.obj");
+	Mesh doorM("Models/DoorFrames/Door0.obj");
 	Mesh pipe("Models/Level1Pipe.obj", glm::vec3(0.6f, 0.45f, 0.0f));
 	Mesh buttonM("Models/Button.obj");
 	Mesh wireM1("Models/Level2Wire1.obj", glm::vec3(1.0f, 0.0f, 0.0f));
@@ -1011,6 +1011,30 @@ void Level2::InitScene()
 	Mesh gate("Models/AndGate.obj", glm::vec3(0.0f, 0.0f, 1.0f));
 	Mesh coil("Models/Coil.obj", glm::vec3(1.0f, 0.0f, 0.0f));
 	Mesh coilP("Models/Coil.obj", glm::vec3(0.0f, 1.0f, 0.0f));
+
+	door0 = std::make_unique<Mesh>("Models/DoorFrames/Door0.obj");
+	door1 = std::make_unique<Mesh>("Models/DoorFrames/Door1.obj");
+	door2 = std::make_unique<Mesh>("Models/DoorFrames/Door2.obj");
+	door3 = std::make_unique<Mesh>("Models/DoorFrames/Door3.obj");
+	door4 = std::make_unique<Mesh>("Models/DoorFrames/Door4.obj");
+	door5 = std::make_unique<Mesh>("Models/DoorFrames/Door5.obj");
+	door6 = std::make_unique<Mesh>("Models/DoorFrames/Door6.obj");
+	door7 = std::make_unique<Mesh>("Models/DoorFrames/Door7.obj");
+	door8 = std::make_unique<Mesh>("Models/DoorFrames/Door8.obj");
+	door9 = std::make_unique<Mesh>("Models/DoorFrames/Door9.obj");
+	door10 = std::make_unique<Mesh>("Models/DoorFrames/Door10.obj");
+
+	doorFrames.push_back(std::move(door0));
+	doorFrames.push_back(std::move(door1));
+	doorFrames.push_back(std::move(door2));
+	doorFrames.push_back(std::move(door3));
+	doorFrames.push_back(std::move(door4));
+	doorFrames.push_back(std::move(door5));
+	doorFrames.push_back(std::move(door6));
+	doorFrames.push_back(std::move(door7));
+	doorFrames.push_back(std::move(door8));
+	doorFrames.push_back(std::move(door9));
+	doorFrames.push_back(std::move(door10));
 
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, drumstick, playerShader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, floor, floorShader);
@@ -1032,9 +1056,13 @@ void Level2::InitScene()
 	auto& wireMeshP3 = wirePowered3.Add<MeshRenderer>(wirePowered3, wire3Power, wireShader);
 	auto& wireMeshP4 = wirePowered4.Add<MeshRenderer>(wirePowered4, wire4Power, wireShader);
 	auto& wireMeshP5 = wirePowered5.Add<MeshRenderer>(wirePowered5, wire5Power, wireShader);
-	auto& doorMesh = doorEnt.Add<MeshRenderer>(doorEnt, doorM, doorShader);
+	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, doorM, doorShader);
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, coil, untexturedShader);
 	auto& coilMeshP = coilPowered.Add<MeshRenderer>(coilPowered, coilP, untexturedShader);
+
+	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
+	doorAnimator.SetTime(0.5f);
+	doorAnimator.SetFrames(doorFrames);
 
 	auto& camera = camEnt.Add<Camera>();
 
@@ -1116,7 +1144,7 @@ void Level2::Update(float dt)
 	auto& leftMesh = leftEnt.Get<MeshRenderer>();
 	auto& rightMesh = rightEnt.Get<MeshRenderer>();
 	auto& backMesh = backEnt.Get<MeshRenderer>();
-	auto& doorMesh = doorEnt.Get<MeshRenderer>();
+	auto& doorMesh = doorEnt.Get<MorphRenderer>();
 	auto& buttonMesh = buttonEnt.Get<MeshRenderer>();
 	auto& buttonMesh2 = buttonEnt2.Get<MeshRenderer>();
 	auto& buttonMesh3 = buttonEnt3.Get<MeshRenderer>();
@@ -1352,6 +1380,7 @@ void Level2::Update(float dt)
 	wireEnt5.Get<Wire>().Update();
 	andEnt.Get<AndGate>().Update();
 	andEnt2.Get<AndGate>().Update();
+	doorEnt.Get<MorphAnimation>().Update(dt);
 
 	if (doorEnt.Get<AABB>().GetComplete())
 		levelComplete = true;

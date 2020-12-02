@@ -55,22 +55,25 @@ namespace freebird
 		if (thisEnt.Has<Door>() && !thisEnt.Get<Door>().GetOpen())
 			levelComplete = false;
 
+		if (thisEnt.Has<AndGate>())
+			std::cout << thisEnt.Get<Transform>().GetPositionX() << std::endl;
+
 		//OBJECT COLLISION
-		if ((thisEnt.Has<AndGate>() || thisEnt.Has<NotGate>()) && nextPos.x - thisEnt.Get<Transform>().GetPositionX() < 5.0f
+		if (thisEnt.Has<AndGate>() && nextPos.x - thisEnt.Get<Transform>().GetPositionX() < 5.0f
 			&& nextPos.x - thisEnt.Get<Transform>().GetPositionX() > 0.0f && playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() < 2.5f
 			&& playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() > -2.5f)
 			playerEnt.Get<Transform>().SetCanMoveLeft(false);
 		else
 			playerEnt.Get<Transform>().SetCanMoveLeft(true);
 
-		if ((thisEnt.Has<AndGate>() || thisEnt.Has<NotGate>()) && thisEnt.Get<Transform>().GetPositionX() - nextPos.x < 5.0f
+		if (thisEnt.Has<AndGate>() && thisEnt.Get<Transform>().GetPositionX() - nextPos.x < 5.0f
 			&& thisEnt.Get<Transform>().GetPositionX() - nextPos.x > 0.0f && playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() < 2.5f
 			&& playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() > -2.5f)
 			playerEnt.Get<Transform>().SetCanMoveRight(false);
 		else
 			playerEnt.Get<Transform>().SetCanMoveRight(true);
 
-		if ((thisEnt.Has<AndGate>() || thisEnt.Has<NotGate>()) && nextPos.z - thisEnt.Get<Transform>().GetPositionZ() < 3.0f
+		if (thisEnt.Has<AndGate>() && nextPos.z - thisEnt.Get<Transform>().GetPositionZ() < 3.0f
 			&& nextPos.z - thisEnt.Get<Transform>().GetPositionZ() > 0.0f
 			&& playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() < 4.5f
 			&& playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() > -4.5f)
@@ -78,7 +81,7 @@ namespace freebird
 		else
 			playerEnt.Get<Transform>().SetCanMoveUp(true);
 
-		if ((thisEnt.Has<AndGate>() || thisEnt.Has<NotGate>()) && thisEnt.Get<Transform>().GetPositionZ() - nextPos.z < 3.0f
+		if (thisEnt.Has<AndGate>() && thisEnt.Get<Transform>().GetPositionZ() - nextPos.z < 3.0f
 			&& thisEnt.Get<Transform>().GetPositionZ() - nextPos.z > 0.0f
 			&& playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() < 4.5f
 			&& playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() > -4.5f)
