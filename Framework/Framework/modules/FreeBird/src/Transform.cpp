@@ -47,6 +47,46 @@ namespace freebird
 		return glm::mat4(glm::translate(glm::mat4(1.0f), position) * glm::toMat4(glm::normalize(rotation)) * glm::scale(glm::mat4(1.0f), scale));	
 	}
 
+	bool Transform::GetCanMoveLeft()
+	{
+		return canMoveLeft;
+	}
+
+	void Transform::SetCanMoveLeft(bool move)
+	{
+		canMoveLeft = move;
+	}
+
+	bool Transform::GetCanMoveRight()
+	{
+		return canMoveRight;
+	}
+
+	void Transform::SetCanMoveRight(bool move)
+	{
+		canMoveRight = move;
+	}
+
+	bool Transform::GetCanMoveUp()
+	{
+		return canMoveUp;
+	}
+
+	void Transform::SetCanMoveUp(bool move)
+	{
+		canMoveUp = move;
+	}
+
+	bool Transform::GetCanMoveDown()
+	{
+		return canMoveDown;
+	}
+
+	void Transform::SetCanMoveDown(bool move)
+	{
+		canMoveDown = move;
+	}
+
 	void Transform::SetPosition(glm::vec3 newPos)
 	{
 		position = newPos;

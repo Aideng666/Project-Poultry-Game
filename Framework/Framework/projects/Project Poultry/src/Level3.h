@@ -113,15 +113,16 @@ private:
 	Entity andEnt, andEnt2, andEnt3;
 	Entity notEnt;
 	Entity wireEnt, wireEnt2, wireEnt3, wireEnt4, wireEnt5, wireEnt6, wireEnt7;
+	Entity wirePowered, wirePowered2, wirePowered3, wirePowered4, wirePowered5, wirePowered6, wirePowered7;
 	Entity buttonEnt, buttonEnt2, buttonEnt3;
 	Entity doorEnt;
-	Entity coilEnt;
+	Entity coilEnt, coilPowered;
 
-	Shader::sptr playerShader, levelShader, gateShader, wireShader, doorShader, buttonShader;
+	Shader::sptr playerShader, levelShader, floorShader, gateShader, wireShader, doorShader, buttonShader, particleShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat;
+	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, wireMat, coilMat, gateMat;
 
 	float t = 0.0f;
 	float totalTime;

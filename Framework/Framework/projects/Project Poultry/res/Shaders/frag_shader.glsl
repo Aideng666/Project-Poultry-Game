@@ -97,5 +97,5 @@ void main() {
 
 	result += CreateDirectionLight(u_LightPos, u_SpecularLightStrength);
 
-	frag_color = vec4(result  * inColor /** textureColor.rgb*/, 1.0);
+	frag_color = vec4(result  * inColor * textureColor.rgb, 1.0);
 }

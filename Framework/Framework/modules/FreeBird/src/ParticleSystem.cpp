@@ -6,18 +6,17 @@ namespace freebird
 
 	const size_t ParticleSystem::MAX_PARTICLES = 10000;
 
-	ParticleSystem::ParticleSystem(Entity& ent, Material& mat, Scene& scene, const ParticleParam& startParam)
+	ParticleSystem::ParticleSystem(Entity& ent/*, Material& mat*/, const ParticleParam& startParam)
 	{
 		thisEnt = &ent;
-		thisMat = &mat;
-		thisScene = &scene;
+		//thisMat = &mat;
 
 		size_t particleNum = (startParam.maxParticles < MAX_PARTICLES) ? startParam.maxParticles : MAX_PARTICLES;
 		
 		data = std::make_unique<Data>(particleNum, startParam);
 	}
 
-	void ParticleSystem::Update(float dt)
+	void ParticleSystem::Update(float dt, Camera& camera)
 	{
 		data->emissionTimer += dt;
 
@@ -29,7 +28,6 @@ namespace freebird
 			Emit();
 		}
 
-		auto& camera = thisScene->GetCamera().Get<Camera>();
 		auto& trans = thisEnt->Get<Transform>();
 
 		glm::mat4 modelView = camera.GetView() * trans.GetModelMatrix();
@@ -72,16 +70,14 @@ namespace freebird
 
 		Sort();
 	}
-	void ParticleSystem::Draw()
+	void ParticleSystem::Draw(Camera& camera, Shader::sptr& shader)
 	{
 
 		//TODO: Finish The VBO Stuff
 
 		thisMat->Apply();
 
-		auto& camera = thisScene->GetCamera().Get<Camera>();
-
-		thisScene->GetShader()->SetUniformMatrix("u_Projection", camera.GetProjection());
+		shader->SetUniformMatrix("u_Projection", camera.GetProjection());
 
 		data->vao->Render();
 	}
@@ -186,11 +182,36 @@ namespace freebird
 		count = numParticles;
 		param = startParam;
 
+		size_t stride = sizeof(float) * 11;
+
 		//TODO: Finish VBO Stuff
 		positions.resize(count);
+
 		viewPositions.resize(count);
+		VertexBuffer::sptr viewBuffer = VertexBuffer::Create();
+		viewBuffer->LoadData(viewPositions.data(), viewPositions.size());
+
 		sizes.resize(count);
+		VertexBuffer::sptr sizeBuffer = VertexBuffer::Create();
+		sizeBuffer->LoadData(sizes.data(), sizes.size());
+
 		colors.resize(count);
+		VertexBuffer::sptr colorBuffer = VertexBuffer::Create();
+		colorBuffer->LoadData(colors.data(), colors.size());
+
+
+		vao->AddVertexBuffer(viewBuffer, {
+			BufferAttribute(0, 3, GL_FLOAT, false, 0, NULL, AttribUsage::Position)
+			});
+
+		vao->AddVertexBuffer(sizeBuffer, {
+			BufferAttribute(1, 1, GL_FLOAT, false, 0, NULL)
+			});
+
+		vao->AddVertexBuffer(colorBuffer, {
+			BufferAttribute(2, 4, GL_FLOAT, false, 0, NULL, AttribUsage::Color)
+			});
+
 		velocities.resize(count);
 		lifetime.resize(count);
 

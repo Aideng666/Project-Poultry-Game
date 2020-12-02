@@ -47,6 +47,15 @@ namespace freebird
 		//Gets the model matrix
 		glm::mat4 GetModelMatrix();
 
+		bool GetCanMoveLeft();
+		void SetCanMoveLeft(bool move);
+		bool GetCanMoveRight();
+		void SetCanMoveRight(bool move);
+		bool GetCanMoveUp();
+		void SetCanMoveUp(bool move);
+		bool GetCanMoveDown();
+		void SetCanMoveDown(bool move);
+
 
 	private:
 		glm::vec3 position;
@@ -54,5 +63,10 @@ namespace freebird
 		glm::quat rotation;
 		glm::vec3 eulerRot;
 		glm::mat4 model;
+
+		bool canMoveLeft = true;
+		bool canMoveRight = true;
+		bool canMoveUp = true;
+		bool canMoveDown = true;
 	};
 }
