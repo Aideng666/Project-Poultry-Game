@@ -61,11 +61,11 @@ namespace freebird
 			COLOR = 2
 		};
 
-		ParticleSystem(Entity& ent, Material& mat, Scene& scene, const ParticleParam& startParam);
+		ParticleSystem(Entity& ent/*, Material& mat*/, const ParticleParam& startParam);
 		ParticleSystem() = default;
 
-		void Update(float dt);
-		void Draw();
+		void Update(float dt, Camera& camera);
+		void Draw(Camera& camera, Shader::sptr&);
 
 		void SetMax(int n);
 		void SetLifetime(float n);
@@ -142,7 +142,6 @@ namespace freebird
 
 		Entity* thisEnt;
 		Material* thisMat;
-		Scene* thisScene;
 		std::unique_ptr<Data> data;
 
 		void Emit();

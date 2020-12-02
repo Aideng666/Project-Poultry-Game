@@ -77,6 +77,7 @@
 #include "Lever.h"
 #include <vector>
 #include <iostream>
+#include <ParticleSystem.h>
 
 using namespace freebird;
 
@@ -101,15 +102,19 @@ private:
 	Entity wireEnt, wireEnt2, wireEnt3;
 	Entity buttonEnt, buttonEnt2;
 	Entity doorEnt;
-	Entity coilEnt;
+	Entity coilEnt, coilPowered;
 	Entity pipeEnt;
 	Entity boxEnt;
+	Entity particleEnt;
+	Entity wirePowered, wirePowered2, wirePowered3;
 
-	Shader::sptr playerShader, levelShader, gateShader, wireShader, doorShader, buttonShader;
+	Shader::sptr playerShader, levelShader, floorShader, gateShader, wireShader, doorShader, buttonShader, particleShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat;
+	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, wireMat, coilMat, gateMat;
+
+	ParticleParam particleData;
 
 	float t = 0.0f;
 	float totalTime;

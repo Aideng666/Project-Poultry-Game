@@ -23,6 +23,12 @@ namespace freebird
 		/// </summary>
 		/// <param name="usage">The usage hint for the buffer, default is GL_STATIC_DRAW</param>
 		VertexBuffer(GLenum usage = GL_STATIC_DRAW) : IBuffer(GL_ARRAY_BUFFER, usage) { }
+
+		template <typename T>
+		explicit VertexBuffer(const T* data, size_t count, GLenum usage = GL_STATIC_DRAW) : IBuffer(GL_ARRAY_BUFFER, usage)
+		{
+			LoadData(data, count);
+		}
 	
 		/// <summary>
 		/// Unbinds the current vertex buffer
