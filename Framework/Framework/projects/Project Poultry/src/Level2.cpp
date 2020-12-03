@@ -994,7 +994,7 @@ void Level2::InitScene()
 	auto& door = doorEnt.Add<Door>();
 	door.SetOpen(false);
 
-	Mesh drumstick("Models/ChickenFrames/Walk0.obj");
+	Mesh drumstick("Models/ChickenFrames/Walk1.obj");
 	Mesh floor("Models/Floor.obj");
 	Mesh wall("Models/Wall.obj");
 	Mesh doorM("Models/DoorFrames/Door0.obj");

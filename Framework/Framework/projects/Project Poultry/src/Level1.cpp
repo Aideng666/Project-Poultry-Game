@@ -747,7 +747,7 @@ void Level1::InitScene()
 	//Particle
 	auto& particleSystem = particleEnt.Add<ParticleSystem>(particleEnt, particleData);
 
-	Mesh drumstick("Models/ChickenFrames/Walk0.obj");
+	Mesh drumstick("Models/ChickenFrames/Walk1.obj");
 	Mesh floor("Models/Floor.obj");
 	Mesh wall("Models/Wall.obj");
 	Mesh doorM("Models/DoorFrames/Door0.obj");
