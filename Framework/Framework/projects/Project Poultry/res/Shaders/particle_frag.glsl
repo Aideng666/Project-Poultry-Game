@@ -9,7 +9,9 @@ uniform sampler2D u_Diffuse;
 
 void main()
 {
-	//vec4 textureCol = texture(albedo, inUV);
+	//vec4 textureCol = texture(u_Diffuse, inUV);
 
-	frag_color = vec4(inColor /** textureCol*/);
+	//frag_color = vec4(inColor /** textureCol*/);
+
+	frag_color = vec4(1.0f, 1.0f, 0.0f, 1.0f);
 }

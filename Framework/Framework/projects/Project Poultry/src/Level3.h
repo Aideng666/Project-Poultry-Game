@@ -122,9 +122,9 @@ private:
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, wireMat, coilMat, gateMat;
+	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, wireMat, coilMat, gateMat, partMat;
 
-	std::vector<std::unique_ptr<Mesh>> doorFrames;
+	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames;
 
 	std::unique_ptr<Mesh> door0;
 	std::unique_ptr<Mesh> door1;
@@ -137,6 +137,21 @@ private:
 	std::unique_ptr<Mesh> door8;
 	std::unique_ptr<Mesh> door9;
 	std::unique_ptr<Mesh> door10;
+
+	std::unique_ptr<Mesh> walk1;
+	std::unique_ptr<Mesh> walk2;
+	std::unique_ptr<Mesh> walk3;
+	std::unique_ptr<Mesh> walk4;
+	std::unique_ptr<Mesh> walk5;
+	std::unique_ptr<Mesh> walk6;
+	std::unique_ptr<Mesh> walk7;
+	std::unique_ptr<Mesh> walk8;
+	std::unique_ptr<Mesh> walk9;
+	std::unique_ptr<Mesh> walk10;
+	std::unique_ptr<Mesh> walk11;
+	std::unique_ptr<Mesh> walk12;
+	std::unique_ptr<Mesh> walk13;
+	std::unique_ptr<Mesh> walk14;
 
 	float t = 0.0f;
 	float totalTime;

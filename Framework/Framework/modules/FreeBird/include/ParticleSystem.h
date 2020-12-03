@@ -37,9 +37,8 @@ namespace freebird
 			maxParticles = 50;
 			lifetime = 1.5f;
 			startSize = 0.5f;
-			endSize = 0.05f;
+			//endSize = 0.05f;
 			startSpeed = 1.0f;
-			endSpeed = 1.0f;
 			startColor = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
 			endColor = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
 			emissionRate = 100.0f;
@@ -106,8 +105,9 @@ namespace freebird
 
 		struct Data
 		{
-			std::unique_ptr<VertexArrayObject> vao;
-			std::map<Attributes, std::unique_ptr<VertexBuffer>> vbos;
+			VertexArrayObject::sptr vao;
+
+			std::vector<VertexBuffer::sptr> vbos;
 
 			std::vector<Sorter> sorter;
 

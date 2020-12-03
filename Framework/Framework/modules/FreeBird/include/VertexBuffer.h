@@ -22,12 +22,18 @@ namespace freebird
 		/// Creates a new vertex buffer, with the given usage. Data will still need to be uploaded before it can be used
 		/// </summary>
 		/// <param name="usage">The usage hint for the buffer, default is GL_STATIC_DRAW</param>
-		VertexBuffer(GLenum usage = GL_STATIC_DRAW) : IBuffer(GL_ARRAY_BUFFER, usage) { }
+		VertexBuffer(GLenum usage = GL_STATIC_DRAW) : IBuffer(GL_ARRAY_BUFFER, usage) { 
+			if (usage == GL_DYNAMIC_DRAW || usage == GL_STREAM_DRAW)
+				dynamic = true;
+		}
 
 		template <typename T>
 		explicit VertexBuffer(const T* data, size_t count, GLenum usage = GL_STATIC_DRAW) : IBuffer(GL_ARRAY_BUFFER, usage)
 		{
 			LoadData(data, count);
+
+			if (usage == GL_DYNAMIC_DRAW || usage == GL_STREAM_DRAW)
+				dynamic = true;
 		}
 	
 		/// <summary>

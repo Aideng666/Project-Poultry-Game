@@ -6,6 +6,8 @@
 namespace freebird
 {
 	Camera::Camera() :
+		_isOrtho(false),
+		_orthoHeight(10.0f),
 		nearPlane(0.1f),
 		farPlane(1000.0f),
 		fovRads(glm::degrees(90.0f)),
@@ -55,6 +57,12 @@ namespace freebird
 		SetFovRadians(glm::radians(value));
 	}
 
+	void Camera::SetIsOrtho(bool isOrtho)
+	{
+		_isOrtho = isOrtho;
+		__CalculateProjection();
+	}
+
 	const glm::mat4& Camera::GetViewProjection() const {
 		if (isDirty) {
 			viewProj = projection * view;
@@ -65,7 +73,15 @@ namespace freebird
 
 	void Camera::__CalculateProjection()
 	{
-		projection = glm::perspective(fovRads, aspectRatio, nearPlane, farPlane);
+		if (_isOrtho) {
+			projection = glm::ortho(
+				-_orthoHeight * aspectRatio, _orthoHeight * aspectRatio,
+				-_orthoHeight, _orthoHeight,
+				nearPlane, farPlane);
+		}
+		else {
+			projection = glm::perspective(fovRads, aspectRatio, nearPlane, farPlane);
+		}
 		isDirty = true;
 	}
 

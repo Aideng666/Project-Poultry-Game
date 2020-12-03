@@ -12,6 +12,8 @@ namespace freebird
 		_type = type;
 		_usage = usage;
 		glCreateBuffers(1, &_handle);
+
+		dynamic = false;
 	}
 	
 	IBuffer::~IBuffer() {

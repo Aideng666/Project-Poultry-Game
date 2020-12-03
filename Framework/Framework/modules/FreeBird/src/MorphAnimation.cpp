@@ -44,8 +44,12 @@ namespace freebird
 		}
 
 		size_t nextFrame = (frame + 1) % data->frames.size();
-
-		thisEnt->Get<MorphRenderer>().UpdateData(*data->frames[frame], *data->frames[nextFrame], t);
+		if (!looping && frame >= data->frames.size() - 1)
+		{
+			data->frameTime = 0.0f;
+		}
+		else
+			thisEnt->Get<MorphRenderer>().UpdateData(*data->frames[frame], *data->frames[nextFrame], t);
 	}
 
 	void MorphAnimation::SetFrames(const std::vector<std::unique_ptr<Mesh>>& frames)
@@ -62,6 +66,11 @@ namespace freebird
 	void MorphAnimation::SetTime(float time)
 	{
 		data->frameTime = time;
+	}
+
+	void MorphAnimation::SetLoop(bool loop)
+	{
+		looping = loop;
 	}
 
 }

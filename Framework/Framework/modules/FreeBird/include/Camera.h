@@ -51,6 +51,8 @@ namespace freebird
 		/// </summary> 
 		void SetFovDegrees(float value);
 
+		void SetIsOrtho(bool isOrtho);
+
 		/// <summary> 
 		/// Gets the camera's position in world space 
 		/// </summary> 
@@ -82,6 +84,9 @@ namespace freebird
 		float farPlane;
 		float fovRads;
 		float aspectRatio;
+
+		bool _isOrtho;
+		float _orthoHeight;
 
 		glm::vec3 pos;
 		glm::vec3 normal;

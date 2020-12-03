@@ -877,7 +877,7 @@ void Level3::InitScene()
 #pragma region Shader Stuff
 
 	playerShader = Shader::Create();
-	playerShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	playerShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
 	playerShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	playerShader->Link();
 
@@ -919,7 +919,7 @@ void Level3::InitScene()
 	SetShaderValues(buttonShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
 
 	doorShader = Shader::Create();
-	doorShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	doorShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
 	doorShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	doorShader->Link();
 
@@ -941,6 +941,7 @@ void Level3::InitScene()
 	Texture2DData::sptr floorMap = Texture2DData::LoadFromFile("Textures/FloorTexture.jpg");
 	Texture2DData::sptr wallMap = Texture2DData::LoadFromFile("Textures/WallTexture.jpg");
 	Texture2DData::sptr wireMap = Texture2DData::LoadFromFile("Textures/WireTexture.png");
+	Texture2DData::sptr particleMap = Texture2DData::LoadFromFile("Textures/Particle.png");
 
 	Texture2D::sptr diffuseButton = Texture2D::Create();
 	diffuseButton->LoadData(buttonMap);
@@ -960,6 +961,9 @@ void Level3::InitScene()
 	Texture2D::sptr diffuseWire = Texture2D::Create();
 	diffuseWire->LoadData(wireMap);
 
+	Texture2D::sptr diffusePart = Texture2D::Create();
+	diffusePart->LoadData(particleMap);
+
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
 	desc.Height = 1;
@@ -973,6 +977,7 @@ void Level3::InitScene()
 	floorMat.Albedo = diffuseFloor;
 	wallMat.Albedo = diffuseWall;
 	wireMat.Albedo = diffuseWire;
+	partMat.Albedo = diffusePart;
 
 #pragma endregion
 
@@ -1020,7 +1025,7 @@ void Level3::InitScene()
 	buttonTrans3.SetPosition(glm::vec3(32.7f, -2.0f, 28.5f));
 
 	auto& doorTrans = doorEnt.Add<Transform>();
-	doorTrans.SetPosition(glm::vec3(0.0f, 5.0f, -46.0f));
+	doorTrans.SetPosition(glm::vec3(-5.0f, 1.0f, -46.0f));
 	doorTrans.SetScale(glm::vec3(1.5f));
 
 	auto& gateTrans = andEnt.Add<Transform>();
@@ -1036,10 +1041,11 @@ void Level3::InitScene()
 	gateTrans3.SetRotationY(-90.0f);
 
 	auto& notTrans = notEnt.Add<Transform>();
-	notTrans.SetPosition(glm::vec3(-230.5f, 1.0f, -3.0f));
+	notTrans.SetPosition(glm::vec3(0.0f, 0.5f, 13.0f));
 
 	auto& coilTrans = coilEnt.Add<Transform>();
 	coilTrans.SetPosition(glm::vec3(-15.0f, 1.0f, -46.0f));
+	coilTrans.SetRotationY(180.0f);
 
 	//AABB
 	auto& leftCol = leftEnt.Add<AABB>(leftEnt, mainPlayer);
@@ -1049,6 +1055,7 @@ void Level3::InitScene()
 	auto& gateCol2 = andEnt2.Add<AABB>(andEnt2, mainPlayer);
 	auto& gateCol3 = andEnt3.Add<AABB>(andEnt3, mainPlayer);
 	auto& gateCol4 = notEnt.Add<AABB>(notEnt, mainPlayer);
+	auto& coilCol = coilEnt.Add<AABB>(coilEnt, mainPlayer);
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
 
@@ -1079,7 +1086,7 @@ void Level3::InitScene()
 	auto& door = doorEnt.Add<Door>();
 	door.SetOpen(false);
 
-	Mesh drumstick("Models/Drumstick.obj");
+	Mesh drumstick("Models/ChickenFrames/Walk0.obj");
 	Mesh floor("Models/Floor.obj");
 	Mesh wall("Models/Wall.obj");
 	Mesh doorM("Models/DoorFrames/Door0.obj");
@@ -1128,6 +1135,36 @@ void Level3::InitScene()
 	doorFrames.push_back(std::move(door9));
 	doorFrames.push_back(std::move(door10));
 
+	walk1 = std::make_unique<Mesh>("Models/ChickenFrames/Walk1.obj");
+	walk2 = std::make_unique<Mesh>("Models/ChickenFrames/Walk2.obj");
+	walk3 = std::make_unique<Mesh>("Models/ChickenFrames/Walk3.obj");
+	walk4 = std::make_unique<Mesh>("Models/ChickenFrames/Walk4.obj");
+	walk5 = std::make_unique<Mesh>("Models/ChickenFrames/Walk5.obj");
+	walk6 = std::make_unique<Mesh>("Models/ChickenFrames/Walk6.obj");
+	walk7 = std::make_unique<Mesh>("Models/ChickenFrames/Walk7.obj");
+	walk8 = std::make_unique<Mesh>("Models/ChickenFrames/Walk8.obj");
+	walk9 = std::make_unique<Mesh>("Models/ChickenFrames/Walk9.obj");
+	walk10 = std::make_unique<Mesh>("Models/ChickenFrames/Walk10.obj");
+	walk11 = std::make_unique<Mesh>("Models/ChickenFrames/Walk11.obj");
+	walk12 = std::make_unique<Mesh>("Models/ChickenFrames/Walk12.obj");
+	walk13 = std::make_unique<Mesh>("Models/ChickenFrames/Walk13.obj");
+	walk14 = std::make_unique<Mesh>("Models/ChickenFrames/Walk14.obj");
+
+	walkFrames.push_back(std::move(walk1));
+	walkFrames.push_back(std::move(walk2));
+	walkFrames.push_back(std::move(walk3));
+	walkFrames.push_back(std::move(walk4));
+	walkFrames.push_back(std::move(walk5));
+	walkFrames.push_back(std::move(walk6));
+	walkFrames.push_back(std::move(walk7));
+	walkFrames.push_back(std::move(walk8));
+	walkFrames.push_back(std::move(walk9));
+	walkFrames.push_back(std::move(walk10));
+	walkFrames.push_back(std::move(walk11));
+	walkFrames.push_back(std::move(walk12));
+	walkFrames.push_back(std::move(walk13));
+	walkFrames.push_back(std::move(walk14));
+
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, drumstick, playerShader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, floor, floorShader);
 	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, wall, levelShader);
@@ -1161,6 +1198,11 @@ void Level3::InitScene()
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.5f);
 	doorAnimator.SetFrames(doorFrames);
+	doorAnimator.SetLoop(false);
+
+	auto& walkAnimator = mainPlayer.Add<MorphAnimation>(mainPlayer);
+	walkAnimator.SetTime(0.05f);
+	walkAnimator.SetFrames(walkFrames);
 
 	auto& camera = camEnt.Add<Camera>();
 
@@ -1315,38 +1357,30 @@ void Level3::Update(float dt)
 #pragma region PlayerMovement
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		andEnt.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX() - 10 * dt, playerTrans.GetPositionY(), playerTrans.GetPositionZ()));
-		andEnt2.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX() - 10 * dt, playerTrans.GetPositionY(), playerTrans.GetPositionZ()));
-		andEnt2.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX() - 10 * dt, playerTrans.GetPositionY(), playerTrans.GetPositionZ()));
-		notEnt.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX() - 10 * dt, playerTrans.GetPositionY(), playerTrans.GetPositionZ()));
 
 		if (playerTrans.GetCanMoveLeft())
 		{
 			playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
 			playerTrans.SetRotationY(270.0f);
 			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+
+			mainPlayer.Get<MorphAnimation>().Update(dt);
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		andEnt.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX() + 10 * dt, playerTrans.GetPositionY(), playerTrans.GetPositionZ()));
-		andEnt2.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX() + 10 * dt, playerTrans.GetPositionY(), playerTrans.GetPositionZ()));
-		andEnt3.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX() + 10 * dt, playerTrans.GetPositionY(), playerTrans.GetPositionZ()));
-		notEnt.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX() + 10 * dt, playerTrans.GetPositionY(), playerTrans.GetPositionZ()));
-
+		
 		if (playerTrans.GetCanMoveRight())
 		{
 			playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
 			playerTrans.SetRotationY(90.0f);
 			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+
+			mainPlayer.Get<MorphAnimation>().Update(dt);
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		andEnt.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY(), playerTrans.GetPositionZ() - 10 * dt));
-		andEnt2.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY(), playerTrans.GetPositionZ() - 10 * dt));
-		andEnt3.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY(), playerTrans.GetPositionZ() - 10 * dt));
-		notEnt.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY(), playerTrans.GetPositionZ() - 10 * dt));
 
 		if (playerTrans.GetCanMoveUp())
 		{
@@ -1355,15 +1389,13 @@ void Level3::Update(float dt)
 
 			if (camFar)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
+
+			mainPlayer.Get<MorphAnimation>().Update(dt);
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		andEnt.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY(), playerTrans.GetPositionZ() + 10 * dt));
-		andEnt2.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY(), playerTrans.GetPositionZ() + 10 * dt));
-		andEnt3.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY(), playerTrans.GetPositionZ() + 10 * dt));
-		notEnt.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY(), playerTrans.GetPositionZ() + 10 * dt));
-
+		
 		if (playerTrans.GetCanMoveDown())
 		{
 			playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 10 * dt);
@@ -1371,6 +1403,8 @@ void Level3::Update(float dt)
 
 			if (camClose)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
+
+			mainPlayer.Get<MorphAnimation>().Update(dt);
 		}
 	}
 #pragma endregion
@@ -1504,6 +1538,7 @@ void Level3::Update(float dt)
 	rightEnt.Get<AABB>().Update();
 	backEnt.Get<AABB>().Update();
 	doorEnt.Get<AABB>().Update();
+	coilEnt.Get<AABB>().Update();
 	andEnt.Get<AABB>().Update();
 	andEnt2.Get<AABB>().Update();
 	andEnt3.Get<AABB>().Update();
@@ -1522,7 +1557,9 @@ void Level3::Update(float dt)
 	andEnt.Get<AndGate>().Update();
 	andEnt2.Get<AndGate>().Update();
 	andEnt3.Get<AndGate>().Update();
-	doorEnt.Get<MorphAnimation>().Update(dt);
+	
+	if (doorEnt.Get<Door>().GetOpen())
+		doorEnt.Get<MorphAnimation>().Update(dt);
 
 	if (doorEnt.Get<AABB>().GetComplete())
 		levelComplete = true;
