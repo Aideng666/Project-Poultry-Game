@@ -118,6 +118,7 @@ namespace freebird
 	protected:
 		GLuint _vs;
 		GLuint _fs;
+		GLuint _gs;
 
 		GLuint _handle;
 

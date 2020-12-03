@@ -31,7 +31,6 @@ namespace freebird
 
 		vao->ClearVertexBuffers();
 
-
 		vao->AddVertexBuffer(tempFrame0.GetVBO(), {
 			BufferAttribute(0, 3, GL_FLOAT, false, stride, NULL, AttribUsage::Position),
 			BufferAttribute(1, 3, GL_FLOAT, false, stride, sizeof(float) * 3, AttribUsage::Color),

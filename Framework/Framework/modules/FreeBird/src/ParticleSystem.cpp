@@ -6,14 +6,14 @@ namespace freebird
 
 	const size_t ParticleSystem::MAX_PARTICLES = 10000;
 
-	ParticleSystem::ParticleSystem(Entity& ent/*, Material& mat*/, const ParticleParam& startParam)
+	ParticleSystem::ParticleSystem(Entity& ent,/*, Material& mat*/ const ParticleParam& startParam)
 	{
 		thisEnt = &ent;
-		//thisMat = &mat;
 
 		size_t particleNum = (startParam.maxParticles < MAX_PARTICLES) ? startParam.maxParticles : MAX_PARTICLES;
 		
 		data = std::make_unique<Data>(particleNum, startParam);
+
 	}
 
 	void ParticleSystem::Update(float dt, Camera& camera)
@@ -58,14 +58,20 @@ namespace freebird
 				data->param.endColor,
 				lifeT);
 
-			float lifeS = 1.0f - (data->lifetime[i] / data->param.lifetime);
+			//float lifeT = 1.0f - (data->lifetime[i] / data->param.lifetime);
+
+			/*float lifeS = 1.0f - (data->lifetime[i] / data->param.lifetime);
 			data->sizes[i] = glm::mix(data->param.startSize,
 				data->param.endSize,
-				lifeS);
+				lifeS);*/
 
 			data->positions[i] += dt * data->velocities[i];
 
 			data->viewPositions[i] = modelView * glm::vec4(data->positions[i], 1.0f);
+		
+			/*data->colors[i] = glm::mix(data->param.startColor,
+				data->param.endColor,
+				lifeT);*/
 		}
 
 		Sort();
@@ -73,13 +79,24 @@ namespace freebird
 	void ParticleSystem::Draw(Camera& camera, Shader::sptr& shader)
 	{
 
-		//TODO: Finish The VBO Stuff
+		data->vbos[0]->UpdateData(data->viewPositions);
+		data->vbos[1]->UpdateData(data->sizes);
+		data->vbos[2]->UpdateData(data->colors);
 
-		thisMat->Apply();
+		//thisMat->Apply();
 
 		shader->SetUniformMatrix("u_Projection", camera.GetProjection());
 
-		data->vao->Render();
+		//data->vao->Render();
+
+		if (data->numAlive == 0)
+			return;
+
+		glBindVertexArray(data->vao->GetHandle());
+		glDrawElements((int)GL_POINTS,
+			static_cast<GLsizei>(data->numAlive),
+			GL_UNSIGNED_INT,
+			&(data->indices[0]));
 	}
 	void ParticleSystem::SetMax(int n)
 	{
@@ -182,22 +199,26 @@ namespace freebird
 		count = numParticles;
 		param = startParam;
 
-		size_t stride = sizeof(float) * 11;
+		vao = VertexArrayObject::Create();
 
 		//TODO: Finish VBO Stuff
 		positions.resize(count);
 
 		viewPositions.resize(count);
-		VertexBuffer::sptr viewBuffer = VertexBuffer::Create();
+		VertexBuffer::sptr viewBuffer = VertexBuffer::Create(GL_STREAM_DRAW);
 		viewBuffer->LoadData(viewPositions.data(), viewPositions.size());
 
 		sizes.resize(count);
-		VertexBuffer::sptr sizeBuffer = VertexBuffer::Create();
+		VertexBuffer::sptr sizeBuffer = VertexBuffer::Create(GL_STREAM_DRAW);
 		sizeBuffer->LoadData(sizes.data(), sizes.size());
 
 		colors.resize(count);
-		VertexBuffer::sptr colorBuffer = VertexBuffer::Create();
+		VertexBuffer::sptr colorBuffer = VertexBuffer::Create(GL_STREAM_DRAW);
 		colorBuffer->LoadData(colors.data(), colors.size());
+
+		vbos.push_back(viewBuffer);
+		vbos.push_back(sizeBuffer);
+		vbos.push_back(colorBuffer);
 
 
 		vao->AddVertexBuffer(viewBuffer, {

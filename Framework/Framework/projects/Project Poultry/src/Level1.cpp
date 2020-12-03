@@ -512,6 +512,8 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	wirePowered = Entity::Create();
 	wirePowered2 = Entity::Create();
 	wirePowered3 = Entity::Create();
+	UIEnt = Entity::Create();
+	tutEnt = Entity::Create();
 }
 
 void Level1::InitScene()
@@ -539,7 +541,7 @@ void Level1::InitScene()
 #pragma region Shader Stuff
 
 	playerShader = Shader::Create();
-	playerShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	playerShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
 	playerShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	playerShader->Link();
 
@@ -581,7 +583,7 @@ void Level1::InitScene()
 	SetShaderValues(buttonShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
 
 	doorShader = Shader::Create();
-	doorShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	doorShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
 	doorShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	doorShader->Link();
 
@@ -600,6 +602,12 @@ void Level1::InitScene()
 
 	SetShaderValues(untexturedShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
 
+	uiShader = Shader::Create();
+	uiShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	uiShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	uiShader->Link();
+
+	SetShaderValues(uiShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
 
 #pragma endregion
 
@@ -610,6 +618,7 @@ void Level1::InitScene()
 	Texture2DData::sptr floorMap = Texture2DData::LoadFromFile("Textures/FloorTexture.jpg");
 	Texture2DData::sptr wallMap = Texture2DData::LoadFromFile("Textures/WallTexture.jpg");
 	Texture2DData::sptr wireMap = Texture2DData::LoadFromFile("Textures/WireTexture.png");
+	Texture2DData::sptr uiMap = Texture2DData::LoadFromFile("Textures/Buttons/Default/Option.png");
 
 	Texture2D::sptr diffuseButton = Texture2D::Create();
 	diffuseButton->LoadData(buttonMap);
@@ -629,6 +638,9 @@ void Level1::InitScene()
 	Texture2D::sptr diffuseWire = Texture2D::Create();
 	diffuseWire->LoadData(wireMap);
 
+	Texture2D::sptr diffuseUI = Texture2D::Create();
+	diffuseUI->LoadData(uiMap);
+
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
 	desc.Height = 1;
@@ -642,17 +654,26 @@ void Level1::InitScene()
 	floorMat.Albedo = diffuseFloor;
 	wallMat.Albedo = diffuseWall;
 	wireMat.Albedo = diffuseWire;
+	uiMat.Albedo = diffuseUI;
 
 #pragma endregion
 
 
 	//Transforms
 	auto& particleTrans = particleEnt.Add<Transform>();
-	particleTrans.SetPosition(glm::vec3(0.0f, 4.0f, 5.0f));
+	particleTrans.SetPosition(glm::vec3(0.0f, 4.0f, -2.0f));
 
 	auto& playerTrans = mainPlayer.Add<Transform>();
 	playerTrans.SetPosition(glm::vec3(0.0f, 1.0f, 30.0f));
 	playerTrans.SetRotationY(0.0f);
+
+	auto& uiTrans = UIEnt.Add<Transform>();
+	uiTrans.SetPosition(glm::vec3(8.0f, 8.0f, 0.0f));
+	uiTrans.SetRotationY(50.0f);
+
+	auto& tutTrans = tutEnt.Add<Transform>();
+	tutTrans.SetPosition(glm::vec3(-8.0f, 1.0f, 15.0f));
+	tutTrans.SetScale(glm::vec3(3.0f));
 
 	auto& groundTrans = floorEnt.Add<Transform>();
 
@@ -680,7 +701,7 @@ void Level1::InitScene()
 	buttonTrans2.SetRotationY(90.0f);
 
 	auto& doorTrans = doorEnt.Add<Transform>();
-	doorTrans.SetPosition(glm::vec3(0.0f, 5.0f, -36.0f));
+	doorTrans.SetPosition(glm::vec3(-5.0f, 1.0f, -36.0f));
 	doorTrans.SetScale(glm::vec3(1.5f));
 
 	auto& pipeTrans = pipeEnt.Add<Transform>();
@@ -693,6 +714,7 @@ void Level1::InitScene()
 
 	auto& coilTrans = coilEnt.Add<Transform>();
 	coilTrans.SetPosition(glm::vec3(-15.0f, 2.0f, -36.0f));
+	coilTrans.SetRotationY(180.0f);
 
 
 	//AABB
@@ -700,6 +722,7 @@ void Level1::InitScene()
 	auto& rightCol = rightEnt.Add<AABB>(rightEnt, mainPlayer);
 	auto& backCol = backEnt.Add<AABB>(backEnt, mainPlayer);
 	auto& gateCol = andEnt.Add<AABB>(andEnt, mainPlayer);
+	auto& coilCol = coilEnt.Add<AABB>(coilEnt, mainPlayer);
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
 
@@ -722,12 +745,12 @@ void Level1::InitScene()
 	door.SetOpen(false);
 
 	//Particle
-	//auto& particleSystem = particleEnt.Add<ParticleSystem>(particleEnt, particleData);
+	auto& particleSystem = particleEnt.Add<ParticleSystem>(particleEnt, particleData);
 
-	Mesh drumstick("Models/Drumstick.obj");
+	Mesh drumstick("Models/ChickenFrames/Walk0.obj");
 	Mesh floor("Models/Floor.obj");
 	Mesh wall("Models/Wall.obj");
-	Mesh doorM("Models/Door.obj");
+	Mesh doorM("Models/DoorFrames/Door0.obj");
 	Mesh pipe("Models/Level1Pipe.obj", glm::vec3(0.6f, 0.45f, 0.0f));
 	Mesh buttonM("Models/Button.obj");
 	Mesh wireL("Models/LeftWire.obj", glm::vec3(1.0f, 0.0f, 0.0f));
@@ -739,6 +762,62 @@ void Level1::InitScene()
 	Mesh gate("Models/AndGate.obj", glm::vec3(0.0f, 0.0f, 1.0f));
 	Mesh coil("Models/Coil.obj", glm::vec3(1.0f, 0.0f, 0.0f));
 	Mesh coilP("Models/Coil.obj", glm::vec3(0.0f, 1.0f, 0.0f));
+	Mesh ui("Models/UI_Button.obj");
+	Mesh tut("Models/Interact.obj", glm::vec3(1.0f, 0.0f, 0.0f));
+
+	door0 = std::make_unique<Mesh>("Models/DoorFrames/Door0.obj");
+	door1 = std::make_unique<Mesh>("Models/DoorFrames/Door1.obj");
+	door2 = std::make_unique<Mesh>("Models/DoorFrames/Door2.obj");
+	door3 = std::make_unique<Mesh>("Models/DoorFrames/Door3.obj");
+	door4 = std::make_unique<Mesh>("Models/DoorFrames/Door4.obj");
+	door5 = std::make_unique<Mesh>("Models/DoorFrames/Door5.obj");
+	door6 = std::make_unique<Mesh>("Models/DoorFrames/Door6.obj");
+	door7 = std::make_unique<Mesh>("Models/DoorFrames/Door7.obj");
+	door8 = std::make_unique<Mesh>("Models/DoorFrames/Door8.obj");
+	door9 = std::make_unique<Mesh>("Models/DoorFrames/Door9.obj");
+	door10 = std::make_unique<Mesh>("Models/DoorFrames/Door10.obj");
+	
+	doorFrames.push_back(std::move(door0));
+	doorFrames.push_back(std::move(door1));
+	doorFrames.push_back(std::move(door2));
+	doorFrames.push_back(std::move(door3));
+	doorFrames.push_back(std::move(door4));
+	doorFrames.push_back(std::move(door5));
+	doorFrames.push_back(std::move(door6));
+	doorFrames.push_back(std::move(door7));
+	doorFrames.push_back(std::move(door8));
+	doorFrames.push_back(std::move(door9));
+	doorFrames.push_back(std::move(door10));
+
+	walk1 = std::make_unique<Mesh>("Models/ChickenFrames/Walk1.obj");
+	walk2 = std::make_unique<Mesh>("Models/ChickenFrames/Walk2.obj");
+	walk3 = std::make_unique<Mesh>("Models/ChickenFrames/Walk3.obj");
+	walk4 = std::make_unique<Mesh>("Models/ChickenFrames/Walk4.obj");
+	walk5 = std::make_unique<Mesh>("Models/ChickenFrames/Walk5.obj");
+	walk6 = std::make_unique<Mesh>("Models/ChickenFrames/Walk6.obj");
+	walk7 = std::make_unique<Mesh>("Models/ChickenFrames/Walk7.obj");
+	walk8 = std::make_unique<Mesh>("Models/ChickenFrames/Walk8.obj");
+	walk9 = std::make_unique<Mesh>("Models/ChickenFrames/Walk9.obj");
+	walk10 = std::make_unique<Mesh>("Models/ChickenFrames/Walk10.obj");
+	walk11 = std::make_unique<Mesh>("Models/ChickenFrames/Walk11.obj");
+	walk12 = std::make_unique<Mesh>("Models/ChickenFrames/Walk12.obj");
+	walk13 = std::make_unique<Mesh>("Models/ChickenFrames/Walk13.obj");
+	walk14 = std::make_unique<Mesh>("Models/ChickenFrames/Walk14.obj");
+
+	walkFrames.push_back(std::move(walk1));
+	walkFrames.push_back(std::move(walk2));
+	walkFrames.push_back(std::move(walk3));
+	walkFrames.push_back(std::move(walk4));
+	walkFrames.push_back(std::move(walk5));
+	walkFrames.push_back(std::move(walk6));
+	walkFrames.push_back(std::move(walk7));
+	walkFrames.push_back(std::move(walk8));
+	walkFrames.push_back(std::move(walk9));
+	walkFrames.push_back(std::move(walk10));
+	walkFrames.push_back(std::move(walk11));
+	walkFrames.push_back(std::move(walk12));
+	walkFrames.push_back(std::move(walk13));
+	walkFrames.push_back(std::move(walk14));
 
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, drumstick, playerShader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, floor, floorShader);
@@ -754,10 +833,21 @@ void Level1::InitScene()
 	auto& wireMeshP = wirePowered.Add<MeshRenderer>(wirePowered, wireLPower, wireShader);
 	auto& wireMeshP2 = wirePowered2.Add<MeshRenderer>(wirePowered2, wireRPower, wireShader);
 	auto& wireMeshP3 = wirePowered3.Add<MeshRenderer>(wirePowered3, wireCPower, wireShader);
-	auto& doorMesh = doorEnt.Add<MeshRenderer>(doorEnt, doorM, doorShader);
+	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, doorM, doorShader);
 	auto& pipeMesh = pipeEnt.Add<MeshRenderer>(pipeEnt, pipe, untexturedShader);
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, coil, untexturedShader);
 	auto& coilMeshP = coilPowered.Add<MeshRenderer>(coilPowered, coilP, untexturedShader);
+	auto& uiMesh = UIEnt.Add<MeshRenderer>(UIEnt, ui, uiShader);
+	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, tut, untexturedShader);
+
+	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
+	doorAnimator.SetTime(0.2f);
+	doorAnimator.SetFrames(doorFrames);
+	doorAnimator.SetLoop(false);
+
+	auto& walkAnimator = mainPlayer.Add<MorphAnimation>(mainPlayer);
+	walkAnimator.SetTime(0.05f);
+	walkAnimator.SetFrames(walkFrames);
 
 	auto& camera = camEnt.Add<Camera>();
 
@@ -765,6 +855,12 @@ void Level1::InitScene()
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
+
+	auto& uiCam = uiCamEnt.Add<Camera>();
+	uiCam.SetIsOrtho(true);
+	uiCam.SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	uiCam.SetForward(glm::vec3(0.0f, 0.0f, -1.0f));
+	uiCam.SetUp(glm::vec3(0.0f, 1.0f, 0.0f));
 
 }
 
@@ -774,10 +870,13 @@ void Level1::Update(float dt)
 	time += dt;
 	playerShader->SetUniform("u_Time", time);
 	levelShader->SetUniform("u_Time", time);
+	floorShader->SetUniform("u_Time", time);
 	gateShader->SetUniform("u_Time", time);
 	wireShader->SetUniform("u_Time", time);
 	buttonShader->SetUniform("u_Time", time);
 	doorShader->SetUniform("u_Time", time);
+	untexturedShader->SetUniform("u_Time", time);
+	uiShader->SetUniform("u_Time", time);
 
 	if (forwards)
 		t += dt / totalTime;
@@ -797,10 +896,13 @@ void Level1::Update(float dt)
 
 	playerShader->SetUniform("u_Position", currentPos);
 	levelShader->SetUniform("u_Position", currentPos);
+	floorShader->SetUniform("u_Position", currentPos);
 	gateShader->SetUniform("u_Position", currentPos);
 	wireShader->SetUniform("u_Position", currentPos);
 	doorShader->SetUniform("u_Position", currentPos);
 	buttonShader->SetUniform("u_Position", currentPos);
+	untexturedShader->SetUniform("u_Position", currentPos);
+	uiShader->SetUniform("u_Position", currentPos);
 
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -817,7 +919,9 @@ void Level1::Update(float dt)
 	auto& wireTrans3 = wireEnt3.Get<Transform>();
 	auto& gateTrans = andEnt.Get<Transform>();
 	auto& coilTrans = coilEnt.Get<Transform>();
-
+	auto& uiTrans = UIEnt.Get<Transform>();
+	auto& tutTrans =tutEnt.Get<Transform>();
+	
 	backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
 
@@ -829,14 +933,19 @@ void Level1::Update(float dt)
 	rightTrans.SetRotationY(90.0f);
 	rightTrans.SetPositionY(9.0f);
 
+	uiTrans.SetRotationY(uiTrans.GetRotation().y + 10.0f * dt);
+	std::cout << uiTrans.GetRotation().y;
+
 	auto& camera = camEnt.Get<Camera>();
+	auto& uiCamera = uiCamEnt.Get<Camera>();
+
 
 	auto& meshMain = mainPlayer.Get<MorphRenderer>();
 	auto& groundMesh = floorEnt.Get<MeshRenderer>();
 	auto& leftMesh = leftEnt.Get<MeshRenderer>();
 	auto& rightMesh = rightEnt.Get<MeshRenderer>();
 	auto& backMesh = backEnt.Get<MeshRenderer>();
-	auto& doorMesh = doorEnt.Get<MeshRenderer>();
+	auto& doorMesh = doorEnt.Get<MorphRenderer>();
 	auto& pipeMesh = pipeEnt.Get<MeshRenderer>();
 	auto& buttonMesh = buttonEnt.Get<MeshRenderer>();
 	auto& buttonMesh2 = buttonEnt2.Get<MeshRenderer>();
@@ -849,6 +958,8 @@ void Level1::Update(float dt)
 	auto& gateMesh = andEnt.Get<MeshRenderer>();
 	auto& coilMesh = coilEnt.Get<MeshRenderer>();
 	auto& coilMeshP = coilPowered.Get<MeshRenderer>();
+	auto& uiMesh = UIEnt.Get<MeshRenderer>();
+	auto& tutMesh = tutEnt.Get<MeshRenderer>();
 
 	camera.LookAt(glm::vec3(playerTrans.GetPosition()));
 
@@ -866,8 +977,10 @@ void Level1::Update(float dt)
 	glm::mat4 transformWire3 = wireTrans3.GetModelMatrix();
 	glm::mat4 transformGate = gateTrans.GetModelMatrix();
 	glm::mat4 transformCoil = coilTrans.GetModelMatrix();
+	glm::mat4 transformUI = uiTrans.GetModelMatrix();
+	glm::mat4 transformTut = tutTrans.GetModelMatrix();
 
-	//auto& particleSystem = particleEnt.Get<ParticleSystem>();
+	auto& particleSystem = particleEnt.Get<ParticleSystem>();
 
 	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
@@ -877,32 +990,40 @@ void Level1::Update(float dt)
 		&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
 		button2Watch.Poll(window);
 
+
+
 #pragma region PlayerMovement
+	/*if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+		playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
+	}*/
+
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		andEnt.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX() - 10 * dt, playerTrans.GetPositionY(), playerTrans.GetPositionZ()));
 
 		if (playerTrans.GetCanMoveLeft())
 		{
 			playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
 			playerTrans.SetRotationY(270.0f);
 			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+
+			mainPlayer.Get<MorphAnimation>().Update(dt);
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		andEnt.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX() + 10 * dt, playerTrans.GetPositionY(), playerTrans.GetPositionZ()));
 
 		if (playerTrans.GetCanMoveRight())
 		{
 			playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
 			playerTrans.SetRotationY(90.0f);
 			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+
+			mainPlayer.Get<MorphAnimation>().Update(dt);
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		andEnt.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY(), playerTrans.GetPositionZ() - 10 * dt));
 
 		if (playerTrans.GetCanMoveUp())
 		{
@@ -911,11 +1032,12 @@ void Level1::Update(float dt)
 
 			if (camFar)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
+
+			mainPlayer.Get<MorphAnimation>().Update(dt);
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		andEnt.Get<AABB>().SetNext(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY(), playerTrans.GetPositionZ() + 10 * dt));
 
 		if (playerTrans.GetCanMoveDown())
 		{
@@ -924,6 +1046,8 @@ void Level1::Update(float dt)
 
 			if (camClose)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
+
+			mainPlayer.Get<MorphAnimation>().Update(dt);
 		}
 	}
 #pragma endregion
@@ -1000,6 +1124,7 @@ void Level1::Update(float dt)
 		coilMesh.Render(camera, transformCoil);
 
 	gateMesh.Render(camera, transformGate);
+	tutMesh.Render(camera, transformTut);
 
 	wireShader->Bind();
 	wireShader->SetUniform("s_Diffuse", 0);
@@ -1026,15 +1151,22 @@ void Level1::Update(float dt)
 	buttonMesh.Render(camera, transformButton);
 	buttonMesh2.Render(camera, transformButton2);
 
+	uiShader->Bind();
+	uiShader->SetUniform("s_Diffuse", 0);
+	uiMat.Albedo->Bind(0);
+	uiMesh.Render(uiCamera, transformUI);
+
 	//gateShader->Bind();
 
-	/*particleShader->Bind();
-	glDisable(GL_DEPTH_TEST);
-	particleSystem.Draw(camera, particleShader);
-	glEnable(GL_DEPTH_TEST);*/
+	particleSystem.Update(dt, camera);
 
-
-
+	if (!andEnt.Get<AndGate>().GetOutput())
+	{
+		particleShader->Bind();
+		glDisable(GL_DEPTH_TEST);
+		particleSystem.Draw(camera, particleShader);
+		glEnable(GL_DEPTH_TEST);
+	}
 #pragma endregion
 
 	leftEnt.Get<AABB>().Update();
@@ -1042,13 +1174,16 @@ void Level1::Update(float dt)
 	backEnt.Get<AABB>().Update();
 	doorEnt.Get<AABB>().Update();
 	andEnt.Get<AABB>().Update();
+	coilEnt.Get<AABB>().Update();
 	buttonEnt.Get<Lever>().Update();
 	buttonEnt2.Get<Lever>().Update();
 	wireEnt.Get<Wire>().Update();
 	wireEnt2.Get<Wire>().Update();
 	wireEnt3.Get<Wire>().Update();
 	andEnt.Get<AndGate>().Update();
-	//particleSystem.Update(dt, camera);
+
+	if (doorEnt.Get<Door>().GetOpen())
+		doorEnt.Get<MorphAnimation>().Update(dt);
 
 	if (doorEnt.Get<AABB>().GetComplete())
 		levelComplete = true;

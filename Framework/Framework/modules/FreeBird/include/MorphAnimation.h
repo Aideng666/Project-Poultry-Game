@@ -15,6 +15,7 @@ namespace freebird
 
 		void SetFrames(const std::vector<std::unique_ptr<Mesh>>& frames);
 		void SetTime(float time);
+		void SetLoop(bool loop);
 
 	private:
 
@@ -33,5 +34,7 @@ namespace freebird
 		float timer;
 		size_t frame;
 		Entity* thisEnt;
+
+		bool looping = true;
 	};
 }

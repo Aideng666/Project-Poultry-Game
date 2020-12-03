@@ -10,6 +10,7 @@ namespace freebird
 	Shader::Shader() :
 		_vs(0),
 		_fs(0),
+		_gs(0),
 		_handle(0)
 	{
 		_handle = glCreateProgram();
@@ -61,6 +62,7 @@ namespace freebird
 		switch (type) {
 		case GL_VERTEX_SHADER: _vs = handle; break;
 		case GL_FRAGMENT_SHADER: _fs = handle; break;
+		case GL_GEOMETRY_SHADER: _gs = handle; break;
 		default: LOG_WARN("Not implemented"); break;
 		}
 
@@ -86,6 +88,10 @@ namespace freebird
 
 		// Attach our two shaders
 		glAttachShader(_handle, _vs);
+
+		if (_gs != 0)
+			glAttachShader(_handle, _gs);
+
 		glAttachShader(_handle, _fs);
 
 		// Perform linking
@@ -96,6 +102,12 @@ namespace freebird
 		glDeleteShader(_vs);
 		glDetachShader(_handle, _fs);
 		glDeleteShader(_fs);
+
+		if (_gs != 0)
+		{
+			glDetachShader(_handle, _gs);
+			glDeleteShader(_gs);
+		}
 
 		GLint status = 0;
 		glGetProgramiv(_handle, GL_LINK_STATUS, &status);

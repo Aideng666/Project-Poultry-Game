@@ -2,6 +2,7 @@
 
 #pragma once
 #include <glad/glad.h>
+#include <vector>
 
 namespace freebird
 {
@@ -41,6 +42,18 @@ class IBuffer
 		template <typename T>
 		void LoadData(const T* data, size_t count) {
 			IBuffer::LoadData((const void*)(data), sizeof(T), count);
+		}
+
+		template<typename T>
+		void UpdateData(const std::vector<T>& data)
+		{
+			_elementCount = (GLsizei)data.size();
+			_elementSize = sizeof(T);
+
+			GLenum usage = (dynamic) ? GL_STREAM_DRAW : GL_STATIC_DRAW;
+
+			glBindBuffer(GL_ARRAY_BUFFER, _handle);
+			glBufferData(GL_ARRAY_BUFFER, _elementCount * _elementSize, &(data[0]), usage);
 		}
 	
 		/// <summary>
@@ -91,5 +104,6 @@ class IBuffer
 		GLuint _handle; // The OpenGL handle for the underlying buffer
 		GLenum _usage; // The buffer usage mode (GL_STATIC_DRAW, GL_DYNAMIC_DRAW)
 		GLenum _type; // The buffer type (ex GL_ARRAY_BUFFER, GL_ARRAY_ELEMENT_BUFFER)
+		bool dynamic;
 	};
 }
