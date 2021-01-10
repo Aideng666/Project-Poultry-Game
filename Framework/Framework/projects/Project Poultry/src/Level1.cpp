@@ -934,7 +934,6 @@ void Level1::Update(float dt)
 	rightTrans.SetPositionY(9.0f);
 
 	uiTrans.SetRotationY(uiTrans.GetRotation().y + 10.0f * dt);
-	std::cout << uiTrans.GetRotation().y;
 
 	auto& camera = camEnt.Get<Camera>();
 	auto& uiCamera = uiCamEnt.Get<Camera>();

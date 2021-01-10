@@ -105,6 +105,24 @@ public:
 
 	void Unload();
 
+	void StartSegment(int startInd);
+
+	glm::vec3 Catmull(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, float t);
+
+	struct Sample
+	{
+		glm::vec3 pt;
+		float t;
+		float accumulated;
+	};
+	
+	class Segment
+	{
+	public:
+	
+		std::vector<Sample> samples;
+	};
+
 private:
 
 	Entity mainPlayer;
@@ -155,6 +173,12 @@ private:
 
 	float t = 0.0f;
 	float totalTime;
+
+	std::vector<glm::vec3> points;
+	
+	float segmentTime;
+	
+	int currentIndex = 0;
 
 	float speed = 4.0f;
 

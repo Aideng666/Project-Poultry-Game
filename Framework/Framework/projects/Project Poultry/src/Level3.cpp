@@ -789,15 +789,6 @@
 //	return (p - p0) / (p1 - p0);
 //}
 //
-//void Level3::StartSegment(int startInd)
-//{
-//	currentIndex = startInd;
-//
-//	if (currentIndex >= points.size())
-//		currentIndex = 0;
-//
-//	t = 0.0f;
-//}
 //
 //
 
@@ -1211,6 +1202,18 @@ void Level3::InitScene()
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
 
+	points.push_back(glm::vec3(3.0f, 15.0f, 6.0f));
+	points.push_back(glm::vec3(-3.0f, 15.0f, 6.0f));
+	points.push_back(glm::vec3(-3.0f, 15.0f, 0.0f));
+	points.push_back(glm::vec3(3.0f, 15.0f, 0.0f));
+	
+	segmentTime = 1.0f;
+	
+	if (points.size() > 0)
+		currentPos = points[0];
+	
+	StartSegment(0);
+
 }
 
 void Level3::Update(float dt)
@@ -1219,29 +1222,44 @@ void Level3::Update(float dt)
 	time += dt;
 	playerShader->SetUniform("u_Time", time);
 	levelShader->SetUniform("u_Time", time);
+	floorShader->SetUniform("u_Time", time);
 	gateShader->SetUniform("u_Time", time);
 	wireShader->SetUniform("u_Time", time);
 	buttonShader->SetUniform("u_Time", time);
 	doorShader->SetUniform("u_Time", time);
 
-	if (forwards)
-		t += dt / totalTime;
-	else
-		t -= dt / totalTime;
-
-	if (t < 0.0f)
-		t = 0.0f;
-
-	if (t > 1.0f)
-		t = 1.0f;
-
-	if (t >= 1.0f || t <= 0.0f)
-		forwards = !forwards;
-
-	currentPos = glm::mix(point1, point2, t);
+	if (points.size() >= 4)
+	{
+		t = glm::min(t + dt / segmentTime, 1.0f);
+	
+		int p1 = currentIndex;
+	
+		int p0 = currentIndex - 1;
+	
+		if (p0 < 0)
+		{
+			p0 = points.size() - 1;
+		}
+	
+		int p2 = currentIndex + 1;
+	
+		if (p2 >= points.size())
+			p2 = 0;
+	
+		int p3 = p2 + 1;
+	
+		if (p3 >= points.size())
+			p3 = 0;
+	
+		currentPos = Catmull(points[p0], points[p1], points[p2], points[p3], t);
+	
+		if (t >= 1.0f)
+			StartSegment(currentIndex + 1);
+	}
 
 	playerShader->SetUniform("u_Position", currentPos);
 	levelShader->SetUniform("u_Position", currentPos);
+	floorShader->SetUniform("u_Position", currentPos);
 	gateShader->SetUniform("u_Position", currentPos);
 	wireShader->SetUniform("u_Position", currentPos);
 	doorShader->SetUniform("u_Position", currentPos);
@@ -1574,5 +1592,22 @@ void Level3::Unload()
 
 		scene = nullptr;
 	}
+}
+
+glm::vec3 Level3::Catmull(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, float t)
+{
+	return 0.5f * (2.0f * p1 + t * (-p0 + p2)
+		+ t * t * (2.0f * p0 - 5.0f * p1 + 4.0f * p2 - p3)
+		+ t * t * t * (-p0 + 3.0f * p1 - 3.0f * p2 + p3));
+}
+
+void Level3::StartSegment(int startInd)
+{
+	currentIndex = startInd;
+
+	if (currentIndex >= points.size())
+		currentIndex = 0;
+
+	t = 0.0f;
 }
 

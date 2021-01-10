@@ -58,6 +58,10 @@ namespace freebird
 				data->param.endColor,
 				lifeT);
 
+			data->positions[i] += dt * data->velocities[i];
+
+			data->viewPositions[i] = modelView * glm::vec4(data->positions[i], 1.0f);
+
 			//float lifeT = 1.0f - (data->lifetime[i] / data->param.lifetime);
 
 			/*float lifeS = 1.0f - (data->lifetime[i] / data->param.lifetime);
@@ -65,9 +69,6 @@ namespace freebird
 				data->param.endSize,
 				lifeS);*/
 
-			data->positions[i] += dt * data->velocities[i];
-
-			data->viewPositions[i] = modelView * glm::vec4(data->positions[i], 1.0f);
 		
 			/*data->colors[i] = glm::mix(data->param.startColor,
 				data->param.endColor,
@@ -83,11 +84,7 @@ namespace freebird
 		data->vbos[1]->UpdateData(data->sizes);
 		data->vbos[2]->UpdateData(data->colors);
 
-		//thisMat->Apply();
-
 		shader->SetUniformMatrix("u_Projection", camera.GetProjection());
-
-		//data->vao->Render();
 
 		if (data->numAlive == 0)
 			return;
