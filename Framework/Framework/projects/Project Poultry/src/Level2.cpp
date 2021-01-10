@@ -994,7 +994,7 @@ void Level2::InitScene()
 	auto& door = doorEnt.Add<Door>();
 	door.SetOpen(false);
 
-	Mesh drumstick("Models/ChickenFrames/Walk0.obj");
+	Mesh drumstick("Models/ChickenFrames/Walk1.obj");
 	Mesh floor("Models/Floor.obj");
 	Mesh wall("Models/Wall.obj");
 	Mesh doorM("Models/DoorFrames/Door0.obj");
@@ -1117,6 +1117,7 @@ void Level2::Update(float dt)
 	time += dt;
 	playerShader->SetUniform("u_Time", time);
 	levelShader->SetUniform("u_Time", time);
+	floorShader->SetUniform("u_Time", time);
 	gateShader->SetUniform("u_Time", time);
 	wireShader->SetUniform("u_Time", time);
 	buttonShader->SetUniform("u_Time", time);
@@ -1140,6 +1141,7 @@ void Level2::Update(float dt)
 
 	playerShader->SetUniform("u_Position", currentPos);
 	levelShader->SetUniform("u_Position", currentPos);
+	floorShader->SetUniform("u_Position", currentPos);
 	gateShader->SetUniform("u_Position", currentPos);
 	wireShader->SetUniform("u_Position", currentPos);
 	doorShader->SetUniform("u_Position", currentPos);
