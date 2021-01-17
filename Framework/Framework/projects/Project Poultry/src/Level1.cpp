@@ -995,7 +995,7 @@ void Level1::Update(float dt)
 	/*if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
 		playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
-	}*/
+	}*/  
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
