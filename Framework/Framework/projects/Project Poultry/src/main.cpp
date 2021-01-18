@@ -30,6 +30,7 @@ std::vector<Scene*> scenes;
 
 int level = 0;
 
+//Need to figure out how to load objects better for faster scene swtiching and loading
 void SetActiveScene(int sceneNum)
 {
 	if (currentScene != nullptr)
