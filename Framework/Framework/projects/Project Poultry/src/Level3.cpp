@@ -1373,7 +1373,71 @@ void Level3::Update(float dt)
 		button3Watch.Poll(window);
 
 #pragma region PlayerMovement
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+
+		playerTrans.SetRotationY(225.0f);
+
+		playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
+		playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 10 * dt);
+
+		camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+
+		if (camFar)
+			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
+
+		mainPlayer.Get<MorphAnimation>().Update(dt);
+	}
+
+	else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
+
+		playerTrans.SetRotationY(315.0f);
+
+		playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
+		playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 10 * dt);
+
+		camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+
+		if (camClose)
+			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
+
+		mainPlayer.Get<MorphAnimation>().Update(dt);
+	}
+
+	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
+
+		playerTrans.SetRotationY(45.0f);
+
+		playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
+		playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 10 * dt);
+
+		camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+
+		if (camClose)
+			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
+
+		mainPlayer.Get<MorphAnimation>().Update(dt);
+	}
+
+	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+
+		playerTrans.SetRotationY(135.0f);
+
+		playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
+		playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 10 * dt);
+
+		camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+
+		if (camFar)
+			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
+
+		mainPlayer.Get<MorphAnimation>().Update(dt);
+	}
+
+	else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
 
 		if (playerTrans.GetCanMoveLeft())
@@ -1385,9 +1449,9 @@ void Level3::Update(float dt)
 			mainPlayer.Get<MorphAnimation>().Update(dt);
 		}
 	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		
+
 		if (playerTrans.GetCanMoveRight())
 		{
 			playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
@@ -1397,7 +1461,7 @@ void Level3::Update(float dt)
 			mainPlayer.Get<MorphAnimation>().Update(dt);
 		}
 	}
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
 
 		if (playerTrans.GetCanMoveUp())
@@ -1411,9 +1475,9 @@ void Level3::Update(float dt)
 			mainPlayer.Get<MorphAnimation>().Update(dt);
 		}
 	}
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		
+
 		if (playerTrans.GetCanMoveDown())
 		{
 			playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 10 * dt);
