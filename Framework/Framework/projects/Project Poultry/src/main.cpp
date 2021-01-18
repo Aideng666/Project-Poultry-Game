@@ -49,12 +49,13 @@ void SetActiveScene(int sceneNum)
 
 int main()
 {
-
+	//Inits the window
 	if (!(window = Application::Init("Project Poultry", 1200, 1000)))
 	{
 		return 1;
 	}
 
+	//Sets the clear colour of the window
 	Application::SetClearColor(glm::vec4(0.08f, 0.17f, 0.31f, 1.0f));
 
 	scenes.push_back(new MainMenu("Main Menu", window));
