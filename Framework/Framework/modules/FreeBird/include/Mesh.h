@@ -20,12 +20,14 @@ namespace freebird
 		VertexArrayObject::sptr vao;
 
 		VertexBuffer::sptr GetVBO();
+		std::string GetName();
+		void SetName(std::string name);
 		
 	protected:
 		std::vector<float> interleaved;
 		std::vector<unsigned int> vertIndices, uvIndices, normIndices; 
 
-
+		std::string name;
 		VertexBuffer::sptr vbo;
 	};
 }
