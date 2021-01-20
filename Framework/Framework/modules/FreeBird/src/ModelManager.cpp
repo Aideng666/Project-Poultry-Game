@@ -22,18 +22,21 @@ namespace freebird
 		}
 	}
 
-	Mesh* ModelManager::LoadMesh(std::string& fileName)
+	Mesh* ModelManager::LoadMesh(std::string& fileName, glm::vec3& inColor)
 	{
 		//Adds the filename to the loaded list and loads the mesh to the mesh list
 		m_filesLoaded.push_back(fileName);
 		//Push back a new mesh
-		m_meshes.push_back(new Mesh(fileName));
+		if (inColor == glm::vec3(0.2f))
+			m_meshes.push_back(new Mesh(fileName));
+		else
+			m_meshes.push_back(new Mesh(fileName, inColor));
 		//Loads new mesh
 
 		return m_meshes[m_meshes.size() - 1];
 	}
 
-	Mesh* ModelManager::FindMesh(std::string& fileName)
+	Mesh* ModelManager::FindMesh(std::string& fileName, glm::vec3& inColor)
 	{
 		//Searches list of strings and stores result of iteration
 		auto iteration = std::find(m_filesLoaded.begin(), m_filesLoaded.end(), fileName);
@@ -54,7 +57,7 @@ namespace freebird
 		else
 		{
 			std::cout << "Making New Mesh" << std::endl;
-			return LoadMesh(fileName);
+			return LoadMesh(fileName, inColor);
 		}
 	}
 

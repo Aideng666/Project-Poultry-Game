@@ -52,8 +52,8 @@ void Level4::InitScene()
 	gateTrans.SetRotationY(-90.0f);
 
 	auto& gateTrans2 = andEnt2.Add<Transform>();
-	gateTrans.SetPosition(glm::vec3(4.0f, 1.0f, -2.0f));
-	gateTrans.SetRotationY(-90.0f);
+	gateTrans2.SetPosition(glm::vec3(4.0f, 1.0f, -2.0f));
+	gateTrans2.SetRotationY(-90.0f);
 
 	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *gate, shader);
 	auto& gateMesh2 = andEnt2.Add<MeshRenderer>(andEnt2, *gate2, shader);
