@@ -14,10 +14,10 @@ namespace freebird
 		~ModelManager();
 
 		//Loads the models
-		static Mesh* LoadMesh(std::string& fileName);
+		static Mesh* LoadMesh(std::string& fileName, glm::vec3& inColor = glm::vec3(0.2f));
 
 		//Finds the model
-		static Mesh* FindMesh(std::string& fileName);
+		static Mesh* FindMesh(std::string& fileName, glm::vec3& inColor = glm::vec3(0.2f));
 
 		//Gets the handle
 		static GLuint GetHandle(std::string& fileName);
