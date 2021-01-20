@@ -1,4 +1,5 @@
 #include "ModelManager.h"
+#include <iostream>
 
 namespace freebird
 {
@@ -26,10 +27,8 @@ namespace freebird
 		//Adds the filename to the loaded list and loads the mesh to the mesh list
 		m_filesLoaded.push_back(fileName);
 		//Push back a new mesh
-		m_meshes.push_back(new Mesh());
+		m_meshes.push_back(new Mesh(fileName));
 		//Loads new mesh
-		Mesh newMesh(fileName);
-		m_meshes[m_meshes.size() - 1] = &newMesh;
 
 		return m_meshes[m_meshes.size() - 1];
 	}
@@ -48,9 +47,15 @@ namespace freebird
 
 		//checks if index is -1 and if it is, return
 		if (index != -1)
+		{
+			std::cout << "Mesh Found!" << std::endl;
 			return m_meshes[index];
+		}
 		else
+		{
+			std::cout << "Making New Mesh" << std::endl;
 			return LoadMesh(fileName);
+		}
 	}
 
 	GLuint ModelManager::GetHandle(std::string& fileName)

@@ -739,8 +739,6 @@ void Level1::Update(float dt)
 	uiMat.Albedo->Bind(0);
 	uiMesh.Render(uiCamera, transformUI);
 
-	//gateShader->Bind();
-
 	particleSystem.Update(dt, camera);
 
 	if (!andEnt.Get<AndGate>().GetOutput())
