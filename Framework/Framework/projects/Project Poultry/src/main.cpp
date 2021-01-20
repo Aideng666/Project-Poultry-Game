@@ -12,8 +12,10 @@
 #include "Level1.h"
 #include "Level2.h"
 #include "Level3.h"
+#include "Level4.h"
 #include "MainMenu.h"
 #include "Application.h"
+#include <ModelManager.h>
 
 using namespace freebird; //referencing the module's includes/src's
 
@@ -43,7 +45,7 @@ void SetActiveScene(int sceneNum)
 	currentScene = scenes[sceneNum];
 	level = sceneNum + 1;
 
-	if (level > 3)
+	if (level > 4)
 		level = 1;
 }
 
@@ -62,8 +64,9 @@ int main()
 	scenes.push_back(new Level1("Level 1", window));
 	scenes.push_back(new Level2("Level 2", window));
 	scenes.push_back(new Level3("Level 3", window));
+	scenes.push_back(new Level4("Level 4", window));
 
-	SetActiveScene(1);
+	SetActiveScene(4);
 	
 	//Calculates our timer
 	Application::Tick();
@@ -114,3 +117,4 @@ int main()
 	Logger::Uninitialize();
 	return 0;
 }
+
