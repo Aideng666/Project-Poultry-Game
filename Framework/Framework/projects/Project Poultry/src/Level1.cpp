@@ -39,6 +39,50 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	wirePowered3 = Entity::Create();
 	UIEnt = Entity::Create();
 	tutEnt = Entity::Create();
+
+	drumstick = ModelManager::FindMesh(drumFile);
+	floor = ModelManager::FindMesh(floorFile);
+	wall = ModelManager::FindMesh(wallFile);
+	doorM = ModelManager::FindMesh(doorFile);
+	buttonM = ModelManager::FindMesh(buttonFile);
+	wireL = ModelManager::FindMesh(wire1File, glm::vec3(1.0f, 0.0f, 0.0f));
+	wireR = ModelManager::FindMesh(wire2File, glm::vec3(1.0f, 0.0f, 0.0f));
+	wireC = ModelManager::FindMesh(wire3File, glm::vec3(1.0f, 0.0f, 0.0f));
+	wireLPower = ModelManager::FindMesh(wire1File, glm::vec3(0.0f, 1.0f, 0.0f));
+	wireRPower = ModelManager::FindMesh(wire2File, glm::vec3(0.0f, 1.0f, 0.0f));
+	wireCPower = ModelManager::FindMesh(wire3File, glm::vec3(0.0f, 1.0f, 0.0f));
+	gate = ModelManager::FindMesh(gateFile, glm::vec3(0.0f, 0.0f, 1.0f));
+	coil = ModelManager::FindMesh(coilFile, glm::vec3(1.0f, 0.0f, 0.0f));
+	coilP = ModelManager::FindMesh(coilFile, glm::vec3(0.0f, 1.0f, 0.0f));
+	pipe = ModelManager::FindMesh(pipeFile, glm::vec3(0.6f, 0.45f, 0.0f));
+	tut = ModelManager::FindMesh(tutFile, glm::vec3(1.0f, 0.0f, 0.0f));
+
+	door1 = ModelManager::FindMesh(doorFile1);
+	door2 = ModelManager::FindMesh(doorFile2);
+	door3 = ModelManager::FindMesh(doorFile3);
+	door4 = ModelManager::FindMesh(doorFile4);
+	door5 = ModelManager::FindMesh(doorFile5);
+	door6 = ModelManager::FindMesh(doorFile6);
+	door7 = ModelManager::FindMesh(doorFile7);
+	door8 = ModelManager::FindMesh(doorFile8);
+	door9 = ModelManager::FindMesh(doorFile9);
+	door10 = ModelManager::FindMesh(doorFile10);
+	door11 = ModelManager::FindMesh(doorFile11);
+
+	walk1 = ModelManager::FindMesh(walkFile1);
+	walk2 = ModelManager::FindMesh(walkFile2);
+	walk3 = ModelManager::FindMesh(walkFile3);
+	walk4 = ModelManager::FindMesh(walkFile4);
+	walk5 = ModelManager::FindMesh(walkFile5);
+	walk6 = ModelManager::FindMesh(walkFile6);
+	walk7 = ModelManager::FindMesh(walkFile7);
+	walk8 = ModelManager::FindMesh(walkFile8);
+	walk9 = ModelManager::FindMesh(walkFile9);
+	walk10 = ModelManager::FindMesh(walkFile10);
+	walk11 = ModelManager::FindMesh(walkFile11);
+	walk12 = ModelManager::FindMesh(walkFile12);
+	walk13 = ModelManager::FindMesh(walkFile13);
+	walk14 = ModelManager::FindMesh(walkFile14);
 }
 
 void Level1::InitScene()
@@ -127,12 +171,12 @@ void Level1::InitScene()
 
 	SetShaderValues(untexturedShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
 
-	uiShader = Shader::Create();
+	/*uiShader = Shader::Create();
 	uiShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
 	uiShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	uiShader->Link();
 
-	SetShaderValues(uiShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+	SetShaderValues(uiShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);*/
 
 #pragma endregion
 
@@ -272,98 +316,53 @@ void Level1::InitScene()
 	//Particle
 	auto& particleSystem = particleEnt.Add<ParticleSystem>(particleEnt, particleData);
 
-	Mesh drumstick("Models/ChickenFrames/Walk1.obj");
-	Mesh floor("Models/Floor.obj");
-	Mesh wall("Models/Wall.obj");
-	Mesh doorM("Models/DoorFrames/Door0.obj");
-	Mesh pipe("Models/Level1Pipe.obj", glm::vec3(0.6f, 0.45f, 0.0f));
-	Mesh buttonM("Models/Button.obj");
-	Mesh wireL("Models/LeftWire.obj", glm::vec3(1.0f, 0.0f, 0.0f));
-	Mesh wireR("Models/RightWire.obj", glm::vec3(1.0f, 0.0f, 0.0f));
-	Mesh wireC("Models/CoilWire.obj", glm::vec3(1.0f, 0.0f, 0.0f));
-	Mesh wireLPower("Models/LeftWire.obj", glm::vec3(0.0f, 1.0f, 0.0f));
-	Mesh wireRPower("Models/RightWire.obj", glm::vec3(0.0f, 1.0f, 0.0f));
-	Mesh wireCPower("Models/CoilWire.obj", glm::vec3(0.0f, 1.0f, 0.0f));
-	Mesh gate("Models/AndGate.obj", glm::vec3(0.0f, 0.0f, 1.0f));
-	Mesh coil("Models/Coil.obj", glm::vec3(1.0f, 0.0f, 0.0f));
-	Mesh coilP("Models/Coil.obj", glm::vec3(0.0f, 1.0f, 0.0f));
-	Mesh ui("Models/UI_Button.obj");
-	Mesh tut("Models/Interact.obj", glm::vec3(1.0f, 0.0f, 0.0f));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door1));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door3));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door4));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door5));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door6));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door7));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door8));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door11));
 
-	door0 = std::make_unique<Mesh>("Models/DoorFrames/Door0.obj");
-	door1 = std::make_unique<Mesh>("Models/DoorFrames/Door1.obj");
-	door2 = std::make_unique<Mesh>("Models/DoorFrames/Door2.obj");
-	door3 = std::make_unique<Mesh>("Models/DoorFrames/Door3.obj");
-	door4 = std::make_unique<Mesh>("Models/DoorFrames/Door4.obj");
-	door5 = std::make_unique<Mesh>("Models/DoorFrames/Door5.obj");
-	door6 = std::make_unique<Mesh>("Models/DoorFrames/Door6.obj");
-	door7 = std::make_unique<Mesh>("Models/DoorFrames/Door7.obj");
-	door8 = std::make_unique<Mesh>("Models/DoorFrames/Door8.obj");
-	door9 = std::make_unique<Mesh>("Models/DoorFrames/Door9.obj");
-	door10 = std::make_unique<Mesh>("Models/DoorFrames/Door10.obj");
-	
-	doorFrames.push_back(std::move(door0));
-	doorFrames.push_back(std::move(door1));
-	doorFrames.push_back(std::move(door2));
-	doorFrames.push_back(std::move(door3));
-	doorFrames.push_back(std::move(door4));
-	doorFrames.push_back(std::move(door5));
-	doorFrames.push_back(std::move(door6));
-	doorFrames.push_back(std::move(door7));
-	doorFrames.push_back(std::move(door8));
-	doorFrames.push_back(std::move(door9));
-	doorFrames.push_back(std::move(door10));
 
-	walk1 = std::make_unique<Mesh>("Models/ChickenFrames/Walk1.obj");
-	walk2 = std::make_unique<Mesh>("Models/ChickenFrames/Walk2.obj");
-	walk3 = std::make_unique<Mesh>("Models/ChickenFrames/Walk3.obj");
-	walk4 = std::make_unique<Mesh>("Models/ChickenFrames/Walk4.obj");
-	walk5 = std::make_unique<Mesh>("Models/ChickenFrames/Walk5.obj");
-	walk6 = std::make_unique<Mesh>("Models/ChickenFrames/Walk6.obj");
-	walk7 = std::make_unique<Mesh>("Models/ChickenFrames/Walk7.obj");
-	walk8 = std::make_unique<Mesh>("Models/ChickenFrames/Walk8.obj");
-	walk9 = std::make_unique<Mesh>("Models/ChickenFrames/Walk9.obj");
-	walk10 = std::make_unique<Mesh>("Models/ChickenFrames/Walk10.obj");
-	walk11 = std::make_unique<Mesh>("Models/ChickenFrames/Walk11.obj");
-	walk12 = std::make_unique<Mesh>("Models/ChickenFrames/Walk12.obj");
-	walk13 = std::make_unique<Mesh>("Models/ChickenFrames/Walk13.obj");
-	walk14 = std::make_unique<Mesh>("Models/ChickenFrames/Walk14.obj");
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk2));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk3));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk4));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk5));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk6));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk7));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk8));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk9));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk10));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk11));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk12));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk13));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk14));
 
-	walkFrames.push_back(std::move(walk1));
-	walkFrames.push_back(std::move(walk2));
-	walkFrames.push_back(std::move(walk3));
-	walkFrames.push_back(std::move(walk4));
-	walkFrames.push_back(std::move(walk5));
-	walkFrames.push_back(std::move(walk6));
-	walkFrames.push_back(std::move(walk7));
-	walkFrames.push_back(std::move(walk8));
-	walkFrames.push_back(std::move(walk9));
-	walkFrames.push_back(std::move(walk10));
-	walkFrames.push_back(std::move(walk11));
-	walkFrames.push_back(std::move(walk12));
-	walkFrames.push_back(std::move(walk13));
-	walkFrames.push_back(std::move(walk14));
-
-	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, drumstick, playerShader);
-	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, floor, floorShader);
-	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, wall, levelShader);
-	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, wall, levelShader);
-	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, wall, levelShader);
-	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, gate, untexturedShader);
-	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, buttonM, buttonShader);
-	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, buttonM, buttonShader);
-	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, wireL, wireShader);
-	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, wireR, wireShader);
-	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, wireC, wireShader);
-	auto& wireMeshP = wirePowered.Add<MeshRenderer>(wirePowered, wireLPower, wireShader);
-	auto& wireMeshP2 = wirePowered2.Add<MeshRenderer>(wirePowered2, wireRPower, wireShader);
-	auto& wireMeshP3 = wirePowered3.Add<MeshRenderer>(wirePowered3, wireCPower, wireShader);
-	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, doorM, doorShader);
-	auto& pipeMesh = pipeEnt.Add<MeshRenderer>(pipeEnt, pipe, untexturedShader);
-	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, coil, untexturedShader);
-	auto& coilMeshP = coilPowered.Add<MeshRenderer>(coilPowered, coilP, untexturedShader);
-	auto& uiMesh = UIEnt.Add<MeshRenderer>(UIEnt, ui, uiShader);
-	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, tut, untexturedShader);
+	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, playerShader);
+	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floor, floorShader);
+	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *wall, levelShader);
+	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *wall, levelShader);
+	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *wall, levelShader);
+	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *gate, untexturedShader);
+	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, buttonShader);
+	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, buttonShader);
+	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireL, wireShader);
+	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireR, wireShader);
+	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireC, wireShader);
+	auto& wireMeshP = wirePowered.Add<MeshRenderer>(wirePowered, *wireLPower, wireShader);
+	auto& wireMeshP2 = wirePowered2.Add<MeshRenderer>(wirePowered2, *wireRPower, wireShader);
+	auto& wireMeshP3 = wirePowered3.Add<MeshRenderer>(wirePowered3, *wireCPower, wireShader);
+	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, doorShader);
+	auto& pipeMesh = pipeEnt.Add<MeshRenderer>(pipeEnt, *pipe, untexturedShader);
+	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, untexturedShader);
+	auto& coilMeshP = coilPowered.Add<MeshRenderer>(coilPowered, *coilP, untexturedShader);
+	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -381,11 +380,11 @@ void Level1::InitScene()
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
 
-	auto& uiCam = uiCamEnt.Add<Camera>();
+	/*auto& uiCam = uiCamEnt.Add<Camera>();
 	uiCam.SetIsOrtho(true);
 	uiCam.SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 	uiCam.SetForward(glm::vec3(0.0f, 0.0f, -1.0f));
-	uiCam.SetUp(glm::vec3(0.0f, 1.0f, 0.0f));
+	uiCam.SetUp(glm::vec3(0.0f, 1.0f, 0.0f));*/
 
 }
 
@@ -401,7 +400,7 @@ void Level1::Update(float dt)
 	buttonShader->SetUniform("u_Time", time);
 	doorShader->SetUniform("u_Time", time);
 	untexturedShader->SetUniform("u_Time", time);
-	uiShader->SetUniform("u_Time", time);
+	//uiShader->SetUniform("u_Time", time);
 
 	if (forwards)
 		t += dt / totalTime;
@@ -427,7 +426,7 @@ void Level1::Update(float dt)
 	doorShader->SetUniform("u_Position", currentPos);
 	buttonShader->SetUniform("u_Position", currentPos);
 	untexturedShader->SetUniform("u_Position", currentPos);
-	uiShader->SetUniform("u_Position", currentPos);
+	//uiShader->SetUniform("u_Position", currentPos);
 
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -444,7 +443,7 @@ void Level1::Update(float dt)
 	auto& wireTrans3 = wireEnt3.Get<Transform>();
 	auto& gateTrans = andEnt.Get<Transform>();
 	auto& coilTrans = coilEnt.Get<Transform>();
-	auto& uiTrans = UIEnt.Get<Transform>();
+	//auto& uiTrans = UIEnt.Get<Transform>();
 	auto& tutTrans =tutEnt.Get<Transform>();
 	
 	backTrans.SetPositionZ(-39.0f);
@@ -458,10 +457,10 @@ void Level1::Update(float dt)
 	rightTrans.SetRotationY(90.0f);
 	rightTrans.SetPositionY(9.0f);
 
-	uiTrans.SetRotationY(uiTrans.GetRotation().y + 10.0f * dt);
+	//uiTrans.SetRotationY(uiTrans.GetRotation().y + 10.0f * dt);
 
 	auto& camera = camEnt.Get<Camera>();
-	auto& uiCamera = uiCamEnt.Get<Camera>();
+	//auto& uiCamera = uiCamEnt.Get<Camera>();
 
 
 	auto& meshMain = mainPlayer.Get<MorphRenderer>();
@@ -482,7 +481,7 @@ void Level1::Update(float dt)
 	auto& gateMesh = andEnt.Get<MeshRenderer>();
 	auto& coilMesh = coilEnt.Get<MeshRenderer>();
 	auto& coilMeshP = coilPowered.Get<MeshRenderer>();
-	auto& uiMesh = UIEnt.Get<MeshRenderer>();
+	//auto& uiMesh = UIEnt.Get<MeshRenderer>();
 	auto& tutMesh = tutEnt.Get<MeshRenderer>();
 
 	camera.LookAt(glm::vec3(playerTrans.GetPosition()));
@@ -501,7 +500,7 @@ void Level1::Update(float dt)
 	glm::mat4 transformWire3 = wireTrans3.GetModelMatrix();
 	glm::mat4 transformGate = gateTrans.GetModelMatrix();
 	glm::mat4 transformCoil = coilTrans.GetModelMatrix();
-	glm::mat4 transformUI = uiTrans.GetModelMatrix();
+	//glm::mat4 transformUI = uiTrans.GetModelMatrix();
 	glm::mat4 transformTut = tutTrans.GetModelMatrix();
 
 	auto& particleSystem = particleEnt.Get<ParticleSystem>();
@@ -734,12 +733,10 @@ void Level1::Update(float dt)
 	buttonMesh.Render(camera, transformButton);
 	buttonMesh2.Render(camera, transformButton2);
 
-	uiShader->Bind();
+	/*uiShader->Bind();
 	uiShader->SetUniform("s_Diffuse", 0);
 	uiMat.Albedo->Bind(0);
-	uiMesh.Render(uiCamera, transformUI);
-
-	//gateShader->Bind();
+	uiMesh.Render(uiCamera, transformUI);*/
 
 	particleSystem.Update(dt, camera);
 
