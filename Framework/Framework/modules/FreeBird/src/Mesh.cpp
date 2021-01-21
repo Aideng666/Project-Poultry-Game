@@ -122,10 +122,20 @@ namespace freebird
 
         vbo = VertexBuffer::Create();
         vbo->LoadData(interleaved.data(), interleaved.size());
+
+        SetName(fileName);
     }
 
     VertexBuffer::sptr Mesh::GetVBO()
     {
         return vbo;
+    }
+    std::string Mesh::GetName()
+    {
+        return this->name;
+    }
+    void Mesh::SetName(std::string name)
+    {
+        this->name = name;
     }
 }
