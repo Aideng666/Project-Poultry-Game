@@ -97,6 +97,8 @@ void Level1::InitScene()
 
 	totalTime = distance / speed;
 
+#pragma region Shader Stuff
+
 	glm::vec3 lightPos = glm::vec3(0.0f, 9.5f, -35.0f);
 	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
 	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
@@ -106,8 +108,6 @@ void Level1::InitScene()
 	glm::vec3 ambientCol = glm::vec3(1.0f);
 	float     ambientPow = 0.1f;
 	float     shininess = 16.0f;
-
-#pragma region Shader Stuff
 
 	playerShader = Shader::Create();
 	playerShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);

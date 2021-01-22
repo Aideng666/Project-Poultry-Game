@@ -18,4 +18,20 @@ public:
 
 private:
 
+	Entity playButton;
+	Entity optionsButton;
+	Entity backEnt;
+
+	Shader::sptr shader;
+
+	Mat playMat, optionsMat, backMat;
+
+	Mesh* play;
+	Mesh* options;
+	Mesh* back;
+
+	std::string buttonFile = "Models/UI_Button.obj";
+	std::string backFile = "Models/Floor.obj";
+
+	GLfloat time = 0.0f;
 };
