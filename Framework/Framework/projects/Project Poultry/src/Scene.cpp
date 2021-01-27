@@ -62,6 +62,11 @@ Shader::sptr Scene::GetShader()
 	return shader;
 }
 
+bool Scene::GetLoad()
+{
+	return loadModels;
+}
+
 //void Scene::RenderVAO(Shader::sptr& shader, MeshRenderer& vao, Camera& camera, glm::mat4 transform)
 //{
 //	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transform));
