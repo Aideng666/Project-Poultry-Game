@@ -18,6 +18,7 @@ uniform float u_SpecularLightStrength2;
 uniform float u_Shininess;
 uniform float u_Time;
 uniform vec3 u_Position;
+uniform int u_LightNum;
 
 uniform vec3  u_CamPos;
 
@@ -93,9 +94,45 @@ void main() {
 
 	float strength  = max(min(((2 * cos(u_Time * radians(180.0f))) + (4 * sin((u_Time * radians(180.0f)) / 4)) + (3 *cos(u_Time * radians(180.0f) * 3))) + (4 * sin(u_Time * radians(180.0f) * 3)), 1), 0);
 
-	vec3 result = CreateSpotlight(u_Position, u_LightDir, strength, cos(radians(60.0f)));
+	vec3 result;
 
-	result += CreateDirectionLight(u_LightPos, u_SpecularLightStrength);
+	switch (u_LightNum)
+	{
 
-	frag_color = vec4(result  * inColor * textureColor.rgb, 1.0);
+	case 1:
+		frag_color = vec4(inColor * textureColor.rgb, 1.0);
+		break;
+
+	case 2:
+		vec3 ambient = ((u_AmbientLightStrength * u_LightCol) + (u_AmbientCol * u_AmbientStrength));
+		frag_color = vec4(ambient * inColor * textureColor.rgb, 1.0);
+		break;
+
+	case 3:
+		vec3 lightDir = normalize(u_LightPos - inPos);
+		vec3 N = normalize(inNormal);
+
+		vec3 viewDir = normalize(u_CamPos - inPos);
+		vec3 h		 = normalize(lightDir + viewDir);
+		
+		vec3 reflectDir = reflect(-lightDir, N);
+		float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Shininess);
+		vec3 specular = u_SpecularLightStrength * spec * u_LightCol; 
+
+		frag_color = vec4(specular * inColor * textureColor.rgb, 1.0);
+		break;
+
+	case 4:
+		result = CreateDirectionLight(u_LightPos, u_SpecularLightStrength);
+
+		frag_color = vec4(result  * inColor * textureColor.rgb, 1.0);
+		break;
+
+	case 5:
+		result = CreateSpotlight(u_Position, u_LightDir, strength, cos(radians(60.0f)));
+
+		result += CreateDirectionLight(u_LightPos, u_SpecularLightStrength);
+
+		frag_color = vec4(result  * inColor * textureColor.rgb, 1.0);
+	}
 }

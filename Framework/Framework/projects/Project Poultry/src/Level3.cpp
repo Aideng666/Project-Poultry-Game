@@ -68,7 +68,7 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	wire6Power = ModelManager::FindMesh(wire6File, glm::vec3(0.0f, 1.0f, 0.0f));
 	wire7Power = ModelManager::FindMesh(wire7File, glm::vec3(0.0f, 1.0f, 0.0f));
 	gate = ModelManager::FindMesh(gateFile, glm::vec3(0.0f, 0.0f, 1.0f));
-	not = ModelManager::FindMesh(notFile, glm::vec3(0.0f, 0.0f, 1.0f));
+	not = ModelManager::FindMesh(notFile, glm::vec3(1.0f, 0.0f, 1.0f));
 	coil = ModelManager::FindMesh(coilFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	coilP = ModelManager::FindMesh(coilFile, glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -734,6 +734,18 @@ void Level3::Update(float dt)
 		camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y - 10 * dt, camera.GetPosition().z));
 	}
 #pragma endregion
+
+	if (lightNum < 1 || lightNum > 5)
+		lightNum = 1;
+
+	playerShader->SetUniform("u_LightNum", lightNum);
+	doorShader->SetUniform("u_LightNum", lightNum);
+	floorShader->SetUniform("u_LightNum", lightNum);
+	levelShader->SetUniform("u_LightNum", lightNum);
+	gateShader->SetUniform("u_LightNum", lightNum);
+	wireShader->SetUniform("u_LightNum", lightNum);
+	untexturedShader->SetUniform("u_LightNum", lightNum);
+	buttonShader->SetUniform("u_LightNum", lightNum);
 
 #pragma region Renders
 

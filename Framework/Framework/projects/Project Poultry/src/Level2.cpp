@@ -651,6 +651,18 @@ void Level2::Update(float dt)
 	}
 #pragma endregion
 
+	if (lightNum < 1 || lightNum > 5)
+		lightNum = 1;
+
+	playerShader->SetUniform("u_LightNum", lightNum);
+	doorShader->SetUniform("u_LightNum", lightNum);
+	floorShader->SetUniform("u_LightNum", lightNum);
+	levelShader->SetUniform("u_LightNum", lightNum);
+	gateShader->SetUniform("u_LightNum", lightNum);
+	wireShader->SetUniform("u_LightNum", lightNum);
+	untexturedShader->SetUniform("u_LightNum", lightNum);
+	buttonShader->SetUniform("u_LightNum", lightNum);
+
 #pragma region Renders
 
 	playerShader->Bind();

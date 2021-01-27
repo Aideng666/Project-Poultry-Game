@@ -1,19 +1,14 @@
 #pragma once
 #include "Scene.h"
 #include "Input.h"
-#include "Wire.h"
-#include "Lever.h"
 #include <vector>
 #include <iostream>
-#include <ParticleSystem.h>
 
-using namespace freebird;
-
-class Level1 : public Scene
+class MainMenuLevel : public Scene
 {
 public:
 
-	Level1(std::string sceneName, GLFWwindow* wind);
+	MainMenuLevel(std::string sceneName, GLFWwindow* wind);
 
 	void InitScene();
 
@@ -23,26 +18,14 @@ public:
 
 private:
 
+	Entity startDoor, optionDoor, exitDoor;
+	Entity floorEnt, backWall, leftAngledWall, rightAngledWall, leftWall, rightWall;
 	Entity mainPlayer;
-	Entity floorEnt;
-	Entity leftEnt, rightEnt, backEnt;
-	Entity andEnt;
-	Entity wireEnt, wireEnt2, wireEnt3;
-	Entity buttonEnt, buttonEnt2;
-	Entity doorEnt;
-	Entity coilEnt, coilPowered;
-	Entity pipeEnt;
-	Entity boxEnt;
-	Entity particleEnt;
-	Entity wirePowered, wirePowered2, wirePowered3;
-	Entity UIEnt;
-	Entity tutEnt;
+	Entity startEnt, optEnt, exitEnt;
 
-	Shader::sptr playerShader, levelShader, floorShader, gateShader, wireShader, doorShader, buttonShader, particleShader, untexturedShader, uiShader;
+	Shader::sptr doorShader, playerShader, floorShader, levelShader;
 
-	GLfloat time = 0.0f;
-
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, wireMat, coilMat, gateMat, uiMat;
+	Mat drumstickMat, doorMat, floorMat, wallMat;
 
 	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames;
 
@@ -50,18 +33,9 @@ private:
 	Mesh* floor;
 	Mesh* wall;
 	Mesh* doorM;
-	Mesh* gate;
-	Mesh* wireL;
-	Mesh* wireR;
-	Mesh* wireC;
-	Mesh* buttonM;
-	Mesh* wireLPower;
-	Mesh* wireRPower;
-	Mesh* wireCPower;
-	Mesh* coil;
-	Mesh* coilP;
-	Mesh* pipe;
-	Mesh* tut;
+	Mesh* start;
+	Mesh* options;
+	Mesh* exit;
 
 	Mesh* door1;
 	Mesh* door2;
@@ -91,18 +65,12 @@ private:
 	Mesh* walk14;
 
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
+	std::string doorFile = "Models/DoorFrames/Door0.obj";
 	std::string floorFile = "Models/Floor.obj";
 	std::string wallFile = "Models/Wall.obj";
-	std::string doorFile = "Models/DoorFrames/Door0.obj";
-	std::string gateFile = "Models/AndGate.obj";
-	std::string wire1File = "Models/LeftWire.obj";
-	std::string wire2File = "Models/RightWire.obj";
-	std::string wire3File = "Models/CoilWire.obj";
-	std::string buttonFile = "Models/Button.obj";
-	std::string coilFile = "Models/Coil.obj";
-	std::string pipeFile = "Models/Level1Pipe.obj";
-	std::string tutFile = "Models/Interact.obj";
-
+	std::string startFile = "Models/Start.obj";
+	std::string exitFile = "Models/Exit.obj";
+	std::string optFile = "Models/Options.obj";
 
 	std::string doorFile1 = "Models/DoorFrames/Door0.obj";
 	std::string doorFile2 = "Models/DoorFrames/Door1.obj";
@@ -131,7 +99,7 @@ private:
 	std::string walkFile13 = "Models/ChickenFrames/Walk13.obj";
 	std::string walkFile14 = "Models/ChickenFrames/Walk14.obj";
 
-	ParticleParam particleData;
+	GLfloat time = 0.0f;
 
 	float t = 0.0f;
 	float totalTime;
@@ -149,15 +117,4 @@ private:
 	bool camFar = false;
 
 	int lightNum = 5;
-
-	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
-		buttonEnt.Get<Lever>().SetPowered(!buttonEnt.Get<Lever>().GetPowered());
-		std::cout << "Button 1 Power: " << buttonEnt.Get<Lever>().GetPowered() << std::endl;
-		});
-
-	KeyPressWatcher button2Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
-		buttonEnt2.Get<Lever>().SetPowered(!buttonEnt2.Get<Lever>().GetPowered());
-		std::cout << "Button 2 Power: " << buttonEnt2.Get<Lever>().GetPowered() << std::endl;
-		});
-
 };
