@@ -61,11 +61,11 @@ int main()
 	//Sets the clear colour of the window
 	Application::SetClearColor(glm::vec4(0.08f, 0.17f, 0.31f, 1.0f));
 
-	scenes.push_back(new MainMenuLevel("Main Menu", window));
+	scenes.push_back(new MainMenu("Main Menu", window));
+	/*scenes.push_back(new MainMenuLevel("Main Menu Level", window));
 	scenes.push_back(new Level1("Level 1", window));
 	scenes.push_back(new Level2("Level 2", window));
-	scenes.push_back(new Level3("Level 3", window));
-	scenes.push_back(new Level4("Level 4", window));
+	scenes.push_back(new Level3("Level 3", window));*/
 
 	SetActiveScene(0);
 	
@@ -84,6 +84,10 @@ int main()
 		//Grabs the time
 		float dt = Application::GetDT();
 
+		if (glfwGetKey(window, GLFW_KEY_KP_4) == GLFW_PRESS)
+		{
+			SetActiveScene(4);
+		}
 		if (glfwGetKey(window, GLFW_KEY_KP_3) == GLFW_PRESS)
 		{
 			SetActiveScene(3);
@@ -105,6 +109,16 @@ int main()
 		{
 			currentScene->SetComplete(false);
 			SetActiveScene(level);
+		}
+
+		if (currentScene->GetLoad())
+		{
+			scenes.push_back(new MainMenuLevel("Main Menu Level", window));
+			scenes.push_back(new Level1("Level 1", window));
+			scenes.push_back(new Level2("Level 2", window));
+			scenes.push_back(new Level3("Level 3", window));
+
+			SetActiveScene(1);
 		}
 
 		currentScene->Update(dt);

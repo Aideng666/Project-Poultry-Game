@@ -21,10 +21,11 @@ private:
 	Entity playButton;
 	Entity optionsButton;
 	Entity backEnt;
+	Entity loadEnt;
 
 	Shader::sptr shader;
 
-	Mat playMat, optionsMat, backMat;
+	Mat playMat, optionsMat, backMat, loadMat;
 
 	Mesh* play;
 	Mesh* options;
@@ -34,4 +35,6 @@ private:
 	std::string backFile = "Models/Floor.obj";
 
 	GLfloat time = 0.0f;
+
+	bool isLoading = false;
 };

@@ -33,10 +33,6 @@ public:
 
 	virtual void Unload();
 
-	void InitImGui();
-	void ShutdownImGui();
-	void RenderImGui();
-
 	bool GetComplete();
 	void SetComplete(bool complete);
 
@@ -44,6 +40,8 @@ public:
 
 	entt::registry* GetScene();
 	Shader::sptr GetShader();
+
+	bool GetLoad();
 
 	void SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos = glm::vec3(0.f, 0.f, 0.f), 
 		glm::vec3 lightDir = glm::vec3(0.f, 0.f, 0.f), glm::vec3 lightCol = glm::vec3(1.0f, 1.0f, 1.0f),
@@ -78,4 +76,6 @@ protected:
 	unsigned char* image;
 	const char* fileName;
 	int width, height;
+
+	bool loadModels = false;
 };
