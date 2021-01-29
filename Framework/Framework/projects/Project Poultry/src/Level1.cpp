@@ -462,6 +462,7 @@ void Level1::Update(float dt)
 	auto& camera = camEnt.Get<Camera>();
 	//auto& uiCamera = uiCamEnt.Get<Camera>();
 
+	camera.LookAt(glm::vec3(playerTrans.GetPosition()));
 
 	auto& meshMain = mainPlayer.Get<MorphRenderer>();
 	auto& groundMesh = floorEnt.Get<MeshRenderer>();
@@ -484,7 +485,6 @@ void Level1::Update(float dt)
 	//auto& uiMesh = UIEnt.Get<MeshRenderer>();
 	auto& tutMesh = tutEnt.Get<MeshRenderer>();
 
-	camera.LookAt(glm::vec3(playerTrans.GetPosition()));
 
 	glm::mat4 transform = playerTrans.GetModelMatrix();
 	glm::mat4 transformGround = groundTrans.GetModelMatrix();
@@ -671,6 +671,18 @@ void Level1::Update(float dt)
 		camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y - 10 * dt, camera.GetPosition().z));
 	}
 #pragma endregion
+
+	if (lightNum < 1 || lightNum > 5)
+		lightNum = 1;
+
+	playerShader->SetUniform("u_LightNum", lightNum);
+	doorShader->SetUniform("u_LightNum", lightNum);
+	floorShader->SetUniform("u_LightNum", lightNum);
+	levelShader->SetUniform("u_LightNum", lightNum);
+	gateShader->SetUniform("u_LightNum", lightNum);
+	wireShader->SetUniform("u_LightNum", lightNum);
+	untexturedShader->SetUniform("u_LightNum", lightNum);
+	buttonShader->SetUniform("u_LightNum", lightNum);
 
 #pragma region Renders
 

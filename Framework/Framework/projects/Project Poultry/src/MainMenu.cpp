@@ -20,6 +20,8 @@ MainMenu::MainMenu(std::string sceneName, GLFWwindow* wind)
 {
 	playButton = Entity::Create();
 	optionsButton = Entity::Create();
+	backEnt = Entity::Create();
+	loadEnt = Entity::Create();
 
 	play = ModelManager::FindMesh(buttonFile);
 	options = ModelManager::FindMesh(buttonFile);
@@ -60,6 +62,7 @@ void MainMenu::InitScene()
 	Texture2DData::sptr playMap = Texture2DData::LoadFromFile("Textures/Buttons/Default/Play.png");
 	Texture2DData::sptr optionsMap = Texture2DData::LoadFromFile("Textures/Buttons/Default/Option.png");
 	Texture2DData::sptr backMap = Texture2DData::LoadFromFile("Textures/MainMenuBackground.png");
+	Texture2DData::sptr loadMap = Texture2DData::LoadFromFile("Textures/Loading.jpg");
 
 	Texture2D::sptr diffusePlay = Texture2D::Create();
 	diffusePlay->LoadData(playMap);
@@ -69,6 +72,9 @@ void MainMenu::InitScene()
 
 	Texture2D::sptr diffuseBack = Texture2D::Create();
 	diffuseBack->LoadData(backMap);
+
+	Texture2D::sptr diffuseLoad = Texture2D::Create();
+	diffuseLoad->LoadData(loadMap);
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -80,6 +86,7 @@ void MainMenu::InitScene()
 	playMat.Albedo = diffusePlay;
 	optionsMat.Albedo = diffuseOptions;
 	backMat.Albedo = diffuseBack;
+	loadMat.Albedo = diffuseLoad;
 
 #pragma endregion
 
@@ -97,9 +104,14 @@ void MainMenu::InitScene()
 	backTrans.SetPosition(glm::vec3(0.0f, -1.0f, 0.0f));
 	backTrans.SetScale(glm::vec3(0.268f));
 
+	auto& loadTrans = loadEnt.Add<Transform>();
+	loadTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	loadTrans.SetScale(glm::vec3(0.268f));
+
 	auto& playMesh = playButton.Add<MeshRenderer>(playButton, *play, shader);
 	auto& optionsMesh = optionsButton.Add<MeshRenderer>(optionsButton, *options, shader);
 	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *back, shader);
+	auto& loadMesh = loadEnt.Add<MeshRenderer>(loadEnt, *back, shader);
 
 	auto& camera = camEnt.Add<Camera>();
 	camera.SetPosition(glm::vec3(0, 10, 0)); // Set initial position
@@ -117,48 +129,25 @@ void MainMenu::Update(float dt)
 	auto& playTrans = playButton.Get<Transform>();
 	auto& optionsTrans = optionsButton.Get<Transform>();
 	auto& backTrans = backEnt.Get<Transform>();
+	auto& loadTrans = loadEnt.Get<Transform>();
 
 	auto& camera = camEnt.Get<Camera>();
-
-	/*playTrans.SetRotationY(playTrans.GetRotation().y + 20.0f * dt);
-
-	std::cout << playTrans.GetRotation().y << std::endl;*/
 
 	auto& playMesh = playButton.Get<MeshRenderer>();
 	auto& optionsMesh = optionsButton.Get<MeshRenderer>();
 	auto& backMesh = backEnt.Get<MeshRenderer>();
+	auto& loadMesh = loadEnt.Get<MeshRenderer>();
 
 	glm::mat4 transformPlay = playTrans.GetModelMatrix();
 	glm::mat4 transformOptions = optionsTrans.GetModelMatrix();
 	glm::mat4 transformBack = backTrans.GetModelMatrix();
+	glm::mat4 transformLoad = loadTrans.GetModelMatrix();
 
-#pragma region CameraMovement
-
-	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		camera.SetPosition(glm::vec3(camera.GetPosition().x - 10 * dt, camera.GetPosition().y, camera.GetPosition().z));
+		loadModels = true;
+		isLoading = true;
 	}
-	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-	{
-		camera.SetPosition(glm::vec3(camera.GetPosition().x + 10 * dt, camera.GetPosition().y, camera.GetPosition().z));
-	}
-	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
-	{
-		camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
-	}
-	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
-	{
-		camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
-	}
-	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
-	{
-		camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y + 10 * dt, camera.GetPosition().z));
-	}
-	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
-	{
-		camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y - 10 * dt, camera.GetPosition().z));
-	}
-#pragma endregion
 
 	shader->Bind();
 	shader->SetUniform("s_Diffuse", 0);
@@ -174,6 +163,13 @@ void MainMenu::Update(float dt)
 	shader->SetUniform("s_Diffuse", 0);
 	backMat.Albedo->Bind(0);
 	backMesh.Render(camera, transformBack);
+
+	if (isLoading)
+	{
+		shader->SetUniform("s_Diffuse", 0);
+		loadMat.Albedo->Bind(0);
+		loadMesh.Render(camera, transformLoad);
+	}
 }
 
 void MainMenu::Unload()
