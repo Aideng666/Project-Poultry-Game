@@ -18,13 +18,13 @@ using namespace freebird;
 MainMenu::MainMenu(std::string sceneName, GLFWwindow* wind)
 	: Scene(sceneName, wind)
 {
-	playButton = Entity::Create();
-	optionsButton = Entity::Create();
+	/*playButton = Entity::Create();
+	optionsButton = Entity::Create();*/
 	backEnt = Entity::Create();
 	loadEnt = Entity::Create();
 
-	play = ModelManager::FindMesh(buttonFile);
-	options = ModelManager::FindMesh(buttonFile);
+	/*play = ModelManager::FindMesh(buttonFile);
+	options = ModelManager::FindMesh(buttonFile);*/
 	back = ModelManager::FindMesh(backFile);
 }
 
@@ -83,14 +83,14 @@ void MainMenu::InitScene()
 	Texture2D::sptr texture2 = Texture2D::Create(desc);
 	texture2->Clear();
 
-	playMat.Albedo = diffusePlay;
-	optionsMat.Albedo = diffuseOptions;
+	/*playMat.Albedo = diffusePlay;
+	optionsMat.Albedo = diffuseOptions;*/
 	backMat.Albedo = diffuseBack;
 	loadMat.Albedo = diffuseLoad;
 
 #pragma endregion
 
-	auto& playTrans = playButton.Add<Transform>();
+	/*auto& playTrans = playButton.Add<Transform>();
 	playTrans.SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
 	playTrans.SetScale(glm::vec3(1.5f));
 	playTrans.SetRotationY(332.0f);
@@ -98,7 +98,7 @@ void MainMenu::InitScene()
 	auto& optionsTrans = optionsButton.Add<Transform>();
 	optionsTrans.SetPosition(glm::vec3(0.0f, 0.0f, 6.0f));
 	optionsTrans.SetScale(glm::vec3(1.5f));
-	optionsTrans.SetRotationY(96.0f);
+	optionsTrans.SetRotationY(96.0f);*/
 
 	auto& backTrans = backEnt.Add<Transform>();
 	backTrans.SetPosition(glm::vec3(0.0f, -1.0f, 0.0f));
@@ -108,8 +108,8 @@ void MainMenu::InitScene()
 	loadTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	loadTrans.SetScale(glm::vec3(0.268f));
 
-	auto& playMesh = playButton.Add<MeshRenderer>(playButton, *play, shader);
-	auto& optionsMesh = optionsButton.Add<MeshRenderer>(optionsButton, *options, shader);
+	/*auto& playMesh = playButton.Add<MeshRenderer>(playButton, *play, shader);
+	auto& optionsMesh = optionsButton.Add<MeshRenderer>(optionsButton, *options, shader);*/
 	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *back, shader);
 	auto& loadMesh = loadEnt.Add<MeshRenderer>(loadEnt, *back, shader);
 
@@ -126,20 +126,20 @@ void MainMenu::Update(float dt)
 	time += dt;
 	shader->SetUniform("u_Time", time);
 
-	auto& playTrans = playButton.Get<Transform>();
-	auto& optionsTrans = optionsButton.Get<Transform>();
+	/*auto& playTrans = playButton.Get<Transform>();
+	auto& optionsTrans = optionsButton.Get<Transform>();*/
 	auto& backTrans = backEnt.Get<Transform>();
 	auto& loadTrans = loadEnt.Get<Transform>();
 
 	auto& camera = camEnt.Get<Camera>();
 
-	auto& playMesh = playButton.Get<MeshRenderer>();
-	auto& optionsMesh = optionsButton.Get<MeshRenderer>();
+	/*auto& playMesh = playButton.Get<MeshRenderer>();
+	auto& optionsMesh = optionsButton.Get<MeshRenderer>();*/
 	auto& backMesh = backEnt.Get<MeshRenderer>();
 	auto& loadMesh = loadEnt.Get<MeshRenderer>();
 
-	glm::mat4 transformPlay = playTrans.GetModelMatrix();
-	glm::mat4 transformOptions = optionsTrans.GetModelMatrix();
+	/*glm::mat4 transformPlay = playTrans.GetModelMatrix();
+	glm::mat4 transformOptions = optionsTrans.GetModelMatrix();*/
 	glm::mat4 transformBack = backTrans.GetModelMatrix();
 	glm::mat4 transformLoad = loadTrans.GetModelMatrix();
 
@@ -149,7 +149,7 @@ void MainMenu::Update(float dt)
 		isLoading = true;
 	}
 
-	shader->Bind();
+	/*shader->Bind();
 	shader->SetUniform("s_Diffuse", 0);
 	playMat.Albedo->Bind(0);
 	playMesh.Render(camera, transformPlay);
@@ -158,8 +158,9 @@ void MainMenu::Update(float dt)
 	shader->Bind();
 	shader->SetUniform("s_Diffuse", 0);
 	optionsMat.Albedo->Bind(0);
-	optionsMesh.Render(camera, transformOptions);
+	optionsMesh.Render(camera, transformOptions);*/
 
+	shader->Bind();
 	shader->SetUniform("s_Diffuse", 0);
 	backMat.Albedo->Bind(0);
 	backMesh.Render(camera, transformBack);

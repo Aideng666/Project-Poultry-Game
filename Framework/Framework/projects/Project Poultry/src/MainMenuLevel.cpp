@@ -46,7 +46,6 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	door8 = ModelManager::FindMesh(doorFile8);
 	door9 = ModelManager::FindMesh(doorFile9);
 	door10 = ModelManager::FindMesh(doorFile10);
-	door11 = ModelManager::FindMesh(doorFile11);
 
 	walk1 = ModelManager::FindMesh(walkFile1);
 	walk2 = ModelManager::FindMesh(walkFile2);
@@ -188,16 +187,16 @@ void MainMenuLevel::InitScene()
 	playerTrans.SetRotationY(0.0f);
 
 	auto& startTrans = startDoor.Add<Transform>();
-	startTrans.SetPosition(glm::vec3(-5.0f, 1.0f, -36.0f));
+	startTrans.SetPosition(glm::vec3(0.0f, -1.0f, -38.0f));
 	startTrans.SetScale(glm::vec3(1.5f));
 
 	auto& optTrans = optionDoor.Add<Transform>();
-	optTrans.SetPosition(glm::vec3(-32.5f, 1.0f, -22.5f));
+	optTrans.SetPosition(glm::vec3(-30.0f, -1.0f, -27.5f));
 	optTrans.SetScale(glm::vec3(1.5f));
 	optTrans.SetRotationY(45.0f);
 	
 	auto& exitTrans = exitDoor.Add<Transform>();
-	exitTrans.SetPosition(glm::vec3(25.0f, 1.0f, -30.0f));
+	exitTrans.SetPosition(glm::vec3(30.0f, -1.0f, -27.5f));
 	exitTrans.SetScale(glm::vec3(1.5f));
 	exitTrans.SetRotationY(-45.0f);
 
@@ -233,7 +232,6 @@ void MainMenuLevel::InitScene()
 	doorFrames.push_back(std::unique_ptr<Mesh>(door8));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door11));
 
 
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));

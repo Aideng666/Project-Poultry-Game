@@ -40,6 +40,7 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	wirePowered3 = Entity::Create();
 	wirePowered4 = Entity::Create();
 	wirePowered5 = Entity::Create();
+	completeEnt = Entity::Create();
 
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
@@ -70,7 +71,6 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	door8 = ModelManager::FindMesh(doorFile8);
 	door9 = ModelManager::FindMesh(doorFile9);
 	door10 = ModelManager::FindMesh(doorFile10);
-	door11 = ModelManager::FindMesh(doorFile11);
 
 	walk1 = ModelManager::FindMesh(walkFile1);
 	walk2 = ModelManager::FindMesh(walkFile2);
@@ -177,6 +177,7 @@ void Level2::InitScene()
 	Texture2DData::sptr floorMap = Texture2DData::LoadFromFile("Textures/FloorTexture.jpg");
 	Texture2DData::sptr wallMap = Texture2DData::LoadFromFile("Textures/WallTexture.jpg");
 	Texture2DData::sptr wireMap = Texture2DData::LoadFromFile("Textures/WireTexture.png");
+	Texture2DData::sptr completeMap = Texture2DData::LoadFromFile("Textures/LevelComplete.png");
 
 	Texture2D::sptr diffuseButton = Texture2D::Create();
 	diffuseButton->LoadData(buttonMap);
@@ -196,6 +197,9 @@ void Level2::InitScene()
 	Texture2D::sptr diffuseWire = Texture2D::Create();
 	diffuseWire->LoadData(wireMap);
 
+	Texture2D::sptr diffuseComplete = Texture2D::Create();
+	diffuseComplete->LoadData(completeMap);
+
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
 	desc.Height = 1;
@@ -209,6 +213,7 @@ void Level2::InitScene()
 	floorMat.Albedo = diffuseFloor;
 	wallMat.Albedo = diffuseWall;
 	wireMat.Albedo = diffuseWire;
+	completeMat.Albedo = diffuseComplete;
 
 #pragma endregion
 
@@ -250,7 +255,7 @@ void Level2::InitScene()
 	buttonTrans3.SetPosition(glm::vec3(18.7f, -2.0f, 25.5f));
 
 	auto& doorTrans = doorEnt.Add<Transform>();
-	doorTrans.SetPosition(glm::vec3(-5.0f, 1.0f, -36.0f));
+	doorTrans.SetPosition(glm::vec3(0.0f, -1.0f, -36.0f));
 	doorTrans.SetScale(glm::vec3(1.5f));
 
 	auto& gateTrans = andEnt.Add<Transform>();
@@ -264,6 +269,10 @@ void Level2::InitScene()
 	auto& coilTrans = coilEnt.Add<Transform>();
 	coilTrans.SetPosition(glm::vec3(-15.0f, 1.0f, -36.0f));
 	coilTrans.SetRotationY(180.0f);
+
+	auto& completeTrans = completeEnt.Add<Transform>();
+	completeTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	completeTrans.SetScale(glm::vec3(0.22f));
 
 	//AABB
 	auto& leftCol = leftEnt.Add<AABB>(leftEnt, mainPlayer);
@@ -308,7 +317,6 @@ void Level2::InitScene()
 	doorFrames.push_back(std::unique_ptr<Mesh>(door8));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door11));
 
 
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
@@ -350,6 +358,7 @@ void Level2::InitScene()
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, doorShader);
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, untexturedShader);
 	auto& coilMeshP = coilPowered.Add<MeshRenderer>(coilPowered, *coilP, untexturedShader);
+	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, levelShader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.5f);
@@ -368,6 +377,11 @@ void Level2::InitScene()
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
 
+	auto& orthoCam = uiCamEnt.Add<Camera>();
+	orthoCam.SetPosition(glm::vec3(0, 10, 0)); // Set initial position
+	orthoCam.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
+	orthoCam.LookAt(glm::vec3(0.0f)); // Look at center of the screen
+	orthoCam.SetFovDegrees(90.0f); // Set an initial FOV
 }
 
 void Level2::Update(float dt)
@@ -424,6 +438,7 @@ void Level2::Update(float dt)
 	auto& gateTrans = andEnt.Get<Transform>();
 	auto& gateTrans2 = andEnt2.Get<Transform>();
 	auto& coilTrans = coilEnt.Get<Transform>();
+	auto& completeTrans = completeEnt.Get<Transform>();
 
 	backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
@@ -437,6 +452,7 @@ void Level2::Update(float dt)
 	rightTrans.SetPositionY(9.0f);
 
 	auto& camera = camEnt.Get<Camera>();
+	auto& orthoCam = uiCamEnt.Get<Camera>();
 
 	auto& meshMain = mainPlayer.Get<MorphRenderer>();
 	auto& groundMesh = floorEnt.Get<MeshRenderer>();
@@ -461,6 +477,7 @@ void Level2::Update(float dt)
 	auto& gateMesh2 = andEnt2.Get<MeshRenderer>();
 	auto& coilMesh = coilEnt.Get<MeshRenderer>();
 	auto& coilMeshP = coilPowered.Get<MeshRenderer>();
+	auto& completeMesh = completeEnt.Get<MeshRenderer>();
 
 	camera.LookAt(glm::vec3(playerTrans.GetPosition()));
 
@@ -481,6 +498,7 @@ void Level2::Update(float dt)
 	glm::mat4 transformGate = gateTrans.GetModelMatrix();
 	glm::mat4 transformGate2 = gateTrans2.GetModelMatrix();
 	glm::mat4 transformCoil = coilTrans.GetModelMatrix();
+	glm::mat4 transformComplete = completeTrans.GetModelMatrix();
 
 	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
@@ -494,122 +512,136 @@ void Level2::Update(float dt)
 		&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() > -3.0f)
 		button3Watch.Poll(window);
 
+	if (showLevelComplete)
+	{
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		{
+			levelComplete = true;
+			lightNum = 5;
+		}
+
+	}
+
 #pragma region PlayerMovement
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	if (!showLevelComplete)
 	{
-
-		playerTrans.SetRotationY(225.0f);
-
-		playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
-		playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 10 * dt);
-
-		camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
-
-		if (camFar)
-			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
-
-		mainPlayer.Get<MorphAnimation>().Update(dt);
-	}
-
-	else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-	{
-
-		playerTrans.SetRotationY(315.0f);
-
-		playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
-		playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 10 * dt);
-
-		camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
-
-		if (camClose)
-			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
-
-		mainPlayer.Get<MorphAnimation>().Update(dt);
-	}
-
-	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-	{
-
-		playerTrans.SetRotationY(45.0f);
-
-		playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
-		playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 10 * dt);
-
-		camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
-
-		if (camClose)
-			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
-
-		mainPlayer.Get<MorphAnimation>().Update(dt);
-	}
-
-	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-	{
-
-		playerTrans.SetRotationY(135.0f);
-
-		playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
-		playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 10 * dt);
-
-		camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
-
-		if (camFar)
-			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
-
-		mainPlayer.Get<MorphAnimation>().Update(dt);
-	}
-
-	else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-	{
-
-		if (playerTrans.GetCanMoveLeft())
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		{
+
+			playerTrans.SetRotationY(225.0f);
+
 			playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
-			playerTrans.SetRotationY(270.0f);
-			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
-
-			mainPlayer.Get<MorphAnimation>().Update(dt);
-		}
-	}
-	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-	{
-
-		if (playerTrans.GetCanMoveRight())
-		{
-			playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
-			playerTrans.SetRotationY(90.0f);
-			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
-
-			mainPlayer.Get<MorphAnimation>().Update(dt);
-		}
-	}
-	else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-	{
-
-		if (playerTrans.GetCanMoveUp())
-		{
 			playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 10 * dt);
-			playerTrans.SetRotationY(180.0f);
+
+			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
 
 			if (camFar)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
 
 			mainPlayer.Get<MorphAnimation>().Update(dt);
 		}
-	}
-	else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-	{
 
-		if (playerTrans.GetCanMoveDown())
+		else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		{
+
+			playerTrans.SetRotationY(315.0f);
+
+			playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
 			playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 10 * dt);
-			playerTrans.SetRotationY(0.0f);
+
+			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
 
 			if (camClose)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
 
 			mainPlayer.Get<MorphAnimation>().Update(dt);
 		}
+
+		else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		{
+
+			playerTrans.SetRotationY(45.0f);
+
+			playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
+			playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 10 * dt);
+
+			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+
+			if (camClose)
+				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
+
+			mainPlayer.Get<MorphAnimation>().Update(dt);
+		}
+
+		else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		{
+
+			playerTrans.SetRotationY(135.0f);
+
+			playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
+			playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 10 * dt);
+
+			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+
+			if (camFar)
+				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
+
+			mainPlayer.Get<MorphAnimation>().Update(dt);
+		}
+
+		else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		{
+
+			if (playerTrans.GetCanMoveLeft())
+			{
+				playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
+				playerTrans.SetRotationY(270.0f);
+				camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+
+				mainPlayer.Get<MorphAnimation>().Update(dt);
+			}
+		}
+		else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		{
+
+			if (playerTrans.GetCanMoveRight())
+			{
+				playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
+				playerTrans.SetRotationY(90.0f);
+				camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+
+				mainPlayer.Get<MorphAnimation>().Update(dt);
+			}
+		}
+		else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		{
+
+			if (playerTrans.GetCanMoveUp())
+			{
+				playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 10 * dt);
+				playerTrans.SetRotationY(180.0f);
+
+				if (camFar)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
+
+				mainPlayer.Get<MorphAnimation>().Update(dt);
+			}
+		}
+		else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		{
+
+			if (playerTrans.GetCanMoveDown())
+			{
+				playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 10 * dt);
+				playerTrans.SetRotationY(0.0f);
+
+				if (camClose)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
+
+				mainPlayer.Get<MorphAnimation>().Update(dt);
+			}
+		}
+
 	}
 #pragma endregion
 
@@ -665,10 +697,70 @@ void Level2::Update(float dt)
 
 #pragma region Renders
 
-	playerShader->Bind();
-	playerShader->SetUniform("s_Diffuse", 0);
-	drumstickMat.Albedo->Bind(0);
-	meshMain.Render(camera, transform);
+	if (!showLevelComplete)
+	{
+		playerShader->Bind();
+		playerShader->SetUniform("s_Diffuse", 0);
+		drumstickMat.Albedo->Bind(0);
+		meshMain.Render(camera, transform);
+
+		floorShader->Bind();
+		floorShader->SetUniform("s_Diffuse", 0);
+		floorMat.Albedo->Bind(0);
+		groundMesh.Render(camera, transformGround);
+
+		doorShader->Bind();
+		doorShader->SetUniform("s_Diffuse", 0);
+		doorMat.Albedo->Bind(0);
+		doorMesh.Render(camera, transformDoor);
+		doorMat.Albedo->UnBind(0);
+
+		untexturedShader->Bind();
+		
+		if (wireEnt5.Get<Wire>().GetIsPowered())
+			coilMeshP.Render(camera, transformCoil);
+		else
+			coilMesh.Render(camera, transformCoil);
+
+		gateMesh.Render(camera, transformGate);
+		gateMesh2.Render(camera, transformGate2);
+
+		wireShader->Bind();
+		wireShader->SetUniform("s_Diffuse", 0);
+		wireMat.Albedo->Bind(0);
+		if (wireEnt.Get<Wire>().GetIsPowered())
+			wireMeshP.Render(camera, transformWire);
+		else
+			wireMesh.Render(camera, transformWire);
+
+		if (wireEnt2.Get<Wire>().GetIsPowered())
+			wireMeshP2.Render(camera, transformWire2);
+		else
+			wireMesh2.Render(camera, transformWire2);
+
+		if (wireEnt3.Get<Wire>().GetIsPowered())
+			wireMeshP3.Render(camera, transformWire3);
+		else
+			wireMesh3.Render(camera, transformWire3);
+
+		if (wireEnt4.Get<Wire>().GetIsPowered())
+			wireMeshP4.Render(camera, transformWire4);
+		else
+			wireMesh4.Render(camera, transformWire4);
+
+		if (wireEnt5.Get<Wire>().GetIsPowered())
+			wireMeshP5.Render(camera, transformWire5);
+		else
+			wireMesh5.Render(camera, transformWire5);
+
+		buttonShader->Bind();
+		buttonShader->SetUniform("s_Diffuse", 0);
+		buttonMat.Albedo->Bind(0);
+		buttonMesh.Render(camera, transformButton);
+		buttonMesh2.Render(camera, transformButton2);
+		buttonMesh3.Render(camera, transformButton3);
+	}
+
 
 	levelShader->Bind();
 	levelShader->SetUniform("s_Diffuse", 0);
@@ -677,66 +769,13 @@ void Level2::Update(float dt)
 	rightMesh.Render(camera, transformRight);
 	backMesh.Render(camera, transformBack);
 
-	floorShader->Bind();
-	floorShader->SetUniform("s_Diffuse", 0);
-	floorMat.Albedo->Bind(0);
-	groundMesh.Render(camera, transformGround);
-
-	doorShader->Bind();
-	doorShader->SetUniform("s_Diffuse", 0);
-	doorMat.Albedo->Bind(0);
-	doorMesh.Render(camera, transformDoor);
-	doorMat.Albedo->UnBind(0);
-
-	untexturedShader->Bind();
-	
-	if (wireEnt5.Get<Wire>().GetIsPowered())
-		coilMeshP.Render(camera, transformCoil);
-	else
-		coilMesh.Render(camera, transformCoil);
-
-	gateMesh.Render(camera, transformGate);
-	gateMesh2.Render(camera, transformGate2);
-
-	wireShader->Bind();
-	wireShader->SetUniform("s_Diffuse", 0);
-	wireMat.Albedo->Bind(0);
-	if (wireEnt.Get<Wire>().GetIsPowered())
-		wireMeshP.Render(camera, transformWire);
-	else
-		wireMesh.Render(camera, transformWire);
-
-	if (wireEnt2.Get<Wire>().GetIsPowered())
-		wireMeshP2.Render(camera, transformWire2);
-	else
-		wireMesh2.Render(camera, transformWire2);
-
-	if (wireEnt3.Get<Wire>().GetIsPowered())
-		wireMeshP3.Render(camera, transformWire3);
-	else
-		wireMesh3.Render(camera, transformWire3);
-
-	if (wireEnt4.Get<Wire>().GetIsPowered())
-		wireMeshP4.Render(camera, transformWire4);
-	else
-		wireMesh4.Render(camera, transformWire4);
-
-	if (wireEnt5.Get<Wire>().GetIsPowered())
-		wireMeshP5.Render(camera, transformWire5);
-	else
-		wireMesh5.Render(camera, transformWire5);
-
-	buttonShader->Bind();
-	buttonShader->SetUniform("s_Diffuse", 0);
-	buttonMat.Albedo->Bind(0);
-	buttonMesh.Render(camera, transformButton);
-	buttonMesh2.Render(camera, transformButton2);
-	buttonMesh3.Render(camera, transformButton3);
-
-	//gateShader->Bind();
-
-
-
+	if (showLevelComplete)
+	{
+		lightNum = 1;
+		levelShader->SetUniform("s_Diffuse", 0);
+		completeMat.Albedo->Bind(0);
+		completeMesh.Render(orthoCam, transformComplete);
+	}
 #pragma endregion
 
 	leftEnt.Get<AABB>().Update();
@@ -761,7 +800,7 @@ void Level2::Update(float dt)
 		doorEnt.Get<MorphAnimation>().Update(dt);
 
 	if (doorEnt.Get<AABB>().GetComplete())
-		levelComplete = true;
+		showLevelComplete = true;
 
 }
 
