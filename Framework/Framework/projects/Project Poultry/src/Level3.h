@@ -50,12 +50,13 @@ private:
 	Entity buttonEnt, buttonEnt2, buttonEnt3;
 	Entity doorEnt;
 	Entity coilEnt, coilPowered;
+	Entity completeEnt;
 
 	Shader::sptr playerShader, levelShader, floorShader, gateShader, wireShader, doorShader, buttonShader, particleShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, wireMat, coilMat, gateMat, partMat;
+	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, wireMat, coilMat, gateMat, partMat, completeMat;
 
 	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames;
 
@@ -93,7 +94,6 @@ private:
 	Mesh* door8;
 	Mesh* door9;
 	Mesh* door10;
-	Mesh* door11;
 
 	Mesh* walk1;
 	Mesh* walk2;
@@ -136,7 +136,6 @@ private:
 	std::string doorFile8 = "Models/DoorFrames/Door7.obj";
 	std::string doorFile9 = "Models/DoorFrames/Door8.obj";
 	std::string doorFile10 = "Models/DoorFrames/Door9.obj";
-	std::string doorFile11 = "Models/DoorFrames/Door10.obj";
 
 	std::string walkFile1 = "Models/ChickenFrames/Walk1.obj";
 	std::string walkFile2 = "Models/ChickenFrames/Walk2.obj";
@@ -175,6 +174,8 @@ private:
 	bool camFar = false;
 
 	int lightNum = 5;
+
+	bool showLevelComplete = false;
 
 	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		buttonEnt.Get<Lever>().SetPowered(!buttonEnt.Get<Lever>().GetPowered());
