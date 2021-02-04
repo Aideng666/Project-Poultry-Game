@@ -798,7 +798,7 @@ void Level3::Update(float dt)
 		doorShader->SetUniform("s_Diffuse", 0);
 		doorMat.Albedo->Bind(0);
 		doorMesh.Render(camera, transformDoor);
-		doorMat.Albedo->UnBind(0);
+		doorMat.Albedo->Unbind(0);
 
 		untexturedShader->Bind();
 		if (wireEnt7.Get<Wire>().GetIsPowered())
