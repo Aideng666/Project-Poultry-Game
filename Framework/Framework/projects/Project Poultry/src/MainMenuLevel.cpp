@@ -222,6 +222,19 @@ void MainMenuLevel::InitScene()
 	auto& doorE = exitDoor.Add<Door>();
 	doorE.SetOpen(true);
 
+	//AABB
+	auto& leftCol = leftWall.Add<AABB>(leftWall, mainPlayer);
+	auto& leftACol = leftAngledWall.Add<AABB>(leftAngledWall, mainPlayer);
+	auto& rightCol = rightWall.Add<AABB>(rightWall, mainPlayer);
+	auto& rightACol = rightAngledWall.Add<AABB>(rightAngledWall, mainPlayer);
+	auto& backCol = backWall.Add<AABB>(backWall, mainPlayer);
+	auto& startCol = startDoor.Add<AABB>(startDoor, mainPlayer);
+	//startCol.SetComplete(false);
+	auto& optCol = optionDoor.Add<AABB>(optionDoor, mainPlayer);
+	//optCol.SetComplete(false);
+	auto& exitCol = exitDoor.Add<AABB>(exitDoor, mainPlayer);
+	//exitCol.SetComplete(false);
+
 	doorFrames.push_back(std::unique_ptr<Mesh>(door1));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door3));
@@ -574,8 +587,17 @@ void MainMenuLevel::Update(float dt)
 		startMesh.Render(camera, transformStart);
 		exitMesh.Render(camera, transformExit);
 		optMesh.Render(camera, transformOpt);
-		doorMat.Albedo->UnBind(0);	
+		doorMat.Albedo->Unbind(0);	
 #pragma endregion
+
+		startDoor.Get<AABB>().Update();
+		optionDoor.Get<AABB>().Update();
+		exitDoor.Get<AABB>().Update();
+		leftWall.Get<AABB>().Update();
+		rightWall.Get<AABB>().Update();
+		backWall.Get<AABB>().Update();
+		leftAngledWall.Get<AABB>().Update();
+		rightAngledWall.Get<AABB>().Update();
 
 	if (startDoor.Get<Door>().GetOpen())
 		startDoor.Get<MorphAnimation>().Update(dt);
@@ -585,6 +607,13 @@ void MainMenuLevel::Update(float dt)
 
 	if (optionDoor.Get<Door>().GetOpen())
 		optionDoor.Get<MorphAnimation>().Update(dt);
+
+	if (startDoor.Get<AABB>().GetComplete())
+		levelComplete = true;
+
+	if (exitDoor.Get<AABB>().GetComplete())
+		glfwSetWindowShouldClose(window, true);
+
 }
 
 void MainMenuLevel::Unload()

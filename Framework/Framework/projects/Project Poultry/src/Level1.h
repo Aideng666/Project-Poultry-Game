@@ -44,7 +44,7 @@ private:
 
 	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, wireMat, coilMat, gateMat, completeMat;
 
-	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames;
+	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames, doorCloseFrames;
 
 	Mesh* drumstick;
 	Mesh* floor;

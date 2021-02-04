@@ -334,6 +334,17 @@ void Level1::InitScene()
 	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
 
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door10));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door9));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door8));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door7));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door6));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door5));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door4));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door3));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door2));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door1));
+
 
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk2));
@@ -432,6 +443,11 @@ void Level1::Update(float dt)
 	buttonShader->SetUniform("u_Position", currentPos);
 	untexturedShader->SetUniform("u_Position", currentPos);
 
+	if (doorEnt.Get<Door>().GetOpen())
+		doorEnt.Get<MorphAnimation>().SetFrames(doorFrames);
+	else
+		doorEnt.Get<MorphAnimation>().SetFrames(doorCloseFrames);
+
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
 	auto& groundTrans = floorEnt.Get<Transform>();
@@ -464,7 +480,7 @@ void Level1::Update(float dt)
 	auto& camera = camEnt.Get<Camera>();
 	auto& orthoCam = uiCamEnt.Get<Camera>();
 
-	camera.LookAt(glm::vec3(playerTrans.GetPosition()));
+	camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
 
 	auto& meshMain = mainPlayer.Get<MorphRenderer>();
 	auto& groundMesh = floorEnt.Get<MeshRenderer>();
@@ -716,7 +732,7 @@ void Level1::Update(float dt)
 		doorShader->SetUniform("s_Diffuse", 0);
 		doorMat.Albedo->Bind(0);
 		doorMesh.Render(camera, transformDoor);
-		doorMat.Albedo->UnBind(0);
+		doorMat.Albedo->Unbind(0);
 
 		untexturedShader->Bind();
 		pipeMesh.Render(camera, transformPipe);
