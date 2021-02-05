@@ -3,25 +3,26 @@ namespace freebird
 {
 	void PostEffect::Init(unsigned width, unsigned height)
 	{
-		//Set up Frame buffers
-		int index = int(_buffers.size());
+		if (!_shaders.size() > 0)
+		{
 
-		_buffers.push_back(new Framebuffer());
-		_buffers[index]->AddColorTarget(GL_RGBA8);
-		_buffers[index]->AddDepthTarget();
-		_buffers[index]->Init(width, height);
+			int index = int(_buffers.size());
+			_buffers.push_back(new Framebuffer());
+			_buffers[index]->AddColorTarget(GL_RGBA8);
+			_buffers[index]->AddDepthTarget();
+			_buffers[index]->Init(width, height);
+		}
 
-		index = int(_shaders.size());
 		_shaders.push_back(Shader::Create());
-		_shaders[index]->LoadShaderPartFromFile("shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
-		_shaders[index]->LoadShaderPartFromFile("shaders/passthrough_frag.glsl", GL_FRAGMENT_SHADER);
-		_shaders[index]->Link();
+		_shaders[_shaders.size() - 1]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
+		_shaders[_shaders.size() - 1]->LoadShaderPartFromFile("Shaders/passthrough_frag.glsl", GL_FRAGMENT_SHADER);
+		_shaders[_shaders.size() - 1]->Link();
 
 	}
 
 	void PostEffect::ApplyEffect(PostEffect* previousBuffer)
 	{
-		BindShader(0);
+		BindShader(_shaders.size() - 1);
 
 		previousBuffer->BindColorAsTexture(0, 0, 0);
 
@@ -29,12 +30,13 @@ namespace freebird
 
 		previousBuffer->UnbindTexture(0);
 
+
 		UnbindShader();
 	}
 
 	void PostEffect::DrawToScreen()
 	{
-		BindShader(0);
+		BindShader(_shaders.size() - 1);
 
 		BindColorAsTexture(0, 0, 0);
 
@@ -47,7 +49,7 @@ namespace freebird
 
 	void PostEffect::Reshape(unsigned width, unsigned height)
 	{
-		for (unsigned int i = 0; i < _buffers.size(); ++i)
+		for (unsigned int i = 0; i < _buffers.size(); i++)
 		{
 			_buffers[i]->Reshape(width, height);
 		}
@@ -55,7 +57,7 @@ namespace freebird
 
 	void PostEffect::Clear()
 	{
-		for (unsigned int i = 0; i < _buffers.size(); ++i)
+		for (unsigned int i = 0; i < _buffers.size(); i++)
 		{
 			_buffers[i]->Clear();
 		}
@@ -63,7 +65,7 @@ namespace freebird
 
 	void PostEffect::Unload()
 	{
-		for (unsigned int i = 0; i < _buffers.size(); ++i)
+		for (unsigned int i = 0; i < _buffers.size(); i++)
 		{
 			if (_buffers[i] != nullptr)
 			{
@@ -72,6 +74,7 @@ namespace freebird
 				_buffers[i] = nullptr;
 			}
 		}
+
 		_shaders.clear();
 	}
 
@@ -97,7 +100,6 @@ namespace freebird
 
 	void PostEffect::UnbindTexture(int textureSlot)
 	{
-		//Binds texture at slot to GL_NONE
 		glActiveTexture(GL_TEXTURE0 + textureSlot);
 		glBindTexture(GL_TEXTURE_2D, GL_NONE);
 	}
