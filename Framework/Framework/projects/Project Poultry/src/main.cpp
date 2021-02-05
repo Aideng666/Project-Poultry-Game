@@ -97,8 +97,8 @@ void RenderImGui() {
 		for (auto& func : imGuiCallbacks) {
 			func();
 		}
-		ImGui::End();
 	}
+	ImGui::End();
 
 	// Make sure ImGui knows how big our window is
 	ImGuiIO& io = ImGui::GetIO();
@@ -139,7 +139,7 @@ int main()
 	scenes.push_back(new Level2("Level 2", window));
 	scenes.push_back(new Level3("Level 3", window));*/
 
-	SetActiveScene(1);
+	SetActiveScene(0);
 	
 	//Calculates our timer
 	Application::Tick();

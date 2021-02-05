@@ -39,7 +39,6 @@ namespace freebird
 	GLFWwindow* Application::m_window = nullptr;
 	float Application::m_thisFrame = 0.0f;
 	float Application::m_dt = 0.0f;
-	//bool Application::m_imguiInit = false;
 
 	void GlfwWindowResizedCallback(GLFWwindow* window, int width, int height) 
 	{
@@ -116,13 +115,6 @@ namespace freebird
 
 	void Application::Cleanup()
 	{
-		/*if (m_imguiInit)
-		{
-			ImGui_ImplOpenGL3_Shutdown();
-			ImGui_ImplGlfw_Shutdown();
-			ImGui::DestroyContext();
-		}*/
-
 		glfwDestroyWindow(m_window);
 		glfwTerminate();
 	}
@@ -143,57 +135,4 @@ namespace freebird
 	{
 		return glfwWindowShouldClose(m_window);
 	}
-
-	/*void Application::InitImGui()
-	{
-		if (m_imguiInit)
-		{
-			return;
-		}
-
-		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO();
-
-		io.IniFilename = NULL;
-
-		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-		io.ConfigFlags |= ImGuiConfigFlags_TransparentBackbuffers;
-
-		ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-		ImGui_ImplOpenGL3_Init("#version 420");
-
-		ImGui::StyleColorsDark();
-
-		ImGuiStyle& style = ImGui::GetStyle();
-
-		style.WindowRounding = 0.0f;
-		style.Colors[ImGuiCol_WindowBg].w = 0.0f;
-
-		m_imguiInit = true;
-	}
-
-	void Application::StartImGui()
-	{
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-	}
-
-	void Application::EndImGui()
-	{
-		ImGuiIO& io = ImGui::GetIO();
-		int width, height;
-		glfwGetWindowSize(m_window, &width, &height);
-		io.DisplaySize = ImVec2(static_cast<float>(width), static_cast<float>(height));
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(m_window);
-		}
-	}*/
 }

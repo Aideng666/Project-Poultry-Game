@@ -12,11 +12,6 @@
 #include <filesystem>
 #include <fstream>
 
-//#define IMGUI_IMPL_OPENGL_LOADER_GLAD
-//#include "imgui.h"
-//#include "imgui_impl_glfw.h"
-//#include "imgui_impl_opengl3.h"
-
 //Referenced in conjunction with NOU and Shawn's setup of a window from the CG Tutorials//
 
 namespace freebird
@@ -44,16 +39,10 @@ namespace freebird
 		
 		static bool IsClosing();
 
-		//ImGui
-		/*static void InitImGui();
-		static void StartImGui();
-		static void EndImGui();*/
-
 	protected:
 		Application() = default;
 		static GLFWwindow* m_window;
 		static float m_dt;
 		static float m_thisFrame;
-		//static bool m_imguiInit;
 	};
 }
