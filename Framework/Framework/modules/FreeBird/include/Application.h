@@ -12,6 +12,11 @@
 #include <filesystem>
 #include <fstream>
 
+//ImGui
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 //Referenced in conjunction with NOU and Shawn's setup of a window from the CG Tutorials//
 
 namespace freebird
@@ -38,6 +43,13 @@ namespace freebird
 		static void Tick();
 		
 		static bool IsClosing();
+
+		//ImGui
+		static void InitImGui();
+		static void ShutdownImGui();
+		static void RenderImGui();
+
+		static std::vector<std::function<void()>> imGuiCallbacks;
 
 	protected:
 		Application() = default;
