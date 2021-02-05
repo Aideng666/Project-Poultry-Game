@@ -13,191 +13,194 @@
 
 #include <glm/glm.hpp>
 
-class AudioObject
+namespace freebird
 {
-public:
-	virtual ~AudioObject() {}
+	class AudioObject
+	{
+	public:
+		virtual ~AudioObject() {}
 
-protected:
-	int ErrorCheck(FMOD_RESULT result);
+	protected:
+		int ErrorCheck(FMOD_RESULT result);
 
-	float dbToVolume(float db);
-	float VolumeTodb(float volume);
-	FMOD_VECTOR VectorToFmod(const glm::vec3& vec);
-	glm::vec3 FmodToVector(const FMOD_VECTOR& vec);
-};
+		float dbToVolume(float db);
+		float VolumeTodb(float volume);
+		FMOD_VECTOR VectorToFmod(const glm::vec3& vec);
+		glm::vec3 FmodToVector(const FMOD_VECTOR& vec);
+	};
 
-class AudioBus : public AudioObject
-{
-	friend class AudioEngine;
+	class AudioBus : public AudioObject
+	{
+		friend class AudioEngine;
 
-public:
+	public:
 
-	// Get and Set Paused
-	bool CheckPaused();
-	void SetPaused(const bool& pause);
+		// Get and Set Paused
+		bool CheckPaused();
+		void SetPaused(const bool& pause);
 
-	// Get and Set Volume
-	float GetVolume();
-	void SetVolume(const float& newVolume);
+		// Get and Set Volume
+		float GetVolume();
+		void SetVolume(const float& newVolume);
 
-	// Get and Set Mute
-	bool CheckMuted();
-	void SetMute(const bool& mute);
+		// Get and Set Mute
+		bool CheckMuted();
+		void SetMute(const bool& mute);
 
-	// Stop all events
-	void StopAllEvent(const bool& fade = false);
+		// Stop all events
+		void StopAllEvent(const bool& fade = false);
 
-private:
-	// AudioEngine class uses this to create bus objects
-	AudioBus(FMOD::Studio::Bus* bus);
+	private:
+		// AudioEngine class uses this to create bus objects
+		AudioBus(FMOD::Studio::Bus* bus);
 
-	// Don't want copies, should only grab refs from audio engine
-	AudioBus(AudioBus const&) = delete;
-	void operator=(AudioBus const&) = delete;
+		// Don't want copies, should only grab refs from audio engine
+		AudioBus(AudioBus const&) = delete;
+		void operator=(AudioBus const&) = delete;
 
-private:
+	private:
 
-	FMOD::Studio::Bus* m_Bus;
-};
+		FMOD::Studio::Bus* m_Bus;
+	};
 
-class AudioListener : public AudioObject
-{
-	friend class AudioEngine;
+	class AudioListener : public AudioObject
+	{
+		friend class AudioEngine;
 
-public:
-	void SetPosition(const glm::vec3& pos);
-	glm::vec3 GetPosition();
-
-
-	// Vel not working
-	void SetVelocity(const glm::vec3& vel);
-	glm::vec3 GetVelocity();
+	public:
+		void SetPosition(const glm::vec3& pos);
+		glm::vec3 GetPosition();
 
 
-	// TODO: Test these
-	void SetForward(const glm::vec3& forward);
-	glm::vec3 GetForward();
-	void SetUp(const glm::vec3& up);
-	glm::vec3 GetUp();
+		// Vel not working
+		void SetVelocity(const glm::vec3& vel);
+		glm::vec3 GetVelocity();
 
-private:
-	// Only AudioEngine can create a listener
-	// Get a ref from AudioEngine::GetListener()
-	AudioListener() {}
-	AudioListener(AudioListener const&) = delete;
-	void operator=(AudioListener const&) = delete;
 
-private:
-	// Ref to the FMOD System
-	FMOD::Studio::System* m_StudioSystem;
+		// TODO: Test these
+		void SetForward(const glm::vec3& forward);
+		glm::vec3 GetForward();
+		void SetUp(const glm::vec3& up);
+		glm::vec3 GetUp();
 
-	// Save the most recent changes
-	FMOD_3D_ATTRIBUTES m_Attributes;
-	FMOD_VECTOR m_AttenuationPosition;
+	private:
+		// Only AudioEngine can create a listener
+		// Get a ref from AudioEngine::GetListener()
+		AudioListener() {}
+		AudioListener(AudioListener const&) = delete;
+		void operator=(AudioListener const&) = delete;
 
-	// Basic ID, first listener is 0
-	int m_ID;
-	void SetID(const int& id);
-};
+	private:
+		// Ref to the FMOD System
+		FMOD::Studio::System* m_StudioSystem;
 
-class AudioEvent : public AudioObject
-{
-	friend class AudioEngine;
+		// Save the most recent changes
+		FMOD_3D_ATTRIBUTES m_Attributes;
+		FMOD_VECTOR m_AttenuationPosition;
 
-public:
-	~AudioEvent();
+		// Basic ID, first listener is 0
+		int m_ID;
+		void SetID(const int& id);
+	};
 
-	// Will only play if event is not currently playing
-	void Play();
+	class AudioEvent : public AudioObject
+	{
+		friend class AudioEngine;
 
-	// Restarts the event
-	void Restart();
+	public:
+		~AudioEvent();
 
-	// Allows AHDSR modulators to complete their release, and DSP effect tails to play out.
-	void Stop();
+		// Will only play if event is not currently playing
+		void Play();
 
-	// Stops the event instance immediately.
-	void StopImmediately();
+		// Restarts the event
+		void Restart();
 
-	// Checks if event is playing
-	bool isPlaying();
+		// Allows AHDSR modulators to complete their release, and DSP effect tails to play out.
+		void Stop();
 
-	// Parameters
-	void SetParameter(const char* name, const float& value, const bool& ignoreSeekSpeed = false);
-	float GetParameterValue(const char* name);
+		// Stops the event instance immediately.
+		void StopImmediately();
 
-	void SetPosition(const glm::vec3& pos);
-	glm::vec3 GetPosition();
+		// Checks if event is playing
+		bool isPlaying();
 
-private:
-	// AudioEngine class uses this to create Event objects
-	AudioEvent(FMOD::Studio::EventInstance* eventInstance);
+		// Parameters
+		void SetParameter(const char* name, const float& value, const bool& ignoreSeekSpeed = false);
+		float GetParameterValue(const char* name);
 
-	// Don't want copies, should only grab refs from audio engine
-	AudioEvent(AudioEvent const&) = delete;
-	void operator=(AudioEvent const&) = delete;
+		void SetPosition(const glm::vec3& pos);
+		glm::vec3 GetPosition();
 
-private:
-	FMOD_3D_ATTRIBUTES m_Attributes;
+	private:
+		// AudioEngine class uses this to create Event objects
+		AudioEvent(FMOD::Studio::EventInstance* eventInstance);
 
-	FMOD::Studio::EventInstance* m_EventInstance;
-};
+		// Don't want copies, should only grab refs from audio engine
+		AudioEvent(AudioEvent const&) = delete;
+		void operator=(AudioEvent const&) = delete;
 
-class AudioEngine : public AudioObject
-{
-	friend class AudioEngine;
+	private:
+		FMOD_3D_ATTRIBUTES m_Attributes;
 
-public:
-	//// Singleton ///////////////////
+		FMOD::Studio::EventInstance* m_EventInstance;
+	};
 
-	static AudioEngine& Instance();
+	class AudioEngine : public AudioObject
+	{
+		friend class AudioEngine;
 
-	AudioEngine(AudioEngine const&) = delete;
-	void operator=(AudioEngine const&) = delete;
+	public:
+		//// Singleton ///////////////////
 
-	//////////////////////////////////
+		static AudioEngine& Instance();
 
-	void Init();
-	void Update();
-	void Shutdown();
+		AudioEngine(AudioEngine const&) = delete;
+		void operator=(AudioEngine const&) = delete;
 
-	//// Banks ////
-	void LoadBank(const std::string& strBankName, FMOD_STUDIO_LOAD_BANK_FLAGS flags = FMOD_STUDIO_LOAD_BANK_NORMAL);
+		//////////////////////////////////
 
-	//// Listener ////
-	AudioListener& GetListener();
+		void Init();
+		void Update();
+		void Shutdown();
 
-	//// Events ////
-	AudioEvent& CreateEvent(const std::string& strEventName, const std::string& GUID);
-	AudioEvent& GetEvent(const std::string& strEventName);
+		//// Banks ////
+		void LoadBank(const std::string& strBankName, FMOD_STUDIO_LOAD_BANK_FLAGS flags = FMOD_STUDIO_LOAD_BANK_NORMAL);
 
-	//// Global Parameters ////
-	void SetGlobalParameter(const char* name, const float& value, const bool& ignoreSeekSpeed = false);
-	float GetGlobalParameterValue(const char* name);
+		//// Listener ////
+		AudioListener& GetListener();
 
-	//// Bus ////
-	void LoadBus(const std::string& strBusName, const std::string& GUID);
-	AudioBus& GetBus(const std::string& strBusName);
+		//// Events ////
+		AudioEvent& CreateEvent(const std::string& strEventName, const std::string& GUID);
+		AudioEvent& GetEvent(const std::string& strEventName);
 
-private:
-	AudioEngine() {}
+		//// Global Parameters ////
+		void SetGlobalParameter(const char* name, const float& value, const bool& ignoreSeekSpeed = false);
+		float GetGlobalParameterValue(const char* name);
 
-private:
-	// FMOD Systems
-	FMOD::Studio::System* m_StudioSystem;
-	FMOD::System* m_System;
+		//// Bus ////
+		void LoadBus(const std::string& strBusName, const std::string& GUID);
+		AudioBus& GetBus(const std::string& strBusName);
 
-	// Listener
-	AudioListener m_Listener;
+	private:
+		AudioEngine() {}
 
-	// Banks
-	std::unordered_map<std::string, FMOD::Studio::Bank*> m_BankMap;
+	private:
+		// FMOD Systems
+		FMOD::Studio::System* m_StudioSystem;
+		FMOD::System* m_System;
 
-	// Events
-	std::unordered_map<std::string, AudioEvent*> m_EventMap;
+		// Listener
+		AudioListener m_Listener;
 
-	// Bus
-	std::unordered_map<std::string, AudioBus*> m_BusMap;
+		// Banks
+		std::unordered_map<std::string, FMOD::Studio::Bank*> m_BankMap;
 
-};
+		// Events
+		std::unordered_map<std::string, AudioEvent*> m_EventMap;
+
+		// Bus
+		std::unordered_map<std::string, AudioBus*> m_BusMap;
+
+	};
+}
