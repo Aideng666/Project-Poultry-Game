@@ -1,4 +1,5 @@
 #include "Application.h"
+#include <Framebuffer.h>
 
 namespace freebird
 {
@@ -82,6 +83,8 @@ namespace freebird
 
 		//Default clear color to white
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+		Framebuffer::InitFullscreenQuad();
 
 		return m_window;
 	}
