@@ -2,7 +2,6 @@
 #include "Scene.h"
 #include <iostream>
 
-
 using namespace freebird;
 
 class MainMenu : public Scene
