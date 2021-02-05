@@ -3,7 +3,6 @@
 #include "Logging.h"
 namespace freebird
 {
-
 	ITexture::Limits ITexture::_limits = ITexture::Limits();
 	bool ITexture::_isStaticInit = false;
 
@@ -44,11 +43,11 @@ namespace freebird
 		}
 	}
 
-	void ITexture::Unbind(int slot)
-	{
-		//glActiveTexture(GL_TEXTURE0 + slot);
-		glBindTextureUnit(slot, 0);
-	}
+	//void ITexture::Unbind(int slot)
+	//{
+	//	//glActiveTexture(GL_TEXTURE0 + slot);
+	//	glBindTextureUnit(slot, 0);
+	//}
 
 
 	void ITexture::Clear(const glm::vec4 color) {

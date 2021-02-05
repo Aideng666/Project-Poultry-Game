@@ -32,12 +32,12 @@ namespace freebird
 		/// Unbinds a texture from the given slot
 		/// </summary>
 		/// <param name="slot">The slot to unbind a texture from</param>
-		static void Unbind(int slot);
+		/*static void Unbind(int slot);*/
 
 		/// <summary>
 		/// Gets the underlying OpenGL handle for this texture
 		/// </summary>
-		GLuint GetHandle() const { return _handle; }
+		GLuint& GetHandle() { return _handle; }
 
 		/// <summary>
 		/// Clears this texture to a given color
@@ -61,4 +61,3 @@ namespace freebird
 		static bool _isStaticInit;
 	};
 }
-
