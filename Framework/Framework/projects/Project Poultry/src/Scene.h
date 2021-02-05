@@ -13,6 +13,7 @@
 #include <GLFW\glfw3.h>
 #include <MeshRenderer.h>
 #include <ModelManager.h>
+#include "Greyscale.h"
 
 
 using namespace freebird;
@@ -56,6 +57,11 @@ public:
 
 	void LoadTexImage();
 
+	Entity GetFBO();
+	Entity GetGreyscaleEnt();
+
+	std::vector<PostEffect*> GetEffects();
+
 protected:
 
 	entt::registry* scene = nullptr;
@@ -66,6 +72,8 @@ protected:
 	GLFWwindow* window;
 
 	Entity camEnt, uiCamEnt;
+
+	Entity FBO, greyscaleEnt;
 
 	std::vector<std::function<void()>> imGuiCallbacks;
 
@@ -78,4 +86,6 @@ protected:
 	int width, height;
 
 	bool loadModels = false;
+
+	std::vector<PostEffect*> effects;
 };

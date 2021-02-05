@@ -17,6 +17,7 @@
 #include "MainMenuLevel.h"
 #include "Application.h"
 #include <ModelManager.h>
+#include "Greyscale.h"
 
 using namespace freebird; //referencing the module's includes/src's
 
@@ -74,11 +75,31 @@ int main()
 	//Calculates our timer
 	Application::Tick();
 
+	int activeEffect = 0;
+
 	//ImGui Stuff
 	Application::imGuiCallbacks.push_back([&]() {
 
 		//Put tabs, headers, buttons and all that jazz in here
 
+		if (ImGui::CollapsingHeader("Effect Controls"))
+		{
+			ImGui::SliderInt("Chosen Effect", &activeEffect, 0, currentScene->GetEffects().size() - 1);
+
+			if (activeEffect == 0)
+			{
+				ImGui::Text("Active Effect: Greyscale");
+
+				Greyscale* temp = (Greyscale*)currentScene->GetEffects()[activeEffect];
+				float intensity = temp->GetIntensity();
+
+				if (ImGui::SliderFloat("Intensity", &intensity, 0.0f, 1.0f))
+				{
+					temp->SetIntensity(intensity);
+				}
+			}
+
+		}
 	});
 
 	Application::InitImGui();
@@ -131,6 +152,7 @@ int main()
 
 			SetActiveScene(1);
 		}
+
 
 		currentScene->Update(dt);
 

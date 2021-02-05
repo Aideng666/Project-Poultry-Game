@@ -27,6 +27,8 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	startEnt = Entity::Create();
 	optEnt = Entity::Create();
 	exitEnt = Entity::Create();
+	FBO = Entity::Create();
+	greyscaleEnt = Entity::Create();
 
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
@@ -74,6 +76,8 @@ void MainMenuLevel::InitScene()
 	float distance = glm::distance(point2, point1);
 
 	totalTime = distance / speed;
+
+	effects.clear();
 
 #pragma region Shader Stuff
 
@@ -302,6 +306,17 @@ void MainMenuLevel::InitScene()
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
 
+
+	int width, height;
+	glfwGetWindowSize(window, &width, &height);
+
+	auto basicEffect = &FBO.Add<PostEffect>();
+	basicEffect->Init(width, height);
+
+	auto greyscaleEffect = &greyscaleEnt.Add<Greyscale>();
+	greyscaleEffect->Init(width, height);
+
+	effects.push_back(greyscaleEffect);
 }
 
 void MainMenuLevel::Update(float dt)
@@ -558,6 +573,15 @@ void MainMenuLevel::Update(float dt)
 	floorShader->SetUniform("u_LightNum", lightNum);
 	levelShader->SetUniform("u_LightNum", lightNum);
 
+	auto basicEffect = &FBO.Get<PostEffect>();
+	auto greyscaleEffect = &greyscaleEnt.Get<Greyscale>();
+
+	basicEffect->Clear();
+	greyscaleEffect->Clear();
+
+
+	basicEffect->BindBuffer(0);
+
 #pragma region Renders
 		playerShader->Bind();
 		playerShader->SetUniform("s_Diffuse", 0);
@@ -590,14 +614,20 @@ void MainMenuLevel::Update(float dt)
 		doorMat.Albedo->Unbind(0);	
 #pragma endregion
 
-		startDoor.Get<AABB>().Update();
-		optionDoor.Get<AABB>().Update();
-		exitDoor.Get<AABB>().Update();
-		leftWall.Get<AABB>().Update();
-		rightWall.Get<AABB>().Update();
-		backWall.Get<AABB>().Update();
-		leftAngledWall.Get<AABB>().Update();
-		rightAngledWall.Get<AABB>().Update();
+	basicEffect->UnbindBuffer();
+
+	greyscaleEffect->ApplyEffect(basicEffect);
+
+	greyscaleEffect->DrawToScreen();
+
+	startDoor.Get<AABB>().Update();
+	optionDoor.Get<AABB>().Update();
+	exitDoor.Get<AABB>().Update();
+	leftWall.Get<AABB>().Update();
+	rightWall.Get<AABB>().Update();
+	backWall.Get<AABB>().Update();
+	leftAngledWall.Get<AABB>().Update();
+	rightAngledWall.Get<AABB>().Update();
 
 	if (startDoor.Get<Door>().GetOpen())
 		startDoor.Get<MorphAnimation>().Update(dt);
