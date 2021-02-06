@@ -28,7 +28,11 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	optEnt = Entity::Create();
 	exitEnt = Entity::Create();
 	FBO = Entity::Create();
-	greyscaleEnt = Entity::Create();
+	/*greyscaleEnt = Entity::Create();*/
+	coolColorEnt = Entity::Create();
+	warmColorEnt = Entity::Create();
+	customColorEnt = Entity::Create();
+	//colorCorrectEnt = Entity::Create();
 
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
@@ -313,10 +317,18 @@ void MainMenuLevel::InitScene()
 	auto basicEffect = &FBO.Add<PostEffect>();
 	basicEffect->Init(width, height);
 
-	auto greyscaleEffect = &greyscaleEnt.Add<Greyscale>();
-	greyscaleEffect->Init(width, height);
+	auto coolColorEffect = &coolColorEnt.Add<ColorCorrection>();
+	coolColorEffect->SetFilename("CoolColor.cube");
+	coolColorEffect->Init(width, height);
 
-	effects.push_back(greyscaleEffect);
+	auto warmColorEffect = &warmColorEnt.Add<ColorCorrection>();
+	warmColorEffect->SetFilename("WarmColor.cube");
+	warmColorEffect->Init(width, height);
+
+	auto customColorEffect = &customColorEnt.Add<ColorCorrection>();
+	customColorEffect->SetFilename("CustomColor.cube");
+	customColorEffect->Init(width, height);
+
 }
 
 void MainMenuLevel::Update(float dt)
@@ -563,6 +575,28 @@ void MainMenuLevel::Update(float dt)
 	{
 		lightNum = 5;
 	}
+	//if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS)
+	//{
+	//	coolActive = !coolActive;
+	//	warmActive = false;
+	//	customActive = false;
+	//}
+	//if (glfwGetKey(window, GLFW_KEY_9) == GLFW_PRESS)
+	//{
+	//	coolActive = false;
+	//	warmActive = !warmActive;
+	//	customActive = false;
+	//}
+	//if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
+	//{
+	//	coolActive = false;
+	//	warmActive = false;
+	//	customActive = !customActive;
+	//}
+
+	coolWatch.Poll(window);
+	warmWatch.Poll(window);
+	customWatch.Poll(window);
 
 
 	if (lightNum < 1 || lightNum > 5)
@@ -574,10 +608,14 @@ void MainMenuLevel::Update(float dt)
 	levelShader->SetUniform("u_LightNum", lightNum);
 
 	auto basicEffect = &FBO.Get<PostEffect>();
-	auto greyscaleEffect = &greyscaleEnt.Get<Greyscale>();
+	auto coolColor = &coolColorEnt.Get<ColorCorrection>();
+	auto warmColor = &warmColorEnt.Get<ColorCorrection>();
+	auto customColor = &customColorEnt.Get<ColorCorrection>();
 
 	basicEffect->Clear();
-	greyscaleEffect->Clear();
+	coolColor->Clear();
+	warmColor->Clear();
+	customColor->Clear();
 
 
 	basicEffect->BindBuffer(0);
@@ -616,9 +654,34 @@ void MainMenuLevel::Update(float dt)
 
 	basicEffect->UnbindBuffer();
 
-	greyscaleEffect->ApplyEffect(basicEffect);
+	if (coolActive)
+	{
+		coolColor->SetIntensity(1.0f);
 
-	greyscaleEffect->DrawToScreen();
+		coolColor->ApplyEffect(basicEffect);
+
+		coolColor->DrawToScreen();
+	}
+	else if (warmActive)
+	{
+		warmColor->ApplyEffect(basicEffect);
+
+		warmColor->DrawToScreen();
+	}
+	else if (customActive)
+	{
+		customColor->ApplyEffect(basicEffect);
+
+		customColor->DrawToScreen();
+	}
+	else
+	{
+		coolColor->SetIntensity(0.0f);
+
+		coolColor->ApplyEffect(basicEffect);
+
+		coolColor->DrawToScreen();
+	}
 
 	startDoor.Get<AABB>().Update();
 	optionDoor.Get<AABB>().Update();

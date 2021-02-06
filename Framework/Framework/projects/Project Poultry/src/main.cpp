@@ -65,12 +65,9 @@ int main()
 	//Application::InitImGui();
 
 	scenes.push_back(new MainMenu("Main Menu", window));
-	/*scenes.push_back(new MainMenuLevel("Main Menu Level", window));
-	scenes.push_back(new Level1("Level 1", window));
-	scenes.push_back(new Level2("Level 2", window));
-	scenes.push_back(new Level3("Level 3", window));*/
+	scenes.push_back(new MainMenuLevel("Main Menu Level", window));
 
-	SetActiveScene(0);
+	SetActiveScene(1);
 	
 	//Calculates our timer
 	Application::Tick();
@@ -82,15 +79,43 @@ int main()
 
 		//Put tabs, headers, buttons and all that jazz in here
 
+		/*int width, height;
+		glfwGetWindowSize(window, &width, &height);
+
 		if (ImGui::CollapsingHeader("Effect Controls"))
 		{
-			ImGui::SliderInt("Chosen Effect", &activeEffect, 0, currentScene->GetEffects().size() - 1);
+			if (ImGui::SliderInt("Chosen Effect", &activeEffect, 0, currentScene->GetEffects().size() - 1))
+			{
+				currentScene->SetActiveEffect(activeEffect);
+			}
 
 			if (activeEffect == 0)
 			{
-				ImGui::Text("Active Effect: Greyscale");
+				ImGui::Text("Active Color Correction: Cool");
 
-				Greyscale* temp = (Greyscale*)currentScene->GetEffects()[activeEffect];
+				ColorCorrection* temp = (ColorCorrection*)currentScene->GetEffects()[0];
+
+				temp->SetFilename("CoolColor.cube");
+				temp->Init(width, height);
+
+				float intensity = temp->GetIntensity();
+
+				if (ImGui::SliderFloat("Intensity", &intensity, 0.0f, 1.0f))
+				{
+					temp->SetIntensity(intensity);
+				}
+
+
+			}
+			if (activeEffect == 1)
+			{
+				ImGui::Text("Active Color Correction: Warm");
+
+				ColorCorrection* temp = (ColorCorrection*)currentScene->GetEffects()[0];
+
+				temp->SetFilename("WarmColor.cube");
+				temp->Init(width, height);
+
 				float intensity = temp->GetIntensity();
 
 				if (ImGui::SliderFloat("Intensity", &intensity, 0.0f, 1.0f))
@@ -98,8 +123,23 @@ int main()
 					temp->SetIntensity(intensity);
 				}
 			}
+			if (activeEffect == 2)
+			{
+				ImGui::Text("Active Color Correction: Custom");
 
-		}
+				ColorCorrection* temp = (ColorCorrection*)currentScene->GetEffects()[0];
+
+				temp->SetFilename("CustomColor.cube");
+				temp->Init(width, height);
+
+				float intensity = temp->GetIntensity();
+
+				if (ImGui::SliderFloat("Intensity", &intensity, 0.0f, 1.0f))
+				{
+					temp->SetIntensity(intensity);
+				}
+			}
+		}*/
 	});
 
 	Application::InitImGui();
@@ -146,9 +186,9 @@ int main()
 		if (currentScene->GetLoad())
 		{
 			scenes.push_back(new MainMenuLevel("Main Menu Level", window));
-			scenes.push_back(new Level1("Level 1", window));
+			/*scenes.push_back(new Level1("Level 1", window));
 			scenes.push_back(new Level2("Level 2", window));
-			scenes.push_back(new Level3("Level 3", window));
+			scenes.push_back(new Level3("Level 3", window));*/
 
 			SetActiveScene(1);
 		}

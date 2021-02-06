@@ -14,6 +14,7 @@
 #include <MeshRenderer.h>
 #include <ModelManager.h>
 #include "Greyscale.h"
+#include "ColorCorrection.h"
 
 
 using namespace freebird;
@@ -59,6 +60,9 @@ public:
 
 	Entity GetFBO();
 	Entity GetGreyscaleEnt();
+	int GetActiveEffect();
+
+	void SetActiveEffect(int active);
 
 	std::vector<PostEffect*> GetEffects();
 
@@ -88,4 +92,6 @@ protected:
 	bool loadModels = false;
 
 	std::vector<PostEffect*> effects;
+
+	int activeEffect = 0;
 };

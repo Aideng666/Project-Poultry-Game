@@ -110,6 +110,16 @@ Entity Scene::GetGreyscaleEnt()
 	return greyscaleEnt;
 }
 
+int Scene::GetActiveEffect()
+{
+	return activeEffect;
+}
+
+void Scene::SetActiveEffect(int active)
+{
+	activeEffect = active;
+}
+
 std::vector<PostEffect*> Scene::GetEffects()
 {
 	return effects;

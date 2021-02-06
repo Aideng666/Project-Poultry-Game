@@ -22,6 +22,8 @@ private:
 	Entity floorEnt, backWall, leftAngledWall, rightAngledWall, leftWall, rightWall;
 	Entity mainPlayer;
 	Entity startEnt, optEnt, exitEnt;
+	Entity coolColorEnt, warmColorEnt, customColorEnt;
+	Entity colorCorrectEnt;
 
 	Shader::sptr doorShader, playerShader, floorShader, levelShader;
 
@@ -115,4 +117,26 @@ private:
 	bool camFar = false;
 
 	int lightNum = 5;
+
+	bool coolActive = false;
+	bool warmActive = false;
+	bool customActive = false;
+
+	KeyPressWatcher warmWatch = KeyPressWatcher(GLFW_KEY_8, [&]() {
+		warmActive = !warmActive;
+		coolActive = false;
+		customActive = false;
+		});
+
+	KeyPressWatcher coolWatch = KeyPressWatcher(GLFW_KEY_9, [&]() {
+		coolActive = !coolActive;
+		warmActive = false;
+		customActive = false;
+		});
+
+	KeyPressWatcher customWatch = KeyPressWatcher(GLFW_KEY_0, [&]() {
+		customActive = !customActive;
+		coolActive = false;
+		warmActive = false;
+		});
 };
