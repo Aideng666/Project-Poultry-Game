@@ -118,6 +118,12 @@ void MainMenu::InitScene()
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
+
+	engine.Init();
+	engine.LoadBank("Master");
+	engine.LoadBus("Music Bus", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
+	AudioEvent& music = engine.CreateSoundEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}");
+	music.Play();
 }
 
 void MainMenu::Update(float dt)
@@ -142,6 +148,11 @@ void MainMenu::Update(float dt)
 	glm::mat4 transformOptions = optionsTrans.GetModelMatrix();*/
 	glm::mat4 transformBack = backTrans.GetModelMatrix();
 	glm::mat4 transformLoad = loadTrans.GetModelMatrix();
+
+	AudioEvent& music = engine.GetEvent("music");
+	AudioBus& musicBus = engine.GetBus("MusicBus");
+	AudioListener& listener = engine.GetListener();
+	engine.Update();
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{

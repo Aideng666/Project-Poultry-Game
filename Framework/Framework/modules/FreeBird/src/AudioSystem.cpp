@@ -390,7 +390,7 @@ namespace freebird
 		return m_Listener;
 	}
 
-	AudioEvent& AudioEngine::CreateEvent(const std::string& eventName, const std::string& GUID)
+	AudioEvent& AudioEngine::CreateSoundEvent(const std::string& eventName, const std::string& GUID)
 	{
 		// Get find event in file
 		FMOD::Studio::EventDescription* eventDescription = NULL;

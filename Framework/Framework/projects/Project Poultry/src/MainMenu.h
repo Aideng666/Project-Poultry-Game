@@ -2,6 +2,8 @@
 #include "Scene.h"
 #include <iostream>
 
+#include "AudioSystem.h"
+
 using namespace freebird;
 
 class MainMenu : public Scene
@@ -15,6 +17,8 @@ public:
 	void Update(float dt);
 
 	void Unload();
+
+	AudioEngine& engine = AudioEngine::Instance();
 
 private:
 

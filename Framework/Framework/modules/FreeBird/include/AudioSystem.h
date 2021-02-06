@@ -171,7 +171,7 @@ namespace freebird
 		AudioListener& GetListener();
 
 		//// Events ////
-		AudioEvent& CreateEvent(const std::string& strEventName, const std::string& GUID);
+		AudioEvent& CreateSoundEvent(const std::string& strEventName, const std::string& GUID);
 		AudioEvent& GetEvent(const std::string& strEventName);
 
 		//// Global Parameters ////
