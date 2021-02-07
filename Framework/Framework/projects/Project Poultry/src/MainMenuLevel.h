@@ -27,7 +27,7 @@ private:
 
 	Shader::sptr doorShader, playerShader, floorShader, levelShader;
 
-	Mat drumstickMat, doorMat, floorMat, wallMat;
+	Mat drumstickMat, doorMat, floorMat, wallMat, rampMat;
 
 	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames;
 
@@ -138,5 +138,19 @@ private:
 		customActive = !customActive;
 		coolActive = false;
 		warmActive = false;
+		});
+
+	KeyPressWatcher diffuseRampWatch = KeyPressWatcher(GLFW_KEY_6, [&]() {
+		if (lightNum != 6)
+			lightNum = 6;
+		else
+			lightNum = 5;
+		});
+
+	KeyPressWatcher specRampWatch = KeyPressWatcher(GLFW_KEY_7, [&]() {
+		if (lightNum != 7)
+			lightNum = 7;
+		else
+			lightNum = 5;
 		});
 };

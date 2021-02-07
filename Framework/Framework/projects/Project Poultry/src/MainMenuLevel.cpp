@@ -84,7 +84,7 @@ void MainMenuLevel::InitScene()
 	effects.clear();
 
 #pragma region Shader Stuff
-
+	
 	glm::vec3 lightPos = glm::vec3(0.0f, 9.5f, -35.0f);
 	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
 	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
@@ -129,6 +129,7 @@ void MainMenuLevel::InitScene()
 	Texture2DData::sptr doorMap = Texture2DData::LoadFromFile("Textures/DoorTexture.png");
 	Texture2DData::sptr floorMap = Texture2DData::LoadFromFile("Textures/FloorTexture.jpg");
 	Texture2DData::sptr wallMap = Texture2DData::LoadFromFile("Textures/WallTexture.jpg");
+	Texture2DData::sptr rampMap = Texture2DData::LoadFromFile("Textures/DiffuseRamp.png");
 
 	Texture2D::sptr diffuseDrum = Texture2D::Create();
 	diffuseDrum->LoadData(drumstickMap);
@@ -142,6 +143,9 @@ void MainMenuLevel::InitScene()
 	Texture2D::sptr diffuseWall = Texture2D::Create();
 	diffuseWall->LoadData(wallMap);
 
+	Texture2D::sptr diffuseRamp = Texture2D::Create();
+	diffuseRamp->LoadData(rampMap);
+
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
 	desc.Height = 1;
@@ -153,6 +157,7 @@ void MainMenuLevel::InitScene()
 	doorMat.Albedo = diffuseDoor;
 	floorMat.Albedo = diffuseFloor;
 	wallMat.Albedo = diffuseWall;
+	rampMat.Albedo = diffuseRamp;
 #pragma endregion
 
 	//TRANSFORMS
@@ -575,31 +580,15 @@ void MainMenuLevel::Update(float dt)
 	{
 		lightNum = 5;
 	}
-	//if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS)
-	//{
-	//	coolActive = !coolActive;
-	//	warmActive = false;
-	//	customActive = false;
-	//}
-	//if (glfwGetKey(window, GLFW_KEY_9) == GLFW_PRESS)
-	//{
-	//	coolActive = false;
-	//	warmActive = !warmActive;
-	//	customActive = false;
-	//}
-	//if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
-	//{
-	//	coolActive = false;
-	//	warmActive = false;
-	//	customActive = !customActive;
-	//}
 
 	coolWatch.Poll(window);
 	warmWatch.Poll(window);
 	customWatch.Poll(window);
+	diffuseRampWatch.Poll(window);
+	specRampWatch.Poll(window);
 
-
-	if (lightNum < 1 || lightNum > 5)
+	
+	if (lightNum < 1 || lightNum > 7)
 		lightNum = 1;
 
 	playerShader->SetUniform("u_LightNum", lightNum);
@@ -624,11 +613,15 @@ void MainMenuLevel::Update(float dt)
 		playerShader->Bind();
 		playerShader->SetUniform("s_Diffuse", 0);
 		drumstickMat.Albedo->Bind(0);
+		playerShader->SetUniform("s_Ramp", 1);
+		rampMat.Albedo->Bind(1);
 		drumMesh.Render(camera, transform);
 
 		levelShader->Bind();
 		levelShader->SetUniform("s_Diffuse", 0);
 		wallMat.Albedo->Bind(0);
+		levelShader->SetUniform("s_Ramp", 1);
+		rampMat.Albedo->Bind(1);
 		leftMesh.Render(camera, transformLeft);
 		rightMesh.Render(camera, transformRight);
 		backMesh.Render(camera, transformBack);
@@ -641,11 +634,15 @@ void MainMenuLevel::Update(float dt)
 		floorShader->Bind();
 		floorShader->SetUniform("s_Diffuse", 0);
 		floorMat.Albedo->Bind(0);
+		floorShader->SetUniform("s_Ramp", 1);
+		rampMat.Albedo->Bind(1);
 		floorMesh.Render(camera, transformFloor);
 
 		doorShader->Bind();
 		doorShader->SetUniform("s_Diffuse", 0);
 		doorMat.Albedo->Bind(0);
+		doorShader->SetUniform("s_Ramp", 1);
+		rampMat.Albedo->Bind(1);
 		startMesh.Render(camera, transformStart);
 		exitMesh.Render(camera, transformExit);
 		optMesh.Render(camera, transformOpt);
@@ -700,9 +697,6 @@ void MainMenuLevel::Update(float dt)
 
 	if (optionDoor.Get<Door>().GetOpen())
 		optionDoor.Get<MorphAnimation>().Update(dt);
-
-	if (startDoor.Get<AABB>().GetComplete())
-		levelComplete = true;
 
 	if (exitDoor.Get<AABB>().GetComplete())
 		glfwSetWindowShouldClose(window, true);
