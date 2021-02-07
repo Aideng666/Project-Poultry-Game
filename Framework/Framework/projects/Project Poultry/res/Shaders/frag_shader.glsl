@@ -28,9 +28,13 @@ out vec4 frag_color;
 
 vec4 Ramp(float dif)
 {
+	//Keeps the value between 0 and 1
 	float u = dif * 0.5 + 0.5;
-	vec2 uv = vec2(u, 0.5);
 
+	//Creates the  uv for the Ramp
+	vec2 uv = vec2(u, 0.5);
+	
+	//Creates the ramp Color using a passed in texture
 	vec4 rampCol = texture(s_Ramp, uv);
 
 	return rampCol;
