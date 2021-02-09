@@ -160,6 +160,16 @@ void MainMenu::Update(float dt)
 		isLoading = true;
 	}
 
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+	{
+		music.Stop();
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+	{
+		music.Play();
+	}
+
 	/*shader->Bind();
 	shader->SetUniform("s_Diffuse", 0);
 	playMat.Albedo->Bind(0);
