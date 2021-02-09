@@ -2,7 +2,9 @@
 
 namespace freebird
 {
-	//Audio Object
+	////////////////////////////////////
+	//			 AudioObject		  //
+	////////////////////////////////////
 
 	FMOD_VECTOR AudioObject::VectorToFmod(const glm::vec3& vec)
 	{

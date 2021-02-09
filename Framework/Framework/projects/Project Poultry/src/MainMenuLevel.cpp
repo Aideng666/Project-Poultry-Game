@@ -75,6 +75,7 @@ void MainMenuLevel::InitScene()
 
 	totalTime = distance / speed;
 
+
 #pragma region Shader Stuff
 
 	glm::vec3 lightPos = glm::vec3(0.0f, 9.5f, -35.0f);
@@ -301,7 +302,6 @@ void MainMenuLevel::InitScene()
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
-
 }
 
 void MainMenuLevel::Update(float dt)

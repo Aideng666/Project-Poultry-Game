@@ -83,6 +83,9 @@ namespace freebird
 		//Default clear color to white
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
+		//Set up the audio engine
+		m_audioEngine.Init();
+
 		return m_window;
 	}
 
@@ -98,6 +101,9 @@ namespace freebird
 		Tick();
 
 		glfwPollEvents();
+
+		//Update the audio engine
+		m_audioEngine.Update();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
@@ -116,6 +122,9 @@ namespace freebird
 
 	void Application::Cleanup()
 	{
+		//Shutdown the audio engine
+		m_audioEngine.Shutdown();
+
 		glfwDestroyWindow(m_window);
 		glfwTerminate();
 	}

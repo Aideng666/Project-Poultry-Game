@@ -119,16 +119,22 @@ void MainMenu::InitScene()
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
 
-	engine.Init();
+	//Sound Stuff
+	engine.LoadBank("Master");
+	engine.LoadBus("Music Bus", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
+
+	AudioEvent& music = engine.CreateSoundEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}");
+	music.Play();
+
+	/*engine.Init();
 	engine.LoadBank("Master");
 	engine.LoadBus("Music Bus", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
 	AudioEvent& music = engine.CreateSoundEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}");
-	music.Play();
+	music.Play();*/
 }
 
 void MainMenu::Update(float dt)
 {
-
 	time += dt;
 	shader->SetUniform("u_Time", time);
 
@@ -149,26 +155,32 @@ void MainMenu::Update(float dt)
 	glm::mat4 transformBack = backTrans.GetModelMatrix();
 	glm::mat4 transformLoad = loadTrans.GetModelMatrix();
 
+	//Sound Stuff
 	AudioEvent& music = engine.GetEvent("music");
 	AudioBus& musicBus = engine.GetBus("MusicBus");
-	AudioListener& listener = engine.GetListener();
 	engine.Update();
+
+	/*AudioEvent& music = engine.GetEvent("music");
+	AudioBus& musicBus = engine.GetBus("MusicBus");
+	AudioListener& listener = engine.GetListener();
+	engine.Update();*/
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
+		music.StopImmediately();
 		loadModels = true;
 		isLoading = true;
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-	{
-		music.Stop();
-	}
+	//if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+	//{
+	//	music.StopImmediately();
+	//}
 
-	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-	{
-		music.Play();
-	}
+	//if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+	//{
+	//	music.Play();
+	//}
 
 	/*shader->Bind();
 	shader->SetUniform("s_Diffuse", 0);

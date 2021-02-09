@@ -61,8 +61,6 @@ int main()
 	//Sets the clear colour of the window
 	Application::SetClearColor(glm::vec4(0.08f, 0.17f, 0.31f, 1.0f));
 
-	//Application::InitImGui();
-
 	scenes.push_back(new MainMenu("Main Menu", window));
 	/*scenes.push_back(new MainMenuLevel("Main Menu Level", window));
 	scenes.push_back(new Level1("Level 1", window));
@@ -73,15 +71,6 @@ int main()
 	
 	//Calculates our timer
 	Application::Tick();
-
-	//ImGui Stuff
-	Application::imGuiCallbacks.push_back([&]() {
-
-		//Put tabs, headers, buttons and all that jazz in here
-
-	});
-
-	Application::InitImGui();
 
 	//Main Loop//
 	while (!Application::IsClosing()) {
@@ -134,12 +123,8 @@ int main()
 
 		currentScene->Update(dt);
 
-		Application::RenderImGui();
-
 		Application::SwapBuffers();
 	}
-
-	Application::ShutdownImGui();
 
 	//Cleans up the window and glfw
 	Application::Cleanup();

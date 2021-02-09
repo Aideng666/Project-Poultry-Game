@@ -17,6 +17,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#include "AudioSystem.h"
+
 //Referenced in conjunction with NOU and Shawn's setup of a window from the CG Tutorials//
 
 namespace freebird
@@ -51,10 +53,16 @@ namespace freebird
 
 		static std::vector<std::function<void()>> imGuiCallbacks;
 
+		//Gets a reference to the audio engine
+		static AudioEngine& GetAudioEngine() { return m_audioEngine; }
+
 	protected:
 		Application() = default;
 		static GLFWwindow* m_window;
 		static float m_dt;
 		static float m_thisFrame;
+
+		//Audio engine
+		inline static AudioEngine& m_audioEngine = AudioEngine::Instance();
 	};
 }
