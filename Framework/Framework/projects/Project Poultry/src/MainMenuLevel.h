@@ -4,6 +4,8 @@
 #include <vector>
 #include <iostream>
 
+#include "AudioSystem.h"
+
 class MainMenuLevel : public Scene
 {
 public:
@@ -15,6 +17,8 @@ public:
 	void Update(float dt);
 
 	void Unload();
+
+	AudioEngine& engine = AudioEngine::Instance();
 
 private:
 

@@ -119,9 +119,9 @@ void MainMenu::InitScene()
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
 
 	//Sound Stuff
-	engine.LoadBank("Master");
-	engine.LoadBus("BusMusic", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
-	AudioEvent& music = engine.CreateSoundEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}"); //Mii song
+	//engine.LoadBank("Master");
+	//engine.LoadBus("BusMusic", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
+	//AudioEvent& music = engine.CreateSoundEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}"); //Mii song
 }
 
 void MainMenu::Update(float dt)

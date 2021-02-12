@@ -549,7 +549,6 @@ void MainMenuLevel::Update(float dt)
 		lightNum = 5;
 	}
 
-
 	if (lightNum < 1 || lightNum > 5)
 		lightNum = 1;
 
@@ -557,6 +556,22 @@ void MainMenuLevel::Update(float dt)
 	doorShader->SetUniform("u_LightNum", lightNum);
 	floorShader->SetUniform("u_LightNum", lightNum);
 	levelShader->SetUniform("u_LightNum", lightNum);
+
+	//Get ref to music
+	AudioEvent& testMusic = engine.GetEvent("music"); //the string should reference the event declared above
+	//Get ref to bus
+	AudioBus& musicBus = engine.GetBus("BusMusic");
+	engine.Update();
+
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+	{
+		testMusic.StopImmediately();
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+	{
+		testMusic.Play();
+	}
 
 #pragma region Renders
 		playerShader->Bind();
