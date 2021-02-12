@@ -85,9 +85,9 @@ namespace freebird
 
 		//Set up the audio engine
 		m_audioEngine.Init();
-		m_audioEngine.LoadBank("Master");
-		m_audioEngine.LoadBus("BusMusic", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
-		AudioEvent& music = m_audioEngine.CreateSoundEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}"); //Mii song
+
+		//Load the audio assets	
+		LoadAudio();
 
 		return m_window;
 	}
@@ -210,5 +210,17 @@ namespace freebird
 			// Restore our gl context
 			glfwMakeContextCurrent(m_window);
 		}
+	}
+
+	void Application::LoadAudio()
+	{
+		//Loads the bank
+		m_audioEngine.LoadBank("Master");
+
+		//Loads the bus
+		m_audioEngine.LoadBus("BusMusic", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
+
+		//Creates the sound events
+		AudioEvent& music = m_audioEngine.CreateSoundEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}"); //Mii song
 	}
 }

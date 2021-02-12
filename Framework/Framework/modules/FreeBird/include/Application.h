@@ -56,6 +56,9 @@ namespace freebird
 		//Gets a reference to the audio engine
 		static AudioEngine& GetAudioEngine() { return m_audioEngine; }
 
+		//Preloads the audio bank/bus GUIDs
+		static void LoadAudio();
+
 	protected:
 		Application() = default;
 		static GLFWwindow* m_window;

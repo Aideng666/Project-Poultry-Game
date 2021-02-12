@@ -18,6 +18,7 @@ public:
 
 	void Unload();
 
+	//Create an instance of the audio engine
 	AudioEngine& engine = AudioEngine::Instance();
 
 private:
