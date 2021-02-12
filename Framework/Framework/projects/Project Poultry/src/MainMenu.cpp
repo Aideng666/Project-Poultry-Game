@@ -119,10 +119,7 @@ void MainMenu::InitScene()
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
 
 	//Sound Stuff
-	//engine.LoadBank("Master");
-	//engine.LoadBus("BusMusic", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
-	//AudioEvent& music = engine.CreateSoundEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}"); //Mii song
-	AudioEvent& testMusic = engine.GetEvent("music");
+	AudioEvent& testMusic = engine.GetEvent("BG");
 	testMusic.Play();
 }
 
@@ -149,26 +146,22 @@ void MainMenu::Update(float dt)
 	glm::mat4 transformLoad = loadTrans.GetModelMatrix();
 
 	//Get ref to music
-	AudioEvent& testMusic = engine.GetEvent("music"); //the string should reference the event declared above
+	AudioEvent& testMusic = engine.GetEvent("BG"); 
+	AudioEvent& doorSFX = engine.GetEvent("Door");
 	//Get ref to bus
-	AudioBus& musicBus = engine.GetBus("MusicBus"); //the string should reference the event declared above
+	AudioBus& musicBus = engine.GetBus("MusicBus"); 
+	AudioBus& soundBus = engine.GetBus("SoundBus");
 	engine.Update();
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		testMusic.StopImmediately();
 		loadModels = true;
 		isLoading = true;
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-	{
-		testMusic.StopImmediately();
-	}
-
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
 	{
-		testMusic.Play();
+		doorSFX.Play();
 	}
 
 	/*shader->Bind();

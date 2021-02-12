@@ -218,9 +218,13 @@ namespace freebird
 		m_audioEngine.LoadBank("Sounds/Master");
 
 		//Loads the bus
-		m_audioEngine.LoadBus("MusicBus", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
+		m_audioEngine.LoadBus("MusicBus", "{aa712c3f-3f70-472f-8ddd-d7ee091ff0fe}"); 
+		m_audioEngine.LoadBus("SoundBus", "{19d186f5-e8be-40df-b1d2-ce3cf6c59f92}");
 
 		//Creates the sound events
-		AudioEvent& music = m_audioEngine.CreateSoundEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}"); //Mii song
+		AudioEvent& BG = m_audioEngine.CreateSoundEvent("BG", "{beba64b3-3176-4f20-9f00-7f32807325b6}"); //Background music
+		AudioEvent& walk = m_audioEngine.CreateSoundEvent("Walk", "{858d6f38-82a8-4477-8e80-5a6b52fd1313}"); //Walk SFX
+		AudioEvent& door = m_audioEngine.CreateSoundEvent("Door", "{24678d0f-f199-4d73-95dc-10657db09e8a}"); //Door SFX
+		AudioEvent& levelComplete = m_audioEngine.CreateSoundEvent("Level Complete", "{03daedd8-d89f-4d92-917f-43d3b74e73ef}"); //Level Complete SFX
 	}
 }

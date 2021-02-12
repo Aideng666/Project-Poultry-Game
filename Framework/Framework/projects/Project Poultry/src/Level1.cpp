@@ -230,7 +230,6 @@ void Level1::InitScene()
 
 #pragma endregion
 
-
 	//Transforms
 	auto& particleTrans = particleEnt.Add<Transform>();
 	particleTrans.SetPosition(glm::vec3(0.0f, 4.0f, -2.0f));
@@ -383,7 +382,7 @@ void Level1::InitScene()
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, levelShader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
-	doorAnimator.SetTime(0.2f);
+	doorAnimator.SetTime(0.3f);
 	doorAnimator.SetFrames(doorFrames);
 	doorAnimator.SetLoop(false);
 
@@ -447,6 +446,14 @@ void Level1::Update(float dt)
 		doorEnt.Get<MorphAnimation>().SetFrames(doorFrames);
 	else
 		doorEnt.Get<MorphAnimation>().SetFrames(doorCloseFrames);
+
+	//Get ref to music
+	AudioEvent& walkSFX = engine.GetEvent("Walk");
+	AudioEvent& doorSFX = engine.GetEvent("Door");
+	AudioEvent& levelSFX = engine.GetEvent("Level Complete");
+	//Get ref to bus
+	AudioBus& soundBus = engine.GetBus("SoundBus");
+	engine.Update();
 
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -525,20 +532,27 @@ void Level1::Update(float dt)
 
 	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
+	{
 		button1Watch.Poll(window);
+	}
 
 	if (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
+	{
 		button2Watch.Poll(window);
+	}
 
 	if (showLevelComplete)
 	{
+		//levelSFX.Play();
+		walkSFX.StopImmediately();
+
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
 			levelComplete = true;
 			lightNum = 5;
-		}
-		
+			levelSFX.Play();
+		}		
 	}
 
 #pragma region PlayerMovement
@@ -559,6 +573,8 @@ void Level1::Update(float dt)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
 
 			mainPlayer.Get<MorphAnimation>().Update(dt);
+
+			walkSFX.Play();
 		} 
 
 		else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -575,6 +591,8 @@ void Level1::Update(float dt)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
 
 			mainPlayer.Get<MorphAnimation>().Update(dt);
+
+			walkSFX.Play();
 		}
 
 		else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -591,6 +609,8 @@ void Level1::Update(float dt)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
 
 			mainPlayer.Get<MorphAnimation>().Update(dt);
+
+			walkSFX.Play();
 		}
 
 		else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -607,6 +627,8 @@ void Level1::Update(float dt)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
 
 			mainPlayer.Get<MorphAnimation>().Update(dt);
+
+			walkSFX.Play();
 		}
 
 		else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
@@ -619,6 +641,8 @@ void Level1::Update(float dt)
 				camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
 
 				mainPlayer.Get<MorphAnimation>().Update(dt);
+
+				walkSFX.Play();
 			}
 		}
 		else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
@@ -631,6 +655,8 @@ void Level1::Update(float dt)
 				camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
 
 				mainPlayer.Get<MorphAnimation>().Update(dt);
+
+				walkSFX.Play();
 			}
 		}
 		else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -645,6 +671,8 @@ void Level1::Update(float dt)
 					camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
 
 				mainPlayer.Get<MorphAnimation>().Update(dt);
+
+				walkSFX.Play();
 			}
 		}
 		else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -659,9 +687,14 @@ void Level1::Update(float dt)
 					camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
 
 				mainPlayer.Get<MorphAnimation>().Update(dt);
+
+				walkSFX.Play();
 			}
 		}
-
+		else
+		{
+			walkSFX.Stop();
+		}
 	}
 #pragma endregion
 
@@ -815,10 +848,19 @@ void Level1::Update(float dt)
 	andEnt.Get<AndGate>().Update();
 
 	if (doorEnt.Get<Door>().GetOpen())
+	{
 		doorEnt.Get<MorphAnimation>().Update(dt);
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+	{
+		doorSFX.Play();
+	}
 
 	if (doorEnt.Get<AABB>().GetComplete())
+	{
 		showLevelComplete = true;
+	}
 }
 
 void Level1::Unload()

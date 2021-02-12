@@ -381,10 +381,15 @@ void MainMenuLevel::Update(float dt)
 	glm::mat4 transformO = oTrans.GetModelMatrix();
 	glm::mat4 transformE = eTrans.GetModelMatrix();
 
+	//Get ref to music
+	AudioEvent& walkSFX = engine.GetEvent("Walk");
+	//Get ref to bus
+	AudioBus& soundBus = engine.GetBus("SoundBus");
+	engine.Update();
+
 #pragma region PlayerMovement
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-
 		playerTrans.SetRotationY(225.0f);
 
 		playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
@@ -396,8 +401,9 @@ void MainMenuLevel::Update(float dt)
 			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
 
 		mainPlayer.Get<MorphAnimation>().Update(dt);
-	}
 
+		walkSFX.Play();
+	}
 	else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
 
@@ -412,8 +418,9 @@ void MainMenuLevel::Update(float dt)
 			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
 
 		mainPlayer.Get<MorphAnimation>().Update(dt);
-	}
 
+		walkSFX.Play();
+	}
 	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
 
@@ -428,8 +435,9 @@ void MainMenuLevel::Update(float dt)
 			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
 
 		mainPlayer.Get<MorphAnimation>().Update(dt);
-	}
 
+		walkSFX.Play();
+	}
 	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
 
@@ -444,11 +452,11 @@ void MainMenuLevel::Update(float dt)
 			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
 
 		mainPlayer.Get<MorphAnimation>().Update(dt);
-	}
 
+		walkSFX.Play();
+	}
 	else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-
 		if (playerTrans.GetCanMoveLeft())
 		{
 			playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
@@ -456,6 +464,8 @@ void MainMenuLevel::Update(float dt)
 			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
 
 			mainPlayer.Get<MorphAnimation>().Update(dt);
+
+			walkSFX.Play();
 		}
 	}
 	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
@@ -468,6 +478,8 @@ void MainMenuLevel::Update(float dt)
 			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
 
 			mainPlayer.Get<MorphAnimation>().Update(dt);
+
+			walkSFX.Play();
 		}
 	}
 	else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -482,6 +494,8 @@ void MainMenuLevel::Update(float dt)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
 
 			mainPlayer.Get<MorphAnimation>().Update(dt);
+
+			walkSFX.Play();
 		}
 	}
 	else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -496,8 +510,15 @@ void MainMenuLevel::Update(float dt)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
 
 			mainPlayer.Get<MorphAnimation>().Update(dt);
+
+			walkSFX.Play();
 		}
 	}
+	else
+	{
+		walkSFX.Stop();
+	}
+	
 #pragma endregion
 
 #pragma region CameraMovement
@@ -557,22 +578,6 @@ void MainMenuLevel::Update(float dt)
 	floorShader->SetUniform("u_LightNum", lightNum);
 	levelShader->SetUniform("u_LightNum", lightNum);
 
-	//Get ref to music
-	AudioEvent& testMusic = engine.GetEvent("music"); //the string should reference the event declared above
-	//Get ref to bus
-	AudioBus& musicBus = engine.GetBus("MusicBus");
-	engine.Update();
-
-	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
-	{
-		testMusic.StopImmediately();
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
-	{
-		testMusic.Play();
-	}
-
 #pragma region Renders
 		playerShader->Bind();
 		playerShader->SetUniform("s_Diffuse", 0);
@@ -624,7 +629,10 @@ void MainMenuLevel::Update(float dt)
 		optionDoor.Get<MorphAnimation>().Update(dt);
 
 	if (startDoor.Get<AABB>().GetComplete())
+	{
 		levelComplete = true;
+		walkSFX.Stop();
+	}
 
 	if (exitDoor.Get<AABB>().GetComplete())
 		glfwSetWindowShouldClose(window, true);

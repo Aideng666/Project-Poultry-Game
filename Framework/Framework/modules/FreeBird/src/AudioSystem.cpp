@@ -243,9 +243,6 @@ namespace freebird
 
 	void AudioEvent::Restart()
 	{
-		//// Start the event
-		//m_EventInstance->start();
-
 		// Start the event
 		ErrorCheck(m_EventInstance->start());
 	}

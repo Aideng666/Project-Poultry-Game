@@ -7,6 +7,8 @@
 #include <iostream>
 #include <ParticleSystem.h>
 
+#include "AudioSystem.h"
+
 using namespace freebird;
 
 class Level1 : public Scene
@@ -20,6 +22,8 @@ public:
 	void Update(float dt);
 
 	void Unload();
+
+	AudioEngine& engine = AudioEngine::Instance();
 
 private:
 
