@@ -55,7 +55,9 @@ namespace freebird
 		return 0;
 	}
 
-	//Audio Bus
+	////////////////////////////////////
+	//			 AudioBus			  //
+	////////////////////////////////////
 
 	AudioBus::AudioBus(FMOD::Studio::Bus* bus)
 		: m_Bus(bus)
@@ -111,7 +113,9 @@ namespace freebird
 
 	}
 
-	//Audio Listener
+	////////////////////////////////////
+	//			 AudioListener		  //
+	////////////////////////////////////
 
 	void AudioListener::SetPosition(const glm::vec3& pos)
 	{
@@ -212,7 +216,9 @@ namespace freebird
 		m_ID = id;
 	}
 
-	//Audio Event
+	////////////////////////////////////
+	//			 AudioEvent	          //
+	////////////////////////////////////
 
 	AudioEvent::AudioEvent(FMOD::Studio::EventInstance* eventInstance)
 		: m_EventInstance(eventInstance)
@@ -233,17 +239,6 @@ namespace freebird
 
 		// Start the event
 		ErrorCheck(m_EventInstance->start());
-
-		//// Check if already playing
-		//FMOD_STUDIO_PLAYBACK_STATE* state = NULL;
-
-		//if (m_EventInstance->getPlaybackState(state) == FMOD_STUDIO_PLAYBACK_PLAYING)
-		//{
-		//	return;
-		//}
-
-		//// Start the event
-		//m_EventInstance->start();
 	}
 
 	void AudioEvent::Restart()
@@ -257,41 +252,16 @@ namespace freebird
 
 	void AudioEvent::Stop()
 	{
-		//// Check if already playing
-		//FMOD_STUDIO_PLAYBACK_STATE* state = NULL;
-		//if (m_EventInstance->getPlaybackState(state) == FMOD_STUDIO_PLAYBACK_PLAYING)
-		//{
-		//	// Stop the event
-		//	m_EventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
-		//}
-
 		ErrorCheck(m_EventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT));
 	}
 
 	void AudioEvent::StopImmediately()
 	{
-		//// Check if already playing
-		//FMOD_STUDIO_PLAYBACK_STATE* state = NULL;
-		//if (m_EventInstance->getPlaybackState(state) == FMOD_STUDIO_PLAYBACK_PLAYING)
-		//{
-		//	// Stop the event
-		//	m_EventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
-		//}
-
 		ErrorCheck(m_EventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE));
 	}
 
 	bool AudioEvent::isPlaying()
 	{
-		//// Check if already playing
-		//FMOD_STUDIO_PLAYBACK_STATE* state = NULL;
-		//if (m_EventInstance->getPlaybackState(state) == FMOD_STUDIO_PLAYBACK_PLAYING)
-		//{
-		//	return true;
-		//}
-
-		//return false;
-
 		// Check if already playing
 		FMOD_STUDIO_PLAYBACK_STATE state;
 		ErrorCheck(m_EventInstance->getPlaybackState(&state));

@@ -560,7 +560,7 @@ void MainMenuLevel::Update(float dt)
 	//Get ref to music
 	AudioEvent& testMusic = engine.GetEvent("music"); //the string should reference the event declared above
 	//Get ref to bus
-	AudioBus& musicBus = engine.GetBus("BusMusic");
+	AudioBus& musicBus = engine.GetBus("MusicBus");
 	engine.Update();
 
 	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)

@@ -215,10 +215,10 @@ namespace freebird
 	void Application::LoadAudio()
 	{
 		//Loads the bank
-		m_audioEngine.LoadBank("Master");
+		m_audioEngine.LoadBank("Sounds/Master");
 
 		//Loads the bus
-		m_audioEngine.LoadBus("BusMusic", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
+		m_audioEngine.LoadBus("MusicBus", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
 
 		//Creates the sound events
 		AudioEvent& music = m_audioEngine.CreateSoundEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}"); //Mii song

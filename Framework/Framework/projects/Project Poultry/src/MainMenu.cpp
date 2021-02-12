@@ -122,6 +122,8 @@ void MainMenu::InitScene()
 	//engine.LoadBank("Master");
 	//engine.LoadBus("BusMusic", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
 	//AudioEvent& music = engine.CreateSoundEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}"); //Mii song
+	AudioEvent& testMusic = engine.GetEvent("music");
+	testMusic.Play();
 }
 
 void MainMenu::Update(float dt)
@@ -149,7 +151,7 @@ void MainMenu::Update(float dt)
 	//Get ref to music
 	AudioEvent& testMusic = engine.GetEvent("music"); //the string should reference the event declared above
 	//Get ref to bus
-	AudioBus& musicBus = engine.GetBus("BusMusic"); //the string should reference the event declared above
+	AudioBus& musicBus = engine.GetBus("MusicBus"); //the string should reference the event declared above
 	engine.Update();
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
