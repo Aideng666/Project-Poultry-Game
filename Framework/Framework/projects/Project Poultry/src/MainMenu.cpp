@@ -120,17 +120,9 @@ void MainMenu::InitScene()
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
 
 	//Sound Stuff
-	engine.LoadBank("Master");
-	engine.LoadBus("Music Bus", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
-
-	AudioEvent& music = engine.CreateSoundEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}");
-	music.Play();
-
-	/*engine.Init();
-	engine.LoadBank("Master");
-	engine.LoadBus("Music Bus", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
-	AudioEvent& music = engine.CreateSoundEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}");
-	music.Play();*/
+	//engine.LoadBank("Master");
+	//engine.LoadBus("MusicBus", "{a5b53ded-d7b3-4e6b-a920-0b241ef6f268}");
+	//AudioEvent& music = engine.CreateSoundEvent("music", "{b56cb9d2-1d47-4099-b80e-7d257b99a823}"); //Mii song
 }
 
 void MainMenu::Update(float dt)
@@ -155,38 +147,33 @@ void MainMenu::Update(float dt)
 	glm::mat4 transformBack = backTrans.GetModelMatrix();
 	glm::mat4 transformLoad = loadTrans.GetModelMatrix();
 
-	//Sound Stuff
-	AudioEvent& music = engine.GetEvent("music");
-	AudioBus& musicBus = engine.GetBus("MusicBus");
-	engine.Update();
-
-	/*AudioEvent& music = engine.GetEvent("music");
-	AudioBus& musicBus = engine.GetBus("MusicBus");
-	AudioListener& listener = engine.GetListener();
-	engine.Update();*/
+	//Get ref to music
+	//AudioEvent& testMusic = engine.GetEvent("music"); //the string should reference the event declared above
+	//Get ref to bus
+	//AudioBus& musicBus = engine.GetBus("MusicBus");
+	//engine.Update();
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		music.StopImmediately();
+		//testMusic.StopImmediately();
 		loadModels = true;
 		isLoading = true;
 	}
 
-	//if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-	//{
-	//	music.StopImmediately();
-	//}
+	/*if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+	{
+		testMusic.StopImmediately();
+	}
 
-	//if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-	//{
-	//	music.Play();
-	//}
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+	{
+		testMusic.Play();
+	}*/
 
 	/*shader->Bind();
 	shader->SetUniform("s_Diffuse", 0);
 	playMat.Albedo->Bind(0);
 	playMesh.Render(camera, transformPlay);
-
 
 	shader->Bind();
 	shader->SetUniform("s_Diffuse", 0);
