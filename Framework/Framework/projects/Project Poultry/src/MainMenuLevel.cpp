@@ -383,9 +383,20 @@ void MainMenuLevel::Update(float dt)
 
 	//Get ref to music
 	AudioEvent& walkSFX = engine.GetEvent("Walk");
+	AudioEvent& BG = engine.GetEvent("BG");
 	//Get ref to bus
 	AudioBus& soundBus = engine.GetBus("SoundBus");
+	AudioBus& musicBus = engine.GetBus("MusicBus");
 	engine.Update();
+
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+	{
+		BG.SetParameter("Paused Song", 1);
+	}
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+	{
+		BG.SetParameter("Paused Song", 0);
+	}
 
 #pragma region PlayerMovement
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)

@@ -382,7 +382,7 @@ void Level1::InitScene()
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, levelShader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
-	doorAnimator.SetTime(0.3f);
+	doorAnimator.SetTime(0.33f);
 	doorAnimator.SetFrames(doorFrames);
 	doorAnimator.SetLoop(false);
 
@@ -454,6 +454,15 @@ void Level1::Update(float dt)
 	//Get ref to bus
 	AudioBus& soundBus = engine.GetBus("SoundBus");
 	engine.Update();
+
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+	{
+		doorSFX.Play();
+	}
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+	{
+		levelSFX.Play();
+	}
 
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -544,14 +553,12 @@ void Level1::Update(float dt)
 
 	if (showLevelComplete)
 	{
-		//levelSFX.Play();
 		walkSFX.StopImmediately();
 
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
 			levelComplete = true;
 			lightNum = 5;
-			levelSFX.Play();
 		}		
 	}
 
@@ -850,11 +857,6 @@ void Level1::Update(float dt)
 	if (doorEnt.Get<Door>().GetOpen())
 	{
 		doorEnt.Get<MorphAnimation>().Update(dt);
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
-	{
-		doorSFX.Play();
 	}
 
 	if (doorEnt.Get<AABB>().GetComplete())

@@ -147,21 +147,14 @@ void MainMenu::Update(float dt)
 
 	//Get ref to music
 	AudioEvent& testMusic = engine.GetEvent("BG"); 
-	AudioEvent& doorSFX = engine.GetEvent("Door");
 	//Get ref to bus
 	AudioBus& musicBus = engine.GetBus("MusicBus"); 
-	AudioBus& soundBus = engine.GetBus("SoundBus");
 	engine.Update();
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
 		loadModels = true;
 		isLoading = true;
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-	{
-		doorSFX.Play();
 	}
 
 	/*shader->Bind();
