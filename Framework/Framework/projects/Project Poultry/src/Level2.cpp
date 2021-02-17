@@ -214,6 +214,7 @@ void Level2::InitScene()
 	wallMat.Albedo = diffuseWall;
 	wireMat.Albedo = diffuseWire;
 	completeMat.Albedo = diffuseComplete;
+	clearMat.Albedo = texture2;
 
 #pragma endregion
 
@@ -718,77 +719,154 @@ void Level2::Update(float dt)
 
 #pragma region Renders
 
-	if (!showLevelComplete)
+	if (isTextured)
 	{
-		playerShader->Bind();
-		playerShader->SetUniform("s_Diffuse", 0);
-		drumstickMat.Albedo->Bind(0);
-		meshMain.Render(camera, transform);
+		if (!showLevelComplete)
+		{
+			playerShader->Bind();
+			playerShader->SetUniform("s_Diffuse", 0);
+			drumstickMat.Albedo->Bind(0);
+			meshMain.Render(camera, transform);
 
-		floorShader->Bind();
-		floorShader->SetUniform("s_Diffuse", 0);
-		floorMat.Albedo->Bind(0);
-		groundMesh.Render(camera, transformGround);
+			floorShader->Bind();
+			floorShader->SetUniform("s_Diffuse", 0);
+			floorMat.Albedo->Bind(0);
+			groundMesh.Render(camera, transformGround);
 
-		doorShader->Bind();
-		doorShader->SetUniform("s_Diffuse", 0);
-		doorMat.Albedo->Bind(0);
-		doorMesh.Render(camera, transformDoor);
-		doorMat.Albedo->Unbind(0);
+			doorShader->Bind();
+			doorShader->SetUniform("s_Diffuse", 0);
+			doorMat.Albedo->Bind(0);
+			doorMesh.Render(camera, transformDoor);
+			doorMat.Albedo->Unbind(0);
 
-		untexturedShader->Bind();
-		
-		if (wireEnt5.Get<Wire>().GetIsPowered())
-			coilMeshP.Render(camera, transformCoil);
-		else
-			coilMesh.Render(camera, transformCoil);
+			untexturedShader->Bind();
 
-		gateMesh.Render(camera, transformGate);
-		gateMesh2.Render(camera, transformGate2);
+			if (wireEnt5.Get<Wire>().GetIsPowered())
+				coilMeshP.Render(camera, transformCoil);
+			else
+				coilMesh.Render(camera, transformCoil);
 
-		wireShader->Bind();
-		wireShader->SetUniform("s_Diffuse", 0);
-		wireMat.Albedo->Bind(0);
-		if (wireEnt.Get<Wire>().GetIsPowered())
-			wireMeshP.Render(camera, transformWire);
-		else
-			wireMesh.Render(camera, transformWire);
+			gateMesh.Render(camera, transformGate);
+			gateMesh2.Render(camera, transformGate2);
 
-		if (wireEnt2.Get<Wire>().GetIsPowered())
-			wireMeshP2.Render(camera, transformWire2);
-		else
-			wireMesh2.Render(camera, transformWire2);
+			wireShader->Bind();
+			wireShader->SetUniform("s_Diffuse", 0);
+			wireMat.Albedo->Bind(0);
+			if (wireEnt.Get<Wire>().GetIsPowered())
+				wireMeshP.Render(camera, transformWire);
+			else
+				wireMesh.Render(camera, transformWire);
 
-		if (wireEnt3.Get<Wire>().GetIsPowered())
-			wireMeshP3.Render(camera, transformWire3);
-		else
-			wireMesh3.Render(camera, transformWire3);
+			if (wireEnt2.Get<Wire>().GetIsPowered())
+				wireMeshP2.Render(camera, transformWire2);
+			else
+				wireMesh2.Render(camera, transformWire2);
 
-		if (wireEnt4.Get<Wire>().GetIsPowered())
-			wireMeshP4.Render(camera, transformWire4);
-		else
-			wireMesh4.Render(camera, transformWire4);
+			if (wireEnt3.Get<Wire>().GetIsPowered())
+				wireMeshP3.Render(camera, transformWire3);
+			else
+				wireMesh3.Render(camera, transformWire3);
 
-		if (wireEnt5.Get<Wire>().GetIsPowered())
-			wireMeshP5.Render(camera, transformWire5);
-		else
-			wireMesh5.Render(camera, transformWire5);
+			if (wireEnt4.Get<Wire>().GetIsPowered())
+				wireMeshP4.Render(camera, transformWire4);
+			else
+				wireMesh4.Render(camera, transformWire4);
 
-		buttonShader->Bind();
-		buttonShader->SetUniform("s_Diffuse", 0);
-		buttonMat.Albedo->Bind(0);
-		buttonMesh.Render(camera, transformButton);
-		buttonMesh2.Render(camera, transformButton2);
-		buttonMesh3.Render(camera, transformButton3);
+			if (wireEnt5.Get<Wire>().GetIsPowered())
+				wireMeshP5.Render(camera, transformWire5);
+			else
+				wireMesh5.Render(camera, transformWire5);
+
+			buttonShader->Bind();
+			buttonShader->SetUniform("s_Diffuse", 0);
+			buttonMat.Albedo->Bind(0);
+			buttonMesh.Render(camera, transformButton);
+			buttonMesh2.Render(camera, transformButton2);
+			buttonMesh3.Render(camera, transformButton3);
+		}
+
+
+		levelShader->Bind();
+		levelShader->SetUniform("s_Diffuse", 0);
+		wallMat.Albedo->Bind(0);
+		leftMesh.Render(camera, transformLeft);
+		rightMesh.Render(camera, transformRight);
+		backMesh.Render(camera, transformBack);
 	}
+	else
+	{
+		if (!showLevelComplete)
+		{
+			playerShader->Bind();
+			playerShader->SetUniform("s_Diffuse", 0);
+			clearMat.Albedo->Bind(0);
+			meshMain.Render(camera, transform);
+
+			floorShader->Bind();
+			floorShader->SetUniform("s_Diffuse", 0);
+			clearMat.Albedo->Bind(0);
+			groundMesh.Render(camera, transformGround);
+
+			doorShader->Bind();
+			doorShader->SetUniform("s_Diffuse", 0);
+			clearMat.Albedo->Bind(0);
+			doorMesh.Render(camera, transformDoor);
+			clearMat.Albedo->Unbind(0);
+
+			untexturedShader->Bind();
+
+			if (wireEnt5.Get<Wire>().GetIsPowered())
+				coilMeshP.Render(camera, transformCoil);
+			else
+				coilMesh.Render(camera, transformCoil);
+
+			gateMesh.Render(camera, transformGate);
+			gateMesh2.Render(camera, transformGate2);
+
+			wireShader->Bind();
+			wireShader->SetUniform("s_Diffuse", 0);
+			clearMat.Albedo->Bind(0);
+			if (wireEnt.Get<Wire>().GetIsPowered())
+				wireMeshP.Render(camera, transformWire);
+			else
+				wireMesh.Render(camera, transformWire);
+
+			if (wireEnt2.Get<Wire>().GetIsPowered())
+				wireMeshP2.Render(camera, transformWire2);
+			else
+				wireMesh2.Render(camera, transformWire2);
+
+			if (wireEnt3.Get<Wire>().GetIsPowered())
+				wireMeshP3.Render(camera, transformWire3);
+			else
+				wireMesh3.Render(camera, transformWire3);
+
+			if (wireEnt4.Get<Wire>().GetIsPowered())
+				wireMeshP4.Render(camera, transformWire4);
+			else
+				wireMesh4.Render(camera, transformWire4);
+
+			if (wireEnt5.Get<Wire>().GetIsPowered())
+				wireMeshP5.Render(camera, transformWire5);
+			else
+				wireMesh5.Render(camera, transformWire5);
+
+			buttonShader->Bind();
+			buttonShader->SetUniform("s_Diffuse", 0);
+			clearMat.Albedo->Bind(0);
+			buttonMesh.Render(camera, transformButton);
+			buttonMesh2.Render(camera, transformButton2);
+			buttonMesh3.Render(camera, transformButton3);
+		}
 
 
-	levelShader->Bind();
-	levelShader->SetUniform("s_Diffuse", 0);
-	wallMat.Albedo->Bind(0);
-	leftMesh.Render(camera, transformLeft);
-	rightMesh.Render(camera, transformRight);
-	backMesh.Render(camera, transformBack);
+		levelShader->Bind();
+		levelShader->SetUniform("s_Diffuse", 0);
+		clearMat.Albedo->Bind(0);
+		leftMesh.Render(camera, transformLeft);
+		rightMesh.Render(camera, transformRight);
+		backMesh.Render(camera, transformBack);
+	}
 
 	if (showLevelComplete)
 	{

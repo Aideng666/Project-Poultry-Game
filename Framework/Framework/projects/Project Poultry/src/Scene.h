@@ -62,6 +62,9 @@ public:
 
 	std::vector<PostEffect*> GetEffects();
 
+	bool GetTextured();
+	void SetTextured(bool isTex);
+
 protected:
 
 	entt::registry* scene = nullptr;
@@ -75,6 +78,8 @@ protected:
 
 	Entity FBO, greyscaleEnt;
 
+	Mat clearMat;
+
 	std::vector<std::function<void()>> imGuiCallbacks;
 
 	std::vector<Entity> ents;
@@ -86,6 +91,7 @@ protected:
 	int width, height;
 
 	bool loadModels = false;
+	bool isTextured = true;
 
 	std::vector<PostEffect*> effects;
 };

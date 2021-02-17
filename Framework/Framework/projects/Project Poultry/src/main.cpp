@@ -76,12 +76,17 @@ int main()
 	Application::Tick();
 
 	int activeEffect = 0;
+	bool isTextured = true;
 
 	//ImGui Stuff
 	Application::imGuiCallbacks.push_back([&]() {
 
 		//Put tabs, headers, buttons and all that jazz in here
 
+		if (ImGui::Checkbox("Texture Toggle", &isTextured))
+		{
+			currentScene->SetTextured(isTextured);
+		}
 		if (ImGui::CollapsingHeader("Effect Controls"))
 		{
 			ImGui::SliderInt("Chosen Effect", &activeEffect, 0, currentScene->GetEffects().size() - 1);

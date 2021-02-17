@@ -149,6 +149,7 @@ void MainMenuLevel::InitScene()
 	doorMat.Albedo = diffuseDoor;
 	floorMat.Albedo = diffuseFloor;
 	wallMat.Albedo = diffuseWall;
+	clearMat.Albedo = texture2;
 #pragma endregion
 
 	//TRANSFORMS
@@ -583,11 +584,21 @@ void MainMenuLevel::Update(float dt)
 	basicEffect->BindBuffer(0);
 
 #pragma region Renders
+	if (isTextured)
+	{
 		playerShader->Bind();
 		playerShader->SetUniform("s_Diffuse", 0);
 		drumstickMat.Albedo->Bind(0);
 		drumMesh.Render(camera, transform);
 
+		doorShader->Bind();
+		doorShader->SetUniform("s_Diffuse", 0);
+		doorMat.Albedo->Bind(0);
+		startMesh.Render(camera, transformStart);
+		exitMesh.Render(camera, transformExit);
+		optMesh.Render(camera, transformOpt);
+		doorMat.Albedo->Unbind(0);	
+		
 		levelShader->Bind();
 		levelShader->SetUniform("s_Diffuse", 0);
 		wallMat.Albedo->Bind(0);
@@ -604,14 +615,40 @@ void MainMenuLevel::Update(float dt)
 		floorShader->SetUniform("s_Diffuse", 0);
 		floorMat.Albedo->Bind(0);
 		floorMesh.Render(camera, transformFloor);
+	}
+	else
+	{
+		playerShader->Bind();
+		playerShader->SetUniform("s_Diffuse", 0);
+		clearMat.Albedo->Bind(0);
+		drumMesh.Render(camera, transform);
 
 		doorShader->Bind();
 		doorShader->SetUniform("s_Diffuse", 0);
-		doorMat.Albedo->Bind(0);
+		clearMat.Albedo->Bind(0);
 		startMesh.Render(camera, transformStart);
 		exitMesh.Render(camera, transformExit);
 		optMesh.Render(camera, transformOpt);
-		doorMat.Albedo->Unbind(0);	
+		clearMat.Albedo->Unbind(0);
+
+		levelShader->Bind();
+		levelShader->SetUniform("s_Diffuse", 0);
+		clearMat.Albedo->Bind(0);
+		leftMesh.Render(camera, transformLeft);
+		rightMesh.Render(camera, transformRight);
+		backMesh.Render(camera, transformBack);
+		leftAMesh.Render(camera, transformLeftA);
+		rightAMesh.Render(camera, transformRightA);
+		sMesh.Render(camera, transformS);
+		oMesh.Render(camera, transformO);
+		eMesh.Render(camera, transformE);
+
+		floorShader->Bind();
+		floorShader->SetUniform("s_Diffuse", 0);
+		clearMat.Albedo->Bind(0);
+		floorMesh.Render(camera, transformFloor);
+	}
+
 #pragma endregion
 
 	basicEffect->UnbindBuffer();
