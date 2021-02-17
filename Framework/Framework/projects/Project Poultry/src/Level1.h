@@ -29,7 +29,7 @@ private:
 	Entity andEnt;
 	Entity wireEnt, wireEnt2, wireEnt3;
 	Entity buttonEnt, buttonEnt2;
-	Entity doorEnt;
+	Entity doorEnt, doorCloseEnt;
 	Entity coilEnt, coilPowered;
 	Entity pipeEnt;
 	Entity boxEnt;
@@ -50,6 +50,7 @@ private:
 	Mesh* floor;
 	Mesh* wall;
 	Mesh* doorM;
+	Mesh* doorCloseM;
 	Mesh* gate;
 	Mesh* wireL;
 	Mesh* wireR;

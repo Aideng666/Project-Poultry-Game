@@ -114,3 +114,13 @@ std::vector<PostEffect*> Scene::GetEffects()
 {
 	return effects;
 }
+
+bool Scene::GetTextured()
+{
+	return isTextured;
+}
+
+void Scene::SetTextured(bool isTex)
+{
+	isTextured = isTex;
+}
