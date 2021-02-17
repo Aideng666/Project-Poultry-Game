@@ -20,7 +20,7 @@ namespace freebird
 		if (_handle != 0) {
 			glDeleteProgram(_handle);
 			_handle = 0;
-			LOG_INFO("Deleting shader program");
+			//LOG_INFO("Deleting shader program");
 		}
 	}
 
