@@ -29,6 +29,7 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	wireEnt3 = Entity::Create();
 	andEnt = Entity::Create();
 	doorEnt = Entity::Create();
+	doorCloseEnt = Entity::Create();
 	coilEnt = Entity::Create();
 	coilPowered = Entity::Create();
 	pipeEnt = Entity::Create();
@@ -44,6 +45,7 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	floor = ModelManager::FindMesh(floorFile);
 	wall = ModelManager::FindMesh(wallFile);
 	doorM = ModelManager::FindMesh(doorFile);
+	doorCloseM = ModelManager::FindMesh(doorFile10);
 	buttonM = ModelManager::FindMesh(buttonFile);
 	wireL = ModelManager::FindMesh(wire1File, glm::vec3(1.0f, 0.0f, 0.0f));
 	wireR = ModelManager::FindMesh(wire2File, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -239,10 +241,6 @@ void Level1::InitScene()
 	playerTrans.SetPosition(glm::vec3(0.0f, 1.0f, 30.0f));
 	playerTrans.SetRotationY(0.0f);
 
-	/*auto& uiTrans = UIEnt.Add<Transform>();
-	uiTrans.SetPosition(glm::vec3(8.0f, 8.0f, 0.0f));
-	uiTrans.SetRotationY(50.0f);*/
-
 	auto& tutTrans = tutEnt.Add<Transform>();
 	tutTrans.SetPosition(glm::vec3(-8.0f, 1.0f, 15.0f));
 	tutTrans.SetScale(glm::vec3(3.0f));
@@ -275,6 +273,10 @@ void Level1::InitScene()
 	auto& doorTrans = doorEnt.Add<Transform>();
 	doorTrans.SetPosition(glm::vec3(0.0f, -1.0f, -36.0f));
 	doorTrans.SetScale(glm::vec3(1.5f));
+
+	auto& doorCloseTrans = doorCloseEnt.Add<Transform>();
+	doorCloseTrans.SetPosition(glm::vec3(0.0f, -1.0f, -36.0f));
+	doorCloseTrans.SetScale(glm::vec3(1.5f));
 
 	auto& pipeTrans = pipeEnt.Add<Transform>();
 	pipeTrans.SetPositionX(-35.5f);
@@ -376,16 +378,23 @@ void Level1::InitScene()
 	auto& wireMeshP2 = wirePowered2.Add<MeshRenderer>(wirePowered2, *wireRPower, wireShader);
 	auto& wireMeshP3 = wirePowered3.Add<MeshRenderer>(wirePowered3, *wireCPower, wireShader);
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, doorShader);
+	auto& doorCloseMesh = doorCloseEnt.Add<MorphRenderer>(doorCloseEnt, *doorCloseM, doorShader);
 	auto& pipeMesh = pipeEnt.Add<MeshRenderer>(pipeEnt, *pipe, untexturedShader);
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, untexturedShader);
 	auto& coilMeshP = coilPowered.Add<MeshRenderer>(coilPowered, *coilP, untexturedShader);
 	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, levelShader);
 
+
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
 	doorAnimator.SetFrames(doorFrames);
 	doorAnimator.SetLoop(false);
+
+	auto& doorCloseAnimator = doorCloseEnt.Add<MorphAnimation>(doorCloseEnt);
+	doorCloseAnimator.SetTime(0.2f);
+	doorCloseAnimator.SetFrames(doorCloseFrames);
+	doorCloseAnimator.SetLoop(false);
 
 	auto& walkAnimator = mainPlayer.Add<MorphAnimation>(mainPlayer);
 	walkAnimator.SetTime(0.05f);
@@ -443,10 +452,10 @@ void Level1::Update(float dt)
 	buttonShader->SetUniform("u_Position", currentPos);
 	untexturedShader->SetUniform("u_Position", currentPos);
 
-	if (doorEnt.Get<Door>().GetOpen())
-		doorEnt.Get<MorphAnimation>().SetFrames(doorFrames);
-	else
-		doorEnt.Get<MorphAnimation>().SetFrames(doorCloseFrames);
+	//if (doorEnt.Get<Door>().GetOpen())
+	//	doorEnt.Get<MorphAnimation>().SetFrames(doorFrames);
+	//else
+	//	doorEnt.Get<MorphAnimation>().SetFrames(doorCloseFrames);
 
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -455,6 +464,7 @@ void Level1::Update(float dt)
 	auto& rightTrans = rightEnt.Get<Transform>();
 	auto& backTrans = backEnt.Get<Transform>();
 	auto& doorTrans = doorEnt.Get<Transform>();
+	auto& doorCloseTrans = doorCloseEnt.Get<Transform>();
 	auto& pipeTrans = pipeEnt.Get<Transform>();
 	auto& buttonTrans = buttonEnt.Get<Transform>();
 	auto& buttonTrans2 = buttonEnt2.Get<Transform>();
@@ -488,6 +498,7 @@ void Level1::Update(float dt)
 	auto& rightMesh = rightEnt.Get<MeshRenderer>();
 	auto& backMesh = backEnt.Get<MeshRenderer>();
 	auto& doorMesh = doorEnt.Get<MorphRenderer>();
+	auto& doorCloseMesh = doorCloseEnt.Get<MorphRenderer>();
 	auto& pipeMesh = pipeEnt.Get<MeshRenderer>();
 	auto& buttonMesh = buttonEnt.Get<MeshRenderer>();
 	auto& buttonMesh2 = buttonEnt2.Get<MeshRenderer>();
@@ -510,6 +521,7 @@ void Level1::Update(float dt)
 	glm::mat4 transformRight = rightTrans.GetModelMatrix();
 	glm::mat4 transformBack = backTrans.GetModelMatrix();
 	glm::mat4 transformDoor = doorTrans.GetModelMatrix();
+	glm::mat4 transformDoorClose = doorCloseTrans.GetModelMatrix();
 	glm::mat4 transformPipe = pipeTrans.GetModelMatrix();
 	glm::mat4 transformButton = buttonTrans.GetModelMatrix();
 	glm::mat4 transformButton2 = buttonTrans2.GetModelMatrix();
@@ -703,6 +715,27 @@ void Level1::Update(float dt)
 	}
 #pragma endregion
 
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+	{
+		lightNum = 1;
+	}
+	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+	{
+		lightNum = 2;
+	}
+	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+	{
+		lightNum = 3;
+	}
+	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+	{
+		lightNum = 4;
+	}
+	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
+	{
+		lightNum = 5;
+	}
+
 	if (lightNum < 1 || lightNum > 5)
 		lightNum = 1;
 
@@ -731,7 +764,15 @@ void Level1::Update(float dt)
 		doorShader->Bind();
 		doorShader->SetUniform("s_Diffuse", 0);
 		doorMat.Albedo->Bind(0);
-		doorMesh.Render(camera, transformDoor);
+
+		if (doorEnt.Get<Door>().GetOpen())
+		{
+			doorMesh.Render(camera, transformDoor);
+		}
+		else
+		{
+			doorCloseMesh.Render(camera, transformDoor);
+		}
 		doorMat.Albedo->Unbind(0);
 
 		untexturedShader->Bind();
@@ -815,7 +856,18 @@ void Level1::Update(float dt)
 	andEnt.Get<AndGate>().Update();
 
 	if (doorEnt.Get<Door>().GetOpen())
+	{
+		doorEnt.Get<MorphAnimation>().SetLoop(true);
+		doorEnt.Get<MorphAnimation>().SetLoop(false);
 		doorEnt.Get<MorphAnimation>().Update(dt);
+	}
+
+	if (!doorEnt.Get<Door>().GetOpen())
+	{
+		doorCloseEnt.Get<MorphAnimation>().SetLoop(true);
+		doorCloseEnt.Get<MorphAnimation>().SetLoop(false);
+		doorCloseEnt.Get<MorphAnimation>().Update(dt);
+	}
 
 	if (doorEnt.Get<AABB>().GetComplete())
 		showLevelComplete = true;

@@ -361,7 +361,7 @@ void Level2::InitScene()
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, levelShader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
-	doorAnimator.SetTime(0.5f);
+	doorAnimator.SetTime(0.2f);
 	doorAnimator.SetFrames(doorFrames);
 	doorAnimator.SetLoop(false);
 
@@ -479,7 +479,7 @@ void Level2::Update(float dt)
 	auto& coilMeshP = coilPowered.Get<MeshRenderer>();
 	auto& completeMesh = completeEnt.Get<MeshRenderer>();
 
-	camera.LookAt(glm::vec3(playerTrans.GetPosition()));
+	camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
 
 	glm::mat4 transform = playerTrans.GetModelMatrix();
 	glm::mat4 transformGround = groundTrans.GetModelMatrix();
@@ -682,6 +682,27 @@ void Level2::Update(float dt)
 		camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y - 10 * dt, camera.GetPosition().z));
 	}
 #pragma endregion
+
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+	{
+		lightNum = 1;
+	}
+	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+	{
+		lightNum = 2;
+	}
+	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+	{
+		lightNum = 3;
+	}
+	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+	{
+		lightNum = 4;
+	}
+	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
+	{
+		lightNum = 5;
+	}
 
 	if (lightNum < 1 || lightNum > 5)
 		lightNum = 1;
