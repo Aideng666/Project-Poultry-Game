@@ -14,7 +14,9 @@
 #include <MeshRenderer.h>
 #include <ModelManager.h>
 #include "Greyscale.h"
-
+#include "Sepia.h"
+#include "Bloom.h"
+#include "ColorCorrect.h"
 
 using namespace freebird;
 
@@ -65,6 +67,9 @@ public:
 	bool GetTextured();
 	void SetTextured(bool isTex);
 
+	int GetActiveEffect();
+	void SetActiveEffect(int activeEffect);
+
 protected:
 
 	entt::registry* scene = nullptr;
@@ -76,7 +81,7 @@ protected:
 
 	Entity camEnt, uiCamEnt;
 
-	Entity FBO, greyscaleEnt;
+	Entity FBO, greyscaleEnt, sepiaEnt, colorCorrectEnt, bloomEnt;
 
 	Mat clearMat;
 
@@ -94,4 +99,5 @@ protected:
 	bool isTextured = true;
 
 	std::vector<PostEffect*> effects;
+	int activeEffect = 0;
 };

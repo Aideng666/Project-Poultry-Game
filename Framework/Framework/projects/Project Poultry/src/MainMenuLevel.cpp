@@ -29,6 +29,10 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	exitEnt = Entity::Create();
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
+	sepiaEnt = Entity::Create();
+	colorCorrectEnt = Entity::Create();
+	bloomEnt = Entity::Create();
+
 
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
@@ -303,6 +307,21 @@ void MainMenuLevel::InitScene()
 	greyscaleEffect->Init(width, height);
 
 	effects.push_back(greyscaleEffect);
+
+	auto sepiaEffect = &sepiaEnt.Add<Sepia>();
+	sepiaEffect->Init(width, height);
+
+	effects.push_back(sepiaEffect);
+
+	auto bloomEffect = &bloomEnt.Add<Bloom>();
+	bloomEffect->Init(width, height);
+
+	effects.push_back(bloomEffect);
+
+	auto colorCorrectEffect = &colorCorrectEnt.Add<ColorCorrect>();
+	colorCorrectEffect->Init(width, height);
+
+	effects.push_back(colorCorrectEffect);
 }
 
 void MainMenuLevel::Update(float dt)
@@ -395,10 +414,13 @@ void MainMenuLevel::Update(float dt)
 	animShader->SetUniform("u_LightNum", lightNum);
 
 	auto basicEffect = &FBO.Get<PostEffect>();
-	auto greyscaleEffect = &greyscaleEnt.Get<Greyscale>();
 
 	basicEffect->Clear();
-	greyscaleEffect->Clear();
+
+	for (int i = 0; i < effects.size(); i++)
+	{
+		effects[i]->Clear();
+	}
 
 	basicEffect->BindBuffer(0);
 
@@ -464,9 +486,9 @@ void MainMenuLevel::Update(float dt)
 
 	basicEffect->UnbindBuffer();
 
-	greyscaleEffect->ApplyEffect(basicEffect);
+	effects[activeEffect]->ApplyEffect(basicEffect);
 
-	greyscaleEffect->DrawToScreen();
+	effects[activeEffect]->DrawToScreen();
 
 	startDoor.Get<AABB>().Update();
 	optionDoor.Get<AABB>().Update();
