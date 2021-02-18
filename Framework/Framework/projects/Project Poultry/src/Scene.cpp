@@ -75,13 +75,12 @@ bool Scene::GetLoad()
 //	vao.Render();
 //}
 
-void Scene::SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos, glm::vec3 lightDir, glm::vec3 lightCol, float lightAmbientPow, float lightSpecularPow, float lightSpecularPow2, glm::vec3 ambientCol, float ambientPow, float shininess)
+void Scene::SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos, glm::vec3 lightDir, glm::vec3 lightCol, float lightAmbientPow, float lightSpecularPow2, glm::vec3 ambientCol, float ambientPow, float shininess)
 {
 	shader->SetUniform("u_LightPos", lightPos);
 	shader->SetUniform("u_LightDir", lightDir);
 	shader->SetUniform("u_LightCol", lightCol);
 	shader->SetUniform("u_AmbientLightStrength", lightAmbientPow);
-	shader->SetUniform("u_SpecularLightStrength", lightSpecularPow);
 	shader->SetUniform("u_SpecularLightStrength2", lightSpecularPow2);
 	shader->SetUniform("u_AmbientCol", ambientCol);
 	shader->SetUniform("u_AmbientStrength", ambientPow);
