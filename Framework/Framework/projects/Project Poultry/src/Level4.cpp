@@ -35,7 +35,6 @@ void Level4::InitScene()
 	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
 	float     lightAmbientPow = 0.05f;
 	float     lightSpecularPow = 1.0f;
-	float     lightSpecularPow2 = 0.2f;
 	glm::vec3 ambientCol = glm::vec3(1.0f);
 	float     ambientPow = 0.1f;
 	float     shininess = 16.0f;
@@ -45,7 +44,7 @@ void Level4::InitScene()
 	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	shader->Link();
 
-	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
 
 	auto& gateTrans = andEnt.Add<Transform>();
 	gateTrans.SetPosition(glm::vec3(-4.0f, 1.0f, -2.0f));

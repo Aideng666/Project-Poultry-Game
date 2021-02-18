@@ -14,7 +14,6 @@ uniform vec3  u_LightDir;
 uniform vec3  u_LightCol;
 uniform float u_AmbientLightStrength;
 uniform float u_SpecularLightStrength;
-uniform float u_SpecularLightStrength2;
 uniform float u_Shininess;
 uniform float u_Time;
 uniform vec3 u_Position;
