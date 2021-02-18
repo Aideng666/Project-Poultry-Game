@@ -89,6 +89,8 @@ int main()
 
 			if (activeEffect == 0)
 			{
+				currentScene->SetActiveEffect(0);
+
 				ImGui::Text("Active Effect: Greyscale");
 
 				Greyscale* temp = (Greyscale*)currentScene->GetEffects()[activeEffect];
@@ -97,6 +99,56 @@ int main()
 				if (ImGui::SliderFloat("Intensity", &intensity, 0.0f, 1.0f))
 				{
 					temp->SetIntensity(intensity);
+				}
+			}
+			if (activeEffect == 1)
+			{
+				currentScene->SetActiveEffect(1);
+
+				ImGui::Text("Active Effect: Sepia");
+
+				Sepia* temp = (Sepia*)currentScene->GetEffects()[activeEffect];
+				float intensity = temp->GetIntensity();
+
+				if (ImGui::SliderFloat("Intensity", &intensity, 0.0f, 1.0f))
+				{
+					temp->SetIntensity(intensity);
+				}
+			}
+			if (activeEffect == 2)
+			{
+				currentScene->SetActiveEffect(2);
+
+				ImGui::Text("Active Effect: Bloom");
+
+				Bloom* temp = (Bloom*)currentScene->GetEffects()[activeEffect];
+				float threshold = temp->GetThreshold();
+
+				if (ImGui::SliderFloat("Threshold", &threshold, 0.0f, 1.0f))
+				{
+					temp->SetThreshold(threshold);
+				}
+
+				float downscale = temp->GetDownscale();
+
+				if (ImGui::SliderFloat("Blur", &downscale, 1.0f, 5.0f))
+				{
+					temp->SetDownscale(downscale);
+				}
+			}
+			if (activeEffect == 3)
+			{
+				currentScene->SetActiveEffect(3);
+
+				ImGui::Text("Active Effect: Color Correct Effect");
+
+				ColorCorrect* temp = (ColorCorrect*)currentScene->GetEffects()[activeEffect];
+				static char input[BUFSIZ];
+				ImGui::InputText("Lut File to Use", input, BUFSIZ);
+
+				if (ImGui::Button("SetLUT", ImVec2(200.0f, 40.0f)))
+				{
+					temp->SetLUT(LUT3D(std::string(input)));
 				}
 			}
 

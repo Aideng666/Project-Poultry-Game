@@ -22,6 +22,11 @@ MainMenu::MainMenu(std::string sceneName, GLFWwindow* wind)
 	optionsButton = Entity::Create();*/
 	backEnt = Entity::Create();
 	loadEnt = Entity::Create();
+	FBO = Entity::Create();
+	greyscaleEnt = Entity::Create();
+	sepiaEnt = Entity::Create();
+	colorCorrectEnt = Entity::Create();
+	bloomEnt = Entity::Create();
 
 	/*play = ModelManager::FindMesh(buttonFile);
 	options = ModelManager::FindMesh(buttonFile);*/
@@ -56,7 +61,6 @@ void MainMenu::InitScene()
 	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
 
 #pragma endregion
-
 
 #pragma region Texture Stuff
 	Texture2DData::sptr playMap = Texture2DData::LoadFromFile("Textures/Buttons/Default/Play.png");
@@ -118,6 +122,32 @@ void MainMenu::InitScene()
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
+
+	int width, height;
+	glfwGetWindowSize(window, &width, &height);
+
+	auto basicEffect = &FBO.Add<PostEffect>();
+	basicEffect->Init(width, height);
+
+	auto greyscaleEffect = &greyscaleEnt.Add<Greyscale>();
+	greyscaleEffect->Init(width, height);
+
+	effects.push_back(greyscaleEffect);
+
+	auto sepiaEffect = &sepiaEnt.Add<Sepia>();
+	sepiaEffect->Init(width, height);
+
+	effects.push_back(sepiaEffect);
+
+	auto bloomEffect = &bloomEnt.Add<Bloom>();
+	bloomEffect->Init(width, height);
+
+	effects.push_back(bloomEffect);
+
+	auto colorCorrectEffect = &colorCorrectEnt.Add<ColorCorrect>();
+	colorCorrectEffect->Init(width, height);
+
+	effects.push_back(colorCorrectEffect);
 }
 
 void MainMenu::Update(float dt)
@@ -149,16 +179,17 @@ void MainMenu::Update(float dt)
 		isLoading = true;
 	}
 
-	/*shader->Bind();
-	shader->SetUniform("s_Diffuse", 0);
-	playMat.Albedo->Bind(0);
-	playMesh.Render(camera, transformPlay);
+	auto basicEffect = &FBO.Get<PostEffect>();
+
+	basicEffect->Clear();
+
+	for (int i = 0; i < effects.size(); i++)
+	{
+		effects[i]->Clear();
+	}
 
 
-	shader->Bind();
-	shader->SetUniform("s_Diffuse", 0);
-	optionsMat.Albedo->Bind(0);
-	optionsMesh.Render(camera, transformOptions);*/
+	basicEffect->BindBuffer(0);
 
 	shader->Bind();
 	shader->SetUniform("s_Diffuse", 0);
@@ -171,6 +202,12 @@ void MainMenu::Update(float dt)
 		loadMat.Albedo->Bind(0);
 		loadMesh.Render(camera, transformLoad);
 	}
+
+	basicEffect->UnbindBuffer();
+
+	effects[activeEffect]->ApplyEffect(basicEffect);
+
+	effects[activeEffect]->DrawToScreen();
 }
 
 void MainMenu::Unload()
