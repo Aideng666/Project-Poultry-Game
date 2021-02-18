@@ -40,6 +40,11 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	wirePowered3 = Entity::Create();
 	completeEnt = Entity::Create();
 	tutEnt = Entity::Create();
+	FBO = Entity::Create();
+	greyscaleEnt = Entity::Create();
+	sepiaEnt = Entity::Create();
+	colorCorrectEnt = Entity::Create();
+	bloomEnt = Entity::Create();
 
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
@@ -412,6 +417,32 @@ void Level1::InitScene()
 	orthoCam.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	orthoCam.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	orthoCam.SetFovDegrees(90.0f); // Set an initial FOV
+
+	int width, height;
+	glfwGetWindowSize(window, &width, &height);
+
+	auto basicEffect = &FBO.Add<PostEffect>();
+	basicEffect->Init(width, height);
+
+	auto greyscaleEffect = &greyscaleEnt.Add<Greyscale>();
+	greyscaleEffect->Init(width, height);
+
+	effects.push_back(greyscaleEffect);
+
+	auto sepiaEffect = &sepiaEnt.Add<Sepia>();
+	sepiaEffect->Init(width, height);
+
+	effects.push_back(sepiaEffect);
+
+	auto bloomEffect = &bloomEnt.Add<Bloom>();
+	bloomEffect->Init(width, height);
+
+	effects.push_back(bloomEffect);
+
+	auto colorCorrectEffect = &colorCorrectEnt.Add<ColorCorrect>();
+	colorCorrectEffect->Init(width, height);
+
+	effects.push_back(colorCorrectEffect);
 }
 
 void Level1::Update(float dt)
@@ -589,6 +620,17 @@ void Level1::Update(float dt)
 	wireShader->SetUniform("u_LightNum", lightNum);
 	untexturedShader->SetUniform("u_LightNum", lightNum);
 	buttonShader->SetUniform("u_LightNum", lightNum);
+
+	auto basicEffect = &FBO.Get<PostEffect>();
+
+	basicEffect->Clear();
+
+	for (int i = 0; i < effects.size(); i++)
+	{
+		effects[i]->Clear();
+	}
+
+	basicEffect->BindBuffer(0);
 
 #pragma region Renders
 	if (isTextured)
@@ -770,6 +812,12 @@ void Level1::Update(float dt)
 
 
 #pragma endregion
+
+	basicEffect->UnbindBuffer();
+
+	effects[activeEffect]->ApplyEffect(basicEffect);
+
+	effects[activeEffect]->DrawToScreen();
 
 	leftEnt.Get<AABB>().Update();
 	rightEnt.Get<AABB>().Update();

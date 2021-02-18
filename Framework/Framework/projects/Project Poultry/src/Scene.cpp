@@ -123,3 +123,13 @@ void Scene::SetTextured(bool isTex)
 {
 	isTextured = isTex;
 }
+
+int Scene::GetActiveEffect()
+{
+	return activeEffect;
+}
+
+void Scene::SetActiveEffect(int activeEffect)
+{
+	this->activeEffect = activeEffect;
+}
