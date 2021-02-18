@@ -86,38 +86,23 @@ void MainMenuLevel::InitScene()
 	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
 	float     lightAmbientPow = 0.05f;
 	float     lightSpecularPow = 1.0f;
-	float     lightSpecularPow2 = 0.2f;
 	glm::vec3 ambientCol = glm::vec3(1.0f);
 	float     ambientPow = 0.1f;
 	float     shininess = 16.0f;
 
-	playerShader = Shader::Create();
-	playerShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
-	playerShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	playerShader->Link();
+	shader = Shader::Create();
+	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	shader->Link();
 
-	SetShaderValues(playerShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
 
-	doorShader = Shader::Create();
-	doorShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
-	doorShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	doorShader->Link();
+	animShader = Shader::Create();
+	animShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
+	animShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	animShader->Link();
 
-	SetShaderValues(doorShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
-
-	floorShader = Shader::Create();
-	floorShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	floorShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	floorShader->Link();
-
-	SetShaderValues(floorShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
-
-	levelShader = Shader::Create();
-	levelShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	levelShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	levelShader->Link();
-
-	SetShaderValues(levelShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+	SetShaderValues(animShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
 #pragma endregion
 
 #pragma region Texture Stuff
@@ -267,19 +252,19 @@ void MainMenuLevel::InitScene()
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk13));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk14));
 
-	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, playerShader);
-	auto& backMesh = backWall.Add<MeshRenderer>(backWall, *wall, levelShader);
-	auto& leftMesh = leftWall.Add<MeshRenderer>(leftWall, *wall, levelShader);
-	auto& rightMesh = rightWall.Add<MeshRenderer>(rightWall, *wall, levelShader);
-	auto& leftAMesh = leftAngledWall.Add<MeshRenderer>(leftAngledWall, *wall, levelShader);
-	auto& rightAMesh = rightAngledWall.Add<MeshRenderer>(rightAngledWall, *wall, levelShader);
-	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floor, floorShader);
-	auto& playMesh = startDoor.Add<MorphRenderer>(startDoor, *doorM, doorShader);
-	auto& exitMesh = exitDoor.Add<MorphRenderer>(exitDoor, *doorM, doorShader);
-	auto& optMesh = optionDoor.Add<MorphRenderer>(optionDoor, *doorM, doorShader);
-	auto& sMesh = startEnt.Add<MeshRenderer>(startEnt, *start, levelShader);
-	auto& oMesh = optEnt.Add<MeshRenderer>(optEnt, *options, levelShader);
-	auto& eMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, levelShader);
+	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
+	auto& backMesh = backWall.Add<MeshRenderer>(backWall, *wall, shader);
+	auto& leftMesh = leftWall.Add<MeshRenderer>(leftWall, *wall, shader);
+	auto& rightMesh = rightWall.Add<MeshRenderer>(rightWall, *wall, shader);
+	auto& leftAMesh = leftAngledWall.Add<MeshRenderer>(leftAngledWall, *wall, shader);
+	auto& rightAMesh = rightAngledWall.Add<MeshRenderer>(rightAngledWall, *wall, shader);
+	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floor, shader);
+	auto& playMesh = startDoor.Add<MorphRenderer>(startDoor, *doorM, animShader);
+	auto& exitMesh = exitDoor.Add<MorphRenderer>(exitDoor, *doorM, animShader);
+	auto& optMesh = optionDoor.Add<MorphRenderer>(optionDoor, *doorM, animShader);
+	auto& sMesh = startEnt.Add<MeshRenderer>(startEnt, *start, shader);
+	auto& oMesh = optEnt.Add<MeshRenderer>(optEnt, *options, shader);
+	auto& eMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, shader);
 
 	auto& startAnimator = startDoor.Add<MorphAnimation>(startDoor);
 	startAnimator.SetTime(0.2f);
@@ -324,10 +309,8 @@ void MainMenuLevel::Update(float dt)
 {
 
 	time += dt;
-	playerShader->SetUniform("u_Time", time);
-	levelShader->SetUniform("u_Time", time);
-	doorShader->SetUniform("u_Time", time);
-	floorShader->SetUniform("u_Time", time);
+	shader->SetUniform("u_Time", time);
+	animShader->SetUniform("u_Time", time);
 
 	if (forwards)
 		t += dt / totalTime;
@@ -345,10 +328,8 @@ void MainMenuLevel::Update(float dt)
 
 	currentPos = glm::mix(point1, point2, t);
 
-	playerShader->SetUniform("u_Position", currentPos);
-	levelShader->SetUniform("u_Position", currentPos);
-	floorShader->SetUniform("u_Position", currentPos);
-	doorShader->SetUniform("u_Position", currentPos);
+	shader->SetUniform("u_Position", currentPos);
+	animShader->SetUniform("u_Position", currentPos);
 
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -410,10 +391,8 @@ void MainMenuLevel::Update(float dt)
 	if (lightNum < 1 || lightNum > 5)
 		lightNum = 1;
 
-	playerShader->SetUniform("u_LightNum", lightNum);
-	doorShader->SetUniform("u_LightNum", lightNum);
-	floorShader->SetUniform("u_LightNum", lightNum);
-	levelShader->SetUniform("u_LightNum", lightNum);
+	shader->SetUniform("u_LightNum", lightNum);
+	animShader->SetUniform("u_LightNum", lightNum);
 
 	auto basicEffect = &FBO.Get<PostEffect>();
 	auto greyscaleEffect = &greyscaleEnt.Get<Greyscale>();
@@ -421,27 +400,24 @@ void MainMenuLevel::Update(float dt)
 	basicEffect->Clear();
 	greyscaleEffect->Clear();
 
-
 	basicEffect->BindBuffer(0);
 
 #pragma region Renders
 	if (isTextured)
-	{
-		playerShader->Bind();
-		playerShader->SetUniform("s_Diffuse", 0);
+	{	
+		animShader->Bind();
+		animShader->SetUniform("s_Diffuse", 0);
 		drumstickMat.Albedo->Bind(0);
 		drumMesh.Render(camera, transform);
-
-		doorShader->Bind();
-		doorShader->SetUniform("s_Diffuse", 0);
-		doorMat.Albedo->Bind(0);
+		animShader->SetUniform("s_Diffuse", 1);
+		doorMat.Albedo->Bind(1);
 		startMesh.Render(camera, transformStart);
 		exitMesh.Render(camera, transformExit);
 		optMesh.Render(camera, transformOpt);
-		doorMat.Albedo->Unbind(0);	
-		
-		levelShader->Bind();
-		levelShader->SetUniform("s_Diffuse", 0);
+		doorMat.Albedo->Unbind(1);	
+
+		shader->Bind();
+		shader->SetUniform("s_Diffuse", 0);
 		wallMat.Albedo->Bind(0);
 		leftMesh.Render(camera, transformLeft);
 		rightMesh.Render(camera, transformRight);
@@ -451,29 +427,25 @@ void MainMenuLevel::Update(float dt)
 		sMesh.Render(camera, transformS);
 		oMesh.Render(camera, transformO);
 		eMesh.Render(camera, transformE);
-
-		floorShader->Bind();
-		floorShader->SetUniform("s_Diffuse", 0);
-		floorMat.Albedo->Bind(0);
-		floorMesh.Render(camera, transformFloor);
+		shader->SetUniform("s_Diffuse", 1);
+		floorMat.Albedo->Bind(1);
+		floorMesh.Render(camera, transformFloor); 
 	}
 	else
 	{
-		playerShader->Bind();
-		playerShader->SetUniform("s_Diffuse", 0);
+		animShader->Bind();
+		animShader->SetUniform("s_Diffuse", 0);
 		clearMat.Albedo->Bind(0);
 		drumMesh.Render(camera, transform);
-
-		doorShader->Bind();
-		doorShader->SetUniform("s_Diffuse", 0);
-		clearMat.Albedo->Bind(0);
+		animShader->SetUniform("s_Diffuse", 1);
+		clearMat.Albedo->Bind(1);
 		startMesh.Render(camera, transformStart);
 		exitMesh.Render(camera, transformExit);
 		optMesh.Render(camera, transformOpt);
-		clearMat.Albedo->Unbind(0);
+		clearMat.Albedo->Unbind(1); 
 
-		levelShader->Bind();
-		levelShader->SetUniform("s_Diffuse", 0);
+		shader->Bind();
+		shader->SetUniform("s_Diffuse", 0);
 		clearMat.Albedo->Bind(0);
 		leftMesh.Render(camera, transformLeft);
 		rightMesh.Render(camera, transformRight);
@@ -483,11 +455,9 @@ void MainMenuLevel::Update(float dt)
 		sMesh.Render(camera, transformS);
 		oMesh.Render(camera, transformO);
 		eMesh.Render(camera, transformE);
-
-		floorShader->Bind();
-		floorShader->SetUniform("s_Diffuse", 0);
-		clearMat.Albedo->Bind(0);
-		floorMesh.Render(camera, transformFloor);
+		shader->SetUniform("s_Diffuse", 1);
+		clearMat.Albedo->Bind(1);
+		floorMesh.Render(camera, transformFloor); 
 	}
 
 #pragma endregion

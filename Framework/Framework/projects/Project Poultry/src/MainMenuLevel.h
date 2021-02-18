@@ -23,7 +23,7 @@ private:
 	Entity mainPlayer;
 	Entity startEnt, optEnt, exitEnt;
 
-	Shader::sptr doorShader, playerShader, floorShader, levelShader;
+	Shader::sptr shader, animShader;
 
 	Mat drumstickMat, doorMat, floorMat, wallMat;
 

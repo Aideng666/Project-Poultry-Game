@@ -43,7 +43,6 @@ void MainMenu::InitScene()
 	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
 	float     lightAmbientPow = 0.65f;
 	float     lightSpecularPow = 1.0f;
-	float     lightSpecularPow2 = 0.2f;
 	glm::vec3 ambientCol = glm::vec3(1.0f);
 	float     ambientPow = 0.1f;
 	float     shininess = 16.0f;
@@ -53,7 +52,7 @@ void MainMenu::InitScene()
 	shader->LoadShaderPartFromFile("Shaders/menu_frag.glsl", GL_FRAGMENT_SHADER);
 	shader->Link();
 
-	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);
+	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
 
 #pragma endregion
 
