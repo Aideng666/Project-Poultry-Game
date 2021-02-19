@@ -31,32 +31,32 @@ namespace freebird
         //Loads the shaders
         index = int(_shaders.size());
         _shaders.push_back(Shader::Create());
-        _shaders[index]->LoadShaderPartFromFile("shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
-        _shaders[index]->LoadShaderPartFromFile("shaders/passthrough_frag.glsl", GL_FRAGMENT_SHADER);
+        _shaders[index]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
+        _shaders[index]->LoadShaderPartFromFile("Shaders/passthrough_frag.glsl", GL_FRAGMENT_SHADER);
         _shaders[index]->Link();
 
         index++;
         _shaders.push_back(Shader::Create());
-        _shaders[index]->LoadShaderPartFromFile("shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
-        _shaders[index]->LoadShaderPartFromFile("shaders/Bloom/highpass_frag.glsl", GL_FRAGMENT_SHADER);
+        _shaders[index]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
+        _shaders[index]->LoadShaderPartFromFile("Shaders/Bloom/highpass_frag.glsl", GL_FRAGMENT_SHADER);
         _shaders[index]->Link();
 
         index++;
         _shaders.push_back(Shader::Create());
-        _shaders[index]->LoadShaderPartFromFile("shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
-        _shaders[index]->LoadShaderPartFromFile("shaders/Bloom/blur_horizontal_frag.glsl", GL_FRAGMENT_SHADER);
+        _shaders[index]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
+        _shaders[index]->LoadShaderPartFromFile("Shaders/Bloom/blur_horizontal_frag.glsl", GL_FRAGMENT_SHADER);
         _shaders[index]->Link();
 
         index++;
         _shaders.push_back(Shader::Create());
-        _shaders[index]->LoadShaderPartFromFile("shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
-        _shaders[index]->LoadShaderPartFromFile("shaders/Bloom/blur_vertical_frag.glsl", GL_FRAGMENT_SHADER);
+        _shaders[index]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
+        _shaders[index]->LoadShaderPartFromFile("Shaders/Bloom/blur_vertical_frag.glsl", GL_FRAGMENT_SHADER);
         _shaders[index]->Link();
 
         index++;
         _shaders.push_back(Shader::Create());
-        _shaders[index]->LoadShaderPartFromFile("shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
-        _shaders[index]->LoadShaderPartFromFile("shaders/Bloom/composite_frag.glsl", GL_FRAGMENT_SHADER);
+        _shaders[index]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
+        _shaders[index]->LoadShaderPartFromFile("Shaders/Bloom/composite_frag.glsl", GL_FRAGMENT_SHADER);
         _shaders[index]->Link();
 
 
