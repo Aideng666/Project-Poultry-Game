@@ -114,25 +114,18 @@ void Level1::InitScene()
 	float     ambientPow = 0.1f;
 	float     shininess = 16.0f;
 
+	//Basic shader
 	shader = Shader::Create();
 	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
 	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	shader->Link();
-
 	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
 
-	levelShader = Shader::Create();
-	levelShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	levelShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	levelShader->Link();
-
-	SetShaderValues(levelShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
+	//For any objects with animations
 	animShader = Shader::Create();
 	animShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
 	animShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	animShader->Link();
-
 	SetShaderValues(animShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
 
 	particleShader = Shader::Create();
@@ -145,7 +138,6 @@ void Level1::InitScene()
 	untexturedShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
 	untexturedShader->LoadShaderPartFromFile("Shaders/frag_untextured.glsl", GL_FRAGMENT_SHADER);
 	untexturedShader->Link();
-
 	SetShaderValues(untexturedShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
 
 #pragma endregion
@@ -335,9 +327,9 @@ void Level1::InitScene()
 
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floor, shader);
-	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *wall, levelShader);
-	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *wall, levelShader);
-	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *wall, levelShader);
+	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *wall, shader);
+	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *wall, shader);
+	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *wall, shader);
 	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *gate, untexturedShader);
 	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
 	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
@@ -353,7 +345,7 @@ void Level1::InitScene()
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, untexturedShader);
 	auto& coilMeshP = coilPowered.Add<MeshRenderer>(coilPowered, *coilP, untexturedShader);
 	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
-	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, levelShader);
+	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, shader);
 
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
@@ -414,7 +406,6 @@ void Level1::Update(float dt)
 {
 
 	time += dt;
-	levelShader->SetUniform("u_Time", time);
 	untexturedShader->SetUniform("u_Time", time);
 	shader->SetUniform("u_Time", time);
 	animShader->SetUniform("u_Time", time);
@@ -435,7 +426,6 @@ void Level1::Update(float dt)
 
 	currentPos = glm::mix(point1, point2, t);
 
-	levelShader->SetUniform("u_Position", currentPos);
 	untexturedShader->SetUniform("u_Position", currentPos);
 	shader->SetUniform("u_Position", currentPos);
 	animShader->SetUniform("u_Position", currentPos);
@@ -568,7 +558,6 @@ void Level1::Update(float dt)
 	if (lightNum < 1 || lightNum > 5)
 		lightNum = 1;
 
-	levelShader->SetUniform("u_LightNum", lightNum);
 	untexturedShader->SetUniform("u_LightNum", lightNum);
 	shader->SetUniform("u_LightNum", lightNum);
 	animShader->SetUniform("u_LightNum", lightNum);
@@ -589,6 +578,7 @@ void Level1::Update(float dt)
 	{
 		if (!showLevelComplete)
 		{
+			//Bind and render the objects using the animation shader
 			animShader->Bind();
 			animShader->SetUniform("s_Diffuse", 0);
 			drumstickMat.Albedo->Bind(0);
@@ -607,16 +597,21 @@ void Level1::Update(float dt)
 			}
 			doorMat.Albedo->Unbind(1);
 
+			//Bind and render the objects using the basic shader
 			shader->Bind();
+
+			//Floor
 			shader->SetUniform("s_Diffuse", 0);
 			floorMat.Albedo->Bind(0);
 			groundMesh.Render(camera, transformGround);
 
+			//Buttons
 			shader->SetUniform("s_Diffuse", 1);
 			buttonMat.Albedo->Bind(1);
 			buttonMesh.Render(camera, transformButton);
 			buttonMesh2.Render(camera, transformButton2);
 
+			//Wires
 			shader->SetUniform("s_Diffuse", 2);
 			wireMat.Albedo->Bind(2);
 
@@ -634,6 +629,13 @@ void Level1::Update(float dt)
 				wireMeshP3.Render(camera, transformWire3);
 			else
 				wireMesh3.Render(camera, transformWire3);
+
+			//Walls
+			shader->SetUniform("s_Diffuse", 3);
+			wallMat.Albedo->Bind(3);
+			leftMesh.Render(camera, transformLeft);
+			rightMesh.Render(camera, transformRight);
+			backMesh.Render(camera, transformBack); 
 
 			untexturedShader->Bind();
 			pipeMesh.Render(camera, transformPipe);
@@ -656,19 +658,11 @@ void Level1::Update(float dt)
 				glEnable(GL_DEPTH_TEST);
 			}
 		}
-
-		levelShader->Bind();
-		levelShader->SetUniform("s_Diffuse", 0);
-		wallMat.Albedo->Bind(0);
-		leftMesh.Render(camera, transformLeft);
-		rightMesh.Render(camera, transformRight);
-		backMesh.Render(camera, transformBack);
 	}
 	else
 	{
 		if (!showLevelComplete)
 		{
-
 			animShader->Bind();
 			animShader->SetUniform("s_Diffuse", 0);
 			clearMat.Albedo->Bind(0);
@@ -715,6 +709,12 @@ void Level1::Update(float dt)
 			else
 				wireMesh3.Render(camera, transformWire3);
 
+			shader->SetUniform("s_Diffuse", 3);
+			clearMat.Albedo->Bind(3);
+			leftMesh.Render(camera, transformLeft);
+			rightMesh.Render(camera, transformRight);
+			backMesh.Render(camera, transformBack); 
+
 			untexturedShader->Bind();
 			pipeMesh.Render(camera, transformPipe);
 
@@ -736,23 +736,16 @@ void Level1::Update(float dt)
 				glEnable(GL_DEPTH_TEST);
 			}
 		}
-
-		levelShader->Bind();
-		levelShader->SetUniform("s_Diffuse", 0);
-		clearMat.Albedo->Bind(0);
-		leftMesh.Render(camera, transformLeft);
-		rightMesh.Render(camera, transformRight);
-		backMesh.Render(camera, transformBack);
 	}
 
 	if (showLevelComplete)
 	{
 		lightNum = 1;
-		levelShader->SetUniform("s_Diffuse", 0);
+		shader->Bind();
+		shader->SetUniform("s_Diffuse", 0);
 		completeMat.Albedo->Bind(0);
 		completeMesh.Render(orthoCam, transformComplete);
 	}
-
 
 #pragma endregion
 

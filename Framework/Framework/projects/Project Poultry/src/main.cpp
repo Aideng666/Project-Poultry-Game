@@ -62,8 +62,6 @@ int main()
 	//Sets the clear colour of the window
 	Application::SetClearColor(glm::vec4(0.08f, 0.17f, 0.31f, 1.0f));
 
-	//Application::InitImGui();
-
 	scenes.push_back(new MainMenu("Main Menu", window));
 
 	SetActiveScene(0);
@@ -200,8 +198,8 @@ int main()
 		{
 			scenes.push_back(new MainMenuLevel("Main Menu Level", window));
 			scenes.push_back(new Level1("Level 1", window));
-			/*scenes.push_back(new Level2("Level 2", window));
-			scenes.push_back(new Level3("Level 3", window));*/
+			scenes.push_back(new Level2("Level 2", window));
+			//scenes.push_back(new Level3("Level 3", window));
 
 			SetActiveScene(1);
 		}

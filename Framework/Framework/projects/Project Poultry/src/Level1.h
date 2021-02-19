@@ -38,7 +38,7 @@ private:
 	Entity tutEnt;
 	Entity completeEnt;
 
-	Shader::sptr shader, animShader, levelShader, particleShader, untexturedShader;
+	Shader::sptr shader, animShader, particleShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 
