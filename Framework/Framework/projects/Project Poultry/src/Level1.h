@@ -38,7 +38,7 @@ private:
 	Entity tutEnt;
 	Entity completeEnt;
 
-	Shader::sptr playerShader, levelShader, floorShader, gateShader, wireShader, doorShader, buttonShader, particleShader, untexturedShader, uiShader;
+	Shader::sptr shader, animShader, particleShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 

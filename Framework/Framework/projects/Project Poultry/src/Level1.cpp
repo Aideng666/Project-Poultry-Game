@@ -114,54 +114,19 @@ void Level1::InitScene()
 	float     ambientPow = 0.1f;
 	float     shininess = 16.0f;
 
-	playerShader = Shader::Create();
-	playerShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
-	playerShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	playerShader->Link();
+	//Basic shader
+	shader = Shader::Create();
+	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	shader->Link();
+	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
 
-	SetShaderValues(playerShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	levelShader = Shader::Create();
-	levelShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	levelShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	levelShader->Link();
-
-	SetShaderValues(levelShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	floorShader = Shader::Create();
-	floorShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	floorShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	floorShader->Link();
-
-	SetShaderValues(floorShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	wireShader = Shader::Create();
-	wireShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	wireShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	wireShader->Link();
-
-	SetShaderValues(wireShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	gateShader = Shader::Create();
-	gateShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	gateShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	gateShader->Link();
-
-	SetShaderValues(gateShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	buttonShader = Shader::Create();
-	buttonShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	buttonShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	buttonShader->Link();
-
-	SetShaderValues(buttonShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	doorShader = Shader::Create();
-	doorShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
-	doorShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	doorShader->Link();
-
-	SetShaderValues(doorShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
+	//For any objects with animations
+	animShader = Shader::Create();
+	animShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
+	animShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	animShader->Link();
+	SetShaderValues(animShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
 
 	particleShader = Shader::Create();
 	particleShader->LoadShaderPartFromFile("Shaders/particle_vertex.glsl", GL_VERTEX_SHADER);
@@ -173,15 +138,7 @@ void Level1::InitScene()
 	untexturedShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
 	untexturedShader->LoadShaderPartFromFile("Shaders/frag_untextured.glsl", GL_FRAGMENT_SHADER);
 	untexturedShader->Link();
-
 	SetShaderValues(untexturedShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	/*uiShader = Shader::Create();
-	uiShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	uiShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	uiShader->Link();
-
-	SetShaderValues(uiShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, lightSpecularPow2, ambientCol, ambientPow, shininess);*/
 
 #pragma endregion
 
@@ -368,27 +325,27 @@ void Level1::InitScene()
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk13));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk14));
 
-	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, playerShader);
-	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floor, floorShader);
-	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *wall, levelShader);
-	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *wall, levelShader);
-	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *wall, levelShader);
+	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
+	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floor, shader);
+	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *wall, shader);
+	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *wall, shader);
+	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *wall, shader);
 	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *gate, untexturedShader);
-	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, buttonShader);
-	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, buttonShader);
-	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireL, wireShader);
-	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireR, wireShader);
-	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireC, wireShader);
-	auto& wireMeshP = wirePowered.Add<MeshRenderer>(wirePowered, *wireLPower, wireShader);
-	auto& wireMeshP2 = wirePowered2.Add<MeshRenderer>(wirePowered2, *wireRPower, wireShader);
-	auto& wireMeshP3 = wirePowered3.Add<MeshRenderer>(wirePowered3, *wireCPower, wireShader);
-	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, doorShader);
-	auto& doorCloseMesh = doorCloseEnt.Add<MorphRenderer>(doorCloseEnt, *doorCloseM, doorShader);
+	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
+	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
+	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireL, shader);
+	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireR, shader);
+	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireC, shader);
+	auto& wireMeshP = wirePowered.Add<MeshRenderer>(wirePowered, *wireLPower, shader);
+	auto& wireMeshP2 = wirePowered2.Add<MeshRenderer>(wirePowered2, *wireRPower, shader);
+	auto& wireMeshP3 = wirePowered3.Add<MeshRenderer>(wirePowered3, *wireCPower, shader);
+	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
+	auto& doorCloseMesh = doorCloseEnt.Add<MorphRenderer>(doorCloseEnt, *doorCloseM, animShader);
 	auto& pipeMesh = pipeEnt.Add<MeshRenderer>(pipeEnt, *pipe, untexturedShader);
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, untexturedShader);
 	auto& coilMeshP = coilPowered.Add<MeshRenderer>(coilPowered, *coilP, untexturedShader);
 	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
-	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, levelShader);
+	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, shader);
 
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
@@ -424,6 +381,8 @@ void Level1::InitScene()
 	auto basicEffect = &FBO.Add<PostEffect>();
 	basicEffect->Init(width, height);
 
+	effects.push_back(basicEffect);
+
 	auto greyscaleEffect = &greyscaleEnt.Add<Greyscale>();
 	greyscaleEffect->Init(width, height);
 
@@ -449,14 +408,9 @@ void Level1::Update(float dt)
 {
 
 	time += dt;
-	playerShader->SetUniform("u_Time", time);
-	levelShader->SetUniform("u_Time", time);
-	floorShader->SetUniform("u_Time", time);
-	gateShader->SetUniform("u_Time", time);
-	wireShader->SetUniform("u_Time", time);
-	buttonShader->SetUniform("u_Time", time);
-	doorShader->SetUniform("u_Time", time);
 	untexturedShader->SetUniform("u_Time", time);
+	shader->SetUniform("u_Time", time);
+	animShader->SetUniform("u_Time", time);
 
 	if (forwards)
 		t += dt / totalTime;
@@ -474,14 +428,9 @@ void Level1::Update(float dt)
 
 	currentPos = glm::mix(point1, point2, t);
 
-	playerShader->SetUniform("u_Position", currentPos);
-	levelShader->SetUniform("u_Position", currentPos);
-	floorShader->SetUniform("u_Position", currentPos);
-	gateShader->SetUniform("u_Position", currentPos);
-	wireShader->SetUniform("u_Position", currentPos);
-	doorShader->SetUniform("u_Position", currentPos);
-	buttonShader->SetUniform("u_Position", currentPos);
 	untexturedShader->SetUniform("u_Position", currentPos);
+	shader->SetUniform("u_Position", currentPos);
+	animShader->SetUniform("u_Position", currentPos);
 
 	//if (doorEnt.Get<Door>().GetOpen())
 	//	doorEnt.Get<MorphAnimation>().SetFrames(doorFrames);
@@ -580,8 +529,7 @@ void Level1::Update(float dt)
 		{
 			levelComplete = true;
 			lightNum = 5;
-		}
-		
+		}	
 	}
 
 #pragma region PlayerMovement
@@ -612,14 +560,9 @@ void Level1::Update(float dt)
 	if (lightNum < 1 || lightNum > 5)
 		lightNum = 1;
 
-	playerShader->SetUniform("u_LightNum", lightNum);
-	doorShader->SetUniform("u_LightNum", lightNum);
-	floorShader->SetUniform("u_LightNum", lightNum);
-	levelShader->SetUniform("u_LightNum", lightNum);
-	gateShader->SetUniform("u_LightNum", lightNum);
-	wireShader->SetUniform("u_LightNum", lightNum);
 	untexturedShader->SetUniform("u_LightNum", lightNum);
-	buttonShader->SetUniform("u_LightNum", lightNum);
+	shader->SetUniform("u_LightNum", lightNum);
+	animShader->SetUniform("u_LightNum", lightNum);
 
 	auto basicEffect = &FBO.Get<PostEffect>();
 
@@ -637,19 +580,14 @@ void Level1::Update(float dt)
 	{
 		if (!showLevelComplete)
 		{
-			playerShader->Bind();
-			playerShader->SetUniform("s_Diffuse", 0);
+			//Bind and render the objects using the animation shader
+			animShader->Bind();
+			animShader->SetUniform("s_Diffuse", 0);
 			drumstickMat.Albedo->Bind(0);
 			meshMain.Render(camera, transform);
 
-			floorShader->Bind();
-			floorShader->SetUniform("s_Diffuse", 0);
-			floorMat.Albedo->Bind(0);
-			groundMesh.Render(camera, transformGround);
-
-			doorShader->Bind();
-			doorShader->SetUniform("s_Diffuse", 0);
-			doorMat.Albedo->Bind(0);
+			animShader->SetUniform("s_Diffuse", 1);
+			doorMat.Albedo->Bind(1);
 
 			if (doorEnt.Get<Door>().GetOpen())
 			{
@@ -659,22 +597,25 @@ void Level1::Update(float dt)
 			{
 				doorCloseMesh.Render(camera, transformDoor);
 			}
-			doorMat.Albedo->Unbind(0);
+			doorMat.Albedo->Unbind(1);
 
-			untexturedShader->Bind();
-			pipeMesh.Render(camera, transformPipe);
+			//Bind and render the objects using the basic shader
+			shader->Bind();
 
-			if (wireEnt3.Get<Wire>().GetIsPowered())
-				coilMeshP.Render(camera, transformCoil);
-			else
-				coilMesh.Render(camera, transformCoil);
+			//Floor
+			shader->SetUniform("s_Diffuse", 0);
+			floorMat.Albedo->Bind(0);
+			groundMesh.Render(camera, transformGround);
 
-			gateMesh.Render(camera, transformGate);
-			tutMesh.Render(camera, transformTut);
+			//Buttons
+			shader->SetUniform("s_Diffuse", 1);
+			buttonMat.Albedo->Bind(1);
+			buttonMesh.Render(camera, transformButton);
+			buttonMesh2.Render(camera, transformButton2);
 
-			wireShader->Bind();
-			wireShader->SetUniform("s_Diffuse", 0);
-			wireMat.Albedo->Bind(0);
+			//Wires
+			shader->SetUniform("s_Diffuse", 2);
+			wireMat.Albedo->Bind(2);
 
 			if (wireEnt.Get<Wire>().GetIsPowered())
 				wireMeshP.Render(camera, transformWire);
@@ -691,13 +632,23 @@ void Level1::Update(float dt)
 			else
 				wireMesh3.Render(camera, transformWire3);
 
-			buttonShader->Bind();
-			buttonShader->SetUniform("s_Diffuse", 0);
-			buttonMat.Albedo->Bind(0);
-			buttonMesh.Render(camera, transformButton);
-			buttonMesh2.Render(camera, transformButton2);
+			//Walls
+			shader->SetUniform("s_Diffuse", 3);
+			wallMat.Albedo->Bind(3);
+			leftMesh.Render(camera, transformLeft);
+			rightMesh.Render(camera, transformRight);
+			backMesh.Render(camera, transformBack); 
 
-			
+			untexturedShader->Bind();
+			pipeMesh.Render(camera, transformPipe);
+
+			if (wireEnt3.Get<Wire>().GetIsPowered())
+				coilMeshP.Render(camera, transformCoil);
+			else
+				coilMesh.Render(camera, transformCoil);
+
+			gateMesh.Render(camera, transformGate);
+			tutMesh.Render(camera, transformTut);
 
 			particleSystem.Update(dt, camera);
 
@@ -709,31 +660,18 @@ void Level1::Update(float dt)
 				glEnable(GL_DEPTH_TEST);
 			}
 		}
-
-		levelShader->Bind();
-		levelShader->SetUniform("s_Diffuse", 0);
-		wallMat.Albedo->Bind(0);
-		leftMesh.Render(camera, transformLeft);
-		rightMesh.Render(camera, transformRight);
-		backMesh.Render(camera, transformBack);
 	}
 	else
 	{
 		if (!showLevelComplete)
 		{
-			playerShader->Bind();
-			playerShader->SetUniform("s_Diffuse", 0);
+			animShader->Bind();
+			animShader->SetUniform("s_Diffuse", 0);
 			clearMat.Albedo->Bind(0);
 			meshMain.Render(camera, transform);
 
-			floorShader->Bind();
-			floorShader->SetUniform("s_Diffuse", 0);
-			clearMat.Albedo->Bind(0);
-			groundMesh.Render(camera, transformGround);
-
-			doorShader->Bind();
-			doorShader->SetUniform("s_Diffuse", 0);
-			clearMat.Albedo->Bind(0);
+			animShader->SetUniform("s_Diffuse", 1);
+			clearMat.Albedo->Bind(1);
 
 			if (doorEnt.Get<Door>().GetOpen())
 			{
@@ -743,22 +681,20 @@ void Level1::Update(float dt)
 			{
 				doorCloseMesh.Render(camera, transformDoor);
 			}
-			doorMat.Albedo->Unbind(0);
+			doorMat.Albedo->Unbind(1);
 
-			untexturedShader->Bind();
-			pipeMesh.Render(camera, transformPipe);
-
-			if (wireEnt3.Get<Wire>().GetIsPowered())
-				coilMeshP.Render(camera, transformCoil);
-			else
-				coilMesh.Render(camera, transformCoil);
-
-			gateMesh.Render(camera, transformGate);
-			tutMesh.Render(camera, transformTut);
-
-			wireShader->Bind();
-			wireShader->SetUniform("s_Diffuse", 0);
+			shader->Bind();
+			shader->SetUniform("s_Diffuse", 0);
 			clearMat.Albedo->Bind(0);
+			groundMesh.Render(camera, transformGround);
+
+			shader->SetUniform("s_Diffuse", 1);
+			clearMat.Albedo->Bind(1);
+			buttonMesh.Render(camera, transformButton);
+			buttonMesh2.Render(camera, transformButton2);
+
+			shader->SetUniform("s_Diffuse", 2);
+			clearMat.Albedo->Bind(2);
 
 			if (wireEnt.Get<Wire>().GetIsPowered())
 				wireMeshP.Render(camera, transformWire);
@@ -775,13 +711,22 @@ void Level1::Update(float dt)
 			else
 				wireMesh3.Render(camera, transformWire3);
 
-			buttonShader->Bind();
-			buttonShader->SetUniform("s_Diffuse", 0);
-			clearMat.Albedo->Bind(0);
-			buttonMesh.Render(camera, transformButton);
-			buttonMesh2.Render(camera, transformButton2);
+			shader->SetUniform("s_Diffuse", 3);
+			clearMat.Albedo->Bind(3);
+			leftMesh.Render(camera, transformLeft);
+			rightMesh.Render(camera, transformRight);
+			backMesh.Render(camera, transformBack); 
 
+			untexturedShader->Bind();
+			pipeMesh.Render(camera, transformPipe);
 
+			if (wireEnt3.Get<Wire>().GetIsPowered())
+				coilMeshP.Render(camera, transformCoil);
+			else
+				coilMesh.Render(camera, transformCoil);
+
+			gateMesh.Render(camera, transformGate);
+			tutMesh.Render(camera, transformTut);
 
 			particleSystem.Update(dt, camera);
 
@@ -793,23 +738,16 @@ void Level1::Update(float dt)
 				glEnable(GL_DEPTH_TEST);
 			}
 		}
-
-		levelShader->Bind();
-		levelShader->SetUniform("s_Diffuse", 0);
-		clearMat.Albedo->Bind(0);
-		leftMesh.Render(camera, transformLeft);
-		rightMesh.Render(camera, transformRight);
-		backMesh.Render(camera, transformBack);
 	}
 
 	if (showLevelComplete)
 	{
 		lightNum = 1;
-		levelShader->SetUniform("s_Diffuse", 0);
+		shader->Bind();
+		shader->SetUniform("s_Diffuse", 0);
 		completeMat.Albedo->Bind(0);
 		completeMesh.Render(orthoCam, transformComplete);
 	}
-
 
 #pragma endregion
 

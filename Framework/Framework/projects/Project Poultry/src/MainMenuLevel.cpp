@@ -303,6 +303,8 @@ void MainMenuLevel::InitScene()
 	auto basicEffect = &FBO.Add<PostEffect>();
 	basicEffect->Init(width, height);
 
+	effects.push_back(basicEffect);
+
 	auto greyscaleEffect = &greyscaleEnt.Add<Greyscale>();
 	greyscaleEffect->Init(width, height);
 

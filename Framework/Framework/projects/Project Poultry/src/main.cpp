@@ -62,8 +62,6 @@ int main()
 	//Sets the clear colour of the window
 	Application::SetClearColor(glm::vec4(0.08f, 0.17f, 0.31f, 1.0f));
 
-	//Application::InitImGui();
-
 	scenes.push_back(new MainMenu("Main Menu", window));
 
 	SetActiveScene(0);
@@ -91,6 +89,12 @@ int main()
 			{
 				currentScene->SetActiveEffect(0);
 
+				ImGui::Text("Active Effect: Nothing");
+			}
+			if (activeEffect == 1)
+			{
+				currentScene->SetActiveEffect(1);
+
 				ImGui::Text("Active Effect: Greyscale");
 
 				Greyscale* temp = (Greyscale*)currentScene->GetEffects()[activeEffect];
@@ -101,9 +105,9 @@ int main()
 					temp->SetIntensity(intensity);
 				}
 			}
-			if (activeEffect == 1)
+			if (activeEffect == 2)
 			{
-				currentScene->SetActiveEffect(1);
+				currentScene->SetActiveEffect(2);
 
 				ImGui::Text("Active Effect: Sepia");
 
@@ -115,9 +119,9 @@ int main()
 					temp->SetIntensity(intensity);
 				}
 			}
-			if (activeEffect == 2)
+			if (activeEffect == 3)
 			{
-				currentScene->SetActiveEffect(2);
+				currentScene->SetActiveEffect(3);
 
 				ImGui::Text("Active Effect: Bloom");
 
@@ -136,9 +140,9 @@ int main()
 					temp->SetDownscale(downscale);
 				}
 			}
-			if (activeEffect == 3)
+			if (activeEffect == 4)
 			{
-				currentScene->SetActiveEffect(3);
+				currentScene->SetActiveEffect(4);
 
 				ImGui::Text("Active Effect: Color Correct Effect");
 
@@ -200,8 +204,8 @@ int main()
 		{
 			scenes.push_back(new MainMenuLevel("Main Menu Level", window));
 			scenes.push_back(new Level1("Level 1", window));
-			/*scenes.push_back(new Level2("Level 2", window));
-			scenes.push_back(new Level3("Level 3", window));*/
+			scenes.push_back(new Level2("Level 2", window));
+			scenes.push_back(new Level3("Level 3", window));
 
 			SetActiveScene(1);
 		}
