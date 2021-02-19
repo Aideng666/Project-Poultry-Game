@@ -33,7 +33,7 @@ private:
 	Entity wirePowered, wirePowered2, wirePowered3, wirePowered4, wirePowered5;
 	Entity completeEnt;
 
-	Shader::sptr playerShader, levelShader, floorShader, gateShader, wireShader, doorShader, buttonShader, particleShader, untexturedShader;
+	Shader::sptr shader, animShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 
