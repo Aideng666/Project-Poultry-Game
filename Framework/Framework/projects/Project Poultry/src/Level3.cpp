@@ -48,6 +48,11 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	wirePowered6 = Entity::Create();
 	wirePowered7 = Entity::Create();
 	completeEnt = Entity::Create();
+	FBO = Entity::Create();
+	greyscaleEnt = Entity::Create();
+	sepiaEnt = Entity::Create();
+	colorCorrectEnt = Entity::Create();
+	bloomEnt = Entity::Create();
 
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
@@ -386,6 +391,34 @@ void Level3::InitScene()
 	orthoCam.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	orthoCam.SetFovDegrees(90.0f); // Set an initial FOV
 
+	int width, height;
+	glfwGetWindowSize(window, &width, &height);
+
+	auto basicEffect = &FBO.Add<PostEffect>();
+	basicEffect->Init(width, height);
+
+	effects.push_back(basicEffect);
+
+	auto greyscaleEffect = &greyscaleEnt.Add<Greyscale>();
+	greyscaleEffect->Init(width, height);
+
+	effects.push_back(greyscaleEffect);
+
+	auto sepiaEffect = &sepiaEnt.Add<Sepia>();
+	sepiaEffect->Init(width, height);
+
+	effects.push_back(sepiaEffect);
+
+	auto bloomEffect = &bloomEnt.Add<Bloom>();
+	bloomEffect->Init(width, height);
+
+	effects.push_back(bloomEffect);
+
+	auto colorCorrectEffect = &colorCorrectEnt.Add<ColorCorrect>();
+	colorCorrectEffect->Init(width, height);
+
+	effects.push_back(colorCorrectEffect);
+
 	points.push_back(glm::vec3(3.0f, 15.0f, 6.0f));
 	points.push_back(glm::vec3(-3.0f, 15.0f, 6.0f));
 	points.push_back(glm::vec3(-3.0f, 15.0f, 0.0f));
@@ -591,6 +624,18 @@ void Level3::Update(float dt)
 	untexturedShader->SetUniform("u_LightNum", lightNum);
 	shader->SetUniform("u_LightNum", lightNum);
 
+
+	auto basicEffect = &FBO.Get<PostEffect>();
+
+	basicEffect->Clear();
+
+	for (int i = 0; i < effects.size(); i++)
+	{
+		effects[i]->Clear();
+	}
+
+	basicEffect->BindBuffer(0);
+
 #pragma region Renders
 
 	if (isTextured)
@@ -763,6 +808,12 @@ void Level3::Update(float dt)
 		completeMesh.Render(orthoCam, transformComplete);
 	}
 #pragma endregion
+
+	basicEffect->UnbindBuffer();
+
+	effects[activeEffect]->ApplyEffect(basicEffect);
+
+	effects[activeEffect]->DrawToScreen();
 
 	leftEnt.Get<AABB>().Update();
 	rightEnt.Get<AABB>().Update();
