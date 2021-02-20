@@ -89,6 +89,12 @@ int main()
 			{
 				currentScene->SetActiveEffect(0);
 
+				ImGui::Text("Active Effect: Nothing");
+			}
+			if (activeEffect == 1)
+			{
+				currentScene->SetActiveEffect(1);
+
 				ImGui::Text("Active Effect: Greyscale");
 
 				Greyscale* temp = (Greyscale*)currentScene->GetEffects()[activeEffect];
@@ -99,9 +105,9 @@ int main()
 					temp->SetIntensity(intensity);
 				}
 			}
-			if (activeEffect == 1)
+			if (activeEffect == 2)
 			{
-				currentScene->SetActiveEffect(1);
+				currentScene->SetActiveEffect(2);
 
 				ImGui::Text("Active Effect: Sepia");
 
@@ -113,9 +119,9 @@ int main()
 					temp->SetIntensity(intensity);
 				}
 			}
-			if (activeEffect == 2)
+			if (activeEffect == 3)
 			{
-				currentScene->SetActiveEffect(2);
+				currentScene->SetActiveEffect(3);
 
 				ImGui::Text("Active Effect: Bloom");
 
@@ -134,9 +140,9 @@ int main()
 					temp->SetDownscale(downscale);
 				}
 			}
-			if (activeEffect == 3)
+			if (activeEffect == 4)
 			{
-				currentScene->SetActiveEffect(3);
+				currentScene->SetActiveEffect(4);
 
 				ImGui::Text("Active Effect: Color Correct Effect");
 

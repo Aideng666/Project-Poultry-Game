@@ -13,8 +13,8 @@ namespace freebird
 		//Loads the shaders
 		index = int(_shaders.size());
 		_shaders.push_back(Shader::Create());
-		_shaders[index]->LoadShaderPartFromFile("shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
-		_shaders[index]->LoadShaderPartFromFile("shaders/color_correction_frag.glsl", GL_FRAGMENT_SHADER);
+		_shaders[index]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
+		_shaders[index]->LoadShaderPartFromFile("Shaders/color_correction_frag.glsl", GL_FRAGMENT_SHADER);
 		_shaders[index]->Link();
 
 		//Load in cube
