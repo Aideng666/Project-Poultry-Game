@@ -141,6 +141,7 @@ void MainMenuLevel::InitScene()
 	clearMat.Albedo = texture2;
 #pragma endregion
 
+#pragma region Transforms
 	//TRANSFORMS
 	auto& floorTrans = floorEnt.Add<Transform>();
 	floorTrans.SetScale(glm::vec3(2.0f));
@@ -207,6 +208,7 @@ void MainMenuLevel::InitScene()
 	oTrans.SetRotationY(45.0f);
 	oTrans.SetPosition(glm::vec3(-26.0f, 2.5f, -13.0f));
 	oTrans.SetScale(glm::vec3(4.0f));
+#pragma endregion
 	
 	//DOORS
 	auto& doorS = startDoor.Add<Door>();
