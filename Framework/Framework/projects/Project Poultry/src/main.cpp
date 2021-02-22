@@ -9,6 +9,8 @@
 #include <filesystem>
 #include <fstream>
 
+#include "TestScene.h"
+
 #include "Level1.h"
 #include "Level2.h"
 #include "Level3.h"
@@ -63,8 +65,9 @@ int main()
 	Application::SetClearColor(glm::vec4(0.08f, 0.17f, 0.31f, 1.0f));
 
 	scenes.push_back(new MainMenu("Main Menu", window));
+	scenes.push_back(new TestScene("Test Scene", window));
 
-	SetActiveScene(0);
+	SetActiveScene(1);
 	
 	//Calculates our timer
 	Application::Tick();
