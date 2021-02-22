@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entity.h"
+#include "Input.h"
 #include "Camera.h"
 #include "Mesh.h"
 #include "Transform.h"
@@ -75,7 +76,7 @@ protected:
 	entt::registry* scene = nullptr;
 	std::string name = " ";
 
-	Shader::sptr shader, morphShader;
+	Shader::sptr shader, morphShader, pauseShader;
 
 	GLFWwindow* window;
 
@@ -83,7 +84,9 @@ protected:
 
 	Entity FBO, greyscaleEnt, sepiaEnt, colorCorrectEnt, bloomEnt;
 
-	Mat clearMat;
+	Entity pauseEnt;
+
+	Mat clearMat, pauseMat;
 
 	std::vector<std::function<void()>> imGuiCallbacks;
 
@@ -98,6 +101,19 @@ protected:
 	bool loadModels = false;
 	bool isTextured = true;
 
+	bool isPaused = false;
+
+	int lightNum = 5;
+
 	std::vector<PostEffect*> effects;
 	int activeEffect = 0;
+
+	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
+		isPaused = !isPaused;
+
+		if (isPaused)
+			lightNum = 2;
+		else
+			lightNum = 5;
+		});
 };

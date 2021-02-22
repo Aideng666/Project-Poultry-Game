@@ -85,6 +85,7 @@ void Scene::SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos, glm::vec3 
 	shader->SetUniform("u_AmbientCol", ambientCol);
 	shader->SetUniform("u_AmbientStrength", ambientPow);
 	shader->SetUniform("u_Shininess", shininess);
+	shader->SetUniform("u_AmbientLightStrength2", 0.01f);
 }
 
 void Scene::LoadTexImage()

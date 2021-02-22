@@ -97,7 +97,7 @@ private:
 	std::string wire4File = "Models/Level2Wire4.obj";
 	std::string wire5File = "Models/Level2Wire5.obj";
 	std::string buttonFile = "Models/Button.obj";
-	std::string coilFile = "Models/Coil.obj";
+	std::string coilFile = "Models/TeslaCoil.obj";
 
 
 	std::string doorFile1 = "Models/DoorFrames/Door0.obj";
