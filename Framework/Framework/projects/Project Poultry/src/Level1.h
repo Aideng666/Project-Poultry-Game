@@ -1,6 +1,5 @@
 #pragma once
 #include "Scene.h"
-#include "Input.h"
 #include "Wire.h"
 #include "Lever.h"
 #include <vector>
@@ -99,7 +98,7 @@ private:
 	std::string wire2File = "Models/RightWire.obj";
 	std::string wire3File = "Models/CoilWire.obj";
 	std::string buttonFile = "Models/Button.obj";
-	std::string coilFile = "Models/Coil.obj";
+	std::string coilFile = "Models/TeslaCoil.obj";
 	std::string pipeFile = "Models/Level1Pipe.obj";
 	std::string tutFile = "Models/Interact.obj";
 
@@ -146,8 +145,6 @@ private:
 
 	bool camClose = false;
 	bool camFar = false;
-
-	int lightNum = 5;
 
 	bool showLevelComplete = false;
 

@@ -150,13 +150,6 @@ int main()
 				ImGui::Text("Active Effect: Color Correct Effect");
 
 				ColorCorrect* temp = (ColorCorrect*)currentScene->GetEffects()[activeEffect];
-				static char input[BUFSIZ];
-				ImGui::InputText("Lut File to Use", input, BUFSIZ);
-
-				if (ImGui::Button("SetLUT", ImVec2(200.0f, 40.0f)))
-				{
-					temp->SetLUT(LUT3D(std::string(input)));
-				}
 			}
 
 		}

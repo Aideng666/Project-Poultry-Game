@@ -13,6 +13,7 @@ uniform vec3  u_LightPos;
 uniform vec3  u_LightDir;
 uniform vec3  u_LightCol;
 uniform float u_AmbientLightStrength;
+uniform float u_AmbientLightStrength2;
 uniform float u_SpecularLightStrength;
 uniform float u_Shininess;
 uniform float u_Time;
@@ -27,7 +28,7 @@ vec3 CreateSpotlight(vec3 pos, vec3 direction, float strength, float cutoff)
 {
 	vec3 lightDir = normalize(pos - inPos);
 
-	vec3 ambient = ((u_AmbientLightStrength * u_LightCol) + (u_AmbientCol * u_AmbientStrength));
+	vec3 ambient = ((u_AmbientLightStrength2 * u_LightCol) + (u_AmbientCol * u_AmbientStrength));
 
 	float theta = dot(lightDir, normalize(-direction));
 
