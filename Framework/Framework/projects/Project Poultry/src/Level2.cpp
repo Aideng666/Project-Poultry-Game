@@ -218,10 +218,12 @@ void Level2::InitScene()
 	auto& gateTrans = andEnt.Add<Transform>();
 	gateTrans.SetPosition(glm::vec3(-21.0f, 1.0f, 1.0f));
 	gateTrans.SetRotationY(-90.0f);
+	gateTrans.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans2 = andEnt2.Add<Transform>();
 	gateTrans2.SetPosition(glm::vec3(0.0f, 1.0f, -8.0f));
 	gateTrans2.SetRotationY(-90.0f);
+	gateTrans2.SetScale(glm::vec3(2.0f));
 
 	auto& coilTrans = coilEnt.Add<Transform>();
 	coilTrans.SetPosition(glm::vec3(-17.0f, 2.0f, -34.0f));
@@ -233,7 +235,7 @@ void Level2::InitScene()
 
 	auto& pauseTrans = pauseEnt.Add<Transform>();
 	pauseTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
-	pauseTrans.SetScale(glm::vec3(0.22f));
+	pauseTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
 
 	//AABB
 	auto& leftCol = leftEnt.Add<AABB>(leftEnt, mainPlayer);
@@ -301,8 +303,8 @@ void Level2::InitScene()
 	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *wall, shader);
 	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *wall, shader);
 	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *wall, shader);
-	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *gate, untexturedShader);
-	auto& gateMesh2 = andEnt2.Add<MeshRenderer>(andEnt2, *gate, untexturedShader);
+	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *gate, shader);
+	auto& gateMesh2 = andEnt2.Add<MeshRenderer>(andEnt2, *gate, shader);
 	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
 	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
 	auto& buttonMesh3 = buttonEnt3.Add<MeshRenderer>(buttonEnt3, *buttonM, shader);
@@ -635,6 +637,7 @@ void Level2::Update(float dt)
 			shader->SetUniform("s_Diffuse", 4);
 			gateMat.Albedo->Bind(4);
 			gateMesh.Render(camera, transformGate);
+			gateMesh2.Render(camera, transformGate2);		
 
 			untexturedShader->Bind();
 
@@ -642,9 +645,6 @@ void Level2::Update(float dt)
 				coilMeshP.Render(camera, transformCoil);
 			else
 				coilMesh.Render(camera, transformCoil);
-
-			gateMesh.Render(camera, transformGate);
-			gateMesh2.Render(camera, transformGate2);		
 		}
 	}
 	else
@@ -717,6 +717,7 @@ void Level2::Update(float dt)
 			shader->SetUniform("s_Diffuse", 4);
 			clearMat.Albedo->Bind(4);
 			gateMesh.Render(camera, transformGate);
+			gateMesh2.Render(camera, transformGate2);
 
 			untexturedShader->Bind();
 
@@ -724,9 +725,6 @@ void Level2::Update(float dt)
 				coilMeshP.Render(camera, transformCoil);
 			else
 				coilMesh.Render(camera, transformCoil);
-
-			gateMesh.Render(camera, transformGate);
-			gateMesh2.Render(camera, transformGate2);
 		}
 	}
 

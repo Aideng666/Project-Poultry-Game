@@ -56,7 +56,7 @@ private:
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, wireMat, coilMat, gateMat, partMat, completeMat;
+	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, wireMat, coilMat, andMat, notMat, partMat, completeMat;
 
 	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames;
 

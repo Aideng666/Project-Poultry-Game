@@ -166,6 +166,7 @@ void Level3::InitScene()
 	Texture2D::sptr diffusePart = Texture2D::LoadFromFile("Textures/Particle.png");
 	Texture2D::sptr diffuseComplete = Texture2D::LoadFromFile("Textures/LevelComplete.png");
 	Texture2D::sptr diffuseAnd = Texture2D::LoadFromFile("Textures/AndGate.png");
+	Texture2D::sptr diffuseNot = Texture2D::LoadFromFile("Textures/NotGate.png");
 	Texture2D::sptr diffusePause = Texture2D::LoadFromFile("Textures/PauseMenu.png");
 
 	Texture2DDescription desc = Texture2DDescription();
@@ -184,7 +185,8 @@ void Level3::InitScene()
 	partMat.Albedo = diffusePart;
 	completeMat.Albedo = diffuseComplete;
 	clearMat.Albedo = texture2;
-	gateMat.Albedo = diffuseAnd;
+	andMat.Albedo = diffuseAnd;
+	notMat.Albedo = diffuseNot;
 	pauseMat.Albedo = diffusePause;
 
 #pragma endregion
@@ -239,17 +241,22 @@ void Level3::InitScene()
 	auto& gateTrans = andEnt.Add<Transform>();
 	gateTrans.SetPosition(glm::vec3(-22.0f, 1.0f, 5.0f));
 	gateTrans.SetRotationY(-90.0f);
+	gateTrans.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans2 = andEnt2.Add<Transform>();
 	gateTrans2.SetPosition(glm::vec3(22.0f, 1.0f, 5.0f));
 	gateTrans2.SetRotationY(-90.0f);
+	gateTrans2.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans3 = andEnt3.Add<Transform>();
 	gateTrans3.SetPosition(glm::vec3(0.0f, 1.0f, -12.0f));
 	gateTrans3.SetRotationY(-90.0f);
+	gateTrans3.SetScale(glm::vec3(2.0f));
 
 	auto& notTrans = notEnt.Add<Transform>();
 	notTrans.SetPosition(glm::vec3(0.0f, 0.5f, 13.0f));
+	notTrans.SetRotationY(-90.0f);
+	notTrans.SetScale(glm::vec3(2.0f));
 
 	auto& coilTrans = coilEnt.Add<Transform>();
 	coilTrans.SetPosition(glm::vec3(-17.0f, 2.0f, -34.0f));
@@ -261,7 +268,7 @@ void Level3::InitScene()
 
 	auto& pauseTrans = pauseEnt.Add<Transform>();
 	pauseTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
-	pauseTrans.SetScale(glm::vec3(0.22f));
+	pauseTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
 
 	//AABB
 	auto& leftCol = leftEnt.Add<AABB>(leftEnt, mainPlayer);
@@ -334,10 +341,10 @@ void Level3::InitScene()
 	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *wall, shader);
 	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *wall, shader);
 	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *wall, shader);
-	auto& notMesh = notEnt.Add<MeshRenderer>(notEnt, *not, untexturedShader);
-	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *gate, untexturedShader);
-	auto& gateMesh2 = andEnt2.Add<MeshRenderer>(andEnt2, *gate, untexturedShader);
-	auto& gateMesh3 = andEnt3.Add<MeshRenderer>(andEnt3, *gate, untexturedShader);
+	auto& notMesh = notEnt.Add<MeshRenderer>(notEnt, *not, shader);
+	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *gate, shader);
+	auto& gateMesh2 = andEnt2.Add<MeshRenderer>(andEnt2, *gate, shader);
+	auto& gateMesh3 = andEnt3.Add<MeshRenderer>(andEnt3, *gate, shader);
 	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
 	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
 	auto& buttonMesh3 = buttonEnt3.Add<MeshRenderer>(buttonEnt3, *buttonM, shader);
@@ -722,18 +729,20 @@ void Level3::Update(float dt)
 			backMesh.Render(camera, transformBack);
 
 			shader->SetUniform("s_Diffuse", 4);
-			gateMat.Albedo->Bind(4);
+			andMat.Albedo->Bind(4);
 			gateMesh.Render(camera, transformGate);
+			gateMesh2.Render(camera, transformGate2);
+			gateMesh3.Render(camera, transformGate3);
+
+			shader->SetUniform("s_Diffuse", 5);
+			notMat.Albedo->Bind(5);
+			notMesh.Render(camera, transformNot);
 
 			untexturedShader->Bind();
 			if (wireEnt7.Get<Wire>().GetIsPowered())
 				coilMeshP.Render(camera, transformCoil);
 			else
 				coilMesh.Render(camera, transformCoil);
-			gateMesh.Render(camera, transformGate);
-			gateMesh2.Render(camera, transformGate2);
-			gateMesh3.Render(camera, transformGate3);
-			notMesh.Render(camera, transformNot);
 		}
 	}
 	else
@@ -817,16 +826,15 @@ void Level3::Update(float dt)
 			shader->SetUniform("s_Diffuse", 4);
 			clearMat.Albedo->Bind(4);
 			gateMesh.Render(camera, transformGate);
+			gateMesh2.Render(camera, transformGate2);
+			gateMesh3.Render(camera, transformGate3);
+			notMesh.Render(camera, transformNot);
 
 			untexturedShader->Bind();
 			if (wireEnt7.Get<Wire>().GetIsPowered())
 				coilMeshP.Render(camera, transformCoil);
 			else
 				coilMesh.Render(camera, transformCoil);
-			gateMesh.Render(camera, transformGate);
-			gateMesh2.Render(camera, transformGate2);
-			gateMesh3.Render(camera, transformGate3);
-			notMesh.Render(camera, transformNot);
 		}
 	}
 
