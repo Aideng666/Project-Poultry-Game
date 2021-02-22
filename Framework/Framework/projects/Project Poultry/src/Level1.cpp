@@ -233,6 +233,7 @@ void Level1::InitScene()
 	auto& gateTrans = andEnt.Add<Transform>();
 	gateTrans.SetPosition(glm::vec3(0.0f, 1.0f, -2.0f));
 	gateTrans.SetRotationY(-90.0f);
+	gateTrans.SetScale(glm::vec3(2.0f));
 
 	auto& coilTrans = coilEnt.Add<Transform>();
 	coilTrans.SetPosition(glm::vec3(-17.0f, 2.0f, -34.0f));
@@ -252,7 +253,7 @@ void Level1::InitScene()
 	auto& rightCol = rightEnt.Add<AABB>(rightEnt, mainPlayer);
 	auto& backCol = backEnt.Add<AABB>(backEnt, mainPlayer);
 	auto& gateCol = andEnt.Add<AABB>(andEnt, mainPlayer);
-	auto& coilCol = coilEnt.Add<AABB>(coilEnt, mainPlayer);
+	//auto& coilCol = coilEnt.Add<AABB>(coilEnt, mainPlayer);
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
 
@@ -651,6 +652,7 @@ void Level1::Update(float dt)
 			rightMesh.Render(camera, transformRight);
 			backMesh.Render(camera, transformBack); 
 
+			//Gate
 			shader->SetUniform("s_Diffuse", 4);
 			gateMat.Albedo->Bind(4);
 			gateMesh.Render(camera, transformGate);
@@ -756,7 +758,6 @@ void Level1::Update(float dt)
 			else
 				coilMesh.Render(camera, transformCoil);
 
-			gateMesh.Render(camera, transformGate);
 			tutMesh.Render(camera, transformTut);
 			if (!isPaused)
 			{
@@ -795,7 +796,7 @@ void Level1::Update(float dt)
 	backEnt.Get<AABB>().Update();
 	doorEnt.Get<AABB>().Update();
 	andEnt.Get<AABB>().Update();
-	coilEnt.Get<AABB>().Update();
+	//coilEnt.Get<AABB>().Update();
 	buttonEnt.Get<Lever>().Update();
 	buttonEnt2.Get<Lever>().Update();
 	wireEnt.Get<Wire>().Update();
@@ -819,6 +820,9 @@ void Level1::Update(float dt)
 
 	if (doorEnt.Get<AABB>().GetComplete())
 		showLevelComplete = true;
+
+	std::cout << playerTrans.GetPositionX() << " Player " << playerTrans.GetPositionZ() << std::endl;
+	std::cout << doorTrans.GetPositionX() << " Door " << doorTrans.GetPositionZ() << std::endl;
 }
 
 void Level1::Unload()
