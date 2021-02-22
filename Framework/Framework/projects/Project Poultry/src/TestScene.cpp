@@ -16,6 +16,7 @@ TestScene::TestScene(std::string sceneName, GLFWwindow* window)
 
 void TestScene::InitScene()
 {
+	//Sets the clear color
 	Application::SetClearColor(glm::vec4(0.08f, 0.17f, 0.31f, 1.0f));
 
 	scene = new entt::registry();
@@ -63,13 +64,14 @@ void TestScene::InitScene()
 	clearMat.Albedo = texture2;
 
 	//Transforms
-	auto& playerTrans = mainPlayer.Add<Transform>();
-	playerTrans.SetPosition(glm::vec3(0.f));
+	mainPlayer.Add<Transform>();
+	mainPlayer.Get<Transform>().SetPosition(glm::vec3(0.f));
+	mainPlayer.Get<Transform>().SetScale(glm::vec3(2.f));
 
-	auto& playerMesh = mainPlayer.Add<MeshRenderer>(mainPlayer, *monkey, shader);
+	mainPlayer.Add<MeshRenderer>(mainPlayer, *monkey, shader);
 
 	auto& camera = camEnt.Add<Camera>();
-	camera.SetPosition(glm::vec3(0, 3, 3));
+	camera.SetPosition(glm::vec3(0, 25, 15));
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
@@ -85,6 +87,47 @@ void TestScene::Update(float dt)
 
 	glm::mat4 transform = playerTrans.GetModelMatrix();
 
+	//Player Movement
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+		playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 10 * dt);
+		playerTrans.SetRotationY(180.0f);
+	}
+	else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
+		playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 10 * dt);
+		playerTrans.SetRotationY(0.0f);
+	}
+	else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	{
+		playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
+		playerTrans.SetRotationY(270.0f);
+	}
+	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	{
+		playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
+		playerTrans.SetRotationY(90.0f);
+	}
+
+	//Camera Movement
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	{
+		
+	}
+	else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	{
+		
+	}
+	else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+	{
+		
+	}
+	else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	{
+		
+	}
+
+	//Renders the objects
 	if (isTextured)
 	{
 		shader->Bind();

@@ -16,6 +16,8 @@ public:
 private:
 	Entity mainPlayer;
 
+	Entity floorEnt;
+
 	Shader::sptr shader;
 
 	Mat playerMat, clearMat;
