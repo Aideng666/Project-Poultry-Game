@@ -85,10 +85,10 @@ void MainMenuLevel::InitScene()
 
 #pragma region Shader Stuff
 
-	glm::vec3 lightPos = glm::vec3(0.0f, 9.5f, -35.0f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 10.0f, 0.0f);
 	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
 	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
-	float     lightAmbientPow = 0.05f;
+	float     lightAmbientPow = 0.20f;
 	float     lightSpecularPow = 1.0f;
 	glm::vec3 ambientCol = glm::vec3(1.0f);
 	float     ambientPow = 0.1f;
@@ -110,22 +110,11 @@ void MainMenuLevel::InitScene()
 #pragma endregion
 
 #pragma region Texture Stuff
-	Texture2DData::sptr drumstickMap = Texture2DData::LoadFromFile("Textures/DrumstickTexture.png");
-	Texture2DData::sptr doorMap = Texture2DData::LoadFromFile("Textures/DoorTexture.png");
-	Texture2DData::sptr floorMap = Texture2DData::LoadFromFile("Textures/FloorTexture.jpg");
-	Texture2DData::sptr wallMap = Texture2DData::LoadFromFile("Textures/WallTexture.jpg");
 
-	Texture2D::sptr diffuseDrum = Texture2D::Create();
-	diffuseDrum->LoadData(drumstickMap);
-
-	Texture2D::sptr diffuseDoor = Texture2D::Create();
-	diffuseDoor->LoadData(doorMap);
-
-	Texture2D::sptr diffuseFloor = Texture2D::Create();
-	diffuseFloor->LoadData(floorMap);
-
-	Texture2D::sptr diffuseWall = Texture2D::Create();
-	diffuseWall->LoadData(wallMap);
+	Texture2D::sptr diffuseDrum = Texture2D::LoadFromFile("Textures/DrumstickTexture.png");
+	Texture2D::sptr diffuseDoor = Texture2D::LoadFromFile("Textures/DoorTexture.png");
+	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTexture.jpg");
+	Texture2D::sptr diffuseWall = Texture2D::LoadFromFile("Textures/WallTexture.jpg");
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
