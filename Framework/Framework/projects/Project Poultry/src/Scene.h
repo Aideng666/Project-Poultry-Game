@@ -86,7 +86,7 @@ protected:
 
 	Entity pauseEnt;
 
-	Mat clearMat, pauseMat;
+	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat;
 
 	std::vector<std::function<void()>> imGuiCallbacks;
 

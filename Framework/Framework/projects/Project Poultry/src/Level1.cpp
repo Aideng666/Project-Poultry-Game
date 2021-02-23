@@ -46,6 +46,9 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	colorCorrectEnt = Entity::Create();
 	bloomEnt = Entity::Create();
 	pauseEnt = Entity::Create();
+	ventEnt	 = Entity::Create();
+	panelEnt = Entity::Create();
+	pipesEnt = Entity::Create();
 
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
@@ -64,6 +67,9 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	coilP = ModelManager::FindMesh(coilFile, glm::vec3(0.0f, 1.0f, 0.0f));
 	pipe = ModelManager::FindMesh(pipeFile, glm::vec3(0.6f, 0.45f, 0.0f));
 	tut = ModelManager::FindMesh(tutFile, glm::vec3(1.0f, 0.0f, 0.0f));
+	vent = ModelManager::FindMesh(ventFile);
+	pipes = ModelManager::FindMesh(pipesFile);
+	panel = ModelManager::FindMesh(panelFile);
 
 	door1 = ModelManager::FindMesh(doorFile1);
 	door2 = ModelManager::FindMesh(doorFile2);
@@ -160,6 +166,9 @@ void Level1::InitScene()
 	Texture2D::sptr diffuseComplete = Texture2D::LoadFromFile("Textures/LevelComplete.png");
 	Texture2D::sptr diffuseAnd = Texture2D::LoadFromFile("Textures/AndGate.png");
 	Texture2D::sptr diffusePause = Texture2D::LoadFromFile("Textures/PauseMenu.png");
+	Texture2D::sptr diffuseBox = Texture2D::LoadFromFile("Textures/Box.png");
+	Texture2D::sptr diffusePipeStraight = Texture2D::LoadFromFile("Textures/StraightPipe.png");
+	Texture2D::sptr diffusePipeCurved = Texture2D::LoadFromFile("Textures/CurvedPipe.png");
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -178,6 +187,9 @@ void Level1::InitScene()
 	gateMat.Albedo = diffuseAnd;
 	clearMat.Albedo = texture2;
 	pauseMat.Albedo = diffusePause;
+	boxMat.Albedo = diffuseBox;
+	straightPipeMat.Albedo = diffusePipeStraight;
+	curvedPipeMat.Albedo = diffusePipeCurved;
 
 #pragma endregion
 
@@ -236,8 +248,9 @@ void Level1::InitScene()
 	gateTrans.SetScale(glm::vec3(2.0f));
 
 	auto& coilTrans = coilEnt.Add<Transform>();
-	coilTrans.SetPosition(glm::vec3(-17.0f, 2.0f, -34.0f));
+	coilTrans.SetPosition(glm::vec3(-16.0f, 2.0f, -33.0f));
 	coilTrans.SetScale(glm::vec3(3.0f));
+	coilTrans.SetRotationY(180.0f);
 
 	auto& completeTrans = completeEnt.Add<Transform>();
 	completeTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
@@ -247,13 +260,25 @@ void Level1::InitScene()
 	pauseTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	pauseTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
 
+	auto& ventTrans = ventEnt.Add<Transform>();
+	ventTrans.SetPosition(glm::vec3(5.0f, 1.0f, 5.0f));
+	ventTrans.SetScale(glm::vec3(2.0f));
+
+	auto& panelTrans = panelEnt.Add<Transform>();
+	panelTrans.SetPosition(glm::vec3(15.0f, 1.0f, 5.0f));
+	panelTrans.SetScale(glm::vec3(2.0f));
+
+	auto& pipesTrans = pipesEnt.Add<Transform>();
+	pipesTrans.SetPosition(glm::vec3(25.0f, 1.0f, 5.0f));
+	pipesTrans.SetScale(glm::vec3(2.0f));
+
 
 	//AABB
 	auto& leftCol = leftEnt.Add<AABB>(leftEnt, mainPlayer);
 	auto& rightCol = rightEnt.Add<AABB>(rightEnt, mainPlayer);
 	auto& backCol = backEnt.Add<AABB>(backEnt, mainPlayer);
 	auto& gateCol = andEnt.Add<AABB>(andEnt, mainPlayer);
-	//auto& coilCol = coilEnt.Add<AABB>(coilEnt, mainPlayer);
+	auto& coilCol = coilEnt.Add<AABB>(coilEnt, mainPlayer, 4.0f, 4.0f);
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
 
@@ -338,6 +363,9 @@ void Level1::InitScene()
 	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, shader);
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *floor, pauseShader);
+	auto& ventMesh = ventEnt.Add<MeshRenderer>(ventEnt, *vent, shader);
+	auto& panelMesh = panelEnt.Add<MeshRenderer>(panelEnt, *panel, shader);
+	auto& pipesMesh = pipesEnt.Add<MeshRenderer>(pipesEnt, *pipes, shader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -397,7 +425,6 @@ void Level1::InitScene()
 
 void Level1::Update(float dt)
 {
-
 	time += dt;
 	untexturedShader->SetUniform("u_Time", time);
 	shader->SetUniform("u_Time", time);
@@ -449,6 +476,9 @@ void Level1::Update(float dt)
 	auto& tutTrans = tutEnt.Get<Transform>();
 	auto& completeTrans = completeEnt.Get<Transform>();
 	auto& pauseTrans = pauseEnt.Get<Transform>();
+	auto& ventTrans = ventEnt.Get<Transform>();
+	auto& panelTrans = panelEnt.Get<Transform>();
+	auto& pipesTrans = pipesEnt.Get<Transform>();
 	
 	backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
@@ -488,6 +518,9 @@ void Level1::Update(float dt)
 	auto& completeMesh = completeEnt.Get<MeshRenderer>();
 	auto& pauseMesh = pauseEnt.Get<MeshRenderer>();
 	auto& tutMesh = tutEnt.Get<MeshRenderer>();
+	auto& ventMesh = ventEnt.Get<MeshRenderer>();
+	auto& panelMesh = panelEnt.Get<MeshRenderer>();
+	auto& pipesMesh = pipesEnt.Get<MeshRenderer>();
 
 
 	glm::mat4 transform = playerTrans.GetModelMatrix();
@@ -508,6 +541,9 @@ void Level1::Update(float dt)
 	glm::mat4 transformComplete = completeTrans.GetModelMatrix();
 	glm::mat4 transformTut = tutTrans.GetModelMatrix();
 	glm::mat4 transformPause = pauseTrans.GetModelMatrix();
+	glm::mat4 transformVent = ventTrans.GetModelMatrix();
+	glm::mat4 transformPanel = panelTrans.GetModelMatrix();
+	glm::mat4 transformPipes = pipesTrans.GetModelMatrix();
 
 	auto& particleSystem = particleEnt.Get<ParticleSystem>();
 
@@ -657,6 +693,10 @@ void Level1::Update(float dt)
 			gateMat.Albedo->Bind(4);
 			gateMesh.Render(camera, transformGate);
 
+			ventMesh.Render(camera, transformVent);
+			panelMesh.Render(camera, transformPanel);
+			pipesMesh.Render(camera, transformPipes);
+
 			untexturedShader->Bind();
 			pipeMesh.Render(camera, transformPipe);
 
@@ -750,6 +790,10 @@ void Level1::Update(float dt)
 			clearMat.Albedo->Bind(4);
 			gateMesh.Render(camera, transformGate);
 
+			ventMesh.Render(camera, transformVent);
+			panelMesh.Render(camera, transformPanel);
+			pipesMesh.Render(camera, transformPipes);
+
 			untexturedShader->Bind();
 			pipeMesh.Render(camera, transformPipe);
 
@@ -796,7 +840,7 @@ void Level1::Update(float dt)
 	backEnt.Get<AABB>().Update();
 	doorEnt.Get<AABB>().Update();
 	andEnt.Get<AABB>().Update();
-	//coilEnt.Get<AABB>().Update();
+	coilEnt.Get<AABB>().Update();
 	buttonEnt.Get<Lever>().Update();
 	buttonEnt2.Get<Lever>().Update();
 	wireEnt.Get<Wire>().Update();
@@ -820,9 +864,6 @@ void Level1::Update(float dt)
 
 	if (doorEnt.Get<AABB>().GetComplete())
 		showLevelComplete = true;
-
-	std::cout << playerTrans.GetPositionX() << " Player " << playerTrans.GetPositionZ() << std::endl;
-	std::cout << doorTrans.GetPositionX() << " Door " << doorTrans.GetPositionZ() << std::endl;
 }
 
 void Level1::Unload()

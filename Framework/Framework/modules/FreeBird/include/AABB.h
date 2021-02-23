@@ -9,6 +9,7 @@ namespace freebird
 	public:
 
 		AABB(Entity ent, Entity playEnt);
+		AABB(Entity ent, Entity playEnt, float xOffset, float zOffset);
 
 		void Update();
 
@@ -26,5 +27,7 @@ namespace freebird
 		bool isColliding;
 		bool levelComplete = false;
 		glm::vec3 nextPos;
+
+		float _xOffset, _zOffset, insideOffsetX, insideOffsetZ;
 	};
 }
