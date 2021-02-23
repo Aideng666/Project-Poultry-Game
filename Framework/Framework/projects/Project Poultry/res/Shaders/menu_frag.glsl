@@ -18,7 +18,7 @@ uniform float u_Shininess;
 uniform float u_Time;
 uniform vec3 u_Position;
 
-uniform vec3  u_CamPos;
+uniform vec3 u_CamPos;
 
 out vec4 frag_color;
 

@@ -273,17 +273,17 @@ void Level1::InitScene()
 	pauseTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
 
 	auto& optionsTrans = optionEnt.Add<Transform>();
-	optionsTrans.SetPosition(glm::vec3(-5.0f, 0.0f, -6.0f));
+	optionsTrans.SetPosition(glm::vec3(-5.0f, 2.0f, 0.0f));
 	optionsTrans.SetScale(glm::vec3(1.5f));
 	optionsTrans.SetRotationY(96.0f);
 
 	auto& retryTrans = retryEnt.Add<Transform>();
-	retryTrans.SetPosition(glm::vec3(0.0f, 0.0f, -6.0f));
+	retryTrans.SetPosition(glm::vec3(0.0f, 2.0f, 0.0f));
 	retryTrans.SetScale(glm::vec3(1.5f));
 	retryTrans.SetRotationY(96.0f);
 
 	auto& exitTrans = exitEnt.Add<Transform>();
-	exitTrans.SetPosition(glm::vec3(5.0f, 0.0f, -6.0f));
+	exitTrans.SetPosition(glm::vec3(5.0f, 2.0f, 0.0f));
 	exitTrans.SetScale(glm::vec3(1.5f));
 	exitTrans.SetRotationY(96.0f);
 
@@ -767,7 +767,7 @@ void Level1::Update(float dt)
 
 			tutMesh.Render(camera, transformTut);
 
-			pipesMesh.Render(camera, transformPipes);
+			//pipesMesh.Render(camera, transformPipes);
 			//panelMesh.Render(camera, transformPanel);
 			//ventMesh.Render(camera, transformVent);
 
@@ -854,9 +854,9 @@ void Level1::Update(float dt)
 			clearMat.Albedo->Bind(4);
 			gateMesh.Render(camera, transformGate);
 
-			ventMesh.Render(camera, transformVent);
-			panelMesh.Render(camera, transformPanel);
-			pipesMesh.Render(camera, transformPipes);
+			//ventMesh.Render(camera, transformVent);
+			//panelMesh.Render(camera, transformPanel);
+			//pipesMesh.Render(camera, transformPipes);
 
 			untexturedShader->Bind();
 			pipeMesh.Render(camera, transformPipe);
