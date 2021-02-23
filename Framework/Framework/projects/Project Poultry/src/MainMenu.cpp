@@ -64,7 +64,7 @@ void MainMenu::InitScene()
 #pragma region Texture Stuff
 	Texture2DData::sptr playMap = Texture2DData::LoadFromFile("Textures/Buttons/Default/Play.png");
 	Texture2DData::sptr optionsMap = Texture2DData::LoadFromFile("Textures/Buttons/Default/Option.png");
-	Texture2DData::sptr backMap = Texture2DData::LoadFromFile("Textures/MainMenuBackground.png");
+	Texture2DData::sptr backMap = Texture2DData::LoadFromFile("Textures/MainMenuBG2.png");
 	Texture2DData::sptr loadMap = Texture2DData::LoadFromFile("Textures/Loading.jpg");
 
 	Texture2D::sptr diffusePlay = Texture2D::Create();
