@@ -60,7 +60,7 @@ void MainMenu::InitScene()
 #pragma endregion
 
 #pragma region Texture Stuff
-	Texture2D::sptr backMap = Texture2D::LoadFromFile("Textures/MainMenuBG2.png");
+	Texture2D::sptr backMap = Texture2D::LoadFromFile("Textures/Title_ScreenFinal.png");
 	Texture2D::sptr loadMap = Texture2D::LoadFromFile("Textures/Loading.jpg");
 
 	Texture2DDescription desc = Texture2DDescription();
