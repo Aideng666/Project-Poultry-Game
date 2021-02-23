@@ -36,6 +36,9 @@ private:
 	Entity wirePowered, wirePowered2, wirePowered3;
 	Entity tutEnt;
 	Entity completeEnt;
+	Entity ventEnt;
+	Entity panelEnt;
+	Entity pipesEnt;
 
 	Shader::sptr shader, animShader, particleShader, untexturedShader;
 
@@ -62,6 +65,9 @@ private:
 	Mesh* coilP;
 	Mesh* pipe;
 	Mesh* tut;
+	Mesh* vent;
+	Mesh* pipes;
+	Mesh* panel;
 
 	Mesh* door1;
 	Mesh* door2;
@@ -101,6 +107,9 @@ private:
 	std::string coilFile = "Models/TeslaCoil.obj";
 	std::string pipeFile = "Models/Level1Pipe.obj";
 	std::string tutFile = "Models/Interact.obj";
+	std::string ventFile = "Models/VentSmall.obj";
+	std::string panelFile = "Models/Panel.obj";
+	std::string pipesFile = "Models/Pipes.obj";
 
 
 	std::string doorFile1 = "Models/DoorFrames/Door0.obj";
