@@ -14,6 +14,18 @@ namespace freebird
 		isColliding = false;
 	}
 
+	AABB::AABB(Entity ent, Entity playEnt, float xOffset, float zOffset)
+	{
+		thisEnt = ent;
+		playerEnt = playEnt;
+		isColliding = false;
+		_xOffset = xOffset;
+		_zOffset = zOffset;
+
+		insideOffsetX = _xOffset - 0.5f;
+		insideOffsetZ = _zOffset - 0.5f;
+	}
+
 	void AABB::Update()
 	{
 
@@ -105,23 +117,28 @@ namespace freebird
 			&& playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() > -2.5f)
 			playerEnt.Get<Transform>().SetPositionZ(playerEnt.Get<Transform>().GetPositionZ() - 0.1f);
 
-		//COIL
-		if (playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() < 6.0f && playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() > 0.0f 
-			&& playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() < 5.5f
-			&& playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() > -5.5f && thisEnt.Get<Transform>().GetRotation().y == 180.0f)
+		//AMBIENT OBJECTS
+		if (playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() < _xOffset
+			&& playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() > 0.0f 
+			&& playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() < insideOffsetX
+			&& playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() > -insideOffsetX
+			&& thisEnt.Get<Transform>().GetRotation().y == 180.0f)
 			playerEnt.Get<Transform>().SetPositionX(playerEnt.Get<Transform>().GetPositionX() + 0.1f);
 
 
-		if (thisEnt.Get<Transform>().GetPositionX() - playerEnt.Get<Transform>().GetPositionX() < 6.0f && thisEnt.Get<Transform>().GetPositionX() - playerEnt.Get<Transform>().GetPositionX() > 0.0f 
-			&& playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() < 5.5f
-			&& playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() > -5.5f && thisEnt.Get<Transform>().GetRotation().y == 180.0f)
+		if (thisEnt.Get<Transform>().GetPositionX() - playerEnt.Get<Transform>().GetPositionX() < _xOffset
+			&& thisEnt.Get<Transform>().GetPositionX() - playerEnt.Get<Transform>().GetPositionX() > 0.0f 
+			&& playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() < insideOffsetX
+			&& playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() > -insideOffsetX
+			&& thisEnt.Get<Transform>().GetRotation().y == 180.0f)
 			playerEnt.Get<Transform>().SetPositionX(playerEnt.Get<Transform>().GetPositionX() - 0.1f);
 
 
-		if (playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() < 6.0f
+		if (playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() < _zOffset
 			&& playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() > 0.0f
-			&& playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() < 5.5f
-			&& playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() > -5.5f && thisEnt.Get<Transform>().GetRotation().y == 180.0f)
+			&& playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() < insideOffsetZ
+			&& playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() > -insideOffsetZ
+			&& thisEnt.Get<Transform>().GetRotation().y == 180.0f)
 			playerEnt.Get<Transform>().SetPositionZ(playerEnt.Get<Transform>().GetPositionZ() + 0.1f);
 
 	}

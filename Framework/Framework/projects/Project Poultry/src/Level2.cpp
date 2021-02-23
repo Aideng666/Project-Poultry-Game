@@ -153,6 +153,9 @@ void Level2::InitScene()
 	Texture2D::sptr diffuseComplete = Texture2D::LoadFromFile("Textures/LevelComplete.png");
 	Texture2D::sptr diffuseAnd = Texture2D::LoadFromFile("Textures/AndGate.png");
 	Texture2D::sptr diffusePause = Texture2D::LoadFromFile("Textures/PauseMenu.png");
+	Texture2D::sptr diffuseBox = Texture2D::LoadFromFile("Textures/Box.png");
+	Texture2D::sptr diffusePipeStraight = Texture2D::LoadFromFile("Textures/StraightPipe.png");
+	Texture2D::sptr diffusePipeCurved = Texture2D::LoadFromFile("Textures/CurvedPipe.png");
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -171,6 +174,9 @@ void Level2::InitScene()
 	clearMat.Albedo = texture2;
 	gateMat.Albedo = diffuseAnd;
 	pauseMat.Albedo = diffusePause;
+	boxMat.Albedo = diffuseBox;
+	straightPipeMat.Albedo = diffusePipeStraight;
+	curvedPipeMat.Albedo = diffusePipeCurved;
 
 #pragma endregion
 
