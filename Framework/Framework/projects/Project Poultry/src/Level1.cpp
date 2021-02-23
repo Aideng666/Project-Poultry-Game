@@ -269,7 +269,7 @@ void Level1::InitScene()
 	panelTrans.SetScale(glm::vec3(2.0f));
 
 	auto& pipesTrans = pipesEnt.Add<Transform>();
-	pipesTrans.SetPosition(glm::vec3(25.0f, 1.0f, 5.0f));
+	pipesTrans.SetPosition(glm::vec3(0.0f, 0.0f, 5.0f));
 	pipesTrans.SetScale(glm::vec3(2.0f));
 
 
@@ -693,9 +693,6 @@ void Level1::Update(float dt)
 			gateMat.Albedo->Bind(4);
 			gateMesh.Render(camera, transformGate);
 
-			ventMesh.Render(camera, transformVent);
-			panelMesh.Render(camera, transformPanel);
-			pipesMesh.Render(camera, transformPipes);
 
 			untexturedShader->Bind();
 			pipeMesh.Render(camera, transformPipe);
@@ -706,6 +703,10 @@ void Level1::Update(float dt)
 				coilMesh.Render(camera, transformCoil);
 
 			tutMesh.Render(camera, transformTut);
+
+			pipesMesh.Render(camera, transformPipes);
+			//panelMesh.Render(camera, transformPanel);
+			//ventMesh.Render(camera, transformVent);
 
 			if (!isPaused)
 			{

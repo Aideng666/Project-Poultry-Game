@@ -109,7 +109,7 @@ private:
 	std::string tutFile = "Models/Interact.obj";
 	std::string ventFile = "Models/VentSmall.obj";
 	std::string panelFile = "Models/Panel.obj";
-	std::string pipesFile = "Models/Pipes.obj";
+	std::string pipesFile = "Models/Pipes2.obj";
 
 
 	std::string doorFile1 = "Models/DoorFrames/Door0.obj";
