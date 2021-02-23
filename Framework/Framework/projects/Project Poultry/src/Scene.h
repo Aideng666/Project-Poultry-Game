@@ -84,9 +84,15 @@ protected:
 
 	Entity FBO, greyscaleEnt, sepiaEnt, colorCorrectEnt, bloomEnt;
 
-	Entity pauseEnt;
+	Entity pauseEnt, optionEnt, exitEnt, retryEnt;
 
-	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat;
+	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat;
+
+	Mesh* options;
+	Mesh* exit;
+	Mesh* retry;
+
+	std::string pauseButtonFile = "Models/UI_Button.obj";
 
 	std::vector<std::function<void()>> imGuiCallbacks;
 
