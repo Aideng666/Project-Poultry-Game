@@ -61,7 +61,7 @@ void MainMenu::InitScene()
 
 #pragma region Texture Stuff
 	Texture2D::sptr backMap = Texture2D::LoadFromFile("Textures/Title_ScreenFinal.png");
-	Texture2D::sptr loadMap = Texture2D::LoadFromFile("Textures/Loading.jpg");
+	Texture2D::sptr loadMap = Texture2D::LoadFromFile("Textures/Loading_Screen.png");
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -84,8 +84,8 @@ void MainMenu::InitScene()
 
 	//Loading screen
 	loadEnt.Add<Transform>();
-	loadEnt.Get<Transform>().SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
-	loadEnt.Get<Transform>().SetScale(glm::vec3(0.268f));
+	loadEnt.Get<Transform>().SetPosition(glm::vec3(0.0f, 1.0f, -0.5f));
+	loadEnt.Get<Transform>().SetScale(glm::vec3(0.22f));
 	loadEnt.Add<MeshRenderer>(loadEnt, *back, shader);
 
 	//Basic camera
