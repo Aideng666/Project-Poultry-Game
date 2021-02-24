@@ -85,7 +85,7 @@ void MainMenu::InitScene()
 	//Loading screen
 	loadEnt.Add<Transform>();
 	loadEnt.Get<Transform>().SetPosition(glm::vec3(0.0f, 1.0f, -0.5f));
-	loadEnt.Get<Transform>().SetScale(glm::vec3(0.22f));
+	loadEnt.Get<Transform>().SetScale(glm::vec3(0.232f));
 	loadEnt.Add<MeshRenderer>(loadEnt, *back, shader);
 
 	//Basic camera
