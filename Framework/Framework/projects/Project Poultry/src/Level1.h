@@ -51,6 +51,7 @@ private:
 	Entity pipeEntS, pipeEntC;
 	//Tablet
 	Entity tabletEnt;
+	Entity tabletScreenEnt;
 	//Particle
 	//Entity particleEnt;
 	//Interact
@@ -60,7 +61,7 @@ private:
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, gateMat, wireMat, wirePowerMat, boxMat, panelMat, ventMat, pipeMatS, pipeMatC, tabletMat; /*, coilMat*/
+	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, gateMat, wireMat, wirePowerMat, boxMat, panelMat, ventMat, pipeMatS, pipeMatC, tabletMat, tabletScreenMat; /*, coilMat*/
 
 	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames, doorCloseFrames;
 
@@ -182,5 +183,9 @@ private:
 	KeyPressWatcher button2Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		buttonEnt2.Get<Lever>().SetPowered(!buttonEnt2.Get<Lever>().GetPowered());
 		std::cout << "Button 2 Power: " << buttonEnt2.Get<Lever>().GetPowered() << std::endl;
+		});
+
+	KeyPressWatcher tabletWatch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		tabletOpen = !tabletOpen;
 		});
 };
