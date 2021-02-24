@@ -283,7 +283,7 @@ void Level3::InitScene()
 	auto& gateCol = andEnt.Add<AABB>(andEnt, mainPlayer);
 	auto& gateCol2 = andEnt2.Add<AABB>(andEnt2, mainPlayer);
 	auto& gateCol3 = andEnt3.Add<AABB>(andEnt3, mainPlayer);
-	auto& gateCol4 = notEnt.Add<AABB>(notEnt, mainPlayer);
+	auto& gateCol4 = notEnt.Add<AABB>(notEnt, mainPlayer, 3.0f, 3.0f);
 	auto& coilCol = coilEnt.Add<AABB>(coilEnt, mainPlayer);
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
