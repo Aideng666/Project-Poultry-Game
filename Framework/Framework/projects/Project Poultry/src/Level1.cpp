@@ -50,8 +50,9 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	smallVentEnt2 = Entity::Create();
 	pipeEntS = Entity::Create();
 	pipeEntC = Entity::Create();
+	tabletEnt = Entity::Create();
+	tutEnt = Entity::Create();
 	//particleEnt = Entity::Create();
-	//tutEnt = Entity::Create();
 
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
@@ -81,7 +82,8 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	ventS = ModelManager::FindMesh(ventFileS);
 	pipeS = ModelManager::FindMesh(pipesFileS);
 	pipeC = ModelManager::FindMesh(pipesFileC);
-	//tut = ModelManager::FindMesh(tutFile, glm::vec3(1.0f, 0.0f, 0.0f));
+	tablet = ModelManager::FindMesh(tabletFile);
+	tut = ModelManager::FindMesh(tutFile, glm::vec3(1.0f, 0.0f, 0.0f));
 
 	door1 = ModelManager::FindMesh(doorFile1);
 	door2 = ModelManager::FindMesh(doorFile2);
@@ -189,6 +191,7 @@ void Level1::InitScene()
 	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Option.png");
 	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Replay.png");
 	Texture2D::sptr diffuseExit = Texture2D::LoadFromFile("Textures/Buttons/Default/Exit.png");
+	Texture2D::sptr diffuseTablet = Texture2D::LoadFromFile("Textures/TabletTexture.png");
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -215,6 +218,7 @@ void Level1::InitScene()
 	optionMat.Albedo = diffuseOptions;
 	retryMat.Albedo = diffuseRetry;
 	exitMat.Albedo = diffuseExit;
+	tabletMat.Albedo = diffuseTablet;
 	clearMat.Albedo = texture2;
 #pragma endregion
 
@@ -278,19 +282,19 @@ void Level1::InitScene()
 
 	//Box transform
 	auto& boxTrans = boxEnt.Add<Transform>();
-	boxTrans.SetPosition(glm::vec3(-34.f, 1.f, -50.f));
+	boxTrans.SetPosition(glm::vec3(-34.f, 4.5f, -33.f));
 
 	auto& boxTrans2 = boxEnt2.Add<Transform>();
-	boxTrans2.SetPosition(glm::vec3(19.f, 1.f, -50.f));
+	boxTrans2.SetPosition(glm::vec3(19.f, 4.5f, -33.f));
 
 	auto& boxTrans3 = boxEnt3.Add<Transform>();
-	boxTrans3.SetPosition(glm::vec3(34.f, 1.f, -26.f));
+	boxTrans3.SetPosition(glm::vec3(34.f, 4.5f, -9.f));
 
 	auto& boxTrans4 = boxEnt4.Add<Transform>();
-	boxTrans4.SetPosition(glm::vec3(34.f, 1.f, -20.f));
+	boxTrans4.SetPosition(glm::vec3(34.f, 4.5f, -3.f));
 
 	auto& boxTrans5 = boxEnt5.Add<Transform>();
-	boxTrans5.SetPosition(glm::vec3(34.f, 8.f, -18.f));
+	boxTrans5.SetPosition(glm::vec3(34.f, 10.5f, -4.f));
 	boxTrans5.SetScale(glm::vec3(0.684f));
 
 	//Panel transform
@@ -348,10 +352,16 @@ void Level1::InitScene()
 	exitTrans.SetScale(glm::vec3(1.5f));
 	exitTrans.SetRotationY(96.0f);
 
+	auto& tabletTrans = tabletEnt.Add<Transform>();
+	tabletTrans.SetPosition(glm::vec3(0.0f, 1.5f, 10.0f));
+	tabletTrans.SetRotationX(90.0f);
+
+
 	//Interact text transform
-	//auto& tutTrans = tutEnt.Add<Transform>();
-	//tutTrans.SetPosition(glm::vec3(-8.0f, 1.0f, 15.0f));
-	//tutTrans.SetScale(glm::vec3(3.0f));
+	auto& tutTrans = tutEnt.Add<Transform>();
+	tutTrans.SetPosition(glm::vec3(0.0f, 10.0f, 10.0f));
+	tutTrans.SetScale(glm::vec3(2.0f));
+	tutTrans.SetRotationX(90.0f);
 
 #pragma endregion
 
@@ -359,8 +369,21 @@ void Level1::InitScene()
 	auto& leftCol = leftEnt.Add<AABB>(leftEnt, mainPlayer);
 	auto& rightCol = rightEnt.Add<AABB>(rightEnt, mainPlayer);
 	auto& backCol = backEnt.Add<AABB>(backEnt, mainPlayer);
-	auto& gateCol = andEnt.Add<AABB>(andEnt, mainPlayer);
+	auto& gateCol = andEnt.Add<AABB>(andEnt, mainPlayer, 5.0f, 3.0f);
+	gateCol.SetIsAmbient(true);
 	auto& coilCol = coilEnt.Add<AABB>(coilEnt, mainPlayer, 4.0f, 4.0f);
+	coilCol.SetIsAmbient(true);
+	auto& boxCol = boxEnt.Add<AABB>(boxEnt, mainPlayer, 5.0f, 5.0f);
+	boxCol.SetIsAmbient(true);
+	auto& boxCol2 = boxEnt2.Add<AABB>(boxEnt2, mainPlayer, 5.0f, 5.0f);
+	boxCol2.SetIsAmbient(true);
+	auto& boxCol3 = boxEnt3.Add<AABB>(boxEnt3, mainPlayer, 5.0f, 5.0f); 
+	boxCol3.SetIsAmbient(true);
+	auto& boxCol4 = boxEnt4.Add<AABB>(boxEnt4, mainPlayer, 5.0f, 5.0f);
+	boxCol4.SetIsAmbient(true);
+	auto& boxCol5 = boxEnt5.Add<AABB>(boxEnt5, mainPlayer, 5.0f, 5.0f);
+	boxCol5.SetIsAmbient(true);
+
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
 
@@ -454,11 +477,12 @@ void Level1::InitScene()
 	auto& ventMesh3 = smallVentEnt2.Add<MeshRenderer>(smallVentEnt2, *ventS, shader);
 	auto& pipeMesh = pipeEntS.Add<MeshRenderer>(pipeEntS, *pipeS, shader);
 	auto& pipeMesh2 = pipeEntC.Add<MeshRenderer>(pipeEntC, *pipeC, shader);
-	//auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
+	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *floor, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
 	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
 	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
+	auto& tabletMesh = tabletEnt.Add<MeshRenderer>(tabletEnt, *tablet, shader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -576,11 +600,12 @@ void Level1::Update(float dt)
 	auto& ventTrans3 = smallVentEnt2.Get<Transform>();
 	auto& pipeTrans = pipeEntS.Get<Transform>();
 	auto& pipeTrans2 = pipeEntC.Get<Transform>();
-	//auto& tutTrans = tutEnt.Get<Transform>();
+	auto& tutTrans = tutEnt.Get<Transform>();
 	auto& pauseTrans = pauseEnt.Get<Transform>();
 	auto& optionsTrans = optionEnt.Get<Transform>();
 	auto& retryTrans = retryEnt.Get<Transform>();
 	auto& exitTrans = exitEnt.Get<Transform>();
+	auto& tabletTrans = tabletEnt.Get<Transform>();
 	
 	backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
@@ -592,6 +617,8 @@ void Level1::Update(float dt)
 	rightTrans.SetPositionX(39.0f);
 	rightTrans.SetRotationY(90.0f);
 	rightTrans.SetPositionY(9.0f);
+
+	tutTrans.SetRotationY(tutTrans.GetRotation().y + 100 * dt);
 #pragma endregion
 	
 	auto& camera = camEnt.Get<Camera>();
@@ -626,11 +653,12 @@ void Level1::Update(float dt)
 	auto& ventMesh3 = smallVentEnt2.Get<MeshRenderer>();
 	auto& pipeMesh = pipeEntS.Get<MeshRenderer>();
 	auto& pipeMesh2 = pipeEntC.Get<MeshRenderer>();
-	//auto& tutMesh = tutEnt.Get<MeshRenderer>();
+	auto& tutMesh = tutEnt.Get<MeshRenderer>();
 	auto& pauseMesh = pauseEnt.Get<MeshRenderer>();
 	auto& optionMesh = optionEnt.Get<MeshRenderer>();
 	auto& retryMesh = retryEnt.Get<MeshRenderer>();
 	auto& exitMesh = exitEnt.Get<MeshRenderer>();
+	auto& tabletMesh = tabletEnt.Get<MeshRenderer>();
 
 	//Get reference to the model matrix
 	glm::mat4 transform = playerTrans.GetModelMatrix();
@@ -660,11 +688,12 @@ void Level1::Update(float dt)
 	glm::mat4 transformVent3 = ventTrans3.GetModelMatrix();
 	glm::mat4 transformPipe = pipeTrans.GetModelMatrix();
 	glm::mat4 transformPipe2 = pipeTrans2.GetModelMatrix();
-	//glm::mat4 transformTut = tutTrans.GetModelMatrix();
+	glm::mat4 transformTut = tutTrans.GetModelMatrix();
 	glm::mat4 transformPause = pauseTrans.GetModelMatrix();
 	glm::mat4 transformOptions = optionsTrans.GetModelMatrix();
 	glm::mat4 transformRetry = retryTrans.GetModelMatrix();
 	glm::mat4 transformExit = exitTrans.GetModelMatrix();
+	glm::mat4 transformTablet = tabletTrans.GetModelMatrix();
 
 	//Particle Stuff
 	//auto& particleSystem = particleEnt.Get<ParticleSystem>();
@@ -887,9 +916,17 @@ void Level1::Update(float dt)
 			curvedPipeMat.Albedo->Bind(9);
 			pipeMesh2.Render(camera, transformPipe2);
 
+			shader->SetUniform("s_Diffuse", 10);
+			tabletMat.Albedo->Bind(10);
+			tabletMesh.Render(camera, transformTablet);
+
 			//Bind and render the objects with no textures
 			untexturedShader->Bind();
 			coilMesh.Render(camera, transformCoil);
+
+			if (playerTrans.GetPositionX() > -3.0f && playerTrans.GetPositionX() < 3.0f
+				&& playerTrans.GetPositionZ() > 7.0f && playerTrans.GetPositionZ() < 13.0f)
+				tutMesh.Render(camera, transformTut);
 
 			/*if (!isPaused)
 			{
@@ -958,6 +995,7 @@ void Level1::Update(float dt)
 			ventMesh3.Render(camera, transformVent3);
 			pipeMesh.Render(camera, transformPipe);
 			pipeMesh2.Render(camera, transformPipe2);
+			tabletMesh.Render(camera, transformTablet);
 
 			untexturedShader->Bind();
 			coilMesh.Render(camera, transformCoil);
@@ -1000,6 +1038,11 @@ void Level1::Update(float dt)
 	backEnt.Get<AABB>().Update();
 	doorEnt.Get<AABB>().Update();
 	andEnt.Get<AABB>().Update();
+	boxEnt.Get<AABB>().Update();
+	boxEnt2.Get<AABB>().Update();
+	boxEnt3.Get<AABB>().Update();
+	boxEnt4.Get<AABB>().Update();
+	boxEnt5.Get<AABB>().Update();
 	andEnt.Get<AndGate>().Update();
 	coilEnt.Get<AABB>().Update();
 	buttonEnt.Get<Lever>().Update();

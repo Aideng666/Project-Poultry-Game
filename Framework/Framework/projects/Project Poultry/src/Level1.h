@@ -49,16 +49,18 @@ private:
 	Entity smallVentEnt, smallVentEnt2;
 	//Pipe
 	Entity pipeEntS, pipeEntC;
+	//Tablet
+	Entity tabletEnt;
 	//Particle
 	//Entity particleEnt;
 	//Interact
-	//Entity tutEnt;
+	Entity tutEnt;
 
 	Shader::sptr shader, animShader, particleShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, gateMat, wireMat, wirePowerMat, boxMat, panelMat, ventMat, pipeMatS, pipeMatC; /*, coilMat*/
+	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, gateMat, wireMat, wirePowerMat, boxMat, panelMat, ventMat, pipeMatS, pipeMatC, tabletMat; /*, coilMat*/
 
 	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames, doorCloseFrames;
 
@@ -79,7 +81,8 @@ private:
 	Mesh* ventS;
 	Mesh* pipeS;
 	Mesh* pipeC;
-	//Mesh* tut;
+	Mesh* tablet;
+	Mesh* tut;
 
 	Mesh* door1;
 	Mesh* door2;
@@ -123,7 +126,8 @@ private:
 	std::string ventFileS = "Models/New_VentSmall.obj";
 	std::string pipesFileS = "Models/New2_StraightPipe.obj";
 	std::string pipesFileC = "Models/New2_CurvedPipe.obj";
-	//std::string tutFile = "Models/Interact.obj";
+	std::string tabletFile = "Models/Tablet.obj";
+	std::string tutFile = "Models/Interact.obj";
 
 	std::string doorFile1 = "Models/DoorFrames/Door0.obj";
 	std::string doorFile2 = "Models/DoorFrames/Door1.obj";
