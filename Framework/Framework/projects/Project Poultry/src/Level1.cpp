@@ -50,14 +50,9 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	smallVentEnt2 = Entity::Create();
 	pipeEntS = Entity::Create();
 	pipeEntC = Entity::Create();
-	//coilPowered = Entity::Create();
-	//pipeEnt = Entity::Create();
 	//particleEnt = Entity::Create();
-	//wirePowered = Entity::Create();
-	//wirePowered2 = Entity::Create();
-	//wirePowered3 = Entity::Create();
 	//tutEnt = Entity::Create();
-	//pipesEnt = Entity::Create();
+
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
 	sepiaEnt = Entity::Create();
@@ -86,13 +81,7 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	ventS = ModelManager::FindMesh(ventFileS);
 	pipeS = ModelManager::FindMesh(pipesFileS);
 	pipeC = ModelManager::FindMesh(pipesFileC);
-	//wireLPower = ModelManager::FindMesh(wire1File, glm::vec3(0.0f, 1.0f, 0.0f));
-	//wireRPower = ModelManager::FindMesh(wire2File, glm::vec3(0.0f, 1.0f, 0.0f));
-	//wireCPower = ModelManager::FindMesh(wire3File, glm::vec3(0.0f, 1.0f, 0.0f));
-	//coilP = ModelManager::FindMesh(coilFile, glm::vec3(0.0f, 1.0f, 0.0f));
-	//pipe = ModelManager::FindMesh(pipeFile, glm::vec3(0.6f, 0.45f, 0.0f));
 	//tut = ModelManager::FindMesh(tutFile, glm::vec3(1.0f, 0.0f, 0.0f));
-	//pipes = ModelManager::FindMesh(pipesFile);
 
 	door1 = ModelManager::FindMesh(doorFile1);
 	door2 = ModelManager::FindMesh(doorFile2);
@@ -364,11 +353,6 @@ void Level1::InitScene()
 	//tutTrans.SetPosition(glm::vec3(-8.0f, 1.0f, 15.0f));
 	//tutTrans.SetScale(glm::vec3(3.0f));
 
-	//Tyler's Pipe transform
-	//auto& pipeTrans = pipeEnt.Add<Transform>();
-	//pipeTrans.SetPositionX(-35.5f);
-	//pipeTrans.SetPositionY(10.5f);
-
 #pragma endregion
 
 	//AABB
@@ -470,11 +454,6 @@ void Level1::InitScene()
 	auto& ventMesh3 = smallVentEnt2.Add<MeshRenderer>(smallVentEnt2, *ventS, shader);
 	auto& pipeMesh = pipeEntS.Add<MeshRenderer>(pipeEntS, *pipeS, shader);
 	auto& pipeMesh2 = pipeEntC.Add<MeshRenderer>(pipeEntC, *pipeC, shader);
-	//auto& wireMeshP = wirePowered.Add<MeshRenderer>(wirePowered, *wireLPower, shader);
-	//auto& wireMeshP2 = wirePowered2.Add<MeshRenderer>(wirePowered2, *wireRPower, shader);
-	//auto& wireMeshP3 = wirePowered3.Add<MeshRenderer>(wirePowered3, *wireCPower, shader);
-	//auto& pipeMesh = pipeEnt.Add<MeshRenderer>(pipeEnt, *pipe, untexturedShader);
-	//auto& coilMeshP = coilPowered.Add<MeshRenderer>(coilPowered, *coilP, untexturedShader);
 	//auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *floor, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
@@ -598,7 +577,6 @@ void Level1::Update(float dt)
 	auto& pipeTrans = pipeEntS.Get<Transform>();
 	auto& pipeTrans2 = pipeEntC.Get<Transform>();
 	//auto& tutTrans = tutEnt.Get<Transform>();
-	//auto& pipesTrans = pipesEnt.Get<Transform>();
 	auto& pauseTrans = pauseEnt.Get<Transform>();
 	auto& optionsTrans = optionEnt.Get<Transform>();
 	auto& retryTrans = retryEnt.Get<Transform>();
@@ -648,12 +626,7 @@ void Level1::Update(float dt)
 	auto& ventMesh3 = smallVentEnt2.Get<MeshRenderer>();
 	auto& pipeMesh = pipeEntS.Get<MeshRenderer>();
 	auto& pipeMesh2 = pipeEntC.Get<MeshRenderer>();
-	//auto& wireMeshP = wirePowered.Get<MeshRenderer>();
-	//auto& wireMeshP2 = wirePowered2.Get<MeshRenderer>();
-	//auto& wireMeshP3 = wirePowered3.Get<MeshRenderer>();
-	//auto& coilMeshP = coilPowered.Get<MeshRenderer>();
 	//auto& tutMesh = tutEnt.Get<MeshRenderer>();
-	//auto& pipesMesh = pipesEnt.Get<MeshRenderer>();
 	auto& pauseMesh = pauseEnt.Get<MeshRenderer>();
 	auto& optionMesh = optionEnt.Get<MeshRenderer>();
 	auto& retryMesh = retryEnt.Get<MeshRenderer>();
@@ -688,7 +661,6 @@ void Level1::Update(float dt)
 	glm::mat4 transformPipe = pipeTrans.GetModelMatrix();
 	glm::mat4 transformPipe2 = pipeTrans2.GetModelMatrix();
 	//glm::mat4 transformTut = tutTrans.GetModelMatrix();
-	//glm::mat4 transformPipes = pipesTrans.GetModelMatrix();
 	glm::mat4 transformPause = pauseTrans.GetModelMatrix();
 	glm::mat4 transformOptions = optionsTrans.GetModelMatrix();
 	glm::mat4 transformRetry = retryTrans.GetModelMatrix();
@@ -919,28 +891,18 @@ void Level1::Update(float dt)
 			untexturedShader->Bind();
 			coilMesh.Render(camera, transformCoil);
 
-			//if (wireEnt3.Get<Wire>().GetIsPowered())
-			//	coilMeshP.Render(camera, transformCoil);
-			//else
-			//	coilMesh.Render(camera, transformCoil);
-			//
-			//tutMesh.Render(camera, transformTut);
-
-			//pipesMesh.Render(camera, transformPipes);
-			
-
-			//if (!isPaused)
-			//{
-			//	//particleSystem.Update(dt, camera);
-			//	//
-			//	//if (!andEnt.Get<AndGate>().GetOutput())
-			//	//{
-			//	//	particleShader->Bind();
-			//	//	glDisable(GL_DEPTH_TEST);
-			//	//	particleSystem.Draw(camera, particleShader);
-			//	//	glEnable(GL_DEPTH_TEST);
-			//	//}
-			//}
+			/*if (!isPaused)
+			{
+				particleSystem.Update(dt, camera);
+				
+				if (!andEnt.Get<AndGate>().GetOutput())
+				{
+					particleShader->Bind();
+					glDisable(GL_DEPTH_TEST);
+					particleSystem.Draw(camera, particleShader);
+					glEnable(GL_DEPTH_TEST);
+				}
+			}*/
 		}
 	}
 	else
@@ -1000,31 +962,18 @@ void Level1::Update(float dt)
 			untexturedShader->Bind();
 			coilMesh.Render(camera, transformCoil);
 
-			//pipeMesh.Render(camera, transformPipe);
-
-			//if (wireEnt3.Get<Wire>().GetIsPowered())
-			//	coilMeshP.Render(camera, transformCoil);
-			//else
-			//	coilMesh.Render(camera, transformCoil);
-			//
-			//tutMesh.Render(camera, transformTut);
-
-			//ventMesh.Render(camera, transformVent);
-			//panelMesh.Render(camera, transformPanel);
-			//pipesMesh.Render(camera, transformPipes);
-
-			//if (!isPaused)
-			//{
-			//	//particleSystem.Update(dt, camera);
-			//	//
-			//	//if (!andEnt.Get<AndGate>().GetOutput())
-			//	//{
-			//	//	particleShader->Bind();
-			//	//	glDisable(GL_DEPTH_TEST);
-			//	//	particleSystem.Draw(camera, particleShader);
-			//	//	glEnable(GL_DEPTH_TEST);
-			//	//}
-			//}
+			/*if (!isPaused)
+			{
+				particleSystem.Update(dt, camera);
+				
+				if (!andEnt.Get<AndGate>().GetOutput())
+				{
+					particleShader->Bind();
+					glDisable(GL_DEPTH_TEST);
+					particleSystem.Draw(camera, particleShader);
+					glEnable(GL_DEPTH_TEST);
+				}
+			}*/
 		}
 	}
 
