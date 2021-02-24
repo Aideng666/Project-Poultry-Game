@@ -18,8 +18,6 @@ using namespace freebird;
 MainMenu::MainMenu(std::string sceneName, GLFWwindow* wind)
 	: Scene(sceneName, wind)
 {
-	/*playButton = Entity::Create();
-	optionsButton = Entity::Create();*/
 	backEnt = Entity::Create();
 	loadEnt = Entity::Create();
 	FBO = Entity::Create();
@@ -28,8 +26,6 @@ MainMenu::MainMenu(std::string sceneName, GLFWwindow* wind)
 	colorCorrectEnt = Entity::Create();
 	bloomEnt = Entity::Create();
 
-	/*play = ModelManager::FindMesh(buttonFile);
-	options = ModelManager::FindMesh(buttonFile);*/
 	back = ModelManager::FindMesh(backFile);
 }
 
@@ -59,25 +55,13 @@ void MainMenu::InitScene()
 
 	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
 
+	//MAKE A LOADING SCREEN SHADER FOR RENDERING THE LOADING SCREEN IMAGE SO THE LIGHT DOESN'T SHOW IN THE LOADING SCREEN
+
 #pragma endregion
 
 #pragma region Texture Stuff
-	Texture2DData::sptr playMap = Texture2DData::LoadFromFile("Textures/Buttons/Default/Play.png");
-	Texture2DData::sptr optionsMap = Texture2DData::LoadFromFile("Textures/Buttons/Default/Option.png");
-	Texture2DData::sptr backMap = Texture2DData::LoadFromFile("Textures/MainMenuBackground.png");
-	Texture2DData::sptr loadMap = Texture2DData::LoadFromFile("Textures/Loading.jpg");
-
-	Texture2D::sptr diffusePlay = Texture2D::Create();
-	diffusePlay->LoadData(playMap);
-
-	Texture2D::sptr diffuseOptions = Texture2D::Create();
-	diffuseOptions->LoadData(optionsMap);
-
-	Texture2D::sptr diffuseBack = Texture2D::Create();
-	diffuseBack->LoadData(backMap);
-
-	Texture2D::sptr diffuseLoad = Texture2D::Create();
-	diffuseLoad->LoadData(loadMap);
+	Texture2D::sptr backMap = Texture2D::LoadFromFile("Textures/Title_ScreenFinal.png");
+	Texture2D::sptr loadMap = Texture2D::LoadFromFile("Textures/Loading_Screen.png");
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -86,42 +70,32 @@ void MainMenu::InitScene()
 	Texture2D::sptr texture2 = Texture2D::Create(desc);
 	texture2->Clear();
 
-	/*playMat.Albedo = diffusePlay;
-	optionsMat.Albedo = diffuseOptions;*/
-	backMat.Albedo = diffuseBack;
-	loadMat.Albedo = diffuseLoad;
+	backMat.Albedo = backMap;
+	loadMat.Albedo = loadMap;
+	clearMat.Albedo = texture2;
 
 #pragma endregion
 
-	/*auto& playTrans = playButton.Add<Transform>();
-	playTrans.SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
-	playTrans.SetScale(glm::vec3(1.5f));
-	playTrans.SetRotationY(332.0f);
+	//Background screen
+	backEnt.Add<Transform>();
+	backEnt.Get<Transform>().SetPosition(glm::vec3(0.0f, -1.0f, 0.0f));
+	backEnt.Get<Transform>().SetScale(glm::vec3(0.268f));
+	backEnt.Add<MeshRenderer>(backEnt, *back, shader);
 
-	auto& optionsTrans = optionsButton.Add<Transform>();
-	optionsTrans.SetPosition(glm::vec3(0.0f, 0.0f, 6.0f));
-	optionsTrans.SetScale(glm::vec3(1.5f));
-	optionsTrans.SetRotationY(96.0f);*/
+	//Loading screen
+	loadEnt.Add<Transform>();
+	loadEnt.Get<Transform>().SetPosition(glm::vec3(0.0f, 1.0f, -0.5f));
+	loadEnt.Get<Transform>().SetScale(glm::vec3(0.22f));
+	loadEnt.Add<MeshRenderer>(loadEnt, *back, shader);
 
-	auto& backTrans = backEnt.Add<Transform>();
-	backTrans.SetPosition(glm::vec3(0.0f, -1.0f, 0.0f));
-	backTrans.SetScale(glm::vec3(0.268f));
-
-	auto& loadTrans = loadEnt.Add<Transform>();
-	loadTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
-	loadTrans.SetScale(glm::vec3(0.268f));
-
-	/*auto& playMesh = playButton.Add<MeshRenderer>(playButton, *play, shader);
-	auto& optionsMesh = optionsButton.Add<MeshRenderer>(optionsButton, *options, shader);*/
-	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *back, shader);
-	auto& loadMesh = loadEnt.Add<MeshRenderer>(loadEnt, *back, shader);
-
+	//Basic camera
 	auto& camera = camEnt.Add<Camera>();
 	camera.SetPosition(glm::vec3(0, 10, 0)); // Set initial position
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
 
+	//Post-Processing Effects
 	int width, height;
 	glfwGetWindowSize(window, &width, &height);
 
@@ -153,33 +127,32 @@ void MainMenu::InitScene()
 
 void MainMenu::Update(float dt)
 {
-
 	time += dt;
 	shader->SetUniform("u_Time", time);
 
-	/*auto& playTrans = playButton.Get<Transform>();
-	auto& optionsTrans = optionsButton.Get<Transform>();*/
+	//Get references to transforms
 	auto& backTrans = backEnt.Get<Transform>();
 	auto& loadTrans = loadEnt.Get<Transform>();
 
+	//Get reference to camera
 	auto& camera = camEnt.Get<Camera>();
 
-	/*auto& playMesh = playButton.Get<MeshRenderer>();
-	auto& optionsMesh = optionsButton.Get<MeshRenderer>();*/
+	//Get reference to mesh
 	auto& backMesh = backEnt.Get<MeshRenderer>();
 	auto& loadMesh = loadEnt.Get<MeshRenderer>();
 
-	/*glm::mat4 transformPlay = playTrans.GetModelMatrix();
-	glm::mat4 transformOptions = optionsTrans.GetModelMatrix();*/
+	//Load the model matrix
 	glm::mat4 transformBack = backTrans.GetModelMatrix();
 	glm::mat4 transformLoad = loadTrans.GetModelMatrix();
 
+	//Switch scenes
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
 		loadModels = true;
 		isLoading = true;
 	}
 
+	//Post-Effect 
 	auto basicEffect = &FBO.Get<PostEffect>();
 
 	basicEffect->Clear();
@@ -189,13 +162,23 @@ void MainMenu::Update(float dt)
 		effects[i]->Clear();
 	}
 
-
 	basicEffect->BindBuffer(0);
 
-	shader->Bind();
-	shader->SetUniform("s_Diffuse", 0);
-	backMat.Albedo->Bind(0);
-	backMesh.Render(camera, transformBack);
+	//Render objects
+	if (isTextured) 
+	{
+		shader->Bind();
+		shader->SetUniform("s_Diffuse", 0);
+		backMat.Albedo->Bind(0);
+		backMesh.Render(camera, transformBack);
+	}
+	else
+	{
+		shader->Bind();
+		shader->SetUniform("s_Diffuse", 0);
+		clearMat.Albedo->Bind(0);
+		backMesh.Render(camera, transformBack);
+	}
 
 	if (isLoading)
 	{

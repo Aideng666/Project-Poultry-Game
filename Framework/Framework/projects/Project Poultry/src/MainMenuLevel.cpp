@@ -14,6 +14,7 @@
 MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	: Scene(sceneName, wind)
 {
+#pragma region Entities
 	mainPlayer = Entity::Create();
 	startDoor = Entity::Create();
 	optionDoor = Entity::Create();
@@ -32,8 +33,9 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	sepiaEnt = Entity::Create();
 	colorCorrectEnt = Entity::Create();
 	bloomEnt = Entity::Create();
+#pragma endregion
 
-
+#pragma region Model Manager
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
 	wall = ModelManager::FindMesh(wallFile);
@@ -67,6 +69,8 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	walk12 = ModelManager::FindMesh(walkFile12);
 	walk13 = ModelManager::FindMesh(walkFile13);
 	walk14 = ModelManager::FindMesh(walkFile14);
+#pragma endregion
+
 }
 
 void MainMenuLevel::InitScene()
@@ -87,7 +91,7 @@ void MainMenuLevel::InitScene()
 
 	glm::vec3 lightPos = glm::vec3(0.0f, 10.0f, 0.0f);
 	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
-	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
+	glm::vec3 lightCol = glm::vec3(1.f);
 	float     lightAmbientPow = 0.20f;
 	float     lightSpecularPow = 1.0f;
 	glm::vec3 ambientCol = glm::vec3(1.0f);
@@ -131,10 +135,12 @@ void MainMenuLevel::InitScene()
 #pragma endregion
 
 #pragma region Transforms
-	//TRANSFORMS
+
+	//Floor Transform
 	auto& floorTrans = floorEnt.Add<Transform>();
 	floorTrans.SetScale(glm::vec3(2.0f));
 
+	//Wall Transforms
 	auto& leftTrans = leftWall.Add<Transform>();
 	leftTrans.SetPositionX(-39.0f);
 	leftTrans.SetRotationY(90.0f);
@@ -166,10 +172,12 @@ void MainMenuLevel::InitScene()
 	backTrans.SetPositionY(9.0f);
 	backTrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
 
+	//Player Transform
 	auto& playerTrans = mainPlayer.Add<Transform>();
 	playerTrans.SetPosition(glm::vec3(0.0f, 2.0f, 0.0f));
 	playerTrans.SetRotationY(0.0f);
 
+	//Door Transforms
 	auto& startTrans = startDoor.Add<Transform>();
 	startTrans.SetPosition(glm::vec3(0.0f, -1.0f, -38.0f));
 	startTrans.SetScale(glm::vec3(1.5f));
@@ -184,6 +192,7 @@ void MainMenuLevel::InitScene()
 	exitTrans.SetScale(glm::vec3(1.5f));
 	exitTrans.SetRotationY(-45.0f);
 
+	//Text Transforms
 	auto& sTrans = startEnt.Add<Transform>();
 	sTrans.SetPosition(glm::vec3(-4.0f, 2.5f, -25.0f));
 	sTrans.SetScale(glm::vec3(4.0f));
@@ -214,12 +223,11 @@ void MainMenuLevel::InitScene()
 	auto& rightACol = rightAngledWall.Add<AABB>(rightAngledWall, mainPlayer);
 	auto& backCol = backWall.Add<AABB>(backWall, mainPlayer);
 	auto& startCol = startDoor.Add<AABB>(startDoor, mainPlayer);
-	//startCol.SetComplete(false);
 	auto& optCol = optionDoor.Add<AABB>(optionDoor, mainPlayer);
-	//optCol.SetComplete(false);
 	auto& exitCol = exitDoor.Add<AABB>(exitDoor, mainPlayer);
-	//exitCol.SetComplete(false);
 
+#pragma region Animation Frames
+	//Door Anim
 	doorFrames.push_back(std::unique_ptr<Mesh>(door1));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door3));
@@ -231,7 +239,7 @@ void MainMenuLevel::InitScene()
 	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
 
-
+	//Walking Anim
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk2));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk3));
@@ -246,7 +254,9 @@ void MainMenuLevel::InitScene()
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk12));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk13));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk14));
+#pragma endregion
 
+	//Load the meshes
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
 	auto& backMesh = backWall.Add<MeshRenderer>(backWall, *wall, shader);
 	auto& leftMesh = leftWall.Add<MeshRenderer>(leftWall, *wall, shader);
@@ -261,6 +271,7 @@ void MainMenuLevel::InitScene()
 	auto& oMesh = optEnt.Add<MeshRenderer>(optEnt, *options, shader);
 	auto& eMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, shader);
 
+	//Load the animations
 	auto& startAnimator = startDoor.Add<MorphAnimation>(startDoor);
 	startAnimator.SetTime(0.2f);
 	startAnimator.SetFrames(doorFrames);
@@ -280,14 +291,14 @@ void MainMenuLevel::InitScene()
 	walkAnimator.SetTime(0.05f);
 	walkAnimator.SetFrames(walkFrames);
 
+	//Camera Object
 	auto& camera = camEnt.Add<Camera>();
-
-	camera.SetPosition(glm::vec3(0, 25, 15)); // Set initial position
+	camera.SetPosition(glm::vec3(0, 15, 15)); // Set initial position
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
 
-
+#pragma region Post-Effects
 	int width, height;
 	glfwGetWindowSize(window, &width, &height);
 
@@ -315,11 +326,11 @@ void MainMenuLevel::InitScene()
 	colorCorrectEffect->Init(width, height);
 
 	effects.push_back(colorCorrectEffect);
+#pragma endregion
 }
 
 void MainMenuLevel::Update(float dt)
 {
-
 	time += dt;
 	shader->SetUniform("u_Time", time);
 	animShader->SetUniform("u_Time", time);
