@@ -22,29 +22,49 @@ public:
 
 private:
 
+	//Main Player
 	Entity mainPlayer;
+	//Floor
 	Entity floorEnt;
+	//Walls
 	Entity leftEnt, rightEnt, backEnt;
-	Entity andEnt;
-	Entity wireEnt, wireEnt2, wireEnt3;
-	Entity buttonEnt, buttonEnt2;
+	//Door
 	Entity doorEnt, doorCloseEnt;
-	Entity coilEnt, coilPowered;
-	Entity pipeEnt;
-	Entity boxEnt;
-	Entity particleEnt;
-	Entity wirePowered, wirePowered2, wirePowered3;
-	Entity tutEnt;
+	//Level complete
 	Entity completeEnt;
-	Entity ventEnt;
-	Entity panelEnt;
-	Entity pipesEnt;
+	//AND-Gate
+	Entity andEnt;
+	//Buttons
+	Entity buttonEnt, buttonEnt2;
+	//Wires
+	Entity wireEnt, wireEnt2, wireEnt3;
+	//Tesla Coil
+	Entity coilEnt;
+	//Box
+	Entity boxEnt, boxEnt2, boxEnt3, boxEnt4, boxEnt5;
+	//Panel
+	Entity panelEnt, panelEnt2;
+	//Vent
+	Entity bigVentEnt;
+	Entity smallVentEnt, smallVentEnt2;
+	//Pipe
+	Entity pipeEntS, pipeEntC;
+
+	//Wire's when powered
+	//Entity wirePowered, wirePowered2, wirePowered3;
+	//Entity coilPowered;
+	//Old Pipe
+	//Entity pipeEnt;
+	//Particle
+	//Entity particleEnt;
+	//Interact
+	//Entity tutEnt;
 
 	Shader::sptr shader, animShader, particleShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, wireMat, coilMat, gateMat, completeMat;
+	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, gateMat, wireMat, wirePowerMat, boxMat, panelMat, ventMat, pipeMatS, pipeMatC; /*, coilMat*/
 
 	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames, doorCloseFrames;
 
@@ -54,20 +74,24 @@ private:
 	Mesh* doorM;
 	Mesh* doorCloseM;
 	Mesh* gate;
+	Mesh* buttonM;
 	Mesh* wireL;
 	Mesh* wireR;
 	Mesh* wireC;
-	Mesh* buttonM;
-	Mesh* wireLPower;
-	Mesh* wireRPower;
-	Mesh* wireCPower;
 	Mesh* coil;
-	Mesh* coilP;
-	Mesh* pipe;
-	Mesh* tut;
-	Mesh* vent;
-	Mesh* pipes;
+	Mesh* boxM;
 	Mesh* panel;
+	Mesh* ventB;
+	Mesh* ventS;
+	Mesh* pipeS;
+	Mesh* pipeC;
+	//Mesh* wireLPower;
+	//Mesh* wireRPower;
+	//Mesh* wireCPower;
+	//Mesh* coilP;
+	//Mesh* pipe;
+	//Mesh* tut;
+	//Mesh* pipes;
 
 	Mesh* door1;
 	Mesh* door2;
@@ -100,17 +124,23 @@ private:
 	std::string wallFile = "Models/Wall.obj";
 	std::string doorFile = "Models/DoorFrames/Door0.obj";
 	std::string gateFile = "Models/AndGate.obj";
-	std::string wire1File = "Models/LeftWire.obj";
-	std::string wire2File = "Models/RightWire.obj";
-	std::string wire3File = "Models/CoilWire.obj";
 	std::string buttonFile = "Models/Button.obj";
+	std::string wire1File = "Models/New_Level1Wire1.obj";
+	std::string wire2File = "Models/New_Level1Wire2.obj";
+	std::string wire3File = "Models/New2_Level1Wire3.obj";
 	std::string coilFile = "Models/TeslaCoil.obj";
-	std::string pipeFile = "Models/Level1Pipe.obj";
-	std::string tutFile = "Models/Interact.obj";
-	std::string ventFile = "Models/VentSmall.obj";
+	std::string boxFile = "Models/Box.obj";
 	std::string panelFile = "Models/Panel.obj";
-	std::string pipesFile = "Models/Pipes2.obj";
-
+	std::string ventFileB = "Models/New2_VentLarge.obj";
+	std::string ventFileS = "Models/New_VentSmall.obj";
+	std::string pipesFileS = "Models/New2_StraightPipe.obj";
+	std::string pipesFileC = "Models/New2_CurvedPipe.obj";
+	/*std::string wire1File = "Models/LeftWire.obj";
+	std::string wire2File = "Models/RightWire.obj";
+	std::string wire3File = "Models/CoilWire.obj";*/
+	//std::string pipeFile = "Models/Level1Pipe.obj";
+	//std::string tutFile = "Models/Interact.obj";
+	//std::string ventFile = "Models/VentSmall.obj";
 
 	std::string doorFile1 = "Models/DoorFrames/Door0.obj";
 	std::string doorFile2 = "Models/DoorFrames/Door1.obj";
@@ -166,5 +196,4 @@ private:
 		buttonEnt2.Get<Lever>().SetPowered(!buttonEnt2.Get<Lever>().GetPowered());
 		std::cout << "Button 2 Power: " << buttonEnt2.Get<Lever>().GetPowered() << std::endl;
 		});
-
 };
