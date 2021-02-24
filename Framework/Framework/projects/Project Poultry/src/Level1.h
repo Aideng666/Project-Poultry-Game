@@ -49,12 +49,6 @@ private:
 	Entity smallVentEnt, smallVentEnt2;
 	//Pipe
 	Entity pipeEntS, pipeEntC;
-
-	//Wire's when powered
-	//Entity wirePowered, wirePowered2, wirePowered3;
-	//Entity coilPowered;
-	//Old Pipe
-	//Entity pipeEnt;
 	//Particle
 	//Entity particleEnt;
 	//Interact
@@ -85,13 +79,7 @@ private:
 	Mesh* ventS;
 	Mesh* pipeS;
 	Mesh* pipeC;
-	//Mesh* wireLPower;
-	//Mesh* wireRPower;
-	//Mesh* wireCPower;
-	//Mesh* coilP;
-	//Mesh* pipe;
 	//Mesh* tut;
-	//Mesh* pipes;
 
 	Mesh* door1;
 	Mesh* door2;
@@ -135,12 +123,7 @@ private:
 	std::string ventFileS = "Models/New_VentSmall.obj";
 	std::string pipesFileS = "Models/New2_StraightPipe.obj";
 	std::string pipesFileC = "Models/New2_CurvedPipe.obj";
-	/*std::string wire1File = "Models/LeftWire.obj";
-	std::string wire2File = "Models/RightWire.obj";
-	std::string wire3File = "Models/CoilWire.obj";*/
-	//std::string pipeFile = "Models/Level1Pipe.obj";
 	//std::string tutFile = "Models/Interact.obj";
-	//std::string ventFile = "Models/VentSmall.obj";
 
 	std::string doorFile1 = "Models/DoorFrames/Door0.obj";
 	std::string doorFile2 = "Models/DoorFrames/Door1.obj";

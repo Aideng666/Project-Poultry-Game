@@ -26,11 +26,11 @@ private:
 	Entity floorEnt;
 	Entity leftEnt, rightEnt, backEnt;
 	Entity andEnt, andEnt2;
-	Entity wireEnt, wireEnt2, wireEnt3, wireEnt4, wireEnt5;
 	Entity buttonEnt, buttonEnt2, buttonEnt3;
 	Entity doorEnt;
 	Entity coilEnt, coilPowered;
-	Entity wirePowered, wirePowered2, wirePowered3, wirePowered4, wirePowered5;
+	//Entity wireEnt, wireEnt2, wireEnt3, wireEnt4, wireEnt5;
+	//Entity wirePowered, wirePowered2, wirePowered3, wirePowered4, wirePowered5;
 	Entity completeEnt;
 
 	Shader::sptr shader, animShader, untexturedShader;
@@ -46,17 +46,17 @@ private:
 	Mesh* wall;
 	Mesh* doorM;
 	Mesh* gate;
-	Mesh* wireM1;
-	Mesh* wireM2;
-	Mesh* wireM3;
-	Mesh* wireM4;
-	Mesh* wireM5;
+	//Mesh* wireM1;
+	//Mesh* wireM2;
+	//Mesh* wireM3;
+	//Mesh* wireM4;
+	//Mesh* wireM5;
 	Mesh* buttonM;
-	Mesh* wire1Power;
-	Mesh* wire2Power;
-	Mesh* wire3Power;
-	Mesh* wire4Power;
-	Mesh* wire5Power;
+	//Mesh* wire1Power;
+	//Mesh* wire2Power;
+	//Mesh* wire3Power;
+	//Mesh* wire4Power;
+	//Mesh* wire5Power;
 	Mesh* coil;
 	Mesh* coilP;
 
@@ -145,19 +145,19 @@ private:
 
 	bool showLevelComplete = false;
 
-	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
-		buttonEnt.Get<Lever>().SetPowered(!buttonEnt.Get<Lever>().GetPowered());
-		std::cout << "Button 1 Power: " << buttonEnt.Get<Lever>().GetPowered() << std::endl;
-		});
-
-	KeyPressWatcher button2Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
-		buttonEnt2.Get<Lever>().SetPowered(!buttonEnt2.Get<Lever>().GetPowered());
-		std::cout << "Button 2 Power: " << buttonEnt2.Get<Lever>().GetPowered() << std::endl;
-		});
-
-	KeyPressWatcher button3Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
-		buttonEnt3.Get<Lever>().SetPowered(!buttonEnt3.Get<Lever>().GetPowered());
-		std::cout << "Button 3 Power: " << buttonEnt3.Get<Lever>().GetPowered() << std::endl;
-		});
+	//KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+	//	buttonEnt.Get<Lever>().SetPowered(!buttonEnt.Get<Lever>().GetPowered());
+	//	std::cout << "Button 1 Power: " << buttonEnt.Get<Lever>().GetPowered() << std::endl;
+	//	});
+	//
+	//KeyPressWatcher button2Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+	//	buttonEnt2.Get<Lever>().SetPowered(!buttonEnt2.Get<Lever>().GetPowered());
+	//	std::cout << "Button 2 Power: " << buttonEnt2.Get<Lever>().GetPowered() << std::endl;
+	//	});
+	//
+	//KeyPressWatcher button3Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+	//	buttonEnt3.Get<Lever>().SetPowered(!buttonEnt3.Get<Lever>().GetPowered());
+	//	std::cout << "Button 3 Power: " << buttonEnt3.Get<Lever>().GetPowered() << std::endl;
+	//	});
 
 };

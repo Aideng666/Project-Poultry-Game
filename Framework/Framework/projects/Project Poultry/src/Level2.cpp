@@ -18,6 +18,7 @@ using namespace freebird;
 Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	: Scene(sceneName, wind)
 {
+#pragma region Entities
 	mainPlayer = Entity::Create();
 	floorEnt = Entity::Create();
 	leftEnt = Entity::Create();
@@ -26,20 +27,20 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	buttonEnt = Entity::Create();
 	buttonEnt2 = Entity::Create();
 	buttonEnt3 = Entity::Create();
-	wireEnt = Entity::Create();
-	wireEnt2 = Entity::Create();
-	wireEnt3 = Entity::Create();
-	wireEnt4 = Entity::Create();
-	wireEnt5 = Entity::Create();
+	//wireEnt = Entity::Create();
+	//wireEnt2 = Entity::Create();
+	//wireEnt3 = Entity::Create();
+	//wireEnt4 = Entity::Create();
+	//wireEnt5 = Entity::Create();
 	andEnt = Entity::Create();
 	andEnt2 = Entity::Create();
 	doorEnt = Entity::Create();
 	coilEnt = Entity::Create();
-	wirePowered = Entity::Create();
-	wirePowered2 = Entity::Create();
-	wirePowered3 = Entity::Create();
-	wirePowered4 = Entity::Create();
-	wirePowered5 = Entity::Create();
+	//wirePowered = Entity::Create();
+	//wirePowered2 = Entity::Create();
+	//wirePowered3 = Entity::Create();
+	//wirePowered4 = Entity::Create();
+	//wirePowered5 = Entity::Create();
 	completeEnt = Entity::Create();
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
@@ -47,22 +48,24 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	colorCorrectEnt = Entity::Create();
 	bloomEnt = Entity::Create();
 	pauseEnt = Entity::Create();
+#pragma endregion
 
+#pragma region Model Manager
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
 	wall = ModelManager::FindMesh(wallFile);
 	doorM = ModelManager::FindMesh(doorFile);
 	buttonM = ModelManager::FindMesh(buttonFile);
-	wireM1 = ModelManager::FindMesh(wire1File, glm::vec3(1.0f, 0.0f, 0.0f));
-	wireM2 = ModelManager::FindMesh(wire2File, glm::vec3(1.0f, 0.0f, 0.0f));
-	wireM3 = ModelManager::FindMesh(wire3File, glm::vec3(1.0f, 0.0f, 0.0f));
-	wireM4 = ModelManager::FindMesh(wire4File, glm::vec3(1.0f, 0.0f, 0.0f));
-	wireM5 = ModelManager::FindMesh(wire5File, glm::vec3(1.0f, 0.0f, 0.0f));
-	wire1Power = ModelManager::FindMesh(wire1File, glm::vec3(0.0f, 1.0f, 0.0f));
-	wire2Power = ModelManager::FindMesh(wire2File, glm::vec3(0.0f, 1.0f, 0.0f));
-	wire3Power = ModelManager::FindMesh(wire3File, glm::vec3(0.0f, 1.0f, 0.0f));
-	wire4Power = ModelManager::FindMesh(wire4File, glm::vec3(0.0f, 1.0f, 0.0f));
-	wire5Power = ModelManager::FindMesh(wire5File, glm::vec3(0.0f, 1.0f, 0.0f));
+	//wireM1 = ModelManager::FindMesh(wire1File, glm::vec3(1.0f, 0.0f, 0.0f));
+	//wireM2 = ModelManager::FindMesh(wire2File, glm::vec3(1.0f, 0.0f, 0.0f));
+	//wireM3 = ModelManager::FindMesh(wire3File, glm::vec3(1.0f, 0.0f, 0.0f));
+	//wireM4 = ModelManager::FindMesh(wire4File, glm::vec3(1.0f, 0.0f, 0.0f));
+	//wireM5 = ModelManager::FindMesh(wire5File, glm::vec3(1.0f, 0.0f, 0.0f));
+	//wire1Power = ModelManager::FindMesh(wire1File, glm::vec3(0.0f, 1.0f, 0.0f));
+	//wire2Power = ModelManager::FindMesh(wire2File, glm::vec3(0.0f, 1.0f, 0.0f));
+	//wire3Power = ModelManager::FindMesh(wire3File, glm::vec3(0.0f, 1.0f, 0.0f));
+	//wire4Power = ModelManager::FindMesh(wire4File, glm::vec3(0.0f, 1.0f, 0.0f));
+	//wire5Power = ModelManager::FindMesh(wire5File, glm::vec3(0.0f, 1.0f, 0.0f));
 	gate = ModelManager::FindMesh(gateFile, glm::vec3(0.0f, 0.0f, 1.0f));
 	coil = ModelManager::FindMesh(coilFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	coilP = ModelManager::FindMesh(coilFile, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -92,6 +95,8 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	walk12 = ModelManager::FindMesh(walkFile12);
 	walk13 = ModelManager::FindMesh(walkFile13);
 	walk14 = ModelManager::FindMesh(walkFile14);
+#pragma endregion
+
 }
 
 void Level2::InitScene()
@@ -180,34 +185,37 @@ void Level2::InitScene()
 
 #pragma endregion
 
-	//Transforms
+#pragma region Transforms
+	//Player transform
 	auto& playerTrans = mainPlayer.Add<Transform>();
 	playerTrans.SetPosition(glm::vec3(0.0f, 1.0f, 30.0f));
 	playerTrans.SetRotationY(0.0f);
 
+	//Floor transform
 	auto& groundTrans = floorEnt.Add<Transform>();
 
+	//Wall transforms
 	auto& leftTrans = leftEnt.Add<Transform>();
-
 	auto& rightTrans = rightEnt.Add<Transform>();
-
 	auto& backTrans = backEnt.Add<Transform>();
 
-	auto& wireTrans = wireEnt.Add<Transform>();
-	wireTrans.SetPosition(glm::vec3(-115.5f, 1.0f, -3.0f));
+	//Wire Transforms
+	//auto& wireTrans = wireEnt.Add<Transform>();
+	//wireTrans.SetPosition(glm::vec3(-115.5f, 1.0f, -3.0f));
 
-	auto& wireTrans2 = wireEnt2.Add<Transform>();
-	wireTrans2.SetPosition(glm::vec3(-115.5f, 1.0f, -3.0f));
+	//auto& wireTrans2 = wireEnt2.Add<Transform>();
+	//wireTrans2.SetPosition(glm::vec3(-115.5f, 1.0f, -3.0f));
 
-	auto& wireTrans3 = wireEnt3.Add<Transform>();
-	wireTrans3.SetPosition(glm::vec3(-115.5f, 1.0f, -3.0f));
+	//auto& wireTrans3 = wireEnt3.Add<Transform>();
+	//wireTrans3.SetPosition(glm::vec3(-115.5f, 1.0f, -3.0f));
 
-	auto& wireTrans4 = wireEnt4.Add<Transform>();
-	wireTrans4.SetPosition(glm::vec3(-115.5f, 1.0f, -3.0f));
+	//auto& wireTrans4 = wireEnt4.Add<Transform>();
+	//wireTrans4.SetPosition(glm::vec3(-115.5f, 1.0f, -3.0f));
 
-	auto& wireTrans5 = wireEnt5.Add<Transform>();
-	wireTrans5.SetPosition(glm::vec3(-115.5f, 1.0f, -3.0f));
+	//auto& wireTrans5 = wireEnt5.Add<Transform>();
+	//wireTrans5.SetPosition(glm::vec3(-115.5f, 1.0f, -3.0f));
 
+	//Button transforms
 	auto& buttonTrans = buttonEnt.Add<Transform>();
 	buttonTrans.SetPosition(glm::vec3(-31.5f, -2.0f, 25.5f));
 
@@ -217,10 +225,12 @@ void Level2::InitScene()
 	auto& buttonTrans3 = buttonEnt3.Add<Transform>();
 	buttonTrans3.SetPosition(glm::vec3(18.7f, -2.0f, 25.5f));
 
+	//Door transforms
 	auto& doorTrans = doorEnt.Add<Transform>();
 	doorTrans.SetPosition(glm::vec3(0.0f, -1.0f, -36.0f));
 	doorTrans.SetScale(glm::vec3(1.5f));
 
+	//Gate transforms
 	auto& gateTrans = andEnt.Add<Transform>();
 	gateTrans.SetPosition(glm::vec3(-21.0f, 1.0f, 1.0f));
 	gateTrans.SetRotationY(-90.0f);
@@ -231,17 +241,21 @@ void Level2::InitScene()
 	gateTrans2.SetRotationY(-90.0f);
 	gateTrans2.SetScale(glm::vec3(2.0f));
 
+	//Coil transform
 	auto& coilTrans = coilEnt.Add<Transform>();
 	coilTrans.SetPosition(glm::vec3(-17.0f, 2.0f, -34.0f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 
+	//Level complete transform
 	auto& completeTrans = completeEnt.Add<Transform>();
 	completeTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	completeTrans.SetScale(glm::vec3(0.22f));
 
+	//Pause UI transforms
 	auto& pauseTrans = pauseEnt.Add<Transform>();
 	pauseTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	pauseTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
+#pragma endregion
 
 	//AABB
 	auto& leftCol = leftEnt.Add<AABB>(leftEnt, mainPlayer);
@@ -254,28 +268,30 @@ void Level2::InitScene()
 	doorCol.SetComplete(false);
 
 	//Buttons
-	auto& button = buttonEnt.Add<Lever>(wireEnt);
-	button.SetPowered(false);
-	auto& button2 = buttonEnt2.Add<Lever>(wireEnt2);
-	button2.SetPowered(false);
-	auto& button3 = buttonEnt3.Add<Lever>(wireEnt3);
-	button3.SetPowered(false);
+	//auto& button = buttonEnt.Add<Lever>(wireEnt);
+	//button.SetPowered(false);
+	//auto& button2 = buttonEnt2.Add<Lever>(wireEnt2);
+	//button2.SetPowered(false);
+	//auto& button3 = buttonEnt3.Add<Lever>(wireEnt3);
+	//button3.SetPowered(false);
 
 	//Wires
-	auto& wire = wireEnt.Add<Wire>(buttonEnt);
-	auto& wire2 = wireEnt2.Add<Wire>(buttonEnt2);
-	auto& wire3 = wireEnt3.Add<Wire>(buttonEnt3);
-	auto& wire4 = wireEnt4.Add<Wire>(andEnt);
-	auto& wire5 = wireEnt5.Add<Wire>(andEnt2);
+	//auto& wire = wireEnt.Add<Wire>(buttonEnt);
+	//auto& wire2 = wireEnt2.Add<Wire>(buttonEnt2);
+	//auto& wire3 = wireEnt3.Add<Wire>(buttonEnt3);
+	//auto& wire4 = wireEnt4.Add<Wire>(andEnt);
+	//auto& wire5 = wireEnt5.Add<Wire>(andEnt2);
 
 	//Gates
-	auto& andGate = andEnt.Add<AndGate>(wireEnt, wireEnt2, wireEnt4);
-	auto& andGate2 = andEnt2.Add<AndGate>(wireEnt4, wireEnt3, doorEnt);
+	//auto& andGate = andEnt.Add<AndGate>(wireEnt, wireEnt2, wireEnt4);
+	//auto& andGate2 = andEnt2.Add<AndGate>(wireEnt4, wireEnt3, doorEnt);
 
 	//Door
 	auto& door = doorEnt.Add<Door>();
 	door.SetOpen(false);
 
+#pragma region Animation Frames
+	//Door Animations
 	doorFrames.push_back(std::unique_ptr<Mesh>(door1));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door3));
@@ -287,7 +303,7 @@ void Level2::InitScene()
 	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
 
-
+	//Walking Animations
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk2));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk3));
@@ -302,8 +318,9 @@ void Level2::InitScene()
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk12));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk13));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk14));
+#pragma endregion
 
-
+#pragma region Mesh Loading
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floor, shader);
 	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *wall, shader);
@@ -314,16 +331,16 @@ void Level2::InitScene()
 	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
 	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
 	auto& buttonMesh3 = buttonEnt3.Add<MeshRenderer>(buttonEnt3, *buttonM, shader);
-	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireM1, shader);
-	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireM2, shader);
-	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireM3, shader);
-	auto& wireMesh4 = wireEnt4.Add<MeshRenderer>(wireEnt4, *wireM4, shader);
-	auto& wireMesh5 = wireEnt5.Add<MeshRenderer>(wireEnt5, *wireM5, shader);
-	auto& wireMeshP = wirePowered.Add<MeshRenderer>(wirePowered, *wire1Power, shader);
-	auto& wireMeshP2 = wirePowered2.Add<MeshRenderer>(wirePowered2, *wire2Power, shader);
-	auto& wireMeshP3 = wirePowered3.Add<MeshRenderer>(wirePowered3, *wire3Power, shader);
-	auto& wireMeshP4 = wirePowered4.Add<MeshRenderer>(wirePowered4, *wire4Power, shader);
-	auto& wireMeshP5 = wirePowered5.Add<MeshRenderer>(wirePowered5, *wire5Power, shader);
+	//auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireM1, shader);
+	//auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireM2, shader);
+	//auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireM3, shader);
+	//auto& wireMesh4 = wireEnt4.Add<MeshRenderer>(wireEnt4, *wireM4, shader);
+	//auto& wireMesh5 = wireEnt5.Add<MeshRenderer>(wireEnt5, *wireM5, shader);
+	//auto& wireMeshP = wirePowered.Add<MeshRenderer>(wirePowered, *wire1Power, shader);
+	//auto& wireMeshP2 = wirePowered2.Add<MeshRenderer>(wirePowered2, *wire2Power, shader);
+	//auto& wireMeshP3 = wirePowered3.Add<MeshRenderer>(wirePowered3, *wire3Power, shader);
+	//auto& wireMeshP4 = wirePowered4.Add<MeshRenderer>(wirePowered4, *wire4Power, shader);
+	//auto& wireMeshP5 = wirePowered5.Add<MeshRenderer>(wirePowered5, *wire5Power, shader);
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, untexturedShader);
 	auto& coilMeshP = coilPowered.Add<MeshRenderer>(coilPowered, *coilP, untexturedShader);
@@ -338,10 +355,10 @@ void Level2::InitScene()
 	auto& walkAnimator = mainPlayer.Add<MorphAnimation>(mainPlayer);
 	walkAnimator.SetTime(0.05f);
 	walkAnimator.SetFrames(walkFrames);
+#pragma endregion
 
-
+	//Camera Objects
 	auto& camera = camEnt.Add<Camera>();
-
 	camera.SetPosition(glm::vec3(0, 15, mainPlayer.Get<Transform>().GetPositionZ() + 12)); // Set initial position
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
@@ -353,6 +370,7 @@ void Level2::InitScene()
 	orthoCam.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	orthoCam.SetFovDegrees(90.0f); // Set an initial FOV
 
+#pragma region Post-Effects
 	int width, height;
 	glfwGetWindowSize(window, &width, &height);
 
@@ -380,11 +398,11 @@ void Level2::InitScene()
 	colorCorrectEffect->Init(width, height);
 
 	effects.push_back(colorCorrectEffect);
+#pragma endregion
 }
 
 void Level2::Update(float dt)
 {
-
 	time += dt;
 	shader->SetUniform("u_Time", time);
 	pauseShader->SetUniform("u_Time", time);
@@ -412,7 +430,7 @@ void Level2::Update(float dt)
 	animShader->SetUniform("u_Position", currentPos);
 	untexturedShader->SetUniform("u_Position", currentPos);
 
-	//Transforms
+#pragma region Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
 	auto& groundTrans = floorEnt.Get<Transform>();
 	auto& leftTrans = leftEnt.Get<Transform>();
@@ -422,11 +440,11 @@ void Level2::Update(float dt)
 	auto& buttonTrans = buttonEnt.Get<Transform>();
 	auto& buttonTrans2 = buttonEnt2.Get<Transform>();
 	auto& buttonTrans3 = buttonEnt3.Get<Transform>();
-	auto& wireTrans = wireEnt.Get<Transform>();
-	auto& wireTrans2 = wireEnt2.Get<Transform>();
-	auto& wireTrans3 = wireEnt3.Get<Transform>();
-	auto& wireTrans4 = wireEnt4.Get<Transform>();
-	auto& wireTrans5 = wireEnt5.Get<Transform>();
+	//auto& wireTrans = wireEnt.Get<Transform>();
+	//auto& wireTrans2 = wireEnt2.Get<Transform>();
+	//auto& wireTrans3 = wireEnt3.Get<Transform>();
+	//auto& wireTrans4 = wireEnt4.Get<Transform>();
+	//auto& wireTrans5 = wireEnt5.Get<Transform>();
 	auto& gateTrans = andEnt.Get<Transform>();
 	auto& gateTrans2 = andEnt2.Get<Transform>();
 	auto& coilTrans = coilEnt.Get<Transform>();
@@ -443,10 +461,13 @@ void Level2::Update(float dt)
 	rightTrans.SetPositionX(39.0f);
 	rightTrans.SetRotationY(90.0f);
 	rightTrans.SetPositionY(9.0f);
+#pragma endregion
 
 	auto& camera = camEnt.Get<Camera>();
 	auto& orthoCam = uiCamEnt.Get<Camera>();
+	camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
 
+	//Get references to the meshes
 	auto& meshMain = mainPlayer.Get<MorphRenderer>();
 	auto& groundMesh = floorEnt.Get<MeshRenderer>();
 	auto& leftMesh = leftEnt.Get<MeshRenderer>();
@@ -456,16 +477,16 @@ void Level2::Update(float dt)
 	auto& buttonMesh = buttonEnt.Get<MeshRenderer>();
 	auto& buttonMesh2 = buttonEnt2.Get<MeshRenderer>();
 	auto& buttonMesh3 = buttonEnt3.Get<MeshRenderer>();
-	auto& wireMesh = wireEnt.Get<MeshRenderer>();
-	auto& wireMesh2 = wireEnt2.Get<MeshRenderer>();
-	auto& wireMesh3 = wireEnt3.Get<MeshRenderer>();
-	auto& wireMesh4 = wireEnt4.Get<MeshRenderer>();
-	auto& wireMesh5 = wireEnt5.Get<MeshRenderer>();
-	auto& wireMeshP = wirePowered.Get<MeshRenderer>();
-	auto& wireMeshP2 = wirePowered2.Get<MeshRenderer>();
-	auto& wireMeshP3 = wirePowered3.Get<MeshRenderer>();
-	auto& wireMeshP4 = wirePowered4.Get<MeshRenderer>();
-	auto& wireMeshP5 = wirePowered5.Get<MeshRenderer>();
+	//auto& wireMesh = wireEnt.Get<MeshRenderer>();
+	//auto& wireMesh2 = wireEnt2.Get<MeshRenderer>();
+	//auto& wireMesh3 = wireEnt3.Get<MeshRenderer>();
+	//auto& wireMesh4 = wireEnt4.Get<MeshRenderer>();
+	//auto& wireMesh5 = wireEnt5.Get<MeshRenderer>();
+	//auto& wireMeshP = wirePowered.Get<MeshRenderer>();
+	//auto& wireMeshP2 = wirePowered2.Get<MeshRenderer>();
+	//auto& wireMeshP3 = wirePowered3.Get<MeshRenderer>();
+	//auto& wireMeshP4 = wirePowered4.Get<MeshRenderer>();
+	//auto& wireMeshP5 = wirePowered5.Get<MeshRenderer>();
 	auto& gateMesh = andEnt.Get<MeshRenderer>();
 	auto& gateMesh2 = andEnt2.Get<MeshRenderer>();
 	auto& coilMesh = coilEnt.Get<MeshRenderer>();
@@ -473,8 +494,7 @@ void Level2::Update(float dt)
 	auto& completeMesh = completeEnt.Get<MeshRenderer>();
 	auto& pauseMesh = pauseEnt.Get<MeshRenderer>();
 
-	camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
-
+	//Get reference to the model matrix
 	glm::mat4 transform = playerTrans.GetModelMatrix();
 	glm::mat4 transformGround = groundTrans.GetModelMatrix();
 	glm::mat4 transformLeft = leftTrans.GetModelMatrix();
@@ -484,28 +504,28 @@ void Level2::Update(float dt)
 	glm::mat4 transformButton = buttonTrans.GetModelMatrix();
 	glm::mat4 transformButton2 = buttonTrans2.GetModelMatrix();
 	glm::mat4 transformButton3 = buttonTrans3.GetModelMatrix();
-	glm::mat4 transformWire = wireTrans.GetModelMatrix();
-	glm::mat4 transformWire2 = wireTrans2.GetModelMatrix();
-	glm::mat4 transformWire3 = wireTrans3.GetModelMatrix();
-	glm::mat4 transformWire4 = wireTrans4.GetModelMatrix();
-	glm::mat4 transformWire5 = wireTrans5.GetModelMatrix();
+	//glm::mat4 transformWire = wireTrans.GetModelMatrix();
+	//glm::mat4 transformWire2 = wireTrans2.GetModelMatrix();
+	//glm::mat4 transformWire3 = wireTrans3.GetModelMatrix();
+	//glm::mat4 transformWire4 = wireTrans4.GetModelMatrix();
+	//glm::mat4 transformWire5 = wireTrans5.GetModelMatrix();
 	glm::mat4 transformGate = gateTrans.GetModelMatrix();
 	glm::mat4 transformGate2 = gateTrans2.GetModelMatrix();
 	glm::mat4 transformCoil = coilTrans.GetModelMatrix();
 	glm::mat4 transformComplete = completeTrans.GetModelMatrix();
 	glm::mat4 transformPause = pauseTrans.GetModelMatrix();
 
-	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
-		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
-		button1Watch.Poll(window);
-
-	if (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -2.0f
-		&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
-		button2Watch.Poll(window);
-
-	if (playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -2.0f
-		&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() > -3.0f)
-		button3Watch.Poll(window);
+	//if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
+	//	&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
+	//	button1Watch.Poll(window);
+	//
+	//if (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -2.0f
+	//	&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
+	//	button2Watch.Poll(window);
+	//
+	//if (playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -2.0f
+	//	&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() > -3.0f)
+	//	button3Watch.Poll(window);
 
 	pauseWatch.Poll(window);
 
@@ -571,6 +591,7 @@ void Level2::Update(float dt)
 	{
 		if (!showLevelComplete)
 		{
+			//Bind and render the player and door using the animation shader
 			animShader->Bind();
 			animShader->SetUniform("s_Diffuse", 0);
 			drumstickMat.Albedo->Bind(0);
@@ -581,6 +602,7 @@ void Level2::Update(float dt)
 			doorMesh.Render(camera, transformDoor);
 			doorMat.Albedo->Unbind(1);
 
+			//Bind and render the pause UI using the pause shader
 			pauseShader->Bind();
 			pauseShader->SetUniform("s_Diffuse", 0);
 			pauseMat.Albedo->Bind(0);
@@ -598,33 +620,12 @@ void Level2::Update(float dt)
 			floorMat.Albedo->Bind(0);
 			groundMesh.Render(camera, transformGround);
 
-			//Wires
+			//Walls
 			shader->SetUniform("s_Diffuse", 1);
-			wireMat.Albedo->Bind(1);
-			if (wireEnt.Get<Wire>().GetIsPowered())
-				wireMeshP.Render(camera, transformWire);
-			else
-				wireMesh.Render(camera, transformWire);
-
-			if (wireEnt2.Get<Wire>().GetIsPowered())
-				wireMeshP2.Render(camera, transformWire2);
-			else
-				wireMesh2.Render(camera, transformWire2);
-
-			if (wireEnt3.Get<Wire>().GetIsPowered())
-				wireMeshP3.Render(camera, transformWire3);
-			else
-				wireMesh3.Render(camera, transformWire3);
-
-			if (wireEnt4.Get<Wire>().GetIsPowered())
-				wireMeshP4.Render(camera, transformWire4);
-			else
-				wireMesh4.Render(camera, transformWire4);
-
-			if (wireEnt5.Get<Wire>().GetIsPowered())
-				wireMeshP5.Render(camera, transformWire5);
-			else
-				wireMesh5.Render(camera, transformWire5);
+			wallMat.Albedo->Bind(1);
+			leftMesh.Render(camera, transformLeft);
+			rightMesh.Render(camera, transformRight);
+			backMesh.Render(camera, transformBack);
 
 			//Button
 			shader->SetUniform("s_Diffuse", 2);
@@ -633,24 +634,47 @@ void Level2::Update(float dt)
 			buttonMesh2.Render(camera, transformButton2);
 			buttonMesh3.Render(camera, transformButton3);
 
-			//Walls
 			shader->SetUniform("s_Diffuse", 3);
-			wallMat.Albedo->Bind(3);
-			leftMesh.Render(camera, transformLeft);
-			rightMesh.Render(camera, transformRight);
-			backMesh.Render(camera, transformBack);
-
-			shader->SetUniform("s_Diffuse", 4);
-			gateMat.Albedo->Bind(4);
+			gateMat.Albedo->Bind(3);
 			gateMesh.Render(camera, transformGate);
 			gateMesh2.Render(camera, transformGate2);		
 
-			untexturedShader->Bind();
+			//Wires
+			//shader->SetUniform("s_Diffuse", 1);
+			//wireMat.Albedo->Bind(1);
+			//if (wireEnt.Get<Wire>().GetIsPowered())
+			//	wireMeshP.Render(camera, transformWire);
+			//else
+			//	wireMesh.Render(camera, transformWire);
+			//
+			//if (wireEnt2.Get<Wire>().GetIsPowered())
+			//	wireMeshP2.Render(camera, transformWire2);
+			//else
+			//	wireMesh2.Render(camera, transformWire2);
+			//
+			//if (wireEnt3.Get<Wire>().GetIsPowered())
+			//	wireMeshP3.Render(camera, transformWire3);
+			//else
+			//	wireMesh3.Render(camera, transformWire3);
+			//
+			//if (wireEnt4.Get<Wire>().GetIsPowered())
+			//	wireMeshP4.Render(camera, transformWire4);
+			//else
+			//	wireMesh4.Render(camera, transformWire4);
+			//
+			//if (wireEnt5.Get<Wire>().GetIsPowered())
+			//	wireMeshP5.Render(camera, transformWire5);
+			//else
+			//	wireMesh5.Render(camera, transformWire5);
 
-			if (wireEnt5.Get<Wire>().GetIsPowered())
-				coilMeshP.Render(camera, transformCoil);
-			else
-				coilMesh.Render(camera, transformCoil);
+			//Bind and render the objects with no textures
+			untexturedShader->Bind();
+			coilMesh.Render(camera, transformCoil);
+
+			//if (wireEnt5.Get<Wire>().GetIsPowered())
+			//	coilMeshP.Render(camera, transformCoil);
+			//else
+			//	coilMesh.Render(camera, transformCoil);
 		}
 	}
 	else
@@ -679,58 +703,67 @@ void Level2::Update(float dt)
 			shader->Bind();
 			shader->SetUniform("s_Diffuse", 0);
 			clearMat.Albedo->Bind(0);
+			leftMesh.Render(camera, transformLeft);
+			rightMesh.Render(camera, transformRight);
+			backMesh.Render(camera, transformBack);
 			groundMesh.Render(camera, transformGround);
-
-			shader->SetUniform("s_Diffuse", 1);
-			clearMat.Albedo->Bind(1);
-			if (wireEnt.Get<Wire>().GetIsPowered())
-				wireMeshP.Render(camera, transformWire);
-			else
-				wireMesh.Render(camera, transformWire);
-
-			if (wireEnt2.Get<Wire>().GetIsPowered())
-				wireMeshP2.Render(camera, transformWire2);
-			else
-				wireMesh2.Render(camera, transformWire2);
-
-			if (wireEnt3.Get<Wire>().GetIsPowered())
-				wireMeshP3.Render(camera, transformWire3);
-			else
-				wireMesh3.Render(camera, transformWire3);
-
-			if (wireEnt4.Get<Wire>().GetIsPowered())
-				wireMeshP4.Render(camera, transformWire4);
-			else
-				wireMesh4.Render(camera, transformWire4);
-
-			if (wireEnt5.Get<Wire>().GetIsPowered())
-				wireMeshP5.Render(camera, transformWire5);
-			else
-				wireMesh5.Render(camera, transformWire5);
-
-			shader->SetUniform("s_Diffuse", 2);
-			clearMat.Albedo->Bind(2);
+			gateMesh.Render(camera, transformGate);
+			gateMesh2.Render(camera, transformGate2);
 			buttonMesh.Render(camera, transformButton);
 			buttonMesh2.Render(camera, transformButton2);
 			buttonMesh3.Render(camera, transformButton3);
 
-			shader->SetUniform("s_Diffuse", 3);
-			clearMat.Albedo->Bind(3);
-			leftMesh.Render(camera, transformLeft);
-			rightMesh.Render(camera, transformRight);
-			backMesh.Render(camera, transformBack);
+			//shader->SetUniform("s_Diffuse", 1);
+			//clearMat.Albedo->Bind(1);
+			//if (wireEnt.Get<Wire>().GetIsPowered())
+			//	wireMeshP.Render(camera, transformWire);
+			//else
+			//	wireMesh.Render(camera, transformWire);
+			//
+			//if (wireEnt2.Get<Wire>().GetIsPowered())
+			//	wireMeshP2.Render(camera, transformWire2);
+			//else
+			//	wireMesh2.Render(camera, transformWire2);
+			//
+			//if (wireEnt3.Get<Wire>().GetIsPowered())
+			//	wireMeshP3.Render(camera, transformWire3);
+			//else
+			//	wireMesh3.Render(camera, transformWire3);
+			//
+			//if (wireEnt4.Get<Wire>().GetIsPowered())
+			//	wireMeshP4.Render(camera, transformWire4);
+			//else
+			//	wireMesh4.Render(camera, transformWire4);
+			//
+			//if (wireEnt5.Get<Wire>().GetIsPowered())
+			//	wireMeshP5.Render(camera, transformWire5);
+			//else
+			//	wireMesh5.Render(camera, transformWire5);
 
-			shader->SetUniform("s_Diffuse", 4);
-			clearMat.Albedo->Bind(4);
-			gateMesh.Render(camera, transformGate);
-			gateMesh2.Render(camera, transformGate2);
+			//shader->SetUniform("s_Diffuse", 2);
+			//clearMat.Albedo->Bind(2);
+			//buttonMesh.Render(camera, transformButton);
+			//buttonMesh2.Render(camera, transformButton2);
+			//buttonMesh3.Render(camera, transformButton3);
+
+			//shader->SetUniform("s_Diffuse", 3);
+			//clearMat.Albedo->Bind(3);
+			//leftMesh.Render(camera, transformLeft);
+			//rightMesh.Render(camera, transformRight);
+			//backMesh.Render(camera, transformBack);
+
+			//shader->SetUniform("s_Diffuse", 4);
+			//clearMat.Albedo->Bind(4);
+			//gateMesh.Render(camera, transformGate);
+			//gateMesh2.Render(camera, transformGate2);
 
 			untexturedShader->Bind();
+			coilMesh.Render(camera, transformCoil);
 
-			if (wireEnt5.Get<Wire>().GetIsPowered())
-				coilMeshP.Render(camera, transformCoil);
-			else
-				coilMesh.Render(camera, transformCoil);
+			//if (wireEnt5.Get<Wire>().GetIsPowered())
+			//	coilMeshP.Render(camera, transformCoil);
+			//else
+			//	coilMesh.Render(camera, transformCoil);
 		}
 	}
 
@@ -750,6 +783,7 @@ void Level2::Update(float dt)
 
 	effects[activeEffect]->DrawToScreen();
 
+	//Update the collisions
 	leftEnt.Get<AABB>().Update();
 	rightEnt.Get<AABB>().Update();
 	backEnt.Get<AABB>().Update();
@@ -757,23 +791,23 @@ void Level2::Update(float dt)
 	coilEnt.Get<AABB>().Update();
 	andEnt.Get<AABB>().Update();
 	andEnt2.Get<AABB>().Update();
-	buttonEnt.Get<Lever>().Update();
-	buttonEnt2.Get<Lever>().Update();
-	buttonEnt3.Get<Lever>().Update();
-	wireEnt.Get<Wire>().Update();
-	wireEnt2.Get<Wire>().Update();
-	wireEnt3.Get<Wire>().Update();
-	wireEnt4.Get<Wire>().Update();
-	wireEnt5.Get<Wire>().Update();
-	andEnt.Get<AndGate>().Update();
-	andEnt2.Get<AndGate>().Update();
+	//andEnt.Get<AndGate>().Update();
+	//andEnt2.Get<AndGate>().Update();
+	//buttonEnt.Get<Lever>().Update();
+	//buttonEnt2.Get<Lever>().Update();
+	//buttonEnt3.Get<Lever>().Update();
+	//wireEnt.Get<Wire>().Update();
+	//wireEnt2.Get<Wire>().Update();
+	//wireEnt3.Get<Wire>().Update();
+	//wireEnt4.Get<Wire>().Update();
+	//wireEnt5.Get<Wire>().Update();
 	
+	//Door Logic
 	if (doorEnt.Get<Door>().GetOpen())
 		doorEnt.Get<MorphAnimation>().Update(dt);
 
 	if (doorEnt.Get<AABB>().GetComplete())
 		showLevelComplete = true;
-
 }
 
 void Level2::Unload()
@@ -785,4 +819,3 @@ void Level2::Unload()
 		scene = nullptr;
 	}
 }
-
