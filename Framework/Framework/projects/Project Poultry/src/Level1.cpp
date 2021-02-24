@@ -279,7 +279,7 @@ void Level1::InitScene()
 
 	//Coil transform
 	auto& coilTrans = coilEnt.Add<Transform>();
-	coilTrans.SetPosition(glm::vec3(-18.2f, 2.0f, -32.7f));
+	coilTrans.SetPosition(glm::vec3(-18.2f, 1.0f, -32.7f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 	coilTrans.SetRotationY(180.0f);
 
@@ -508,7 +508,7 @@ void Level1::InitScene()
 	 
 	//Camera Objects
 	auto& camera = camEnt.Add<Camera>();
-	camera.SetPosition(glm::vec3(0, 12, mainPlayer.Get<Transform>().GetPositionZ() + 12)); // Set initial position //15y
+	camera.SetPosition(glm::vec3(0, 12, mainPlayer.Get<Transform>().GetPositionZ() + 12)); // Set initial position 
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
@@ -887,23 +887,23 @@ void Level1::Update(float dt)
 			if (wireEnt2.Get<Wire>().GetIsPowered())
 			{
 				wirePowerMat.Albedo->Bind(4);
-				wireMesh2.Render(camera, transformWire);
+				wireMesh2.Render(camera, transformWire2);
 			}
 			else
 			{
 				wireMat.Albedo->Bind(4);
-				wireMesh2.Render(camera, transformWire);
+				wireMesh2.Render(camera, transformWire2);
 			}
 
 			if (wireEnt3.Get<Wire>().GetIsPowered())
 			{
 				wirePowerMat.Albedo->Bind(4);
-				wireMesh3.Render(camera, transformWire);
+				wireMesh3.Render(camera, transformWire3);
 			}
 			else
 			{
 				wireMat.Albedo->Bind(4);
-				wireMesh3.Render(camera, transformWire);
+				wireMesh3.Render(camera, transformWire3);
 			}
 
 			//Boxes
