@@ -108,6 +108,7 @@ protected:
 	bool isTextured = true;
 
 	bool isPaused = false;
+	bool tabletOpen = false;
 
 	int lightNum = 5;
 

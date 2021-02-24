@@ -51,6 +51,7 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	pipeEntS = Entity::Create();
 	pipeEntC = Entity::Create();
 	tabletEnt = Entity::Create();
+	tabletScreenEnt = Entity::Create();
 	tutEnt = Entity::Create();
 	//particleEnt = Entity::Create();
 
@@ -192,6 +193,7 @@ void Level1::InitScene()
 	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Replay.png");
 	Texture2D::sptr diffuseExit = Texture2D::LoadFromFile("Textures/Buttons/Default/Exit.png");
 	Texture2D::sptr diffuseTablet = Texture2D::LoadFromFile("Textures/TabletTexture.png");
+	Texture2D::sptr diffuseTabletScreen = Texture2D::LoadFromFile("Textures/AndGateTablet.png");
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -219,6 +221,7 @@ void Level1::InitScene()
 	retryMat.Albedo = diffuseRetry;
 	exitMat.Albedo = diffuseExit;
 	tabletMat.Albedo = diffuseTablet;
+	tabletScreenMat.Albedo = diffuseTabletScreen;
 	clearMat.Albedo = texture2;
 #pragma endregion
 
@@ -356,6 +359,9 @@ void Level1::InitScene()
 	tabletTrans.SetPosition(glm::vec3(0.0f, 1.5f, 10.0f));
 	tabletTrans.SetRotationX(90.0f);
 
+	auto& tabletScreenTrans = tabletScreenEnt.Add<Transform>();
+	tabletScreenTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	tabletScreenTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
 
 	//Interact text transform
 	auto& tutTrans = tutEnt.Add<Transform>();
@@ -479,6 +485,7 @@ void Level1::InitScene()
 	auto& pipeMesh2 = pipeEntC.Add<MeshRenderer>(pipeEntC, *pipeC, shader);
 	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *floor, pauseShader);
+	auto& tabletScreenMesh = tabletScreenEnt.Add<MeshRenderer>(tabletScreenEnt, *floor, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
 	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
 	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
@@ -606,6 +613,7 @@ void Level1::Update(float dt)
 	auto& retryTrans = retryEnt.Get<Transform>();
 	auto& exitTrans = exitEnt.Get<Transform>();
 	auto& tabletTrans = tabletEnt.Get<Transform>();
+	auto& tabletScreenTrans = tabletScreenEnt.Get<Transform>();
 	
 	backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
@@ -618,7 +626,7 @@ void Level1::Update(float dt)
 	rightTrans.SetRotationY(90.0f);
 	rightTrans.SetPositionY(9.0f);
 
-	tutTrans.SetRotationY(tutTrans.GetRotation().y + 100 * dt);
+	//tutTrans.SetRotationY(tutTrans.GetRotation().y + 100 * dt);
 #pragma endregion
 	
 	auto& camera = camEnt.Get<Camera>();
@@ -659,6 +667,7 @@ void Level1::Update(float dt)
 	auto& retryMesh = retryEnt.Get<MeshRenderer>();
 	auto& exitMesh = exitEnt.Get<MeshRenderer>();
 	auto& tabletMesh = tabletEnt.Get<MeshRenderer>();
+	auto& tabletScreenMesh = tabletScreenEnt.Get<MeshRenderer>();
 
 	//Get reference to the model matrix
 	glm::mat4 transform = playerTrans.GetModelMatrix();
@@ -694,6 +703,7 @@ void Level1::Update(float dt)
 	glm::mat4 transformRetry = retryTrans.GetModelMatrix();
 	glm::mat4 transformExit = exitTrans.GetModelMatrix();
 	glm::mat4 transformTablet = tabletTrans.GetModelMatrix();
+	glm::mat4 transformTabletScreen = tabletScreenTrans.GetModelMatrix();
 
 	//Particle Stuff
 	//auto& particleSystem = particleEnt.Get<ParticleSystem>();
@@ -705,6 +715,11 @@ void Level1::Update(float dt)
 	if (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
 		button2Watch.Poll(window);
+
+	if ((playerTrans.GetPositionX() > -3.0f && playerTrans.GetPositionX() < 3.0f
+		&& playerTrans.GetPositionZ() > 7.0f && playerTrans.GetPositionZ() < 13.0f
+		&& !tabletOpen) || tabletOpen)
+		tabletWatch.Poll(window);
 
 	pauseWatch.Poll(window);
 
@@ -819,6 +834,14 @@ void Level1::Update(float dt)
 			if (isPaused)
 			{
 				exitMesh.Render(orthoCam, transformExit);
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 3);
+			tabletScreenMat.Albedo->Bind(3);
+
+			if (tabletOpen)
+			{
+				tabletScreenMesh.Render(orthoCam, transformTabletScreen);
 			}
 
 			//Bind and render the other objects using the basic shader
