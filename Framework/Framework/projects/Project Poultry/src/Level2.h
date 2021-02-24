@@ -41,14 +41,18 @@ private:
 	Entity wireEnt, wireEnt2, wireEnt3, wireEnt4, wireEnt5;
 	//Tesla Coil 
 	Entity coilEnt;
-	//Box
+	//Boxes
 	Entity boxEnt, boxEnt2, boxEnt3, boxEnt4;
+	//Panels
+	Entity panelEnt, panelEnt2, panelEnt3;
+	//Vents
+	Entity ventEnt, ventEnt2;
 
 	Shader::sptr shader, animShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, gateMat, wireMat, wirePowerMat, completeMat, boxMat;
+	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, gateMat, wireMat, wirePowerMat, completeMat, boxMat, panelMat, ventMat;
 
 	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames;
 
@@ -67,6 +71,8 @@ private:
 	Mesh* wireM5;
 	Mesh* coil;
 	Mesh* boxM;
+	Mesh* panel;
+	Mesh* vent;
 
 	Mesh* door1;
 	Mesh* door2;
@@ -109,6 +115,8 @@ private:
 	std::string wire5File = "Models/New_Level2Wire5.obj";
 	std::string coilFile = "Models/TeslaCoil.obj";
 	std::string boxFile = "Models/Box.obj";
+	std::string panelFile = "Models/Panel.obj";
+	std::string ventFile = "Models/New_VentSmall.obj";
 
 	std::string doorFile1 = "Models/DoorFrames/Door0.obj";
 	std::string doorFile2 = "Models/DoorFrames/Door1.obj";

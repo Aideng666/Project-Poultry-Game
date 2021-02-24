@@ -41,6 +41,13 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	coilEnt = Entity::Create();
 	completeEnt = Entity::Create();
 	boxEnt = Entity::Create();
+	boxEnt2 = Entity::Create();
+	boxEnt3 = Entity::Create();
+	boxEnt4 = Entity::Create();
+	panelEnt = Entity::Create();
+	panelEnt2 = Entity::Create();
+	ventEnt = Entity::Create();
+	ventEnt2 = Entity::Create();
 
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
@@ -66,6 +73,8 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	wireM5 = ModelManager::FindMesh(wire5File);
 	coil = ModelManager::FindMesh(coilFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	boxM = ModelManager::FindMesh(boxFile);
+	panel = ModelManager::FindMesh(panelFile);
+	vent = ModelManager::FindMesh(ventFile);
 
 	door1 = ModelManager::FindMesh(doorFile1);
 	door2 = ModelManager::FindMesh(doorFile2);
@@ -159,6 +168,8 @@ void Level2::InitScene()
 	Texture2D::sptr diffuseBox = Texture2D::LoadFromFile("Textures/Box_Texture.png");
 	Texture2D::sptr diffusePipeStraight = Texture2D::LoadFromFile("Textures/Pipe_Straight_Texture.png");
 	Texture2D::sptr diffusePipeCurved = Texture2D::LoadFromFile("Textures/Pipe_Curved_Texture.png");
+	Texture2D::sptr diffusePanel = Texture2D::LoadFromFile("Textures/PanelTexture.png");
+	Texture2D::sptr diffuseVent = Texture2D::LoadFromFile("Textures/VentTexture.png");
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -180,6 +191,8 @@ void Level2::InitScene()
 	straightPipeMat.Albedo = diffusePipeStraight;
 	curvedPipeMat.Albedo = diffusePipeCurved;
 	boxMat.Albedo = diffuseBox;
+	panelMat.Albedo = diffusePanel;
+	ventMat.Albedo = diffuseVent;
 	clearMat.Albedo = texture2;
 
 #pragma endregion
@@ -275,7 +288,38 @@ void Level2::InitScene()
 	auto& boxTrans = boxEnt.Add<Transform>();
 	boxTrans.SetPosition(glm::vec3(34.f, 4.5f, -33.f));
 
+	auto& boxTrans2 = boxEnt2.Add<Transform>();
+	boxTrans2.SetPosition(glm::vec3(-34.f, 4.5f, -22.f));
 
+	auto& boxTrans3 = boxEnt3.Add<Transform>();
+	boxTrans3.SetPosition(glm::vec3(-35.f, 3.f, -15.f));
+	boxTrans3.SetRotationY(90.f);
+	boxTrans3.SetScale(glm::vec3(0.5f));
+
+	auto& boxTrans4 = boxEnt4.Add<Transform>();
+	boxTrans4.SetPosition(glm::vec3(33.f, 3.5f, -20.f));
+	boxTrans4.SetRotationY(-45.f);
+	boxTrans4.SetScale(glm::vec3(0.684f));
+
+	//Panel transforms
+	auto& panelTrans = panelEnt.Add<Transform>();
+	panelTrans.SetPosition(glm::vec3(20.f, 7.0f, -38.f));
+	panelTrans.SetScale(glm::vec3(2.0f));
+	panelTrans.SetRotationY(-90.0f);
+
+	auto& panelTrans2 = panelEnt2.Add<Transform>();
+	panelTrans2.SetPosition(glm::vec3(24.f, 7.0f, -38.f));
+	panelTrans2.SetScale(glm::vec3(2.0f));
+	panelTrans2.SetRotationY(-90.0f);
+
+	//Vent transforms
+	auto& ventTrans = ventEnt.Add<Transform>();
+	ventTrans.SetPosition(glm::vec3(37.f, 16.0f, 17.f));
+	ventTrans.SetRotationY(180.f);
+
+	auto& ventTrans2 = ventEnt2.Add<Transform>();
+	ventTrans2.SetPosition(glm::vec3(37.f, 16.0f, 28.f));
+	ventTrans2.SetRotationY(180.f);
 
 #pragma endregion
 
@@ -289,6 +333,15 @@ void Level2::InitScene()
 	gateCol2.SetIsAmbient(true);
 	auto& coilCol = coilEnt.Add<AABB>(coilEnt, mainPlayer, 4.0f, 4.0f);
 	coilCol.SetIsAmbient(true);
+	auto& boxCol = boxEnt.Add<AABB>(boxEnt, mainPlayer, 5.0f, 5.0f);
+	boxCol.SetIsAmbient(true);
+	auto& boxCol2 = boxEnt2.Add<AABB>(boxEnt2, mainPlayer, 5.0f, 5.0f);
+	boxCol2.SetIsAmbient(true);
+	auto& boxCol3 = boxEnt3.Add<AABB>(boxEnt3, mainPlayer, 5.0f, 5.0f);
+	boxCol3.SetIsAmbient(true);
+	auto& boxCol4 = boxEnt4.Add<AABB>(boxEnt4, mainPlayer, 5.0f, 5.0f);
+	boxCol4.SetIsAmbient(true);
+
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
 
@@ -370,6 +423,13 @@ void Level2::InitScene()
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, shader);
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *floor, pauseShader);
 	auto& boxMesh = boxEnt.Add<MeshRenderer>(boxEnt, *boxM, shader);
+	auto& boxMesh2 = boxEnt2.Add<MeshRenderer>(boxEnt2, *boxM, shader);
+	auto& boxMesh3 = boxEnt3.Add<MeshRenderer>(boxEnt3, *boxM, shader);
+	auto& boxMesh4 = boxEnt4.Add<MeshRenderer>(boxEnt4, *boxM, shader);
+	auto& panelMesh = panelEnt.Add<MeshRenderer>(panelEnt, *panel, shader);
+	auto& panelMesh2 = panelEnt2.Add<MeshRenderer>(panelEnt2, *panel, shader);
+	auto& ventMesh = ventEnt.Add<MeshRenderer>(ventEnt, *vent, shader);
+	auto& ventMesh2 = ventEnt2.Add<MeshRenderer>(ventEnt2, *vent, shader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -479,6 +539,13 @@ void Level2::Update(float dt)
 	auto& completeTrans = completeEnt.Get<Transform>();
 	auto& pauseTrans = pauseEnt.Get<Transform>();
 	auto& boxTrans = boxEnt.Get<Transform>();
+	auto& boxTrans2 = boxEnt2.Get<Transform>();
+	auto& boxTrans3 = boxEnt3.Get<Transform>();
+	auto& boxTrans4 = boxEnt4.Get<Transform>();
+	auto& panelTrans = panelEnt.Get<Transform>();
+	auto& panelTrans2 = panelEnt2.Get<Transform>();
+	auto& ventTrans = ventEnt.Get<Transform>();
+	auto& ventTrans2 = ventEnt2.Get<Transform>();
 
 	backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
@@ -521,6 +588,13 @@ void Level2::Update(float dt)
 	auto& completeMesh = completeEnt.Get<MeshRenderer>();
 	auto& pauseMesh = pauseEnt.Get<MeshRenderer>();
 	auto& boxMesh = boxEnt.Get<MeshRenderer>();
+	auto& boxMesh2 = boxEnt2.Get<MeshRenderer>();
+	auto& boxMesh3 = boxEnt3.Get<MeshRenderer>();
+	auto& boxMesh4 = boxEnt4.Get<MeshRenderer>();
+	auto& panelMesh = panelEnt.Get<MeshRenderer>();
+	auto& panelMesh2 = panelEnt2.Get<MeshRenderer>();
+	auto& ventMesh = ventEnt.Get<MeshRenderer>();
+	auto& ventMesh2 = ventEnt2.Get<MeshRenderer>();
 
 	//Get reference to the model matrix
 	glm::mat4 transform = playerTrans.GetModelMatrix();
@@ -547,6 +621,13 @@ void Level2::Update(float dt)
 	glm::mat4 transformComplete = completeTrans.GetModelMatrix();
 	glm::mat4 transformPause = pauseTrans.GetModelMatrix();
 	glm::mat4 transformBox = boxTrans.GetModelMatrix();
+	glm::mat4 transformBox2 = boxTrans2.GetModelMatrix();
+	glm::mat4 transformBox3 = boxTrans3.GetModelMatrix();
+	glm::mat4 transformBox4 = boxTrans4.GetModelMatrix();
+	glm::mat4 transformPanel = panelTrans.GetModelMatrix();
+	glm::mat4 transformPanel2 = panelTrans2.GetModelMatrix();
+	glm::mat4 transformVent = ventTrans.GetModelMatrix();
+	glm::mat4 transformVent2 = ventTrans2.GetModelMatrix();
 
 	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
@@ -748,6 +829,21 @@ void Level2::Update(float dt)
 			shader->SetUniform("s_Diffuse", 7);
 			boxMat.Albedo->Bind(7);
 			boxMesh.Render(camera, transformBox);
+			boxMesh2.Render(camera, transformBox2);
+			boxMesh3.Render(camera, transformBox3);
+			boxMesh4.Render(camera, transformBox4);
+
+			//Panels
+			shader->SetUniform("s_Diffuse", 8);
+			panelMat.Albedo->Bind(8);
+			panelMesh.Render(camera, transformPanel);
+			panelMesh2.Render(camera, transformPanel2);
+
+			//Vents
+			shader->SetUniform("s_Diffuse", 9);
+			ventMat.Albedo->Bind(9);
+			ventMesh.Render(camera, transformVent);
+			ventMesh2.Render(camera, transformVent2);
 
 			//Bind and render the objects with no textures
 			untexturedShader->Bind();
@@ -799,6 +895,13 @@ void Level2::Update(float dt)
 			wireMesh4.Render(camera, transformWire4);
 			wireMesh5.Render(camera, transformWire5);
 			boxMesh.Render(camera, transformBox);
+			boxMesh2.Render(camera, transformBox2);
+			boxMesh3.Render(camera, transformBox3);
+			boxMesh4.Render(camera, transformBox4);
+			panelMesh.Render(camera, transformPanel);
+			panelMesh2.Render(camera, transformPanel2);
+			ventMesh.Render(camera, transformVent);
+			ventMesh2.Render(camera, transformVent2);
 
 			untexturedShader->Bind();
 			coilMesh.Render(camera, transformCoil);
@@ -839,7 +942,11 @@ void Level2::Update(float dt)
 	wireEnt3.Get<Wire>().Update();
 	wireEnt4.Get<Wire>().Update();
 	wireEnt5.Get<Wire>().Update();
-	
+	boxEnt.Get<AABB>().Update();
+	boxEnt2.Get<AABB>().Update();
+	boxEnt3.Get<AABB>().Update();
+	boxEnt4.Get<AABB>().Update();
+
 	//Door Logic
 	if (doorEnt.Get<Door>().GetOpen())
 		doorEnt.Get<MorphAnimation>().Update(dt);

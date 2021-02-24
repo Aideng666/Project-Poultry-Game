@@ -307,7 +307,7 @@ void Level1::InitScene()
 	panelTrans.SetRotationY(180.0f);
 
 	auto& panelTrans2 = panelEnt2.Add<Transform>();
-	panelTrans2.SetPosition(glm::vec3(38.f, 7.0f, 9.f));
+	panelTrans2.SetPosition(glm::vec3(38.f, 7.0f, 10.f));
 	panelTrans2.SetScale(glm::vec3(2.0f));
 	panelTrans2.SetRotationY(180.0f);
 
