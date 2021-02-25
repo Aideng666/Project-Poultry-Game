@@ -76,7 +76,7 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	wireL = ModelManager::FindMesh(wire1File);
 	wireR = ModelManager::FindMesh(wire2File);
 	wireC = ModelManager::FindMesh(wire3File);
-	coil = ModelManager::FindMesh(coilFile, glm::vec3(1.0f, 0.0f, 0.0f));
+	coil = ModelManager::FindMesh(coilFile);
 	boxM = ModelManager::FindMesh(boxFile);
 	panel = ModelManager::FindMesh(panelFile);
 	ventB = ModelManager::FindMesh(ventFileB);
@@ -194,6 +194,9 @@ void Level1::InitScene()
 	Texture2D::sptr diffuseExit = Texture2D::LoadFromFile("Textures/Buttons/Default/Exit.png");
 	Texture2D::sptr diffuseTablet = Texture2D::LoadFromFile("Textures/TabletTexture.png");
 	Texture2D::sptr diffuseTabletScreen = Texture2D::LoadFromFile("Textures/AndGateTablet.png");
+	Texture2D::sptr diffuseCoilOff = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_Off.png");
+	Texture2D::sptr diffuseCoilOn = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_On.png");
+
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -222,6 +225,8 @@ void Level1::InitScene()
 	exitMat.Albedo = diffuseExit;
 	tabletMat.Albedo = diffuseTablet;
 	tabletScreenMat.Albedo = diffuseTabletScreen;
+	coilMatOff.Albedo = diffuseCoilOff;
+	coilMatOn.Albedo = diffuseCoilOn;
 	clearMat.Albedo = texture2;
 #pragma endregion
 
@@ -279,7 +284,7 @@ void Level1::InitScene()
 
 	//Coil transform
 	auto& coilTrans = coilEnt.Add<Transform>();
-	coilTrans.SetPosition(glm::vec3(-18.2f, 1.0f, -32.7f));
+	coilTrans.SetPosition(glm::vec3(-18.2f, 1.0f, -34.f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 	coilTrans.SetRotationY(180.0f);
 
@@ -357,7 +362,6 @@ void Level1::InitScene()
 
 	auto& tabletTrans = tabletEnt.Add<Transform>();
 	tabletTrans.SetPosition(glm::vec3(0.0f, 5.0f, 10.0f));
-	//tabletTrans.SetRotationX(90.0f);
 	tabletTrans.SetRotationY(180.0f);
 
 	auto& tabletScreenTrans = tabletScreenEnt.Add<Transform>();
@@ -470,7 +474,7 @@ void Level1::InitScene()
 	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireL, shader);
 	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireR, shader);
 	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireC, shader);
-	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, untexturedShader);
+	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
 	auto& boxMesh = boxEnt.Add<MeshRenderer>(boxEnt, *boxM, shader);
 	auto& boxMesh2 = boxEnt2.Add<MeshRenderer>(boxEnt2, *boxM, shader);
 	auto& boxMesh3 = boxEnt3.Add<MeshRenderer>(boxEnt3, *boxM, shader);
@@ -943,9 +947,22 @@ void Level1::Update(float dt)
 			tabletMat.Albedo->Bind(10);
 			tabletMesh.Render(camera, transformTablet);
 
+			//Tesla Coil
+			shader->SetUniform("s_Diffuse", 11);
+
+			if (!doorEnt.Get<Door>().GetOpen())
+			{
+				coilMatOff.Albedo->Bind(11);
+				coilMesh.Render(camera, transformCoil);
+			}
+			else
+			{
+				coilMatOn.Albedo->Bind(11);
+				coilMesh.Render(camera, transformCoil);
+			}
+
 			//Bind and render the objects with no textures
 			untexturedShader->Bind();
-			coilMesh.Render(camera, transformCoil);
 
 			if (playerTrans.GetPositionX() > -3.0f && playerTrans.GetPositionX() < 3.0f
 				&& playerTrans.GetPositionZ() > 7.0f && playerTrans.GetPositionZ() < 13.0f)
@@ -1021,9 +1038,9 @@ void Level1::Update(float dt)
 			pipeMesh.Render(camera, transformPipe);
 			pipeMesh2.Render(camera, transformPipe2);
 			tabletMesh.Render(camera, transformTablet);
-
-			untexturedShader->Bind();
 			coilMesh.Render(camera, transformCoil);
+
+			//untexturedShader->Bind();
 
 			/*if (!isPaused)
 			{

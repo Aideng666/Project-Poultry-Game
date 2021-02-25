@@ -49,6 +49,7 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	boxEnt4 = Entity::Create();
 	panelEnt = Entity::Create();
 	panelEnt2 = Entity::Create();
+	panelEnt3 = Entity::Create();
 	ventEnt = Entity::Create();
 	ventEnt2 = Entity::Create();
 
@@ -180,6 +181,8 @@ void Level2::InitScene()
 	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Option.png");
 	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Replay.png");
 	Texture2D::sptr diffuseExit = Texture2D::LoadFromFile("Textures/Buttons/Default/Exit.png");
+	Texture2D::sptr diffuseCoilOff = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_Off.png");
+	Texture2D::sptr diffuseCoilOn = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_On.png");
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -206,8 +209,9 @@ void Level2::InitScene()
 	optionMat.Albedo = diffuseOptions;
 	retryMat.Albedo = diffuseRetry;
 	exitMat.Albedo = diffuseExit;
+	coilMatOff.Albedo = diffuseCoilOff;
+	coilMatOn.Albedo = diffuseCoilOn;
 	clearMat.Albedo = texture2;
-
 #pragma endregion
 
 #pragma region Transforms
@@ -283,7 +287,7 @@ void Level2::InitScene()
 
 	//Coil transform
 	auto& coilTrans = coilEnt.Add<Transform>();
-	coilTrans.SetPosition(glm::vec3(-13.7f, 1.0f, -32.5f));
+	coilTrans.SetPosition(glm::vec3(-13.7f, 1.0f, -32.7f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 	coilTrans.SetRotationY(180.0f);
 
@@ -324,6 +328,10 @@ void Level2::InitScene()
 	panelTrans2.SetPosition(glm::vec3(24.f, 7.0f, -38.f));
 	panelTrans2.SetScale(glm::vec3(2.0f));
 	panelTrans2.SetRotationY(-90.0f);
+
+	auto& panelTrans3 = panelEnt3.Add<Transform>();
+	panelTrans3.SetPosition(glm::vec3(-38.f, 7.0f, 17.f));
+	panelTrans3.SetScale(glm::vec3(2.0f));
 
 	//Vent transforms
 	auto& ventTrans = ventEnt.Add<Transform>();
@@ -447,7 +455,7 @@ void Level2::InitScene()
 	auto& wireMesh4 = wireEnt4.Add<MeshRenderer>(wireEnt4, *wireM4, shader);
 	auto& wireMesh5 = wireEnt5.Add<MeshRenderer>(wireEnt5, *wireM5, shader);
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
-	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, untexturedShader);
+	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, shader);
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *floor, pauseShader);
 	auto& boxMesh = boxEnt.Add<MeshRenderer>(boxEnt, *boxM, shader);
@@ -456,6 +464,7 @@ void Level2::InitScene()
 	auto& boxMesh4 = boxEnt4.Add<MeshRenderer>(boxEnt4, *boxM, shader);
 	auto& panelMesh = panelEnt.Add<MeshRenderer>(panelEnt, *panel, shader);
 	auto& panelMesh2 = panelEnt2.Add<MeshRenderer>(panelEnt2, *panel, shader);
+	auto& panelMesh3 = panelEnt3.Add<MeshRenderer>(panelEnt3, *panel, shader);
 	auto& ventMesh = ventEnt.Add<MeshRenderer>(ventEnt, *vent, shader);
 	auto& ventMesh2 = ventEnt2.Add<MeshRenderer>(ventEnt2, *vent, shader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
@@ -575,6 +584,7 @@ void Level2::Update(float dt)
 	auto& boxTrans4 = boxEnt4.Get<Transform>();
 	auto& panelTrans = panelEnt.Get<Transform>();
 	auto& panelTrans2 = panelEnt2.Get<Transform>();
+	auto& panelTrans3 = panelEnt3.Get<Transform>();
 	auto& ventTrans = ventEnt.Get<Transform>();
 	auto& ventTrans2 = ventEnt2.Get<Transform>();
 	auto& optionsTrans = optionEnt.Get<Transform>();
@@ -627,6 +637,7 @@ void Level2::Update(float dt)
 	auto& boxMesh4 = boxEnt4.Get<MeshRenderer>();
 	auto& panelMesh = panelEnt.Get<MeshRenderer>();
 	auto& panelMesh2 = panelEnt2.Get<MeshRenderer>();
+	auto& panelMesh3 = panelEnt3.Get<MeshRenderer>();
 	auto& ventMesh = ventEnt.Get<MeshRenderer>();
 	auto& optionMesh = optionEnt.Get<MeshRenderer>();
 	auto& retryMesh = retryEnt.Get<MeshRenderer>();
@@ -663,6 +674,7 @@ void Level2::Update(float dt)
 	glm::mat4 transformBox4 = boxTrans4.GetModelMatrix();
 	glm::mat4 transformPanel = panelTrans.GetModelMatrix();
 	glm::mat4 transformPanel2 = panelTrans2.GetModelMatrix();
+	glm::mat4 transformPanel3 = panelTrans3.GetModelMatrix();
 	glm::mat4 transformVent = ventTrans.GetModelMatrix();
 	glm::mat4 transformVent2 = ventTrans2.GetModelMatrix();
 	glm::mat4 transformOptions = optionsTrans.GetModelMatrix();
@@ -682,7 +694,6 @@ void Level2::Update(float dt)
 		button3Watch.Poll(window);
 
 	pauseWatch.Poll(window);
-
 
 	if (showLevelComplete)
 	{
@@ -903,6 +914,7 @@ void Level2::Update(float dt)
 			panelMat.Albedo->Bind(8);
 			panelMesh.Render(camera, transformPanel);
 			panelMesh2.Render(camera, transformPanel2);
+			panelMesh3.Render(camera, transformPanel3);
 
 			//Vents
 			shader->SetUniform("s_Diffuse", 9);
@@ -910,9 +922,22 @@ void Level2::Update(float dt)
 			ventMesh.Render(camera, transformVent);
 			ventMesh2.Render(camera, transformVent2);
 
+			//Tesla Coil
+			shader->SetUniform("s_Diffuse", 10);
+
+			if (!doorEnt.Get<Door>().GetOpen())
+			{
+				coilMatOff.Albedo->Bind(10);
+				coilMesh.Render(camera, transformCoil);
+			}
+			else
+			{
+				coilMatOn.Albedo->Bind(10);
+				coilMesh.Render(camera, transformCoil);
+			}
+
 			//Bind and render the objects with no textures
-			untexturedShader->Bind();
-			coilMesh.Render(camera, transformCoil);
+			//untexturedShader->Bind();
 		}
 	}
 	else
@@ -965,11 +990,12 @@ void Level2::Update(float dt)
 			boxMesh4.Render(camera, transformBox4);
 			panelMesh.Render(camera, transformPanel);
 			panelMesh2.Render(camera, transformPanel2);
+			panelMesh3.Render(camera, transformPanel3);
 			ventMesh.Render(camera, transformVent);
 			ventMesh2.Render(camera, transformVent2);
-
-			untexturedShader->Bind();
 			coilMesh.Render(camera, transformCoil);
+
+			//untexturedShader->Bind();
 		}
 	}
 
