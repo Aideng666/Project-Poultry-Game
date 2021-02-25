@@ -39,24 +39,31 @@ public:
 	};
 
 private:
-
+	//Player
 	Entity mainPlayer;
+	//Floor
 	Entity floorEnt;
+	//Walls
 	Entity leftEnt, rightEnt, backEnt;
+	//Gates
 	Entity andEnt, andEnt2, andEnt3;
 	Entity notEnt;
+	//Wires
 	Entity wireEnt, wireEnt2, wireEnt3, wireEnt4, wireEnt5, wireEnt6, wireEnt7;
-	Entity wirePowered, wirePowered2, wirePowered3, wirePowered4, wirePowered5, wirePowered6, wirePowered7;
+	//Buttons
 	Entity buttonEnt, buttonEnt2, buttonEnt3;
+	//Door
 	Entity doorEnt;
-	Entity coilEnt, coilPowered;
+	//Tesla Coil
+	Entity coilEnt;
+	//Level Complete
 	Entity completeEnt;
 
-	Shader::sptr shader, animShader, particleShader, untexturedShader;
+	Shader::sptr shader, animShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, wireMat, coilMat, andMat, notMat, partMat, completeMat;
+	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, andMat, notMat, wireMat, wireMatOn, coilMatOn, coilMatOff, /*wireMat,*/ /*coilMat,*/ /*andMat, notMat,*/ /*partMat,*/ completeMat;
 
 	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames;
 
@@ -64,8 +71,9 @@ private:
 	Mesh* floor;
 	Mesh* wall;
 	Mesh* doorM;
-	Mesh* gate;
+	Mesh* and;
 	Mesh* not;
+	Mesh* buttonM;
 	Mesh* wireM1;
 	Mesh* wireM2;
 	Mesh* wireM3;
@@ -73,16 +81,7 @@ private:
 	Mesh* wireM5;
 	Mesh* wireM6;
 	Mesh* wireM7;
-	Mesh* buttonM;
-	Mesh* wire1Power;
-	Mesh* wire2Power;
-	Mesh* wire3Power;
-	Mesh* wire4Power;
-	Mesh* wire5Power;
-	Mesh* wire6Power;
-	Mesh* wire7Power;
 	Mesh* coil;
-	Mesh* coilP;
 
 	Mesh* door1;
 	Mesh* door2;
@@ -116,13 +115,13 @@ private:
 	std::string doorFile = "Models/DoorFrames/Door0.obj";
 	std::string gateFile = "Models/AndGate.obj";
 	std::string notFile = "Models/NotGate.obj";
-	std::string wire1File = "Models/Level3Wire1.obj";
-	std::string wire2File = "Models/Level3Wire2.obj";
-	std::string wire3File = "Models/Level3Wire3.obj";
-	std::string wire4File = "Models/Level3Wire4.obj";
-	std::string wire5File = "Models/Level3Wire5.obj";
-	std::string wire6File = "Models/Level3Wire6.obj";
-	std::string wire7File = "Models/Level3Wire7.obj";
+	std::string wire1File = "Models/New_Level3Wire1.obj";
+	std::string wire2File = "Models/New_Level3Wire2.obj";
+	std::string wire3File = "Models/New_Level3Wire3.obj";
+	std::string wire4File = "Models/New_Level3Wire4.obj";
+	std::string wire5File = "Models/New_Level3Wire5.obj";
+	std::string wire6File = "Models/New_Level3Wire6.obj";
+	std::string wire7File = "Models/New_Level3Wire7.obj";
 	std::string buttonFile = "Models/Button.obj";
 	std::string coilFile = "Models/TeslaCoil.obj";
 
@@ -181,12 +180,12 @@ private:
 		buttonEnt.Get<Lever>().SetPowered(!buttonEnt.Get<Lever>().GetPowered());
 		std::cout << "Button 1 Power: " << buttonEnt.Get<Lever>().GetPowered() << std::endl;
 		});
-
+	
 	KeyPressWatcher button2Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		buttonEnt2.Get<Lever>().SetPowered(!buttonEnt2.Get<Lever>().GetPowered());
 		std::cout << "Button 2 Power: " << buttonEnt2.Get<Lever>().GetPowered() << std::endl;
 		});
-
+	
 	KeyPressWatcher button3Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		buttonEnt3.Get<Lever>().SetPowered(!buttonEnt3.Get<Lever>().GetPowered());
 		std::cout << "Button 3 Power: " << buttonEnt3.Get<Lever>().GetPowered() << std::endl;
@@ -200,5 +199,4 @@ private:
 		else
 			lightNum = 5;
 		});
-
 };
