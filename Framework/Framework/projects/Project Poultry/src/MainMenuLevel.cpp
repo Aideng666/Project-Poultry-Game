@@ -402,7 +402,7 @@ void MainMenuLevel::Update(float dt)
 	glm::mat4 transformE = eTrans.GetModelMatrix();
 
 #pragma region PlayerMovement
-	Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose);
+	Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
 #pragma endregion
 
 #pragma region CameraMovement

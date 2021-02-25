@@ -315,7 +315,7 @@ void Level2::InitScene()
 
 	auto& boxTrans4 = boxEnt4.Add<Transform>();
 	boxTrans4.SetPosition(glm::vec3(33.f, 3.5f, -20.f));
-	boxTrans4.SetRotationY(-45.f);
+	boxTrans4.SetRotationY(-90.f);
 	boxTrans4.SetScale(glm::vec3(0.684f));
 
 	//Panel transforms
@@ -373,10 +373,12 @@ void Level2::InitScene()
 	boxCol.SetIsAmbient(true);
 	auto& boxCol2 = boxEnt2.Add<AABB>(boxEnt2, mainPlayer, 5.0f, 5.0f);
 	boxCol2.SetIsAmbient(true);
-	auto& boxCol3 = boxEnt3.Add<AABB>(boxEnt3, mainPlayer, 5.0f, 5.0f);
+	auto& boxCol3 = boxEnt3.Add<AABB>(boxEnt3, mainPlayer, 2.5f, 2.5f);
 	boxCol3.SetIsAmbient(true);
-	auto& boxCol4 = boxEnt4.Add<AABB>(boxEnt4, mainPlayer, 5.0f, 5.0f);
+	auto& boxCol4 = boxEnt4.Add<AABB>(boxEnt4, mainPlayer, 3.42f, 3.42f);
 	boxCol4.SetIsAmbient(true);
+	auto& pipeCol = pipeEntC.Add<AABB>(pipeEntC, mainPlayer, 2.5f, 2.5f);
+	pipeCol.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
@@ -605,7 +607,7 @@ void Level2::Update(float dt)
 
 	auto& camera = camEnt.Get<Camera>();
 	auto& orthoCam = uiCamEnt.Get<Camera>();
-	camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
+	//camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
 
 	//Get references to the meshes
 	auto& meshMain = mainPlayer.Get<MorphRenderer>();
@@ -707,7 +709,7 @@ void Level2::Update(float dt)
 #pragma region PlayerMovement
 	if (!showLevelComplete && !isPaused)
 	{
-		Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose);
+		Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
 	}
 #pragma endregion
 
@@ -722,6 +724,16 @@ void Level2::Update(float dt)
 		camFar = true;
 	else
 		camFar = false;
+
+	if (camera.GetPosition().x - playerTrans.GetPositionX() < -2.0f)
+		camLeft = true;
+	else
+		camLeft = false;
+
+	if (camera.GetPosition().x - playerTrans.GetPositionX() > 2.0f)
+		camRight = true;
+	else
+		camRight = false;
 
 	if (!showLevelComplete && !isPaused)
 	{

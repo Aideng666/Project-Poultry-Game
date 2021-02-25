@@ -393,6 +393,8 @@ void Level1::InitScene()
 	boxCol4.SetIsAmbient(true);
 	auto& boxCol5 = boxEnt5.Add<AABB>(boxEnt5, mainPlayer, 5.0f, 5.0f);
 	boxCol5.SetIsAmbient(true);
+	auto& pipeCol = pipeEntC.Add<AABB>(pipeEntC, mainPlayer, 2.5f, 2.5f);
+	pipeCol.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
@@ -635,7 +637,7 @@ void Level1::Update(float dt)
 	
 	auto& camera = camEnt.Get<Camera>();
 	auto& orthoCam = uiCamEnt.Get<Camera>();
-	camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
+	//camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
 
 	//Get references to the meshes
 	auto& meshMain = mainPlayer.Get<MorphRenderer>();
@@ -739,7 +741,7 @@ void Level1::Update(float dt)
 #pragma region PlayerMovement
 	if (!showLevelComplete && !isPaused)
 	{
-		Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose);
+		Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
 	}
 #pragma endregion
 
@@ -753,6 +755,16 @@ void Level1::Update(float dt)
 		camFar = true;
 	else
 		camFar = false;
+
+	if (camera.GetPosition().x - playerTrans.GetPositionX() < -2.0f)
+		camLeft = true;
+	else
+		camLeft = false;
+
+	if (camera.GetPosition().x - playerTrans.GetPositionX() > 2.0f)
+		camRight = true;
+	else
+		camRight = false;
 
 	if (!showLevelComplete && !isPaused)
 	{
@@ -964,10 +976,23 @@ void Level1::Update(float dt)
 			//Bind and render the objects with no textures
 			untexturedShader->Bind();
 
-			if (playerTrans.GetPositionX() > -3.0f && playerTrans.GetPositionX() < 3.0f
-				&& playerTrans.GetPositionZ() > 7.0f && playerTrans.GetPositionZ() < 13.0f)
+			if ((playerTrans.GetPositionX() > -3.0f && playerTrans.GetPositionX() < 3.0f
+				&& playerTrans.GetPositionZ() > 7.0f && playerTrans.GetPositionZ() < 13.0f) 
+					|| (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f 
+					&& playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
+					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f
+					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f) 
+					|| (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 2.0f 
+					&& playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -2.0f
+					&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f 
+					&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f))
 			{
-				tutMesh.Render(orthoCam, transformTut);
+				if (!tabletOpen)
+					tutMesh.Render(orthoCam, transformTut);
+				else
+				{
+
+				}
 			}
 
 			/*if (!isPaused)

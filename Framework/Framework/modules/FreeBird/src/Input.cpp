@@ -30,7 +30,7 @@ namespace freebird
 		return false;
 	}
 
-	void Input::MovePlayer(GLFWwindow* window, Entity player, Entity camEnt, float dt, bool camFar, bool camClose)
+	void Input::MovePlayer(GLFWwindow* window, Entity player, Entity camEnt, float dt, bool camFar, bool camClose, bool camLeft, bool camRight)
 	{
 		auto& playerTrans = player.Get<Transform>();
 		auto& camera = camEnt.Get<Camera>();
@@ -43,7 +43,8 @@ namespace freebird
 			playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
 			playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 10 * dt);
 
-			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+			if (camRight)
+				camera.SetPosition(glm::vec3(camera.GetPosition().x - 10 * dt, camera.GetPosition().y, camera.GetPosition().z));
 
 			if (camFar)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
@@ -59,7 +60,8 @@ namespace freebird
 			playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
 			playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 10 * dt);
 
-			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+			if (camRight)
+				camera.SetPosition(glm::vec3(camera.GetPosition().x - 10 * dt, camera.GetPosition().y, camera.GetPosition().z));
 
 			if (camClose)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
@@ -75,7 +77,8 @@ namespace freebird
 			playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
 			playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 10 * dt);
 
-			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+			if (camLeft)
+				camera.SetPosition(glm::vec3(camera.GetPosition().x + 10 * dt, camera.GetPosition().y, camera.GetPosition().z));
 
 			if (camClose)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
@@ -91,7 +94,8 @@ namespace freebird
 			playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
 			playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 10 * dt);
 
-			camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+			if (camLeft)
+				camera.SetPosition(glm::vec3(camera.GetPosition().x + 10 * dt, camera.GetPosition().y, camera.GetPosition().z));
 
 			if (camFar)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
@@ -106,7 +110,9 @@ namespace freebird
 			{
 				playerTrans.SetPositionX(playerTrans.GetPositionX() - 10 * dt);
 				playerTrans.SetRotationY(270.0f);
-				camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+				
+				if (camRight)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x - 10 * dt, camera.GetPosition().y, camera.GetPosition().z));
 
 				player.Get<MorphAnimation>().Update(dt);
 			}
@@ -118,7 +124,9 @@ namespace freebird
 			{
 				playerTrans.SetPositionX(playerTrans.GetPositionX() + 10 * dt);
 				playerTrans.SetRotationY(90.0f);
-				camera.SetPosition(glm::vec3(playerTrans.GetPositionX(), camera.GetPosition().y, camera.GetPosition().z));
+				
+				if (camLeft)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x + 10 * dt, camera.GetPosition().y, camera.GetPosition().z));
 
 				player.Get<MorphAnimation>().Update(dt);
 			}
