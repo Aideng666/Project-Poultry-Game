@@ -564,7 +564,7 @@ void Level3::Update(float dt)
 
 	auto& camera = camEnt.Get<Camera>();
 	auto& orthoCam = uiCamEnt.Get<Camera>();
-	camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
+	//camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
 
 	//Get references to the meshes
 	auto& meshMain = mainPlayer.Get<MorphRenderer>();
@@ -649,7 +649,7 @@ void Level3::Update(float dt)
 #pragma region PlayerMovement
 	if (!showLevelComplete && !isPaused)
 	{
-		Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose);
+		Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
 	}
 #pragma endregion
 
@@ -664,6 +664,16 @@ void Level3::Update(float dt)
 		camFar = true;
 	else
 		camFar = false;
+
+	if (camera.GetPosition().x - playerTrans.GetPositionX() < -2.0f)
+		camLeft = true;
+	else
+		camLeft = false;
+
+	if (camera.GetPosition().x - playerTrans.GetPositionX() > 2.0f)
+		camRight = true;
+	else
+		camRight = false;
 
 	if (!showLevelComplete && !isPaused)
 	{
