@@ -192,4 +192,13 @@ private:
 		std::cout << "Button 3 Power: " << buttonEnt3.Get<Lever>().GetPowered() << std::endl;
 		});
 
+	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
+		isPaused = !isPaused;
+
+		if (isPaused)
+			lightNum = 2;
+		else
+			lightNum = 5;
+		});
+
 };

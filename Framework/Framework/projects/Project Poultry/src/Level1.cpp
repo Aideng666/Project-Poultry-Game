@@ -356,8 +356,9 @@ void Level1::InitScene()
 	exitTrans.SetRotationY(96.0f);
 
 	auto& tabletTrans = tabletEnt.Add<Transform>();
-	tabletTrans.SetPosition(glm::vec3(0.0f, 1.5f, 10.0f));
-	tabletTrans.SetRotationX(90.0f);
+	tabletTrans.SetPosition(glm::vec3(0.0f, 5.0f, 10.0f));
+	//tabletTrans.SetRotationX(90.0f);
+	tabletTrans.SetRotationY(180.0f);
 
 	auto& tabletScreenTrans = tabletScreenEnt.Add<Transform>();
 	tabletScreenTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
@@ -365,9 +366,8 @@ void Level1::InitScene()
 
 	//Interact text transform
 	auto& tutTrans = tutEnt.Add<Transform>();
-	tutTrans.SetPosition(glm::vec3(0.0f, 10.0f, 10.0f));
-	tutTrans.SetScale(glm::vec3(2.0f));
-	tutTrans.SetRotationX(90.0f);
+	tutTrans.SetPosition(glm::vec3(1.0f, 2.0f, 5.0f));
+	tutTrans.SetScale(glm::vec3(1.0f));
 
 #pragma endregion
 
@@ -626,7 +626,7 @@ void Level1::Update(float dt)
 	rightTrans.SetRotationY(90.0f);
 	rightTrans.SetPositionY(9.0f);
 
-	//tutTrans.SetRotationY(tutTrans.GetRotation().y + 100 * dt);
+	tabletTrans.SetRotationY(tabletTrans.GetRotation().y + 100 * dt);
 #pragma endregion
 	
 	auto& camera = camEnt.Get<Camera>();
@@ -949,7 +949,9 @@ void Level1::Update(float dt)
 
 			if (playerTrans.GetPositionX() > -3.0f && playerTrans.GetPositionX() < 3.0f
 				&& playerTrans.GetPositionZ() > 7.0f && playerTrans.GetPositionZ() < 13.0f)
-				tutMesh.Render(camera, transformTut);
+			{
+				tutMesh.Render(orthoCam, transformTut);
+			}
 
 			/*if (!isPaused)
 			{
