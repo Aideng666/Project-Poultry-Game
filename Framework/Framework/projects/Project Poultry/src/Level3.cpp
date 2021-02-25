@@ -23,6 +23,9 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	leftEnt = Entity::Create();
 	rightEnt = Entity::Create();
 	backEnt = Entity::Create();
+	optionEnt = Entity::Create();
+	exitEnt = Entity::Create();
+	retryEnt = Entity::Create();
 	buttonEnt = Entity::Create();
 	buttonEnt2 = Entity::Create();
 	buttonEnt3 = Entity::Create();
@@ -78,6 +81,10 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	not = ModelManager::FindMesh(notFile, glm::vec3(1.0f, 0.0f, 1.0f));
 	coil = ModelManager::FindMesh(coilFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	coilP = ModelManager::FindMesh(coilFile, glm::vec3(0.0f, 1.0f, 0.0f));
+	options = ModelManager::FindMesh(pauseButtonFile);
+	exit = ModelManager::FindMesh(pauseButtonFile);
+	retry = ModelManager::FindMesh(pauseButtonFile);
+	gate = ModelManager::FindMesh(gateFile);
 
 	door1 = ModelManager::FindMesh(doorFile1);
 	door2 = ModelManager::FindMesh(doorFile2);
@@ -171,6 +178,9 @@ void Level3::InitScene()
 	Texture2D::sptr diffuseBox = Texture2D::LoadFromFile("Textures/Box.png");
 	Texture2D::sptr diffusePipeStraight = Texture2D::LoadFromFile("Textures/StraightPipe.png");
 	Texture2D::sptr diffusePipeCurved = Texture2D::LoadFromFile("Textures/CurvedPipe.png");
+	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Option.png");
+	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Replay.png");
+	Texture2D::sptr diffuseExit = Texture2D::LoadFromFile("Textures/Buttons/Default/Exit.png");
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -194,6 +204,9 @@ void Level3::InitScene()
 	boxMat.Albedo = diffuseBox;
 	straightPipeMat.Albedo = diffusePipeStraight;
 	curvedPipeMat.Albedo = diffusePipeCurved;
+	optionMat.Albedo = diffuseOptions;
+	retryMat.Albedo = diffuseRetry;
+	exitMat.Albedo = diffuseExit;
 
 #pragma endregion
 
@@ -275,6 +288,21 @@ void Level3::InitScene()
 	auto& pauseTrans = pauseEnt.Add<Transform>();
 	pauseTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	pauseTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
+
+	auto& optionsTrans = optionEnt.Add<Transform>();
+	optionsTrans.SetPosition(glm::vec3(-5.0f, 2.0f, 0.0f));
+	optionsTrans.SetScale(glm::vec3(1.5f));
+	optionsTrans.SetRotationY(96.0f);
+
+	auto& retryTrans = retryEnt.Add<Transform>();
+	retryTrans.SetPosition(glm::vec3(0.0f, 2.0f, 0.0f));
+	retryTrans.SetScale(glm::vec3(1.5f));
+	retryTrans.SetRotationY(96.0f);
+
+	auto& exitTrans = exitEnt.Add<Transform>();
+	exitTrans.SetPosition(glm::vec3(5.0f, 2.0f, 0.0f));
+	exitTrans.SetScale(glm::vec3(1.5f));
+	exitTrans.SetRotationY(96.0f);
 
 	//AABB
 	auto& leftCol = leftEnt.Add<AABB>(leftEnt, mainPlayer);
@@ -373,6 +401,9 @@ void Level3::InitScene()
 	auto& coilMeshP = coilPowered.Add<MeshRenderer>(coilPowered, *coilP, untexturedShader);
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, shader);
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *floor, pauseShader);
+	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
+	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
+	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -505,6 +536,9 @@ void Level3::Update(float dt)
 	auto& coilTrans = coilEnt.Get<Transform>();
 	auto& completeTrans = completeEnt.Get<Transform>();
 	auto& pauseTrans = pauseEnt.Get<Transform>();
+	auto& optionsTrans = optionEnt.Get<Transform>();
+	auto& retryTrans = retryEnt.Get<Transform>();
+	auto& exitTrans = exitEnt.Get<Transform>();
 
 	groundTrans.SetScale(glm::vec3(1.2f));
 
@@ -556,6 +590,9 @@ void Level3::Update(float dt)
 	auto& coilMeshP = coilPowered.Get<MeshRenderer>();
 	auto& completeMesh = completeEnt.Get<MeshRenderer>();
 	auto& pauseMesh = pauseEnt.Get<MeshRenderer>();
+	auto& optionMesh = optionEnt.Get<MeshRenderer>();
+	auto& retryMesh = retryEnt.Get<MeshRenderer>();
+	auto& exitMesh = exitEnt.Get<MeshRenderer>();
 
 	camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
 
@@ -581,6 +618,9 @@ void Level3::Update(float dt)
 	glm::mat4 transformGate3 = gateTrans3.GetModelMatrix();
 	glm::mat4 transformCoil = coilTrans.GetModelMatrix();
 	glm::mat4 transformComplete = completeTrans.GetModelMatrix();
+	glm::mat4 transformOptions = optionsTrans.GetModelMatrix();
+	glm::mat4 transformRetry = retryTrans.GetModelMatrix();
+	glm::mat4 transformExit = exitTrans.GetModelMatrix();
 	glm::mat4 transformPause = pauseTrans.GetModelMatrix();
 
 	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
@@ -596,6 +636,7 @@ void Level3::Update(float dt)
 		button3Watch.Poll(window);
 
 	pauseWatch.Poll(window);
+
 
 	if (showLevelComplete)
 	{
@@ -677,6 +718,30 @@ void Level3::Update(float dt)
 			if (isPaused)
 			{
 				pauseMesh.Render(orthoCam, transformPause);
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 1);
+			optionMat.Albedo->Bind(1);
+
+			if (isPaused)
+			{
+				optionMesh.Render(orthoCam, transformOptions);
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 2);
+			retryMat.Albedo->Bind(2);
+
+			if (isPaused)
+			{
+				retryMesh.Render(orthoCam, transformRetry);
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 2);
+			exitMat.Albedo->Bind(2);
+
+			if (isPaused)
+			{
+				exitMesh.Render(orthoCam, transformExit);
 			}
 
 			shader->Bind();
