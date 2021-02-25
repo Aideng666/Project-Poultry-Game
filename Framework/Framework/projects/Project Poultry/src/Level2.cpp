@@ -24,6 +24,9 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	rightEnt = Entity::Create();
 	backEnt = Entity::Create();
 	doorEnt = Entity::Create();
+	optionEnt = Entity::Create();
+	exitEnt = Entity::Create();
+	retryEnt = Entity::Create();
 	pipeEntS = Entity::Create();
 	pipeEntS2 = Entity::Create();
 	pipeEntC = Entity::Create();
@@ -75,6 +78,10 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	boxM = ModelManager::FindMesh(boxFile);
 	panel = ModelManager::FindMesh(panelFile);
 	vent = ModelManager::FindMesh(ventFile);
+	gate = ModelManager::FindMesh(gateFile);
+	options = ModelManager::FindMesh(pauseButtonFile);
+	exit = ModelManager::FindMesh(pauseButtonFile);
+	retry = ModelManager::FindMesh(pauseButtonFile);
 
 	door1 = ModelManager::FindMesh(doorFile1);
 	door2 = ModelManager::FindMesh(doorFile2);
@@ -170,6 +177,9 @@ void Level2::InitScene()
 	Texture2D::sptr diffusePipeCurved = Texture2D::LoadFromFile("Textures/Pipe_Curved_Texture.png");
 	Texture2D::sptr diffusePanel = Texture2D::LoadFromFile("Textures/PanelTexture.png");
 	Texture2D::sptr diffuseVent = Texture2D::LoadFromFile("Textures/VentTexture.png");
+	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Option.png");
+	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Replay.png");
+	Texture2D::sptr diffuseExit = Texture2D::LoadFromFile("Textures/Buttons/Default/Exit.png");
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -193,6 +203,9 @@ void Level2::InitScene()
 	boxMat.Albedo = diffuseBox;
 	panelMat.Albedo = diffusePanel;
 	ventMat.Albedo = diffuseVent;
+	optionMat.Albedo = diffuseOptions;
+	retryMat.Albedo = diffuseRetry;
+	exitMat.Albedo = diffuseExit;
 	clearMat.Albedo = texture2;
 
 #pragma endregion
@@ -321,6 +334,21 @@ void Level2::InitScene()
 	ventTrans2.SetPosition(glm::vec3(37.f, 16.0f, 28.f));
 	ventTrans2.SetRotationY(180.f);
 
+	auto& optionsTrans = optionEnt.Add<Transform>();
+	optionsTrans.SetPosition(glm::vec3(-5.0f, 2.0f, 0.0f));
+	optionsTrans.SetScale(glm::vec3(1.5f));
+	optionsTrans.SetRotationY(96.0f);
+
+	auto& retryTrans = retryEnt.Add<Transform>();
+	retryTrans.SetPosition(glm::vec3(0.0f, 2.0f, 0.0f));
+	retryTrans.SetScale(glm::vec3(1.5f));
+	retryTrans.SetRotationY(96.0f);
+
+	auto& exitTrans = exitEnt.Add<Transform>();
+	exitTrans.SetPosition(glm::vec3(5.0f, 2.0f, 0.0f));
+	exitTrans.SetScale(glm::vec3(1.5f));
+	exitTrans.SetRotationY(96.0f);
+
 #pragma endregion
 
 	//AABB
@@ -430,6 +458,9 @@ void Level2::InitScene()
 	auto& panelMesh2 = panelEnt2.Add<MeshRenderer>(panelEnt2, *panel, shader);
 	auto& ventMesh = ventEnt.Add<MeshRenderer>(ventEnt, *vent, shader);
 	auto& ventMesh2 = ventEnt2.Add<MeshRenderer>(ventEnt2, *vent, shader);
+	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
+	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
+	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -546,6 +577,9 @@ void Level2::Update(float dt)
 	auto& panelTrans2 = panelEnt2.Get<Transform>();
 	auto& ventTrans = ventEnt.Get<Transform>();
 	auto& ventTrans2 = ventEnt2.Get<Transform>();
+	auto& optionsTrans = optionEnt.Get<Transform>();
+	auto& retryTrans = retryEnt.Get<Transform>();
+	auto& exitTrans = exitEnt.Get<Transform>();
 
 	backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
@@ -594,6 +628,9 @@ void Level2::Update(float dt)
 	auto& panelMesh = panelEnt.Get<MeshRenderer>();
 	auto& panelMesh2 = panelEnt2.Get<MeshRenderer>();
 	auto& ventMesh = ventEnt.Get<MeshRenderer>();
+	auto& optionMesh = optionEnt.Get<MeshRenderer>();
+	auto& retryMesh = retryEnt.Get<MeshRenderer>();
+	auto& exitMesh = exitEnt.Get<MeshRenderer>();
 	auto& ventMesh2 = ventEnt2.Get<MeshRenderer>();
 
 	//Get reference to the model matrix
@@ -628,6 +665,9 @@ void Level2::Update(float dt)
 	glm::mat4 transformPanel2 = panelTrans2.GetModelMatrix();
 	glm::mat4 transformVent = ventTrans.GetModelMatrix();
 	glm::mat4 transformVent2 = ventTrans2.GetModelMatrix();
+	glm::mat4 transformOptions = optionsTrans.GetModelMatrix();
+	glm::mat4 transformRetry = retryTrans.GetModelMatrix();
+	glm::mat4 transformExit = exitTrans.GetModelMatrix();
 
 	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
@@ -642,6 +682,7 @@ void Level2::Update(float dt)
 		button3Watch.Poll(window);
 
 	pauseWatch.Poll(window);
+
 
 	if (showLevelComplete)
 	{
@@ -724,6 +765,30 @@ void Level2::Update(float dt)
 			if (isPaused)
 			{
 				pauseMesh.Render(orthoCam, transformPause);
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 1);
+			optionMat.Albedo->Bind(1);
+
+			if (isPaused)
+			{
+				optionMesh.Render(orthoCam, transformOptions);
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 2);
+			retryMat.Albedo->Bind(2);
+
+			if (isPaused)
+			{
+				retryMesh.Render(orthoCam, transformRetry);
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 2);
+			exitMat.Albedo->Bind(2);
+
+			if (isPaused)
+			{
+				exitMesh.Render(orthoCam, transformExit);
 			}
 
 			//Bind and render the objects using the basic shader
