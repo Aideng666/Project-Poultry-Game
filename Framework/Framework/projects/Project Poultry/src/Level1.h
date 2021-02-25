@@ -170,9 +170,6 @@ private:
 
 	bool forwards = true;
 
-	bool camClose = false;
-	bool camFar = false;
-
 	bool showLevelComplete = false;
 
 	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
@@ -187,5 +184,10 @@ private:
 
 	KeyPressWatcher tabletWatch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		tabletOpen = !tabletOpen;
+
+		if (tabletOpen)
+			lightNum = 2;
+		else
+			lightNum = 5;
 		});
 };

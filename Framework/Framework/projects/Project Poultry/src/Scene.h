@@ -110,6 +110,12 @@ protected:
 	bool isPaused = false;
 	bool tabletOpen = false;
 
+	bool camClose = false;
+	bool camFar = false;
+
+	bool camLeft = false;
+	bool camRight = false;
+
 	int lightNum = 5;
 
 	std::vector<PostEffect*> effects;
