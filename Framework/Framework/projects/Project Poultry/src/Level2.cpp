@@ -725,12 +725,12 @@ void Level2::Update(float dt)
 	else
 		camFar = false;
 
-	if (camera.GetPosition().x - playerTrans.GetPositionX() < -2.0f)
+	if (camera.GetPosition().x - playerTrans.GetPositionX() < -1.0f)
 		camLeft = true;
 	else
 		camLeft = false;
 
-	if (camera.GetPosition().x - playerTrans.GetPositionX() > 2.0f)
+	if (camera.GetPosition().x - playerTrans.GetPositionX() > 1.0f)
 		camRight = true;
 	else
 		camRight = false;
