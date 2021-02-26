@@ -44,6 +44,10 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	wireEnt7 = Entity::Create();
 	coilEnt = Entity::Create();
 	completeEnt = Entity::Create();
+	boxEnt = Entity::Create();
+	boxEnt2 = Entity::Create();
+	boxEnt3 = Entity::Create();
+	boxEnt4 = Entity::Create();
 
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
@@ -72,6 +76,7 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	options = ModelManager::FindMesh(pauseButtonFile);
 	exit = ModelManager::FindMesh(pauseButtonFile);
 	retry = ModelManager::FindMesh(pauseButtonFile);
+	boxMesh = ModelManager::FindMesh(boxFile);
 
 	door1 = ModelManager::FindMesh(doorFile1);
 	door2 = ModelManager::FindMesh(doorFile2);
@@ -164,7 +169,7 @@ void Level3::InitScene()
 	Texture2D::sptr diffuseAnd = Texture2D::LoadFromFile("Textures/AndGate.png");
 	Texture2D::sptr diffuseNot = Texture2D::LoadFromFile("Textures/NotGate.png");
 	Texture2D::sptr diffusePause = Texture2D::LoadFromFile("Textures/PauseMenu.png");
-	//Texture2D::sptr diffuseBox = Texture2D::LoadFromFile("Textures/Box.png");
+	Texture2D::sptr diffuseBox = Texture2D::LoadFromFile("Textures/Box_Texture.png");
 	//Texture2D::sptr diffusePipeStraight = Texture2D::LoadFromFile("Textures/StraightPipe.png");
 	//Texture2D::sptr diffusePipeCurved = Texture2D::LoadFromFile("Textures/CurvedPipe.png");
 	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Option.png");
@@ -191,7 +196,7 @@ void Level3::InitScene()
 	andMat.Albedo = diffuseAnd;
 	notMat.Albedo = diffuseNot;
 	pauseMat.Albedo = diffusePause;
-	//boxMat.Albedo = diffuseBox;
+	boxMat.Albedo = diffuseBox;
 	//straightPipeMat.Albedo = diffusePipeStraight;
 	//curvedPipeMat.Albedo = diffusePipeCurved;
 	optionMat.Albedo = diffuseOptions;
@@ -282,6 +287,21 @@ void Level3::InitScene()
 	coilTrans.SetPosition(glm::vec3(-17.0f, 1.0f, -31.f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 	coilTrans.SetRotationY(180.0f);
+
+	//Box transforms
+	auto& boxTrans = boxEnt.Add<Transform>();
+	boxTrans.SetPosition(glm::vec3(22.f, 4.5f, -33.f));
+
+	auto& boxTrans2 = boxEnt2.Add<Transform>();
+	boxTrans2.SetPosition(glm::vec3(34.f, 4.5f, 0.f));
+
+	auto& boxTrans3 = boxEnt3.Add<Transform>();
+	boxTrans3.SetPosition(glm::vec3(-34.f, 4.5f, 10.f));
+	boxTrans3.SetRotationY(90.f);
+
+	auto& boxTrans4 = boxEnt4.Add<Transform>();
+	boxTrans4.SetPosition(glm::vec3(-34.f, 4.5f, 20.f));
+	boxTrans4.SetRotationY(90.f);
 
 	//Level complete transform
 	auto& completeTrans = completeEnt.Add<Transform>();
@@ -412,6 +432,11 @@ void Level3::InitScene()
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
 	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
 	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
+	auto& boxM = boxEnt.Add<MeshRenderer>(boxEnt, *boxMesh, shader);
+	auto& boxM2 = boxEnt2.Add<MeshRenderer>(boxEnt2, *boxMesh, shader);
+	auto& boxM3 = boxEnt3.Add<MeshRenderer>(boxEnt3, *boxMesh, shader);
+	auto& boxM4 = boxEnt4.Add<MeshRenderer>(boxEnt4, *boxMesh, shader);
+
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -549,6 +574,10 @@ void Level3::Update(float dt)
 	auto& optionsTrans = optionEnt.Get<Transform>();
 	auto& retryTrans = retryEnt.Get<Transform>();
 	auto& exitTrans = exitEnt.Get<Transform>();
+	auto& boxTrans = boxEnt.Get<Transform>();
+	auto& boxTrans2 = boxEnt2.Get<Transform>();
+	auto& boxTrans3 = boxEnt3.Get<Transform>();
+	auto& boxTrans4 = boxEnt4.Get<Transform>();
 
 	backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
@@ -593,6 +622,10 @@ void Level3::Update(float dt)
 	auto& optionMesh = optionEnt.Get<MeshRenderer>();
 	auto& retryMesh = retryEnt.Get<MeshRenderer>();
 	auto& exitMesh = exitEnt.Get<MeshRenderer>();
+	auto& boxM = boxEnt.Get<MeshRenderer>();
+	auto& boxM2 = boxEnt2.Get<MeshRenderer>();
+	auto& boxM3 = boxEnt3.Get<MeshRenderer>();
+	auto& boxM4 = boxEnt4.Get<MeshRenderer>();
 
 	//Get reference to the model matrix
 	glm::mat4 transform = playerTrans.GetModelMatrix();
@@ -621,6 +654,10 @@ void Level3::Update(float dt)
 	glm::mat4 transformRetry = retryTrans.GetModelMatrix();
 	glm::mat4 transformExit = exitTrans.GetModelMatrix();
 	glm::mat4 transformPause = pauseTrans.GetModelMatrix();
+	glm::mat4 transformBox = boxTrans.GetModelMatrix();
+	glm::mat4 transformBox2 = boxTrans2.GetModelMatrix();
+	glm::mat4 transformBox3 = boxTrans3.GetModelMatrix();
+	glm::mat4 transformBox4 = boxTrans4.GetModelMatrix();
 
 	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
@@ -643,7 +680,6 @@ void Level3::Update(float dt)
 			levelComplete = true;
 			lightNum = 5;
 		}
-
 	}
 
 #pragma region PlayerMovement
@@ -894,6 +930,14 @@ void Level3::Update(float dt)
 				coilMesh.Render(camera, transformCoil);
 			}
 
+			//Boxes
+			shader->SetUniform("s_Diffuse", 7);
+			boxMat.Albedo->Bind(7);
+			boxM.Render(camera, transformBox);
+			boxM2.Render(camera, transformBox2);
+			boxM3.Render(camera, transformBox3);
+			boxM4.Render(camera, transformBox4);
+
 			//Bind and render the objects with no textures
 			//untexturedShader->Bind();
 		}
@@ -943,7 +987,11 @@ void Level3::Update(float dt)
 			wireMesh6.Render(camera, transformWire6);
 			wireMesh7.Render(camera, transformWire7);
 			coilMesh.Render(camera, transformCoil);
-				
+			boxM.Render(camera, transformBox);
+			boxM2.Render(camera, transformBox2);
+			boxM3.Render(camera, transformBox3);
+			boxM4.Render(camera, transformBox4);
+
 			//untexturedShader->Bind();	
 		}
 	}
