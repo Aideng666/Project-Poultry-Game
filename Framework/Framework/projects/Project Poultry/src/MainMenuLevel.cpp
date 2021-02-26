@@ -371,7 +371,7 @@ void MainMenuLevel::Update(float dt)
 
 	auto& camera = camEnt.Get<Camera>();
 
-	camera.LookAt(glm::vec3(playerTrans.GetPosition()));
+	//camera.LookAt(glm::vec3(playerTrans.GetPosition()));
 
 	auto& drumMesh = mainPlayer.Get<MorphRenderer>();
 	auto& floorMesh = floorEnt.Get<MeshRenderer>();
