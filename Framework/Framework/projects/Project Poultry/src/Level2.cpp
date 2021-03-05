@@ -166,7 +166,7 @@ void Level2::InitScene()
 	Texture2D::sptr diffuseButton = Texture2D::LoadFromFile("Textures/ButtonTexture.png");
 	Texture2D::sptr diffuseDrum = Texture2D::LoadFromFile("Textures/DrumstickTexture.png");
 	Texture2D::sptr diffuseDoor = Texture2D::LoadFromFile("Textures/DoorTexture.png");
-	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTexture.jpg");
+	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTilesetFinal.png");
 	Texture2D::sptr diffuseWall = Texture2D::LoadFromFile("Textures/WallTexture.jpg");
 	Texture2D::sptr diffuseWire = Texture2D::LoadFromFile("Textures/Wire_Off_Texture.png");
 	Texture2D::sptr diffuseWireOn = Texture2D::LoadFromFile("Textures/Wire_On_Texture.png");
@@ -225,8 +225,11 @@ void Level2::InitScene()
 
 	//Wall transforms
 	auto& leftTrans = leftEnt.Add<Transform>();
+	leftTrans.SetScale(glm::vec3(1.0f, 10.0f, 1.0f));
 	auto& rightTrans = rightEnt.Add<Transform>();
+	rightTrans.SetScale(glm::vec3(1.0f, 10.0f, 1.0f));
 	auto& backTrans = backEnt.Add<Transform>();
+	backTrans.SetScale(glm::vec3(1.0f, 10.0f, 1.0f));
 
 	//Door transforms
 	auto& doorTrans = doorEnt.Add<Transform>();
@@ -379,6 +382,8 @@ void Level2::InitScene()
 	boxCol4.SetIsAmbient(true);
 	auto& pipeCol = pipeEntC.Add<AABB>(pipeEntC, mainPlayer, 2.5f, 2.5f);
 	pipeCol.SetIsAmbient(true);
+	auto& pipeCol2 = pipeEntC2.Add<AABB>(pipeEntC2, mainPlayer, 2.5f, 2.5f);
+	pipeCol2.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
@@ -1037,6 +1042,8 @@ void Level2::Update(float dt)
 	andEnt.Get<AndGate>().Update();
 	andEnt2.Get<AndGate>().Update();
 	coilEnt.Get<AABB>().Update();
+	pipeEntC.Get<AABB>().Update();
+	pipeEntC2.Get<AABB>().Update();
 	buttonEnt.Get<Lever>().Update();
 	buttonEnt2.Get<Lever>().Update();
 	buttonEnt3.Get<Lever>().Update();

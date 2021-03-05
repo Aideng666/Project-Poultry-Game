@@ -62,12 +62,16 @@ private:
 	Entity boxEnt, boxEnt2, boxEnt3, boxEnt4;
 	//Panels
 	Entity panelEnt, panelEnt2, panelEnt3;
+	//Vents
+	Entity ventEnt, ventEnt2;
+	//Pipes
+	Entity pipeS, pipeC, pipeC2, pipeC3;
 
 	Shader::sptr shader, animShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, andMat, notMat, wireMat, wireMatOn, coilMatOn, coilMatOff, completeMat, boxMat, panelMat;
+	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, andMat, notMat, wireMat, wireMatOn, coilMatOn, coilMatOff, completeMat, boxMat, panelMat, ventMat, pipeSMat, pipeCMat;
 
 	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames;
 
@@ -88,6 +92,9 @@ private:
 	Mesh* coil;
 	Mesh* boxMesh;
 	Mesh* panelMesh;
+	Mesh* ventMesh;
+	Mesh* pipeSMesh;
+	Mesh* pipeCMesh;
 
 	Mesh* door1;
 	Mesh* door2;
@@ -116,7 +123,7 @@ private:
 	Mesh* walk14;
 
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
-	std::string floorFile = "Models/Floor.obj";
+	std::string floorFile = "Models/Level3Floor.obj";
 	std::string wallFile = "Models/Wall.obj";
 	std::string doorFile = "Models/DoorFrames/Door0.obj";
 	std::string gateFile = "Models/AndGate.obj";
@@ -132,6 +139,9 @@ private:
 	std::string coilFile = "Models/TeslaCoil.obj";
 	std::string boxFile = "Models/Box.obj";
 	std::string panelFile = "Models/Panel.obj";
+	std::string ventFile = "Models/New2_VentLarge.obj";
+	std::string pipeSFile = "Models/New2_StraightPipe.obj";
+	std::string pipeCFile = "Models/New2_CurvedPipe.obj";
 
 	std::string doorFile1 = "Models/DoorFrames/Door0.obj";
 	std::string doorFile2 = "Models/DoorFrames/Door1.obj";

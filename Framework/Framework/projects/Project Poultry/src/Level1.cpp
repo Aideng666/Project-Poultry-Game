@@ -1112,6 +1112,7 @@ void Level1::Update(float dt)
 	boxEnt5.Get<AABB>().Update();
 	andEnt.Get<AndGate>().Update();
 	coilEnt.Get<AABB>().Update();
+	pipeEntC.Get<AABB>().Update();
 	buttonEnt.Get<Lever>().Update();
 	buttonEnt2.Get<Lever>().Update();
 	wireEnt.Get<Wire>().Update();
