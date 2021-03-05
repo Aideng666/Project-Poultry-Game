@@ -123,7 +123,7 @@ private:
 	Mesh* walk14;
 
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
-	std::string floorFile = "Models/Floor.obj";
+	std::string floorFile = "Models/Level3Floor.obj";
 	std::string wallFile = "Models/Wall.obj";
 	std::string doorFile = "Models/DoorFrames/Door0.obj";
 	std::string gateFile = "Models/AndGate.obj";

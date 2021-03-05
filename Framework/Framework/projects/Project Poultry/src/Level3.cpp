@@ -403,6 +403,14 @@ void Level3::InitScene()
 	gateCol4.SetIsAmbient(true);
 	auto& coilCol = coilEnt.Add<AABB>(coilEnt, mainPlayer, 4.0f, 4.0f);
 	coilCol.SetIsAmbient(true);
+	auto& boxCol = boxEnt.Add<AABB>(boxEnt, mainPlayer, 5.0f, 5.0f);
+	boxCol.SetIsAmbient(true);
+	auto& boxCol2 = boxEnt2.Add<AABB>(boxEnt2, mainPlayer, 5.0f, 5.0f);
+	boxCol2.SetIsAmbient(true);
+	auto& boxCol3 = boxEnt3.Add<AABB>(boxEnt3, mainPlayer, 5.0f, 5.0f);
+	boxCol3.SetIsAmbient(true);
+	auto& boxCol4 = boxEnt4.Add<AABB>(boxEnt4, mainPlayer, 5.0f, 5.0f);
+	boxCol4.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
@@ -1151,6 +1159,10 @@ void Level3::Update(float dt)
 	andEnt2.Get<AABB>().Update();
 	andEnt3.Get<AABB>().Update();
 	notEnt.Get<AABB>().Update();
+	boxEnt.Get<AABB>().Update();
+	boxEnt2.Get<AABB>().Update();
+	boxEnt3.Get<AABB>().Update();
+	boxEnt4.Get<AABB>().Update();
 	andEnt.Get<AndGate>().Update();
 	andEnt2.Get<AndGate>().Update();
 	andEnt3.Get<AndGate>().Update();
