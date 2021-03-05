@@ -57,7 +57,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;..\..\dependencies\glfw3\include;..\..\dependencies\glad\include;..\..\dependencies\imgui;..\..\dependencies\GLM\include;..\..\dependencies\stbs;..\..\dependencies\fmod;..\..\dependencies\spdlog\include;..\..\dependencies\entt;..\..\dependencies\cereal;..\..\dependencies\gzip;..\..\dependencies\tinyGLTF;..\..\dependencies\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\..\dependencies\glfw3\include;..\..\dependencies\glad\include;..\..\dependencies\imgui;..\..\dependencies\GLM\include;..\..\dependencies\stbs;..\..\dependencies\fmod\include;..\..\dependencies\spdlog\include;..\..\dependencies\entt;..\..\dependencies\cereal;..\..\dependencies\gzip;..\..\dependencies\tinyGLTF;..\..\dependencies\json;..\..\dependencies\bullet3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -68,7 +68,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;imagehlp.lib;..\..\dependencies\fmod\fmod64.lib;..\..\dependencies\gzip\zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;imagehlp.lib;..\..\dependencies\gzip\zlib.lib;..\..\dependencies\bullet3\lib\Bullet3Common_Debug.lib;..\..\dependencies\bullet3\lib\BulletCollision_Debug.lib;..\..\dependencies\bullet3\lib\BulletDynamics_Debug.lib;..\..\dependencies\bullet3\lib\BulletInverseDynamics_Debug.lib;..\..\dependencies\bullet3\lib\BulletSoftBody_Debug.lib;..\..\dependencies\bullet3\lib\LinearMath_Debug.lib;..\..\dependencies\fmod\lib\fmodstudioL_vc.lib;..\..\dependencies\fmod\lib\fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;..\..\dependencies\glfw3\include;..\..\dependencies\glad\include;..\..\dependencies\imgui;..\..\dependencies\GLM\include;..\..\dependencies\stbs;..\..\dependencies\fmod;..\..\dependencies\spdlog\include;..\..\dependencies\entt;..\..\dependencies\cereal;..\..\dependencies\gzip;..\..\dependencies\tinyGLTF;..\..\dependencies\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\..\dependencies\glfw3\include;..\..\dependencies\glad\include;..\..\dependencies\imgui;..\..\dependencies\GLM\include;..\..\dependencies\stbs;..\..\dependencies\fmod\include;..\..\dependencies\spdlog\include;..\..\dependencies\entt;..\..\dependencies\cereal;..\..\dependencies\gzip;..\..\dependencies\tinyGLTF;..\..\dependencies\json;..\..\dependencies\bullet3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -91,7 +91,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;imagehlp.lib;..\..\dependencies\fmod\fmod64.lib;..\..\dependencies\gzip\zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;imagehlp.lib;..\..\dependencies\gzip\zlib.lib;..\..\dependencies\bullet3\lib\Bullet3Common.lib;..\..\dependencies\bullet3\lib\BulletCollision.lib;..\..\dependencies\bullet3\lib\BulletDynamics.lib;..\..\dependencies\bullet3\lib\BulletInverseDynamics.lib;..\..\dependencies\bullet3\lib\BulletSoftBody.lib;..\..\dependencies\bullet3\lib\LinearMath.lib;..\..\dependencies\fmod\lib\fmodstudio_vc.lib;..\..\dependencies\fmod\lib\fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -65,7 +65,9 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 #pragma region Model Manager
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
-	wall = ModelManager::FindMesh(wallFile);
+	leftWall = ModelManager::FindMesh(leftWallFile);
+	rightWall = ModelManager::FindMesh(rightWallFile);
+	backWall = ModelManager::FindMesh(backWallFile);
 	doorM = ModelManager::FindMesh(doorFile);
 	doorCloseM = ModelManager::FindMesh(doorFile10);
 	options = ModelManager::FindMesh(pauseButtonFile);
@@ -178,7 +180,7 @@ void Level1::InitScene()
 	Texture2D::sptr diffuseDrum = Texture2D::LoadFromFile("Textures/DrumstickTexture.png");
 	Texture2D::sptr diffuseDoor = Texture2D::LoadFromFile("Textures/DoorTexture.png");
 	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTexture.jpg");
-	Texture2D::sptr diffuseWall = Texture2D::LoadFromFile("Textures/WallTexture.jpg");
+	Texture2D::sptr diffuseWall = Texture2D::LoadFromFile("Textures/WallTileset.png");
 	Texture2D::sptr diffuseComplete = Texture2D::LoadFromFile("Textures/LevelComplete.png");
 	Texture2D::sptr diffuseAnd = Texture2D::LoadFromFile("Textures/AndGate.png");
 	Texture2D::sptr diffuseWire = Texture2D::LoadFromFile("Textures/Wire_Off_Texture.png");
@@ -242,11 +244,15 @@ void Level1::InitScene()
 
 	//Floor transform
 	auto& groundTrans = floorEnt.Add<Transform>();
+	groundTrans.SetPositionY(1.0f);
 
 	//Wall transforms
 	auto& leftTrans = leftEnt.Add<Transform>();
+	leftTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
 	auto& rightTrans = rightEnt.Add<Transform>();
+	rightTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
 	auto& backTrans = backEnt.Add<Transform>();
+	backTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
 
 	//Door transforms
 	auto& doorTrans = doorEnt.Add<Transform>();
@@ -464,9 +470,9 @@ void Level1::InitScene()
 #pragma region Mesh Loading 
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floor, shader);
-	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *wall, shader);
-	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *wall, shader);
-	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *wall, shader);
+	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *leftWall, shader);
+	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWall, shader);
+	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWall, shader);
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
 	auto& doorCloseMesh = doorCloseEnt.Add<MorphRenderer>(doorCloseEnt, *doorCloseM, animShader);
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, shader);
@@ -621,7 +627,7 @@ void Level1::Update(float dt)
 	auto& tabletTrans = tabletEnt.Get<Transform>();
 	auto& tabletScreenTrans = tabletScreenEnt.Get<Transform>();
 	
-	backTrans.SetPositionZ(-39.0f);
+	/*backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
 	
 	leftTrans.SetPositionX(-39.0f);
@@ -630,7 +636,7 @@ void Level1::Update(float dt)
 	
 	rightTrans.SetPositionX(39.0f);
 	rightTrans.SetRotationY(90.0f);
-	rightTrans.SetPositionY(9.0f);
+	rightTrans.SetPositionY(9.0f);*/
 
 	tabletTrans.SetRotationY(tabletTrans.GetRotation().y + 100 * dt);
 #pragma endregion
@@ -1112,6 +1118,7 @@ void Level1::Update(float dt)
 	boxEnt5.Get<AABB>().Update();
 	andEnt.Get<AndGate>().Update();
 	coilEnt.Get<AABB>().Update();
+	pipeEntC.Get<AABB>().Update();
 	buttonEnt.Get<Lever>().Update();
 	buttonEnt2.Get<Lever>().Update();
 	wireEnt.Get<Wire>().Update();

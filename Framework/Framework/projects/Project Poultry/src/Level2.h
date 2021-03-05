@@ -58,7 +58,9 @@ private:
 
 	Mesh* drumstick;
 	Mesh* floor;
-	Mesh* wall;
+	Mesh* leftWall;
+	Mesh* rightWall;
+	Mesh* backWall;
 	Mesh* doorM;
 	Mesh* pipeS;
 	Mesh* pipeC;
@@ -101,8 +103,10 @@ private:
 	Mesh* walk14;
 
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
-	std::string floorFile = "Models/Floor.obj";
-	std::string wallFile = "Models/Wall.obj";
+	std::string floorFile = "Models/Level2Floor.obj";
+	std::string leftWallFile = "Models/LeftWall.obj";
+	std::string rightWallFile = "Models/RightWall.obj";
+	std::string backWallFile = "Models/BackWall.obj";
 	std::string doorFile = "Models/DoorFrames/Door0.obj";
 	std::string pipeFileS = "Models/New2_StraightPipe.obj";
 	std::string pipeFileC = "Models/New2_CurvedPipe.obj";

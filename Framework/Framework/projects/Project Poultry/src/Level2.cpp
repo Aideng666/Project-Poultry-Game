@@ -64,7 +64,9 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 #pragma region Model Manager
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
-	wall = ModelManager::FindMesh(wallFile);
+	leftWall = ModelManager::FindMesh(leftWallFile);
+	rightWall = ModelManager::FindMesh(rightWallFile);
+	backWall = ModelManager::FindMesh(backWallFile);
 	doorM = ModelManager::FindMesh(doorFile);
 	pipeS = ModelManager::FindMesh(pipeFileS);
 	pipeC = ModelManager::FindMesh(pipeFileC);
@@ -166,8 +168,8 @@ void Level2::InitScene()
 	Texture2D::sptr diffuseButton = Texture2D::LoadFromFile("Textures/ButtonTexture.png");
 	Texture2D::sptr diffuseDrum = Texture2D::LoadFromFile("Textures/DrumstickTexture.png");
 	Texture2D::sptr diffuseDoor = Texture2D::LoadFromFile("Textures/DoorTexture.png");
-	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTexture.jpg");
-	Texture2D::sptr diffuseWall = Texture2D::LoadFromFile("Textures/WallTexture.jpg");
+	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTilesetFinal.png");
+	Texture2D::sptr diffuseWall = Texture2D::LoadFromFile("Textures/WallTileset.png");
 	Texture2D::sptr diffuseWire = Texture2D::LoadFromFile("Textures/Wire_Off_Texture.png");
 	Texture2D::sptr diffuseWireOn = Texture2D::LoadFromFile("Textures/Wire_On_Texture.png");
 	Texture2D::sptr diffuseComplete = Texture2D::LoadFromFile("Textures/LevelComplete.png");
@@ -222,11 +224,15 @@ void Level2::InitScene()
 
 	//Floor transform
 	auto& groundTrans = floorEnt.Add<Transform>();
+	groundTrans.SetPositionY(1.0f);
 
 	//Wall transforms
 	auto& leftTrans = leftEnt.Add<Transform>();
+	leftTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
 	auto& rightTrans = rightEnt.Add<Transform>();
+	rightTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
 	auto& backTrans = backEnt.Add<Transform>();
+	backTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
 
 	//Door transforms
 	auto& doorTrans = doorEnt.Add<Transform>();
@@ -379,6 +385,8 @@ void Level2::InitScene()
 	boxCol4.SetIsAmbient(true);
 	auto& pipeCol = pipeEntC.Add<AABB>(pipeEntC, mainPlayer, 2.5f, 2.5f);
 	pipeCol.SetIsAmbient(true);
+	auto& pipeCol2 = pipeEntC2.Add<AABB>(pipeEntC2, mainPlayer, 2.5f, 2.5f);
+	pipeCol2.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
@@ -439,9 +447,9 @@ void Level2::InitScene()
 #pragma region Mesh Loading
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floor, shader);
-	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *wall, shader);
-	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *wall, shader);
-	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *wall, shader);
+	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *leftWall, shader);
+	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWall, shader);
+	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWall, shader);
 	auto& pipeMesh = pipeEntS.Add<MeshRenderer>(pipeEntS, *pipeS, shader);
 	auto& pipeMesh2 = pipeEntS2.Add<MeshRenderer>(pipeEntS2, *pipeS, shader);
 	auto& pipeMesh3 = pipeEntC.Add<MeshRenderer>(pipeEntC, *pipeC, shader);
@@ -593,7 +601,7 @@ void Level2::Update(float dt)
 	auto& retryTrans = retryEnt.Get<Transform>();
 	auto& exitTrans = exitEnt.Get<Transform>();
 
-	backTrans.SetPositionZ(-39.0f);
+	/*backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
 
 	leftTrans.SetPositionX(-39.0f);
@@ -602,7 +610,7 @@ void Level2::Update(float dt)
 
 	rightTrans.SetPositionX(39.0f);
 	rightTrans.SetRotationY(90.0f);
-	rightTrans.SetPositionY(9.0f);
+	rightTrans.SetPositionY(9.0f);*/
 #pragma endregion
 
 	auto& camera = camEnt.Get<Camera>();
@@ -1037,6 +1045,8 @@ void Level2::Update(float dt)
 	andEnt.Get<AndGate>().Update();
 	andEnt2.Get<AndGate>().Update();
 	coilEnt.Get<AABB>().Update();
+	pipeEntC.Get<AABB>().Update();
+	pipeEntC2.Get<AABB>().Update();
 	buttonEnt.Get<Lever>().Update();
 	buttonEnt2.Get<Lever>().Update();
 	buttonEnt3.Get<Lever>().Update();
