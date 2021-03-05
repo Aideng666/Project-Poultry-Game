@@ -48,6 +48,15 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	boxEnt2 = Entity::Create();
 	boxEnt3 = Entity::Create();
 	boxEnt4 = Entity::Create();
+	panelEnt = Entity::Create();
+	panelEnt2 = Entity::Create();
+	panelEnt3 = Entity::Create();
+	ventEnt = Entity::Create();
+	ventEnt2 = Entity::Create();
+	pipeC = Entity::Create();
+	pipeC2 = Entity::Create();
+	pipeC3 = Entity::Create();
+	pipeS = Entity::Create();
 
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
@@ -77,6 +86,10 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	exit = ModelManager::FindMesh(pauseButtonFile);
 	retry = ModelManager::FindMesh(pauseButtonFile);
 	boxMesh = ModelManager::FindMesh(boxFile);
+	panelMesh = ModelManager::FindMesh(panelFile);
+	ventMesh = ModelManager::FindMesh(ventFile);
+	pipeCMesh = ModelManager::FindMesh(pipeCFile);
+	pipeSMesh = ModelManager::FindMesh(pipeSFile);
 
 	door1 = ModelManager::FindMesh(doorFile1);
 	door2 = ModelManager::FindMesh(doorFile2);
@@ -170,13 +183,15 @@ void Level3::InitScene()
 	Texture2D::sptr diffuseNot = Texture2D::LoadFromFile("Textures/NotGate.png");
 	Texture2D::sptr diffusePause = Texture2D::LoadFromFile("Textures/PauseMenu.png");
 	Texture2D::sptr diffuseBox = Texture2D::LoadFromFile("Textures/Box_Texture.png");
-	//Texture2D::sptr diffusePipeStraight = Texture2D::LoadFromFile("Textures/StraightPipe.png");
-	//Texture2D::sptr diffusePipeCurved = Texture2D::LoadFromFile("Textures/CurvedPipe.png");
+	Texture2D::sptr diffusePipeStraight = Texture2D::LoadFromFile("Textures/Pipe_Straight_Texture.png");
+	Texture2D::sptr diffusePipeCurved = Texture2D::LoadFromFile("Textures/Pipe_Curved_Texture.png");
 	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Option.png");
 	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Replay.png");
 	Texture2D::sptr diffuseExit = Texture2D::LoadFromFile("Textures/Buttons/Default/Exit.png");
 	Texture2D::sptr diffuseCoilOff = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_Off.png");
 	Texture2D::sptr diffuseCoilOn = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_On.png");
+	Texture2D::sptr diffusePanel = Texture2D::LoadFromFile("Textures/PanelTexture.png");
+	Texture2D::sptr diffuseVent = Texture2D::LoadFromFile("Textures/VentTexture.png");
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -197,13 +212,15 @@ void Level3::InitScene()
 	notMat.Albedo = diffuseNot;
 	pauseMat.Albedo = diffusePause;
 	boxMat.Albedo = diffuseBox;
-	//straightPipeMat.Albedo = diffusePipeStraight;
-	//curvedPipeMat.Albedo = diffusePipeCurved;
+	straightPipeMat.Albedo = diffusePipeStraight;
+	curvedPipeMat.Albedo = diffusePipeCurved;
 	optionMat.Albedo = diffuseOptions;
 	retryMat.Albedo = diffuseRetry;
 	exitMat.Albedo = diffuseExit;
 	coilMatOff.Albedo = diffuseCoilOff;
 	coilMatOn.Albedo = diffuseCoilOn;
+	panelMat.Albedo = diffusePanel;
+	ventMat.Albedo = diffuseVent;
 	clearMat.Albedo = texture2;
 
 #pragma endregion
@@ -302,6 +319,49 @@ void Level3::InitScene()
 	auto& boxTrans4 = boxEnt4.Add<Transform>();
 	boxTrans4.SetPosition(glm::vec3(-34.f, 4.5f, 20.f));
 	boxTrans4.SetRotationY(90.f);
+
+	//Vent transforms
+	auto& ventTrans = ventEnt.Add<Transform>();
+	ventTrans.SetPosition(glm::vec3(-37.f, 15.f, -22.f));
+	ventTrans.SetScale(glm::vec3(0.8f));
+	ventTrans.SetRotationY(180.f);
+
+	auto& ventTrans2 = ventEnt2.Add<Transform>();
+	ventTrans2.SetPosition(glm::vec3(-37.f, 15.f, 22.f));
+	ventTrans2.SetScale(glm::vec3(0.8f));
+	ventTrans2.SetRotationY(180.f);
+
+	//Panel transforms
+	auto& panelTrans = panelEnt.Add<Transform>();
+	panelTrans.SetPosition(glm::vec3(-30.f, 7.0f, -38.f));
+	panelTrans.SetScale(glm::vec3(2.0f));
+	panelTrans.SetRotationY(-90.0f);
+
+	auto& panelTrans2 = panelEnt2.Add<Transform>();
+	panelTrans2.SetPosition(glm::vec3(38.f, 7.0f, 18.f));
+	panelTrans2.SetScale(glm::vec3(2.0f));
+	panelTrans2.SetRotationY(180.0f);
+
+	auto& panelTrans3 = panelEnt3.Add<Transform>();
+	panelTrans3.SetPosition(glm::vec3(38.f, 7.0f, 22.f));
+	panelTrans3.SetScale(glm::vec3(2.0f));
+	panelTrans3.SetRotationY(180.0f);
+
+	//Pipe transforms
+	auto& pipeTrans = pipeC.Add<Transform>();
+	pipeTrans.SetPosition(glm::vec3(12.f, 1.f, -33.f));
+	pipeTrans.SetRotationY(90.0f);
+
+	auto& pipeTrans2 = pipeC2.Add<Transform>();
+	pipeTrans2.SetPosition(glm::vec3(22.2f, 12.5f, -33.f));
+	pipeTrans2.SetRotationZ(-90.0f);
+	
+	auto& pipeTrans3 = pipeC3.Add<Transform>();
+	pipeTrans3.SetPosition(glm::vec3(34.f, 1.f, 23.f));
+	pipeTrans3.SetRotationY(180.0f);
+
+	auto& pipeTrans4 = pipeS.Add<Transform>();
+	pipeTrans4.SetPosition(glm::vec3(34.f, 12.5f, -8.f));
 
 	//Level complete transform
 	auto& completeTrans = completeEnt.Add<Transform>();
@@ -436,7 +496,15 @@ void Level3::InitScene()
 	auto& boxM2 = boxEnt2.Add<MeshRenderer>(boxEnt2, *boxMesh, shader);
 	auto& boxM3 = boxEnt3.Add<MeshRenderer>(boxEnt3, *boxMesh, shader);
 	auto& boxM4 = boxEnt4.Add<MeshRenderer>(boxEnt4, *boxMesh, shader);
-
+	auto& panel = panelEnt.Add<MeshRenderer>(panelEnt, *panelMesh, shader);
+	auto& panel2 = panelEnt2.Add<MeshRenderer>(panelEnt2, *panelMesh, shader);
+	auto& panel3 = panelEnt3.Add<MeshRenderer>(panelEnt3, *panelMesh, shader);
+	auto& vent = ventEnt.Add<MeshRenderer>(ventEnt, *ventMesh, shader);
+	auto& vent2 = ventEnt2.Add<MeshRenderer>(ventEnt2, *ventMesh, shader);
+	auto& pipeCM = pipeC.Add<MeshRenderer>(pipeC, *pipeCMesh, shader);
+	auto& pipeCM2 = pipeC2.Add<MeshRenderer>(pipeC2, *pipeCMesh, shader);
+	auto& pipeCM3 = pipeC3.Add<MeshRenderer>(pipeC3, *pipeCMesh, shader);
+	auto& pipeSM = pipeS.Add<MeshRenderer>(pipeS, *pipeSMesh, shader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -578,6 +646,15 @@ void Level3::Update(float dt)
 	auto& boxTrans2 = boxEnt2.Get<Transform>();
 	auto& boxTrans3 = boxEnt3.Get<Transform>();
 	auto& boxTrans4 = boxEnt4.Get<Transform>();
+	auto& panelTrans = panelEnt.Get<Transform>();
+	auto& panelTrans2 = panelEnt2.Get<Transform>();
+	auto& panelTrans3 = panelEnt3.Get<Transform>();
+	auto& ventTrans = ventEnt.Get<Transform>();
+	auto& ventTrans2 = ventEnt2.Get<Transform>();
+	auto& pipeCTrans = pipeC.Get<Transform>();
+	auto& pipeCTrans2 = pipeC2.Get<Transform>();
+	auto& pipeCTrans3 = pipeC3.Get<Transform>();
+	auto& pipeSTrans = pipeS.Get<Transform>();
 
 	backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
@@ -626,6 +703,15 @@ void Level3::Update(float dt)
 	auto& boxM2 = boxEnt2.Get<MeshRenderer>();
 	auto& boxM3 = boxEnt3.Get<MeshRenderer>();
 	auto& boxM4 = boxEnt4.Get<MeshRenderer>();
+	auto& panel = panelEnt.Get<MeshRenderer>();
+	auto& panel2 = panelEnt2.Get<MeshRenderer>();
+	auto& panel3 = panelEnt3.Get<MeshRenderer>();
+	auto& vent = ventEnt.Get<MeshRenderer>();
+	auto& vent2 = ventEnt2.Get<MeshRenderer>();
+	auto& pipeCM = pipeC.Get<MeshRenderer>();
+	auto& pipeCM2 = pipeC2.Get<MeshRenderer>();
+	auto& pipeCM3 = pipeC3.Get<MeshRenderer>();
+	auto& pipeSM = pipeS.Get<MeshRenderer>();
 
 	//Get reference to the model matrix
 	glm::mat4 transform = playerTrans.GetModelMatrix();
@@ -658,6 +744,15 @@ void Level3::Update(float dt)
 	glm::mat4 transformBox2 = boxTrans2.GetModelMatrix();
 	glm::mat4 transformBox3 = boxTrans3.GetModelMatrix();
 	glm::mat4 transformBox4 = boxTrans4.GetModelMatrix();
+	glm::mat4 transformPanel = panelTrans.GetModelMatrix();
+	glm::mat4 transformPanel2 = panelTrans2.GetModelMatrix();
+	glm::mat4 transformPanel3 = panelTrans3.GetModelMatrix();
+	glm::mat4 transformVent = ventTrans.GetModelMatrix();
+	glm::mat4 transformVent2 = ventTrans2.GetModelMatrix();
+	glm::mat4 transformPipeC = pipeCTrans.GetModelMatrix();
+	glm::mat4 transformPipeC2 = pipeCTrans2.GetModelMatrix();
+	glm::mat4 transformPipeC3 = pipeCTrans3.GetModelMatrix();
+	glm::mat4 transformPipeS = pipeSTrans.GetModelMatrix();
 
 	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
@@ -937,6 +1032,32 @@ void Level3::Update(float dt)
 			boxM2.Render(camera, transformBox2);
 			boxM3.Render(camera, transformBox3);
 			boxM4.Render(camera, transformBox4);
+			
+			//Vents
+			shader->SetUniform("s_Diffuse", 8);
+			ventMat.Albedo->Bind(8);
+			vent.Render(camera, transformVent);
+			vent2.Render(camera, transformVent2);
+
+			//Panels
+			shader->SetUniform("s_Diffuse", 9);
+			panelMat.Albedo->Bind(9);
+			panel.Render(camera, transformPanel);
+			panel2.Render(camera, transformPanel2);
+			panel3.Render(camera, transformPanel3);
+
+			//Pipes
+			//Curved Pipe
+			shader->SetUniform("s_Diffuse", 10);
+			curvedPipeMat.Albedo->Bind(10);
+			pipeCM.Render(camera, transformPipeC);
+			pipeCM2.Render(camera, transformPipeC2);
+			pipeCM3.Render(camera, transformPipeC3);
+
+			//Straight Pipe
+			shader->SetUniform("s_Diffuse", 11);
+			straightPipeMat.Albedo->Bind(11);
+			pipeSM.Render(camera, transformPipeS);
 
 			//Bind and render the objects with no textures
 			//untexturedShader->Bind();
@@ -991,6 +1112,15 @@ void Level3::Update(float dt)
 			boxM2.Render(camera, transformBox2);
 			boxM3.Render(camera, transformBox3);
 			boxM4.Render(camera, transformBox4);
+			vent.Render(camera, transformVent);
+			vent2.Render(camera, transformVent2);
+			panel.Render(camera, transformPanel);
+			panel2.Render(camera, transformPanel2);
+			panel3.Render(camera, transformPanel3);
+			pipeCM.Render(camera, transformPipeC);
+			pipeCM2.Render(camera, transformPipeC2);
+			pipeCM3.Render(camera, transformPipeC3);
+			pipeSM.Render(camera, transformPipeS);
 
 			//untexturedShader->Bind();	
 		}
