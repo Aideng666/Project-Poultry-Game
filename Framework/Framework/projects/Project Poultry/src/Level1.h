@@ -67,7 +67,9 @@ private:
 
 	Mesh* drumstick;
 	Mesh* floor;
-	Mesh* wall;
+	Mesh* leftWall;
+	Mesh* rightWall;
+	Mesh* backWall;
 	Mesh* doorM;
 	Mesh* doorCloseM;
 	Mesh* gate;
@@ -113,7 +115,9 @@ private:
 
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
 	std::string floorFile = "Models/Floor.obj";
-	std::string wallFile = "Models/Wall.obj";
+	std::string leftWallFile = "Models/LeftWall.obj";
+	std::string rightWallFile = "Models/RightWall.obj";
+	std::string backWallFile = "Models/BackWall.obj";
 	std::string doorFile = "Models/DoorFrames/Door0.obj";
 	std::string gateFile = "Models/AndGate.obj";
 	std::string buttonFile = "Models/Button.obj";
