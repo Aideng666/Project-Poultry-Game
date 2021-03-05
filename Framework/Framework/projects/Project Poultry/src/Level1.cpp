@@ -627,7 +627,7 @@ void Level1::Update(float dt)
 	auto& tabletTrans = tabletEnt.Get<Transform>();
 	auto& tabletScreenTrans = tabletScreenEnt.Get<Transform>();
 	
-	/*backTrans.SetPositionZ(-39.0f);
+	backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
 	
 	leftTrans.SetPositionX(-39.0f);
@@ -636,7 +636,7 @@ void Level1::Update(float dt)
 	
 	rightTrans.SetPositionX(39.0f);
 	rightTrans.SetRotationY(90.0f);
-	rightTrans.SetPositionY(9.0f);*/
+	rightTrans.SetPositionY(9.0f);
 
 	tabletTrans.SetRotationY(tabletTrans.GetRotation().y + 100 * dt);
 #pragma endregion
