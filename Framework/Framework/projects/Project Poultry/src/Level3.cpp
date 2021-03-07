@@ -676,7 +676,7 @@ void Level3::Update(float dt)
 	auto& pipeCTrans3 = pipeC3.Get<Transform>();
 	auto& pipeSTrans = pipeS.Get<Transform>();
 
-	/*backTrans.SetPositionZ(-39.0f);
+	backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
 
 	leftTrans.SetPositionX(-39.0f);
@@ -685,7 +685,7 @@ void Level3::Update(float dt)
 
 	rightTrans.SetPositionX(39.0f);
 	rightTrans.SetRotationY(90.0f);
-	rightTrans.SetPositionY(9.0f);*/
+	rightTrans.SetPositionY(9.0f);
 #pragma endregion
 
 	auto& camera = camEnt.Get<Camera>();
