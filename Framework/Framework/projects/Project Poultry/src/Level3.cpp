@@ -320,37 +320,37 @@ void Level3::InitScene()
 	boxTrans2.SetPosition(glm::vec3(34.f, 4.5f, 0.f));
 
 	auto& boxTrans3 = boxEnt3.Add<Transform>();
-	boxTrans3.SetPosition(glm::vec3(-34.f, 4.5f, 10.f));
+	boxTrans3.SetPosition(glm::vec3(-35.f, 4.5f, 10.f));
 	boxTrans3.SetRotationY(90.f);
 
 	auto& boxTrans4 = boxEnt4.Add<Transform>();
-	boxTrans4.SetPosition(glm::vec3(-34.f, 4.5f, 20.f));
+	boxTrans4.SetPosition(glm::vec3(-35.f, 4.5f, 20.f));
 	boxTrans4.SetRotationY(90.f);
 
 	//Vent transforms
 	auto& ventTrans = ventEnt.Add<Transform>();
-	ventTrans.SetPosition(glm::vec3(-37.f, 15.f, -22.f));
+	ventTrans.SetPosition(glm::vec3(-38.f, 15.f, -22.f));
 	ventTrans.SetScale(glm::vec3(0.8f));
 	ventTrans.SetRotationY(180.f);
 
 	auto& ventTrans2 = ventEnt2.Add<Transform>();
-	ventTrans2.SetPosition(glm::vec3(-37.f, 15.f, 22.f));
+	ventTrans2.SetPosition(glm::vec3(-38.f, 15.f, 22.f));
 	ventTrans2.SetScale(glm::vec3(0.8f));
 	ventTrans2.SetRotationY(180.f);
 
 	//Panel transforms
 	auto& panelTrans = panelEnt.Add<Transform>();
-	panelTrans.SetPosition(glm::vec3(-30.f, 7.0f, -38.f));
+	panelTrans.SetPosition(glm::vec3(-30.f, 7.0f, -39.f));
 	panelTrans.SetScale(glm::vec3(2.0f));
 	panelTrans.SetRotationY(-90.0f);
 
 	auto& panelTrans2 = panelEnt2.Add<Transform>();
-	panelTrans2.SetPosition(glm::vec3(38.f, 7.0f, 18.f));
+	panelTrans2.SetPosition(glm::vec3(39.f, 7.0f, 18.f));
 	panelTrans2.SetScale(glm::vec3(2.0f));
 	panelTrans2.SetRotationY(180.0f);
 
 	auto& panelTrans3 = panelEnt3.Add<Transform>();
-	panelTrans3.SetPosition(glm::vec3(38.f, 7.0f, 22.f));
+	panelTrans3.SetPosition(glm::vec3(39.f, 7.0f, 22.f));
 	panelTrans3.SetScale(glm::vec3(2.0f));
 	panelTrans3.SetRotationY(180.0f);
 
