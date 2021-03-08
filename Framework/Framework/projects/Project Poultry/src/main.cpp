@@ -9,8 +9,6 @@
 #include <filesystem>
 #include <fstream>
 
-#include "TestScene.h"
-
 #include "Level1.h"
 #include "Level2.h"
 #include "Level3.h"
@@ -70,7 +68,7 @@ int main()
 	scenes.push_back(new Level2("Level 2", window));
 	scenes.push_back(new Level3("Level 3", window));
 
-	SetActiveScene(4);
+	SetActiveScene(0);
 	
 	//Calculates our timer
 	Application::Tick();
