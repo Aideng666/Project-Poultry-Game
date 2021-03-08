@@ -67,13 +67,15 @@ private:
 	//Pipes
 	Entity pipeS, pipeC, pipeC2, pipeC3;
 
-	Entity screenEnt;
+	//Tablet
+	Entity tabletEnt;
+	Entity tabletScreenEnt;
 
 	Shader::sptr shader, animShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, andMat, notMat, wireMat, wireMatOn, coilMatOn, coilMatOff, completeMat, boxMat, panelMat, ventMat, pipeSMat, pipeCMat;
+	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, andMat, notMat, wireMat, wireMatOn, coilMatOn, coilMatOff, completeMat, boxMat, panelMat, ventMat, pipeSMat, pipeCMat, tabletMat, tabletScreenMat;
 
 	Mesh* drumstick;
 	Mesh* floor;
@@ -98,6 +100,7 @@ private:
 	Mesh* ventMesh;
 	Mesh* pipeSMesh;
 	Mesh* pipeCMesh;
+	Mesh* tablet;
 
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
 	std::string floorFile = "Models/Level3Floor.obj";
@@ -122,6 +125,7 @@ private:
 	std::string ventFile = "Models/New2_VentLarge.obj";
 	std::string pipeSFile = "Models/New2_StraightPipe.obj";
 	std::string pipeCFile = "Models/New2_CurvedPipe.obj";
+	std::string tabletFile = "Models/Tablet.obj";
 
 	float t = 0.0f;
 	float totalTime;
@@ -167,6 +171,15 @@ private:
 		isPaused = !isPaused;
 
 		if (isPaused)
+			lightNum = 2;
+		else
+			lightNum = 5;
+		});
+
+	KeyPressWatcher tabletWatch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		tabletOpen = !tabletOpen;
+
+		if (tabletOpen)
 			lightNum = 2;
 		else
 			lightNum = 5;

@@ -57,6 +57,8 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	pipeC2 = Entity::Create();
 	pipeC3 = Entity::Create();
 	pipeS = Entity::Create();
+	tabletEnt = Entity::Create();
+	tabletScreenEnt = Entity::Create();
 
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
@@ -93,6 +95,7 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	ventMesh = ModelManager::FindMesh(ventFile);
 	pipeCMesh = ModelManager::FindMesh(pipeCFile);
 	pipeSMesh = ModelManager::FindMesh(pipeSFile);
+	tablet = ModelManager::FindMesh(tabletFile);
 
 	door1 = ModelManager::FindMesh(doorFile1);
 	door2 = ModelManager::FindMesh(doorFile2);
@@ -195,6 +198,8 @@ void Level3::InitScene()
 	Texture2D::sptr diffuseCoilOn = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_On.png");
 	Texture2D::sptr diffusePanel = Texture2D::LoadFromFile("Textures/PanelTexture.png");
 	Texture2D::sptr diffuseVent = Texture2D::LoadFromFile("Textures/VentTexture.png");
+	Texture2D::sptr diffuseTablet = Texture2D::LoadFromFile("Textures/TabletTexture.png");
+	Texture2D::sptr diffuseTabletScreen = Texture2D::LoadFromFile("Textures/NotGateTablet.png");
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -224,6 +229,8 @@ void Level3::InitScene()
 	coilMatOn.Albedo = diffuseCoilOn;
 	panelMat.Albedo = diffusePanel;
 	ventMat.Albedo = diffuseVent;
+	tabletMat.Albedo = diffuseTablet;
+	tabletScreenMat.Albedo = diffuseTabletScreen;
 	clearMat.Albedo = texture2;
 
 #pragma endregion
@@ -394,6 +401,16 @@ void Level3::InitScene()
 	exitTrans.SetPosition(glm::vec3(5.0f, 2.0f, 0.0f));
 	exitTrans.SetScale(glm::vec3(1.5f));
 	exitTrans.SetRotationY(96.0f);
+
+	//Tablet Stuff
+	auto& tabletTrans = tabletEnt.Add<Transform>();
+	tabletTrans.SetPosition(glm::vec3(0.0f, 5.0f, 5.0f));
+	tabletTrans.SetRotationY(180.0f);
+
+	auto& tabletScreenTrans = tabletScreenEnt.Add<Transform>();
+	tabletScreenTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	tabletScreenTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
+
 #pragma endregion
 
 	//AABB
@@ -526,6 +543,8 @@ void Level3::InitScene()
 	auto& pipeCM2 = pipeC2.Add<MeshRenderer>(pipeC2, *pipeCMesh, shader);
 	auto& pipeCM3 = pipeC3.Add<MeshRenderer>(pipeC3, *pipeCMesh, shader);
 	auto& pipeSM = pipeS.Add<MeshRenderer>(pipeS, *pipeSMesh, shader);
+	auto& tabletScreenMesh = tabletScreenEnt.Add<MeshRenderer>(tabletScreenEnt, *screen, pauseShader);
+	auto& tabletMesh = tabletEnt.Add<MeshRenderer>(tabletEnt, *tablet, shader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -676,6 +695,8 @@ void Level3::Update(float dt)
 	auto& pipeCTrans2 = pipeC2.Get<Transform>();
 	auto& pipeCTrans3 = pipeC3.Get<Transform>();
 	auto& pipeSTrans = pipeS.Get<Transform>();
+	auto& tabletTrans = tabletEnt.Get<Transform>();
+	auto& tabletScreenTrans = tabletScreenEnt.Get<Transform>();
 
 	backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
@@ -687,6 +708,8 @@ void Level3::Update(float dt)
 	rightTrans.SetPositionX(39.0f);
 	rightTrans.SetRotationY(90.0f);
 	rightTrans.SetPositionY(9.0f);
+
+	tabletTrans.SetRotationY(tabletTrans.GetRotation().y + 100 * dt);
 #pragma endregion
 
 	auto& camera = camEnt.Get<Camera>();
@@ -733,6 +756,8 @@ void Level3::Update(float dt)
 	auto& pipeCM2 = pipeC2.Get<MeshRenderer>();
 	auto& pipeCM3 = pipeC3.Get<MeshRenderer>();
 	auto& pipeSM = pipeS.Get<MeshRenderer>();
+	auto& tabletMesh = tabletEnt.Get<MeshRenderer>();
+	auto& tabletScreenMesh = tabletScreenEnt.Get<MeshRenderer>();
 
 	//Get reference to the model matrix
 	glm::mat4 transform = playerTrans.GetModelMatrix();
@@ -774,6 +799,8 @@ void Level3::Update(float dt)
 	glm::mat4 transformPipeC2 = pipeCTrans2.GetModelMatrix();
 	glm::mat4 transformPipeC3 = pipeCTrans3.GetModelMatrix();
 	glm::mat4 transformPipeS = pipeSTrans.GetModelMatrix();
+	glm::mat4 transformTablet = tabletTrans.GetModelMatrix();
+	glm::mat4 transformTabletScreen = tabletScreenTrans.GetModelMatrix();
 
 	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
@@ -786,6 +813,11 @@ void Level3::Update(float dt)
 	if (playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() > -3.0f)
 		button3Watch.Poll(window);
+
+	if ((playerTrans.GetPositionX() > -3.0f && playerTrans.GetPositionX() < 3.0f
+		&& playerTrans.GetPositionZ() > 2.0f && playerTrans.GetPositionZ() < 8.0f
+		&& !tabletOpen) || tabletOpen)
+		tabletWatch.Poll(window);
 
 	pauseWatch.Poll(window);
 
@@ -904,6 +936,14 @@ void Level3::Update(float dt)
 			if (isPaused)
 			{
 				exitMesh.Render(orthoCam, transformExit);
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 3);
+			tabletScreenMat.Albedo->Bind(3);
+
+			if (tabletOpen)
+			{
+				tabletScreenMesh.Render(orthoCam, transformTabletScreen);
 			}
 
 			//Bind and render the objects using the basic shader
@@ -1080,6 +1120,10 @@ void Level3::Update(float dt)
 			straightPipeMat.Albedo->Bind(11);
 			pipeSM.Render(camera, transformPipeS);
 
+			shader->SetUniform("s_Diffuse", 12);
+			tabletMat.Albedo->Bind(12);
+			tabletMesh.Render(camera, transformTablet);
+
 			//Bind and render the objects with no textures
 			//untexturedShader->Bind();
 		}
@@ -1142,6 +1186,7 @@ void Level3::Update(float dt)
 			pipeCM2.Render(camera, transformPipeC2);
 			pipeCM3.Render(camera, transformPipeC3);
 			pipeSM.Render(camera, transformPipeS);
+			tabletMesh.Render(camera, transformTablet);
 
 			//untexturedShader->Bind();	
 		}
