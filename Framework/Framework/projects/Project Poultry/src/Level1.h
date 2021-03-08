@@ -57,6 +57,8 @@ private:
 	//Interact
 	Entity tutEnt;
 
+	Entity screenEnt;
+
 	Shader::sptr shader, animShader, particleShader, untexturedShader;
 
 	GLfloat time = 0.0f;
@@ -67,6 +69,7 @@ private:
 
 	Mesh* drumstick;
 	Mesh* floor;
+	Mesh* screen;
 	Mesh* leftWall;
 	Mesh* rightWall;
 	Mesh* backWall;
@@ -115,6 +118,7 @@ private:
 
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
 	std::string floorFile = "Models/Floor.obj";
+	std::string screenFile = "Models/Floor.obj";
 	std::string leftWallFile = "Models/LeftWall.obj";
 	std::string rightWallFile = "Models/RightWall.obj";
 	std::string backWallFile = "Models/BackWall.obj";
