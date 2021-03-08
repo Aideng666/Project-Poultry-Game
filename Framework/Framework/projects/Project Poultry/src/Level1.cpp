@@ -314,25 +314,25 @@ void Level1::InitScene()
 
 	//Panel transform
 	auto& panelTrans = panelEnt.Add<Transform>();
-	panelTrans.SetPosition(glm::vec3(38.f, 7.0f, 6.f));
+	panelTrans.SetPosition(glm::vec3(39.f, 7.0f, 6.f));
 	panelTrans.SetScale(glm::vec3(2.0f));
 	panelTrans.SetRotationY(180.0f);
 
 	auto& panelTrans2 = panelEnt2.Add<Transform>();
-	panelTrans2.SetPosition(glm::vec3(38.f, 7.0f, 10.f));
+	panelTrans2.SetPosition(glm::vec3(39.f, 7.0f, 10.f));
 	panelTrans2.SetScale(glm::vec3(2.0f));
 	panelTrans2.SetRotationY(180.0f);
 
 	//Vent transform
 	auto& ventTrans = bigVentEnt.Add<Transform>();
-	ventTrans.SetPosition(glm::vec3(37.f, 12.0f, 22.0f));
+	ventTrans.SetPosition(glm::vec3(38.f, 12.0f, 22.0f));
 	ventTrans.SetScale(glm::vec3(0.8f));
 
 	auto& ventTrans2 = smallVentEnt.Add<Transform>();
-	ventTrans2.SetPosition(glm::vec3(-37.f, 16.0f, -17.f));
+	ventTrans2.SetPosition(glm::vec3(-38.f, 16.0f, -17.f));
 
 	auto& ventTrans3 = smallVentEnt2.Add<Transform>();
-	ventTrans3.SetPosition(glm::vec3(-37.f, 16.0f, 6.f));
+	ventTrans3.SetPosition(glm::vec3(-38.f, 16.0f, 6.f));
 
 	//Pipe transforms
 	auto& pipeTrans = pipeEntS.Add<Transform>();
@@ -628,6 +628,8 @@ void Level1::Update(float dt)
 	auto& tabletTrans = tabletEnt.Get<Transform>();
 	auto& tabletScreenTrans = tabletScreenEnt.Get<Transform>();
 	
+	groundTrans.SetPositionY(-0.9f);
+
 	backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(9.0f);
 	
