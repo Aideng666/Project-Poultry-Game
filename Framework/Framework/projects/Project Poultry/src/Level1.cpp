@@ -65,6 +65,7 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 #pragma region Model Manager
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
+	screen = ModelManager::FindMesh(screenFile);
 	leftWall = ModelManager::FindMesh(leftWallFile);
 	rightWall = ModelManager::FindMesh(rightWallFile);
 	backWall = ModelManager::FindMesh(backWallFile);
@@ -475,7 +476,7 @@ void Level1::InitScene()
 	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWall, shader);
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
 	auto& doorCloseMesh = doorCloseEnt.Add<MorphRenderer>(doorCloseEnt, *doorCloseM, animShader);
-	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, shader);
+	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *screen, shader);
 	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *gate, shader);
 	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
 	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
@@ -496,8 +497,8 @@ void Level1::InitScene()
 	auto& pipeMesh = pipeEntS.Add<MeshRenderer>(pipeEntS, *pipeS, shader);
 	auto& pipeMesh2 = pipeEntC.Add<MeshRenderer>(pipeEntC, *pipeC, shader);
 	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
-	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *floor, pauseShader);
-	auto& tabletScreenMesh = tabletScreenEnt.Add<MeshRenderer>(tabletScreenEnt, *floor, pauseShader);
+	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
+	auto& tabletScreenMesh = tabletScreenEnt.Add<MeshRenderer>(tabletScreenEnt, *screen, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
 	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
 	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
