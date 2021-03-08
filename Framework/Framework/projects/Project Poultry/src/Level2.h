@@ -48,6 +48,8 @@ private:
 	//Vents
 	Entity ventEnt, ventEnt2;
 
+	Entity screenEnt;
+
 	Shader::sptr shader, animShader, untexturedShader;
 
 	GLfloat time = 0.0f;
@@ -58,6 +60,7 @@ private:
 
 	Mesh* drumstick;
 	Mesh* floor;
+	Mesh* screen;
 	Mesh* leftWall;
 	Mesh* rightWall;
 	Mesh* backWall;
@@ -104,6 +107,7 @@ private:
 
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
 	std::string floorFile = "Models/Level2Floor.obj";
+	std::string screenFile = "Models/Floor.obj";
 	std::string leftWallFile = "Models/LeftWall.obj";
 	std::string rightWallFile = "Models/RightWall.obj";
 	std::string backWallFile = "Models/BackWall.obj";

@@ -64,6 +64,7 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 #pragma region Model Manager
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
+	screen = ModelManager::FindMesh(screenFile);
 	leftWall = ModelManager::FindMesh(leftWallFile);
 	rightWall = ModelManager::FindMesh(rightWallFile);
 	backWall = ModelManager::FindMesh(backWallFile);
@@ -466,8 +467,8 @@ void Level2::InitScene()
 	auto& wireMesh5 = wireEnt5.Add<MeshRenderer>(wireEnt5, *wireM5, shader);
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
-	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, shader);
-	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *floor, pauseShader);
+	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *screen, shader);
+	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
 	auto& boxMesh = boxEnt.Add<MeshRenderer>(boxEnt, *boxM, shader);
 	auto& boxMesh2 = boxEnt2.Add<MeshRenderer>(boxEnt2, *boxM, shader);
 	auto& boxMesh3 = boxEnt3.Add<MeshRenderer>(boxEnt3, *boxM, shader);

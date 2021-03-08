@@ -69,6 +69,7 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 #pragma region Model Manager
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
+	screen = ModelManager::FindMesh(screenFile);
 	leftWall = ModelManager::FindMesh(leftWallFile);
 	rightWall = ModelManager::FindMesh(rightWallFile);
 	backWall = ModelManager::FindMesh(backWallFile);
@@ -507,8 +508,8 @@ void Level3::InitScene()
 	auto& wireMesh6 = wireEnt6.Add<MeshRenderer>(wireEnt6, *wireM6, shader);
 	auto& wireMesh7 = wireEnt7.Add<MeshRenderer>(wireEnt7, *wireM7, shader);
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
-	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *floor, shader);
-	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *floor, pauseShader);
+	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *screen, shader);
+	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
 	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
 	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
