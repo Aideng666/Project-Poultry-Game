@@ -19,6 +19,7 @@
 #include "Bloom.h"
 #include "ColorCorrect.h"
 #include "FilmGrain.h"
+#include "Pixelate.h"
 
 using namespace freebird;
 
@@ -84,7 +85,7 @@ protected:
 	Entity camEnt, uiCamEnt;
 
 	Entity FBO, greyscaleEnt, sepiaEnt, colorCorrectEnt, bloomEnt;
-	Entity filmGrainEnt;
+	Entity filmGrainEnt, pixelateEnt;
 
 	Entity pauseEnt, optionEnt, exitEnt, retryEnt;
 

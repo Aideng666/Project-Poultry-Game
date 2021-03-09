@@ -27,6 +27,7 @@ MainMenu::MainMenu(std::string sceneName, GLFWwindow* wind)
 	bloomEnt = Entity::Create();
 	
 	filmGrainEnt = Entity::Create();
+	pixelateEnt = Entity::Create();
 
 	back = ModelManager::FindMesh(backFile);
 }
@@ -128,6 +129,11 @@ void MainMenu::InitScene()
 	filmGrainEffect->Init(width, height);
 
 	effects.push_back(filmGrainEffect);
+
+	auto pixelateEffect = &pixelateEnt.Add<Pixelate>();
+	pixelateEffect->Init(width, height);
+
+	effects.push_back(pixelateEffect);
 }
 
 void MainMenu::Update(float dt)

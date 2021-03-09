@@ -167,6 +167,20 @@ int main()
 					temp->SetStrength(strength);
 				}
 			}
+			if (activeEffect == 6)
+			{
+				currentScene->SetActiveEffect(6);
+
+				ImGui::Text("Active Effect: Pixelate Effect");
+
+				Pixelate* temp = (Pixelate*)currentScene->GetEffects()[activeEffect];
+				float pixelSize = temp->GetPixelSize();
+
+				if (ImGui::SliderFloat("Pixel Size", &pixelSize, 0.1, 32.f))
+				{
+					temp->SetPixelSize(pixelSize);
+				}
+			}
 		}
 	});
 

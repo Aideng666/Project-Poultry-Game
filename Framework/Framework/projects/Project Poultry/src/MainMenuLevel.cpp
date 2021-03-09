@@ -35,6 +35,7 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	bloomEnt = Entity::Create();
 	
 	filmGrainEnt = Entity::Create();
+	pixelateEnt = Entity::Create();
 #pragma endregion
 
 #pragma region Model Manager
@@ -334,6 +335,10 @@ void MainMenuLevel::InitScene()
 
 	effects.push_back(filmGrainEffect);
 
+	auto pixelateEffect = &pixelateEnt.Add<Pixelate>();
+	pixelateEffect->Init(width, height);
+
+	effects.push_back(pixelateEffect);
 #pragma endregion
 }
 
