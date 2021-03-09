@@ -188,4 +188,7 @@ protected:
 	std::string walkFile13 = "Models/ChickenFrames/Walk13.obj";
 	std::string walkFile14 = "Models/ChickenFrames/Walk14.obj";
 	///////////////
+
+	std::vector<Entity> entList;
+	std::vector<Mesh*> meshList;
 };
