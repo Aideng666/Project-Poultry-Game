@@ -58,7 +58,6 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	greyscaleEnt = Entity::Create();
 	sepiaEnt = Entity::Create();
 	colorCorrectEnt = Entity::Create();
-	bloomEnt = Entity::Create();
 
 	filmGrainEnt = Entity::Create();
 	pixelateEnt = Entity::Create();
@@ -526,11 +525,6 @@ void Level2::InitScene()
 	sepiaEffect->Init(width, height);
 
 	effects.push_back(sepiaEffect);
-
-	auto bloomEffect = &bloomEnt.Add<Bloom>();
-	bloomEffect->Init(width, height);
-
-	effects.push_back(bloomEffect);
 
 	auto colorCorrectEffect = &colorCorrectEnt.Add<ColorCorrect>();
 	colorCorrectEffect->Init(width, height);
