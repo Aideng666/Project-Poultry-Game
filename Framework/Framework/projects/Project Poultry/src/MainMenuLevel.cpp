@@ -33,6 +33,8 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	sepiaEnt = Entity::Create();
 	colorCorrectEnt = Entity::Create();
 	bloomEnt = Entity::Create();
+	
+	filmGrainEnt = Entity::Create();
 #pragma endregion
 
 #pragma region Model Manager
@@ -326,6 +328,12 @@ void MainMenuLevel::InitScene()
 	colorCorrectEffect->Init(width, height);
 
 	effects.push_back(colorCorrectEffect);
+
+	auto filmGrainEffect = &filmGrainEnt.Add<FilmGrain>();
+	filmGrainEffect->Init(width, height);
+
+	effects.push_back(filmGrainEffect);
+
 #pragma endregion
 }
 

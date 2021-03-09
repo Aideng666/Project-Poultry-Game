@@ -17,7 +17,7 @@
 #include "MainMenuLevel.h"
 #include "Application.h"
 #include <ModelManager.h>
-#include "Greyscale.h"
+//#include "Greyscale.h"
 
 using namespace freebird; //referencing the module's includes/src's
 
@@ -85,6 +85,7 @@ int main()
 		{
 			currentScene->SetTextured(isTextured);
 		}
+
 		if (ImGui::CollapsingHeader("Effect Controls"))
 		{
 			ImGui::SliderInt("Chosen Effect", &activeEffect, 0, currentScene->GetEffects().size() - 1);
@@ -152,7 +153,20 @@ int main()
 
 				ColorCorrect* temp = (ColorCorrect*)currentScene->GetEffects()[activeEffect];
 			}
+			if (activeEffect == 5)
+			{
+				currentScene->SetActiveEffect(5);
 
+				ImGui::Text("Active Effect: Film Grain Effect");
+
+				FilmGrain* temp = (FilmGrain*)currentScene->GetEffects()[activeEffect];
+				float strength = temp->GetStrength();
+
+				if (ImGui::SliderFloat("Strength", &strength, 0.0f, 64.f))
+				{
+					temp->SetStrength(strength);
+				}
+			}
 		}
 	});
 

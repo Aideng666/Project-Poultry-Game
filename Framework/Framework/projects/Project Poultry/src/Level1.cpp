@@ -60,6 +60,8 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	sepiaEnt = Entity::Create();
 	colorCorrectEnt = Entity::Create();
 	bloomEnt = Entity::Create();
+
+	filmGrainEnt = Entity::Create();
 #pragma endregion
 
 #pragma region Model Manager
@@ -199,7 +201,6 @@ void Level1::InitScene()
 	Texture2D::sptr diffuseTabletScreen = Texture2D::LoadFromFile("Textures/AndGateTablet.png");
 	Texture2D::sptr diffuseCoilOff = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_Off.png");
 	Texture2D::sptr diffuseCoilOn = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_On.png");
-
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -560,6 +561,11 @@ void Level1::InitScene()
 	colorCorrectEffect->Init(width, height);
 
 	effects.push_back(colorCorrectEffect);
+
+	auto filmGrainEffect = &filmGrainEnt.Add<FilmGrain>();
+	filmGrainEffect->Init(width, height);
+
+	effects.push_back(filmGrainEffect);
 #pragma endregion
 }
 
