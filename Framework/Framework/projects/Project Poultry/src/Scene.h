@@ -16,7 +16,6 @@
 #include <ModelManager.h>
 #include "Greyscale.h"
 #include "Sepia.h"
-#include "Bloom.h"
 #include "ColorCorrect.h"
 #include "FilmGrain.h"
 #include "Pixelate.h"
@@ -84,7 +83,7 @@ protected:
 
 	Entity camEnt, uiCamEnt;
 
-	Entity FBO, greyscaleEnt, sepiaEnt, colorCorrectEnt, bloomEnt;
+	Entity FBO, greyscaleEnt, sepiaEnt, colorCorrectEnt;
 	Entity filmGrainEnt, pixelateEnt;
 
 	Entity pauseEnt, optionEnt, exitEnt, retryEnt;
