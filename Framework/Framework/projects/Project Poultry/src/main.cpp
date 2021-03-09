@@ -68,8 +68,8 @@ int main()
 	scenes.push_back(new Level2("Level 2", window));
 	scenes.push_back(new Level3("Level 3", window));
 
-	SetActiveScene(2);
-	
+	SetActiveScene(0);
+	 
 	//Calculates our timer
 	Application::Tick();
 
@@ -132,18 +132,23 @@ int main()
 
 				Bloom* temp = (Bloom*)currentScene->GetEffects()[activeEffect];
 				float threshold = temp->GetThreshold();
+				int blurValue = temp->GetPasses();
 
-				if (ImGui::SliderFloat("Threshold", &threshold, 0.0f, 1.0f))
+				if (ImGui::SliderFloat("Threshold", &threshold, 1.0f, 0.0f))
 				{
 					temp->SetThreshold(threshold);
 				}
-
-				float downscale = temp->GetDownscale();
-
-				if (ImGui::SliderFloat("Blur", &downscale, 1.0f, 5.0f))
+				if (ImGui::SliderInt("Blur Value", &blurValue, 0.0f, 10.f))
 				{
-					temp->SetDownscale(downscale);
+					temp->SetPasses(blurValue);
 				}
+
+				//float downscale = temp->GetDownscale();
+
+				//if (ImGui::SliderFloat("Blur", &downscale, 1.0f, 5.0f))
+				//{
+				//	temp->SetDownscale(downscale);
+				//}
 			}
 			if (activeEffect == 4)
 			{

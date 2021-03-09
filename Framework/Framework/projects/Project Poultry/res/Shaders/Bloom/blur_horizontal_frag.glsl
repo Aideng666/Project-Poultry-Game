@@ -22,5 +22,4 @@ void main()
 	frag_color += texture(s_screenTex, vec2(inUV.x + 2.0 * u_PixelSize, inUV.y)) * 0.12;
 	frag_color += texture(s_screenTex, vec2(inUV.x + 3.0 * u_PixelSize, inUV.y)) * 0.09;
 	frag_color += texture(s_screenTex, vec2(inUV.x + 4.0 * u_PixelSize, inUV.y)) * 0.06;
-	
 }

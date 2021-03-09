@@ -1,6 +1,6 @@
 #pragma once
-
 #include "PostEffect.h"
+
 namespace freebird
 {
 	class Bloom : public PostEffect
@@ -25,9 +25,10 @@ namespace freebird
 		void SetDownscale(float downscale);
 		void SetThreshold(float threshold);
 		void SetPasses(unsigned passes);
+
 	private:
-		float _downscale = 2.0f;
-		float _threshold = 0.5f;
+		float _downscale = 2.f;
+		float _threshold = 0.f;
 		unsigned _passes = 10;
 		glm::vec2 _pixelSize;
 	};

@@ -12,7 +12,7 @@ void main()
 {
 	vec4 textureCol = texture(s_screenTex, inUV);
 
-	float luminance = (textureCol.r + textureCol.g + textureCol.b) / 3.0f;
+	float luminance = (textureCol.r + textureCol.g + textureCol.b) / 3.0;
 
 	if (luminance > u_Threshold)
 	{

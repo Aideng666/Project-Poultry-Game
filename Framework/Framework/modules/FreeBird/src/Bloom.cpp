@@ -9,85 +9,79 @@ namespace freebird
         _buffers[index]->AddColorTarget(GL_RGBA8);
         _buffers[index]->AddDepthTarget();
         _buffers[index]->Init(width, height);
-
         index++;
+
         _buffers.push_back(new Framebuffer());
         _buffers[index]->AddColorTarget(GL_RGBA8);
         _buffers[index]->AddDepthTarget();
         _buffers[index]->Init(unsigned(width / _downscale), unsigned(height / _downscale));
-
         index++;
+
         _buffers.push_back(new Framebuffer());
         _buffers[index]->AddColorTarget(GL_RGBA8);
         _buffers[index]->AddDepthTarget();
         _buffers[index]->Init(unsigned(width / _downscale), unsigned(height / _downscale));
-
         index++;
+
         _buffers.push_back(new Framebuffer());
         _buffers[index]->AddColorTarget(GL_RGBA8);
         _buffers[index]->AddDepthTarget();
         _buffers[index]->Init(width, height);
 
         //Loads the shaders
-        index = int(_shaders.size());
+        int index2 = int(_shaders.size());
+        //index = int(_shaders.size());
         _shaders.push_back(Shader::Create());
-        _shaders[index]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
-        _shaders[index]->LoadShaderPartFromFile("Shaders/passthrough_frag.glsl", GL_FRAGMENT_SHADER);
-        _shaders[index]->Link();
+        _shaders[index2]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
+        _shaders[index2]->LoadShaderPartFromFile("Shaders/PassThrough_frag.glsl", GL_FRAGMENT_SHADER);
+        _shaders[index2]->Link();
+        index2++;
 
-        index++;
         _shaders.push_back(Shader::Create());
-        _shaders[index]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
-        _shaders[index]->LoadShaderPartFromFile("Shaders/Bloom/highpass_frag.glsl", GL_FRAGMENT_SHADER);
-        _shaders[index]->Link();
+        _shaders[index2]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
+        _shaders[index2]->LoadShaderPartFromFile("Shaders/Bloom/highpass_frag.glsl", GL_FRAGMENT_SHADER);
+        _shaders[index2]->Link();
+        index2++;
 
-        index++;
         _shaders.push_back(Shader::Create());
-        _shaders[index]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
-        _shaders[index]->LoadShaderPartFromFile("Shaders/Bloom/blur_horizontal_frag.glsl", GL_FRAGMENT_SHADER);
-        _shaders[index]->Link();
+        _shaders[index2]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
+        _shaders[index2]->LoadShaderPartFromFile("Shaders/Bloom/blur_vertical_frag.glsl", GL_FRAGMENT_SHADER);
+        _shaders[index2]->Link();
+        index2++;
 
-        index++;
         _shaders.push_back(Shader::Create());
-        _shaders[index]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
-        _shaders[index]->LoadShaderPartFromFile("Shaders/Bloom/blur_vertical_frag.glsl", GL_FRAGMENT_SHADER);
-        _shaders[index]->Link();
+        _shaders[index2]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
+        _shaders[index2]->LoadShaderPartFromFile("Shaders/Bloom/blur_horizontal_frag.glsl", GL_FRAGMENT_SHADER);
+        _shaders[index2]->Link();
+        index2++;
 
-        index++;
         _shaders.push_back(Shader::Create());
-        _shaders[index]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
-        _shaders[index]->LoadShaderPartFromFile("Shaders/Bloom/composite_frag.glsl", GL_FRAGMENT_SHADER);
-        _shaders[index]->Link();
-
+        _shaders[index2]->LoadShaderPartFromFile("Shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
+        _shaders[index2]->LoadShaderPartFromFile("Shaders/Bloom/composite_frag.glsl", GL_FRAGMENT_SHADER);
+        _shaders[index2]->Link();
+        index2++;//?
 
         _pixelSize = glm::vec2(1.f / width, 1.f / height);
+
+        PostEffect::Init(width, height);
     }
 
     void Bloom::ApplyEffect(PostEffect* buffer)
     {
         //Draws Previous Buffer
         BindShader(0);
-
         buffer->BindColorAsTexture(0, 0, 0);
-
         _buffers[0]->RenderToFSQ();
-
         buffer->UnbindTexture(0);
-
         UnbindShader();
 
         //High Pass
         BindShader(1);
         _shaders[1]->SetUniform("u_Threshold", _threshold);
-
         BindColorAsTexture(0, 0, 0);
-
         _buffers[1]->RenderToFSQ();
-
         UnbindTexture(0);
-
         UnbindShader();
-
 
         //Gets the Blur
         for (unsigned i = 0; i < _passes; i++)
@@ -95,39 +89,27 @@ namespace freebird
             //Horizontal
             BindShader(2);
             _shaders[2]->SetUniform("u_PixelSize", _pixelSize.x);
-
             BindColorAsTexture(1, 0, 0);
-
             _buffers[2]->RenderToFSQ();
-
             UnbindTexture(0);
-
             UnbindShader();
 
             //Vertical
             BindShader(3);
             _shaders[3]->SetUniform("u_PixelSize", _pixelSize.y);
-
             BindColorAsTexture(2, 0, 0);
-
             _buffers[1]->RenderToFSQ();
-
             UnbindTexture(0);
-
             UnbindShader();
         }
 
         //Composite
         BindShader(4);
-
         buffer->BindColorAsTexture(0, 0, 0);
         BindColorAsTexture(1, 0, 1);
-
         _buffers[0]->RenderToFSQ();
-
         UnbindTexture(1);
         UnbindTexture(0);
-
         UnbindShader();
     }
 
@@ -170,4 +152,3 @@ namespace freebird
         _passes = passes;
     }
 }
-
