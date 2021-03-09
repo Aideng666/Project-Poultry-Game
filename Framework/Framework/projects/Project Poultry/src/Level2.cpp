@@ -52,13 +52,16 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	panelEnt3 = Entity::Create();
 	ventEnt = Entity::Create();
 	ventEnt2 = Entity::Create();
+	pauseEnt = Entity::Create();
 
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
 	sepiaEnt = Entity::Create();
 	colorCorrectEnt = Entity::Create();
 	bloomEnt = Entity::Create();
-	pauseEnt = Entity::Create();
+
+	filmGrainEnt = Entity::Create();
+	pixelateEnt = Entity::Create();
 #pragma endregion
 
 #pragma region Model Manager
@@ -533,6 +536,16 @@ void Level2::InitScene()
 	colorCorrectEffect->Init(width, height);
 
 	effects.push_back(colorCorrectEffect);
+
+	auto filmGrainEffect = &filmGrainEnt.Add<FilmGrain>();
+	filmGrainEffect->Init(width, height);
+
+	effects.push_back(filmGrainEffect);
+
+	auto pixelateEffect = &pixelateEnt.Add<Pixelate>();
+	pixelateEffect->Init(width, height);
+
+	effects.push_back(pixelateEffect);
 #pragma endregion
 }
 

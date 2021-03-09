@@ -25,6 +25,9 @@ MainMenu::MainMenu(std::string sceneName, GLFWwindow* wind)
 	sepiaEnt = Entity::Create();
 	colorCorrectEnt = Entity::Create();
 	bloomEnt = Entity::Create();
+	
+	filmGrainEnt = Entity::Create();
+	pixelateEnt = Entity::Create();
 
 	back = ModelManager::FindMesh(backFile);
 }
@@ -54,8 +57,6 @@ void MainMenu::InitScene()
 	shader->Link();
 
 	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	//MAKE A LOADING SCREEN SHADER FOR RENDERING THE LOADING SCREEN IMAGE SO THE LIGHT DOESN'T SHOW IN THE LOADING SCREEN
 
 #pragma endregion
 
@@ -123,6 +124,16 @@ void MainMenu::InitScene()
 	colorCorrectEffect->Init(width, height);
 
 	effects.push_back(colorCorrectEffect);
+
+	auto filmGrainEffect = &filmGrainEnt.Add<FilmGrain>();
+	filmGrainEffect->Init(width, height);
+
+	effects.push_back(filmGrainEffect);
+
+	auto pixelateEffect = &pixelateEnt.Add<Pixelate>();
+	pixelateEffect->Init(width, height);
+
+	effects.push_back(pixelateEffect);
 }
 
 void MainMenu::Update(float dt)

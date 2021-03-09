@@ -18,6 +18,8 @@
 #include "Sepia.h"
 #include "Bloom.h"
 #include "ColorCorrect.h"
+#include "FilmGrain.h"
+#include "Pixelate.h"
 
 using namespace freebird;
 
@@ -60,8 +62,8 @@ public:
 
 	void LoadTexImage();
 
-	Entity GetFBO();
-	Entity GetGreyscaleEnt();
+	//Entity GetFBO();
+	//Entity GetGreyscaleEnt();
 
 	std::vector<PostEffect*> GetEffects();
 
@@ -83,6 +85,7 @@ protected:
 	Entity camEnt, uiCamEnt;
 
 	Entity FBO, greyscaleEnt, sepiaEnt, colorCorrectEnt, bloomEnt;
+	Entity filmGrainEnt, pixelateEnt;
 
 	Entity pauseEnt, optionEnt, exitEnt, retryEnt;
 
