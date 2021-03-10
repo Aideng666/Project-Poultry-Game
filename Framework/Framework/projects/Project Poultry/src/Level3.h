@@ -65,19 +65,19 @@ private:
 	//Vents
 	Entity ventEnt, ventEnt2;
 	//Pipes
-	Entity pipeS, pipeC, pipeC2, pipeC3;
+	Entity pipeSEnt, pipeCEnt, pipeC2Ent, pipeC3Ent;
 
 	//Tablet
 	Entity tabletEnt;
 	Entity tabletScreenEnt;
 
-	Shader::sptr shader, animShader, untexturedShader;
+	//Shader::sptr shader, animShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, andMat, notMat, wireMat, wireMatOn, coilMatOn, coilMatOff, completeMat, boxMat, panelMat, ventMat, pipeSMat, pipeCMat, tabletMat, tabletScreenMat;
+	//Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, andMat, notMat, wireMat, wireMatOn, coilMatOn, coilMatOff, completeMat, boxMat, panelMat, ventMat, pipeSMat, pipeCMat, tabletMat, tabletScreenMat;
 
-	Mesh* drumstick;
+	/*Mesh* drumstick;
 	Mesh* floor;
 	Mesh* screen;
 	Mesh* leftWall;
@@ -125,7 +125,7 @@ private:
 	std::string ventFile = "Models/New2_VentLarge.obj";
 	std::string pipeSFile = "Models/New2_StraightPipe.obj";
 	std::string pipeCFile = "Models/New2_CurvedPipe.obj";
-	std::string tabletFile = "Models/Tablet.obj";
+	std::string tabletFile = "Models/Tablet.obj";*/
 
 	float t = 0.0f;
 	float totalTime;

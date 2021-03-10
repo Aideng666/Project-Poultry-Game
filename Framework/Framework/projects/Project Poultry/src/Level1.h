@@ -57,15 +57,13 @@ private:
 	//Interact
 	Entity tutEnt;
 
-	Entity screenEnt;
-
-	Shader::sptr shader, animShader, particleShader, untexturedShader;
+	//Shader::sptr shader, animShader, particleShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, gateMat, wireMat, wirePowerMat, boxMat, panelMat, ventMat, tabletMat, tabletScreenMat, coilMatOn, coilMatOff;
+	//Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, gateMat, wireMat, wirePowerMat, boxMat, panelMat, ventMat, tabletMat, tabletScreenMat, coilMatOn, coilMatOff;
 
-	Mesh* drumstick;
+	/*Mesh* drumstick;
 	Mesh* floor;
 	Mesh* screen;
 	Mesh* leftWall;
@@ -108,7 +106,7 @@ private:
 	std::string pipesFileS = "Models/New2_StraightPipe.obj";
 	std::string pipesFileC = "Models/New2_CurvedPipe.obj";
 	std::string tabletFile = "Models/Tablet.obj";
-	std::string tutFile = "Models/Interact.obj";
+	std::string tutFile = "Models/Interact.obj";*/
 
 	ParticleParam particleData;
 

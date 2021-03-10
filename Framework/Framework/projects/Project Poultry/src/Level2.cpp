@@ -64,7 +64,7 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 #pragma endregion
 
 #pragma region Model Manager
-	drumstick = ModelManager::FindMesh(drumFile);
+	/*drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
 	screen = ModelManager::FindMesh(screenFile);
 	leftWall = ModelManager::FindMesh(leftWallFile);
@@ -113,7 +113,9 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	walk11 = ModelManager::FindMesh(walkFile11);
 	walk12 = ModelManager::FindMesh(walkFile12);
 	walk13 = ModelManager::FindMesh(walkFile13);
-	walk14 = ModelManager::FindMesh(walkFile14);
+	walk14 = ModelManager::FindMesh(walkFile14);*/
+
+	InitMeshes();
 #pragma endregion
 
 }
@@ -130,7 +132,7 @@ void Level2::InitScene()
 
 	totalTime = distance / speed;
 
-	glm::vec3 lightPos = glm::vec3(0.0f, 9.5f, -35.0f);
+	/*glm::vec3 lightPos = glm::vec3(0.0f, 9.5f, -35.0f);
 	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
 	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
 	float     lightAmbientPow = 0.05f;
@@ -138,11 +140,11 @@ void Level2::InitScene()
 	float     lightSpecularPow = 1.0f;
 	glm::vec3 ambientCol = glm::vec3(1.0f);
 	float     ambientPow = 0.1f;
-	float     shininess = 16.0f;
+	float     shininess = 16.0f;*/
 
 #pragma region Shader Stuff
 
-	shader = Shader::Create();
+	/*shader = Shader::Create();
 	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
 	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	shader->Link();
@@ -164,11 +166,13 @@ void Level2::InitScene()
 	pauseShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
 	pauseShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	pauseShader->Link();
-	SetShaderValues(pauseShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess);
+	SetShaderValues(pauseShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess);*/
+
+	InitShaders();
 #pragma endregion
 
 #pragma region Texture Stuff
-	Texture2D::sptr diffuseButton = Texture2D::LoadFromFile("Textures/ButtonTexture.png");
+	/*Texture2D::sptr diffuseButton = Texture2D::LoadFromFile("Textures/ButtonTexture.png");
 	Texture2D::sptr diffuseDrum = Texture2D::LoadFromFile("Textures/DrumstickTexture.png");
 	Texture2D::sptr diffuseDoor = Texture2D::LoadFromFile("Textures/DoorTexture.png");
 	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTilesetFinal.png");
@@ -216,7 +220,9 @@ void Level2::InitScene()
 	exitMat.Albedo = diffuseExit;
 	coilMatOff.Albedo = diffuseCoilOff;
 	coilMatOn.Albedo = diffuseCoilOn;
-	clearMat.Albedo = texture2;
+	clearMat.Albedo = texture2;*/
+
+	InitTextures();
 #pragma endregion
 
 #pragma region Transforms
@@ -457,16 +463,16 @@ void Level2::InitScene()
 	auto& pipeMesh2 = pipeEntS2.Add<MeshRenderer>(pipeEntS2, *pipeS, shader);
 	auto& pipeMesh3 = pipeEntC.Add<MeshRenderer>(pipeEntC, *pipeC, shader);
 	auto& pipeMesh4 = pipeEntC2.Add<MeshRenderer>(pipeEntC2, *pipeC, shader);
-	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *gate, shader);
-	auto& gateMesh2 = andEnt2.Add<MeshRenderer>(andEnt2, *gate, shader);
+	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *and, shader);
+	auto& gateMesh2 = andEnt2.Add<MeshRenderer>(andEnt2, *and, shader);
 	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
 	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
 	auto& buttonMesh3 = buttonEnt3.Add<MeshRenderer>(buttonEnt3, *buttonM, shader);
-	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireM1, shader);
-	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireM2, shader);
-	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireM3, shader);
-	auto& wireMesh4 = wireEnt4.Add<MeshRenderer>(wireEnt4, *wireM4, shader);
-	auto& wireMesh5 = wireEnt5.Add<MeshRenderer>(wireEnt5, *wireM5, shader);
+	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireM1L2, shader);
+	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireM2L2, shader);
+	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireM3L2, shader);
+	auto& wireMesh4 = wireEnt4.Add<MeshRenderer>(wireEnt4, *wireM4L2, shader);
+	auto& wireMesh5 = wireEnt5.Add<MeshRenderer>(wireEnt5, *wireM5L2, shader);
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *screen, shader);
@@ -478,8 +484,8 @@ void Level2::InitScene()
 	auto& panelMesh = panelEnt.Add<MeshRenderer>(panelEnt, *panel, shader);
 	auto& panelMesh2 = panelEnt2.Add<MeshRenderer>(panelEnt2, *panel, shader);
 	auto& panelMesh3 = panelEnt3.Add<MeshRenderer>(panelEnt3, *panel, shader);
-	auto& ventMesh = ventEnt.Add<MeshRenderer>(ventEnt, *vent, shader);
-	auto& ventMesh2 = ventEnt2.Add<MeshRenderer>(ventEnt2, *vent, shader);
+	auto& ventMesh = ventEnt.Add<MeshRenderer>(ventEnt, *ventS, shader);
+	auto& ventMesh2 = ventEnt2.Add<MeshRenderer>(ventEnt2, *ventS, shader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
 	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
 	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
@@ -862,7 +868,7 @@ void Level2::Update(float dt)
 
 			//Gates
 			shader->SetUniform("s_Diffuse", 4);
-			gateMat.Albedo->Bind(4);
+			andMat.Albedo->Bind(4);
 			andEnt.Get<MeshRenderer>().Render(camera, transformGate);
 			andEnt2.Get<MeshRenderer>().Render(camera, transformGate2);
 
@@ -878,7 +884,7 @@ void Level2::Update(float dt)
 
 			if (wireEnt.Get<Wire>().GetIsPowered())
 			{
-				wirePowerMat.Albedo->Bind(6);
+				wireMatOn.Albedo->Bind(6);
 				wireEnt.Get<MeshRenderer>().Render(camera, transformWire);
 			}
 			else
@@ -889,7 +895,7 @@ void Level2::Update(float dt)
 
 			if (wireEnt2.Get<Wire>().GetIsPowered())
 			{
-				wirePowerMat.Albedo->Bind(6);
+				wireMatOn.Albedo->Bind(6);
 				wireEnt2.Get<MeshRenderer>().Render(camera, transformWire2);
 			}
 			else
@@ -900,7 +906,7 @@ void Level2::Update(float dt)
 
 			if (wireEnt3.Get<Wire>().GetIsPowered())
 			{
-				wirePowerMat.Albedo->Bind(6);
+				wireMatOn.Albedo->Bind(6);
 				wireEnt3.Get<MeshRenderer>().Render(camera, transformWire3);
 			}
 			else
@@ -911,7 +917,7 @@ void Level2::Update(float dt)
 
 			if (wireEnt4.Get<Wire>().GetIsPowered())
 			{
-				wirePowerMat.Albedo->Bind(6);
+				wireMatOn.Albedo->Bind(6);
 				wireEnt4.Get<MeshRenderer>().Render(camera, transformWire4);
 			}
 			else
@@ -922,7 +928,7 @@ void Level2::Update(float dt)
 
 			if (wireEnt5.Get<Wire>().GetIsPowered())
 			{
-				wirePowerMat.Albedo->Bind(6);
+				wireMatOn.Albedo->Bind(6);
 				wireEnt5.Get<MeshRenderer>().Render(camera, transformWire5);
 			}
 			else
