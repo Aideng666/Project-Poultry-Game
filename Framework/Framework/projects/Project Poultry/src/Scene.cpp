@@ -208,6 +208,7 @@ void Scene::InitMeshes()
 	wireM1L1 = ModelManager::FindMesh(wire1L1File);
 	wireM2L1 = ModelManager::FindMesh(wire2L1File);
 	wireM3L1 = ModelManager::FindMesh(wire3L1File);
+	floorL1 = ModelManager::FindMesh(floorL1File);
 
 	//Level 2
 	wireM1L2 = ModelManager::FindMesh(wire1L2File);
@@ -215,6 +216,7 @@ void Scene::InitMeshes()
 	wireM3L2 = ModelManager::FindMesh(wire3L2File);
 	wireM4L2 = ModelManager::FindMesh(wire4L2File);
 	wireM5L2 = ModelManager::FindMesh(wire5L2File);
+	floorL2 = ModelManager::FindMesh(floorL2File);
 
 	//Level 3
 	wireM1L3 = ModelManager::FindMesh(wire1L3File);
@@ -224,6 +226,7 @@ void Scene::InitMeshes()
 	wireM5L3 = ModelManager::FindMesh(wire5L3File);
 	wireM6L3 = ModelManager::FindMesh(wire6L3File);
 	wireM7L3 = ModelManager::FindMesh(wire7L3File);
+	floorL3 = ModelManager::FindMesh(floorL3File);
 }
 
 bool Scene::GetComplete()

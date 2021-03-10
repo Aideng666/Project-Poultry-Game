@@ -130,6 +130,7 @@ protected:
 	Mesh* wireM1L1;
 	Mesh* wireM2L1;
 	Mesh* wireM3L1;
+	Mesh* floorL1;
 
 	//Level 2 Meshes
 	Mesh* wireM1L2;
@@ -137,6 +138,7 @@ protected:
 	Mesh* wireM3L2;
 	Mesh* wireM4L2;
 	Mesh* wireM5L2;
+	Mesh* floorL2;
 
 	//Level 3 Meshes
 	Mesh* not;
@@ -147,10 +149,14 @@ protected:
 	Mesh* wireM5L3;
 	Mesh* wireM6L3;
 	Mesh* wireM7L3;
+	Mesh* floorL3;
 
 	//Files for multiple levels
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
 	std::string floorFile = "Models/Floor.obj";
+	std::string floorL1File = "Models/Level1Floor.obj";
+	std::string floorL2File = "Models/Level2Floor.obj";
+	std::string floorL3File = "Models/Level3Floor.obj";
 	std::string screenFile = "Models/Floor.obj";
 	std::string leftWallFile = "Models/LeftWall.obj";
 	std::string rightWallFile = "Models/RightWall.obj";
