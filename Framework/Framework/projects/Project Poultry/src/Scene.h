@@ -9,6 +9,7 @@
 #include "AndGate.h"
 #include "OrGate.h"
 #include "NotGate.h"
+#include "Texture2DData.h"
 #include "Texture2D.h"
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
@@ -37,6 +38,10 @@ public:
 	virtual void Update(float dt) {}
 
 	virtual void Unload();
+
+	void InitTextures();
+	void InitShaders();
+	void InitMeshes();
 
 	bool GetComplete();
 	void SetComplete(bool complete);
@@ -77,7 +82,7 @@ protected:
 	entt::registry* scene = nullptr;
 	std::string name = " ";
 
-	Shader::sptr shader, morphShader, pauseShader;
+	Shader::sptr shader, animShader, pauseShader, untexturedShader, particleShader;
 
 	GLFWwindow* window;
 
@@ -89,12 +94,108 @@ protected:
 	Entity pauseEnt, optionEnt, exitEnt, retryEnt;
 
 	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat;
+	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, tabletScreenMat, coilMatOn, coilMatOff;
+	Mat andMat, notMat, wireMatOn;
 
+	//Meshes for multiple levels
 	Mesh* options;
 	Mesh* exit;
 	Mesh* retry;
+	Mesh* drumstick;
+	Mesh* floor;
+	Mesh* screen;
+	Mesh* leftWall;
+	Mesh* rightWall;
+	Mesh* backWall;
+	Mesh* doorM;
+	Mesh* doorCloseM;
+	Mesh* buttonM;
+	Mesh* coil;
+	Mesh* boxM;
+	Mesh* panel;
+	Mesh* ventB;
+	Mesh* ventS;
+	Mesh* pipeS;
+	Mesh* pipeC;
+	Mesh* tablet;
+	Mesh* tut;
+	Mesh* and;
 
+	//Main Menu Level Meshes
+	Mesh* startWord;
+	Mesh* optionsWord;
+	Mesh* exitWord;
+
+	//Level 1 Meshes
+	Mesh* wireM1L1;
+	Mesh* wireM2L1;
+	Mesh* wireM3L1;
+
+	//Level 2 Meshes
+	Mesh* wireM1L2;
+	Mesh* wireM2L2;
+	Mesh* wireM3L2;
+	Mesh* wireM4L2;
+	Mesh* wireM5L2;
+
+	//Level 3 Meshes
+	Mesh* not;
+	Mesh* wireM1L3;
+	Mesh* wireM2L3;
+	Mesh* wireM3L3;
+	Mesh* wireM4L3;
+	Mesh* wireM5L3;
+	Mesh* wireM6L3;
+	Mesh* wireM7L3;
+
+	//Files for multiple levels
+	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
+	std::string floorFile = "Models/Floor.obj";
+	std::string screenFile = "Models/Floor.obj";
+	std::string leftWallFile = "Models/LeftWall.obj";
+	std::string rightWallFile = "Models/RightWall.obj";
+	std::string backWallFile = "Models/BackWall.obj";
+	std::string doorFile = "Models/DoorFrames/Door0.obj";
+	std::string andFile = "Models/AndGate.obj";
+	std::string buttonFile = "Models/Button.obj";
+	std::string coilFile = "Models/TeslaCoil.obj";
+	std::string boxFile = "Models/Box.obj";
+	std::string panelFile = "Models/Panel.obj";
+	std::string ventFileB = "Models/New2_VentLarge.obj";
+	std::string ventFileS = "Models/New_VentSmall.obj";
+	std::string tabletFile = "Models/Tablet.obj";
+	std::string tutFile = "Models/Interact.obj";
 	std::string pauseButtonFile = "Models/UI_Button.obj";
+	std::string pipeFileS = "Models/New2_StraightPipe.obj";
+	std::string pipeFileC = "Models/New2_CurvedPipe.obj";
+
+	//Main Menu Level Files
+	std::string startFile = "Models/Start.obj";
+	std::string exitFile = "Models/Exit.obj";
+	std::string optFile = "Models/Options.obj";
+	
+	//Level 1 Files
+	std::string wire1L1File = "Models/New_Level1Wire1.obj";
+	std::string wire2L1File = "Models/New_Level1Wire2.obj";
+	std::string wire3L1File = "Models/New2_Level1Wire3.obj";
+
+	//Level 2 files
+	std::string wire1L2File = "Models/Level2Wire1.obj";
+	std::string wire2L2File = "Models/Level2Wire2.obj";
+	std::string wire3L2File = "Models/Level2Wire3.obj";
+	std::string wire4L2File = "Models/Level2Wire4.obj";
+	std::string wire5L2File = "Models/New_Level2Wire5.obj";
+
+	//Level 3 files
+	std::string notFile = "Models/NotGate.obj";
+	std::string wire1L3File = "Models/New_Level3Wire1.obj";
+	std::string wire2L3File = "Models/New_Level3Wire2.obj";
+	std::string wire3L3File = "Models/New_Level3Wire3.obj";
+	std::string wire4L3File = "Models/New_Level3Wire4.obj";
+	std::string wire5L3File = "Models/New_Level3Wire5.obj";
+	std::string wire6L3File = "Models/New_Level3Wire6.obj";
+	std::string wire7L3File = "Models/New_Level3Wire7.obj";
+
 
 	std::vector<std::function<void()>> imGuiCallbacks;
 
