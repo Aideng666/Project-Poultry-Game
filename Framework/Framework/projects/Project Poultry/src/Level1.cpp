@@ -65,7 +65,7 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 #pragma endregion
 
 #pragma region Model Manager
-	drumstick = ModelManager::FindMesh(drumFile);
+	/*drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
 	screen = ModelManager::FindMesh(screenFile);
 	leftWall = ModelManager::FindMesh(leftWallFile);
@@ -115,7 +115,9 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	walk11 = ModelManager::FindMesh(walkFile11);
 	walk12 = ModelManager::FindMesh(walkFile12);
 	walk13 = ModelManager::FindMesh(walkFile13);
-	walk14 = ModelManager::FindMesh(walkFile14);
+	walk14 = ModelManager::FindMesh(walkFile14);*/
+
+	InitMeshes();
 #pragma endregion
 }
 
@@ -132,54 +134,56 @@ void Level1::InitScene()
 	totalTime = distance / speed;
 
 #pragma region Shader Stuff
-	glm::vec3 lightPos = glm::vec3(0.0f, 9.5f, -35.0f);
-	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
-	glm::vec3 lightCol = glm::vec3(1.f);
-	float     lightAmbientPow = 0.05f;
-	float	  pauseAmbientPow = 0.25f;
-	float     lightSpecularPow = 1.0f;
-	glm::vec3 ambientCol = glm::vec3(1.0f);
-	float     ambientPow = 0.1f;
-	float     shininess = 16.0f;
+	//glm::vec3 lightPos = glm::vec3(0.0f, 9.5f, -35.0f);
+	//glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
+	//glm::vec3 lightCol = glm::vec3(1.f);
+	//float     lightAmbientPow = 0.05f;
+	//float	  pauseAmbientPow = 0.25f;
+	//float     lightSpecularPow = 1.0f;
+	//glm::vec3 ambientCol = glm::vec3(1.0f);
+	//float     ambientPow = 0.1f;
+	//float     shininess = 16.0f;
 
-	//Basic shader
-	shader = Shader::Create();
-	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	shader->Link();
-	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
+	////Basic shader
+	//shader = Shader::Create();
+	//shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	//shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	//shader->Link();
+	//SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
 
-	//For any objects with animations
-	animShader = Shader::Create();
-	animShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
-	animShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	animShader->Link();
-	SetShaderValues(animShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
+	////For any objects with animations
+	//animShader = Shader::Create();
+	//animShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
+	//animShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	//animShader->Link();
+	//SetShaderValues(animShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
 
-	//Particle shader
-	particleShader = Shader::Create();
-	particleShader->LoadShaderPartFromFile("Shaders/particle_vertex.glsl", GL_VERTEX_SHADER);
-	particleShader->LoadShaderPartFromFile("Shaders/particle_geom.glsl", GL_GEOMETRY_SHADER);
-	particleShader->LoadShaderPartFromFile("Shaders/particle_frag.glsl", GL_FRAGMENT_SHADER);
-	particleShader->Link();
+	////Particle shader
+	//particleShader = Shader::Create();
+	//particleShader->LoadShaderPartFromFile("Shaders/particle_vertex.glsl", GL_VERTEX_SHADER);
+	//particleShader->LoadShaderPartFromFile("Shaders/particle_geom.glsl", GL_GEOMETRY_SHADER);
+	//particleShader->LoadShaderPartFromFile("Shaders/particle_frag.glsl", GL_FRAGMENT_SHADER);
+	//particleShader->Link();
 
-	//Shader for unextured objects
-	untexturedShader = Shader::Create();
-	untexturedShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	untexturedShader->LoadShaderPartFromFile("Shaders/frag_untextured.glsl", GL_FRAGMENT_SHADER);
-	untexturedShader->Link();
-	SetShaderValues(untexturedShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
+	////Shader for unextured objects
+	//untexturedShader = Shader::Create();
+	//untexturedShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	//untexturedShader->LoadShaderPartFromFile("Shaders/frag_untextured.glsl", GL_FRAGMENT_SHADER);
+	//untexturedShader->Link();
+	//SetShaderValues(untexturedShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
 
-	//Pause UI Shader
-	pauseShader = Shader::Create();
-	pauseShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	pauseShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	pauseShader->Link();
-	SetShaderValues(pauseShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess);
+	////Pause UI Shader
+	//pauseShader = Shader::Create();
+	//pauseShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	//pauseShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+	//pauseShader->Link();
+	//SetShaderValues(pauseShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess);
+
+	InitShaders();
 #pragma endregion
 
 #pragma region Texture Stuff
-	Texture2D::sptr diffuseButton = Texture2D::LoadFromFile("Textures/ButtonTexture.png");
+	/*Texture2D::sptr diffuseButton = Texture2D::LoadFromFile("Textures/ButtonTexture.png");
 	Texture2D::sptr diffuseDrum = Texture2D::LoadFromFile("Textures/DrumstickTexture.png");
 	Texture2D::sptr diffuseDoor = Texture2D::LoadFromFile("Textures/DoorTexture.png");
 	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTexture.jpg");
@@ -231,7 +235,9 @@ void Level1::InitScene()
 	tabletScreenMat.Albedo = diffuseTabletScreen;
 	coilMatOff.Albedo = diffuseCoilOff;
 	coilMatOn.Albedo = diffuseCoilOn;
-	clearMat.Albedo = texture2;
+	clearMat.Albedo = texture2;*/
+
+	InitTextures();
 #pragma endregion
 
 #pragma region Transforms
@@ -478,12 +484,12 @@ void Level1::InitScene()
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
 	auto& doorCloseMesh = doorCloseEnt.Add<MorphRenderer>(doorCloseEnt, *doorCloseM, animShader);
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *screen, shader);
-	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *gate, shader);
+	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *and, shader);
 	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
 	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
-	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireL, shader);
-	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireR, shader);
-	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireC, shader);
+	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireM1L1, shader);
+	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireM2L1, shader);
+	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireM3L1, shader);
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
 	auto& boxMesh = boxEnt.Add<MeshRenderer>(boxEnt, *boxM, shader);
 	auto& boxMesh2 = boxEnt2.Add<MeshRenderer>(boxEnt2, *boxM, shader);
@@ -861,7 +867,7 @@ void Level1::Update(float dt)
 
 			//Gate
 			shader->SetUniform("s_Diffuse", 2);
-			gateMat.Albedo->Bind(2);
+			andMat.Albedo->Bind(2);
 			andEnt.Get<MeshRenderer>().Render(camera, transformGate);
 
 			//Buttons
@@ -875,7 +881,7 @@ void Level1::Update(float dt)
 
 			if (wireEnt.Get<Wire>().GetIsPowered())
 			{
-				wirePowerMat.Albedo->Bind(4);
+				wireMatOn.Albedo->Bind(4);
 				wireEnt.Get<MeshRenderer>().Render(camera, transformWire);
 			}
 			else
@@ -886,7 +892,7 @@ void Level1::Update(float dt)
 
 			if (wireEnt2.Get<Wire>().GetIsPowered())
 			{
-				wirePowerMat.Albedo->Bind(4);
+				wireMatOn.Albedo->Bind(4);
 				wireEnt2.Get<MeshRenderer>().Render(camera, transformWire2);
 			}
 			else
@@ -897,7 +903,7 @@ void Level1::Update(float dt)
 
 			if (wireEnt3.Get<Wire>().GetIsPowered())
 			{
-				wirePowerMat.Albedo->Bind(4);
+				wireMatOn.Albedo->Bind(4);
 				wireEnt3.Get<MeshRenderer>().Render(camera, transformWire3);
 			}
 			else

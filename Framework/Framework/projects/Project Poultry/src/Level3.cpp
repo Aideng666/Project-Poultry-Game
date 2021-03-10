@@ -53,10 +53,10 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	panelEnt3 = Entity::Create();
 	ventEnt = Entity::Create();
 	ventEnt2 = Entity::Create();
-	pipeC = Entity::Create();
-	pipeC2 = Entity::Create();
-	pipeC3 = Entity::Create();
-	pipeS = Entity::Create();
+	pipeCEnt = Entity::Create();
+	pipeC2Ent = Entity::Create();
+	pipeC3Ent = Entity::Create();
+	pipeSEnt = Entity::Create();
 	tabletEnt = Entity::Create();
 	tabletScreenEnt = Entity::Create();
 	pauseEnt = Entity::Create();
@@ -71,7 +71,7 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 #pragma endregion
 
 #pragma region Model Manager
-	drumstick = ModelManager::FindMesh(drumFile);
+	/*drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
 	screen = ModelManager::FindMesh(screenFile);
 	leftWall = ModelManager::FindMesh(leftWallFile);
@@ -123,7 +123,9 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	walk11 = ModelManager::FindMesh(walkFile11);
 	walk12 = ModelManager::FindMesh(walkFile12);
 	walk13 = ModelManager::FindMesh(walkFile13);
-	walk14 = ModelManager::FindMesh(walkFile14);
+	walk14 = ModelManager::FindMesh(walkFile14);*/
+
+	InitMeshes();
 #pragma endregion
 
 }
@@ -140,46 +142,48 @@ void Level3::InitScene()
 
 	totalTime = distance / speed;
 
-	glm::vec3 lightPos = glm::vec3(0.0f, 9.5f, -45.0f);
-	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
-	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
-	float     lightAmbientPow = 0.05f;
-	float	  pauseAmbientPow = 0.25f;
-	float     lightSpecularPow = 1.0f;
-	float     lightSpecularPow2 = 0.2f;
-	glm::vec3 ambientCol = glm::vec3(1.0f);
-	float     ambientPow = 0.1f;
-	float     shininess = 16.0f;
+//	glm::vec3 lightPos = glm::vec3(0.0f, 9.5f, -45.0f);
+//	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
+//	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
+//	float     lightAmbientPow = 0.05f;
+//	float	  pauseAmbientPow = 0.25f;
+//	float     lightSpecularPow = 1.0f;
+//	float     lightSpecularPow2 = 0.2f;
+//	glm::vec3 ambientCol = glm::vec3(1.0f);
+//	float     ambientPow = 0.1f;
+//	float     shininess = 16.0f;
+//
+//#pragma region Shader Stuff
+//
+//	animShader = Shader::Create();
+//	animShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
+//	animShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+//	animShader->Link();
+//	SetShaderValues(animShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
+//
+//	shader = Shader::Create();
+//	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+//	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+//	shader->Link();
+//	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
+//
+//	untexturedShader = Shader::Create();
+//	untexturedShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+//	untexturedShader->LoadShaderPartFromFile("Shaders/frag_untextured.glsl", GL_FRAGMENT_SHADER);
+//	untexturedShader->Link();
+//	SetShaderValues(untexturedShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
+//
+//	pauseShader = Shader::Create();
+//	pauseShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+//	pauseShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
+//	pauseShader->Link();
+//	SetShaderValues(pauseShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess);
 
-#pragma region Shader Stuff
-
-	animShader = Shader::Create();
-	animShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
-	animShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	animShader->Link();
-	SetShaderValues(animShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	shader = Shader::Create();
-	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	shader->Link();
-	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	untexturedShader = Shader::Create();
-	untexturedShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	untexturedShader->LoadShaderPartFromFile("Shaders/frag_untextured.glsl", GL_FRAGMENT_SHADER);
-	untexturedShader->Link();
-	SetShaderValues(untexturedShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	pauseShader = Shader::Create();
-	pauseShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	pauseShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	pauseShader->Link();
-	SetShaderValues(pauseShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess);
+	InitShaders();
 #pragma endregion
 
 #pragma region Texture Stuff
-	Texture2D::sptr diffuseButton = Texture2D::LoadFromFile("Textures/ButtonTexture.png");
+	/*Texture2D::sptr diffuseButton = Texture2D::LoadFromFile("Textures/ButtonTexture.png");
 	Texture2D::sptr diffuseDrum = Texture2D::LoadFromFile("Textures/DrumstickTexture.png");
 	Texture2D::sptr diffuseDoor = Texture2D::LoadFromFile("Textures/DoorTexture.png");
 	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTilesetFinal.png");
@@ -233,7 +237,9 @@ void Level3::InitScene()
 	ventMat.Albedo = diffuseVent;
 	tabletMat.Albedo = diffuseTablet;
 	tabletScreenMat.Albedo = diffuseTabletScreen;
-	clearMat.Albedo = texture2;
+	clearMat.Albedo = texture2;*/
+
+	InitTextures();
 
 #pragma endregion
 
@@ -364,19 +370,19 @@ void Level3::InitScene()
 	panelTrans3.SetRotationY(180.0f);
 
 	//Pipe transforms
-	auto& pipeTrans = pipeC.Add<Transform>();
+	auto& pipeTrans = pipeCEnt.Add<Transform>();
 	pipeTrans.SetPosition(glm::vec3(12.f, 1.f, -33.f));
 	pipeTrans.SetRotationY(90.0f);
 
-	auto& pipeTrans2 = pipeC2.Add<Transform>();
+	auto& pipeTrans2 = pipeC2Ent.Add<Transform>();
 	pipeTrans2.SetPosition(glm::vec3(22.2f, 12.5f, -33.f));
 	pipeTrans2.SetRotationZ(-90.0f);
 	
-	auto& pipeTrans3 = pipeC3.Add<Transform>();
+	auto& pipeTrans3 = pipeC3Ent.Add<Transform>();
 	pipeTrans3.SetPosition(glm::vec3(34.f, 1.f, 23.f));
 	pipeTrans3.SetRotationY(180.0f);
 
-	auto& pipeTrans4 = pipeS.Add<Transform>();
+	auto& pipeTrans4 = pipeSEnt.Add<Transform>();
 	pipeTrans4.SetPosition(glm::vec3(34.f, 12.5f, -8.f));
 
 	//Level complete transform
@@ -437,11 +443,11 @@ void Level3::InitScene()
 	boxCol3.SetIsAmbient(true);
 	auto& boxCol4 = boxEnt4.Add<AABB>(boxEnt4, mainPlayer, 5.0f, 5.0f);
 	boxCol4.SetIsAmbient(true);
-	auto& pipeCol = pipeC.Add<AABB>(pipeC, mainPlayer, 2.5f, 2.5f);
+	auto& pipeCol = pipeCEnt.Add<AABB>(pipeCEnt, mainPlayer, 2.5f, 2.5f);
 	pipeCol.SetIsAmbient(true);
-	auto& pipeCol2 = pipeC2.Add<AABB>(pipeC2, mainPlayer, 2.5f, 2.5f);
+	auto& pipeCol2 = pipeC2Ent.Add<AABB>(pipeC2Ent, mainPlayer, 2.5f, 2.5f);
 	pipeCol2.SetIsAmbient(true);
-	auto& pipeCol3 = pipeC3.Add<AABB>(pipeC3, mainPlayer, 2.5f, 2.5f);
+	auto& pipeCol3 = pipeC3Ent.Add<AABB>(pipeC3Ent, mainPlayer, 2.5f, 2.5f);
 	pipeCol3.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
@@ -519,32 +525,32 @@ void Level3::InitScene()
 	auto& gateMesh2 = andEnt2.Add<MeshRenderer>(andEnt2, *and, shader);
 	auto& gateMesh3 = andEnt3.Add<MeshRenderer>(andEnt3, *and, shader);
 	auto& notMesh = notEnt.Add<MeshRenderer>(notEnt, *not, shader);
-	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireM1, shader);
-	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireM2, shader);
-	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireM3, shader);
-	auto& wireMesh4 = wireEnt4.Add<MeshRenderer>(wireEnt4, *wireM4, shader);
-	auto& wireMesh5 = wireEnt5.Add<MeshRenderer>(wireEnt5, *wireM5, shader);
-	auto& wireMesh6 = wireEnt6.Add<MeshRenderer>(wireEnt6, *wireM6, shader);
-	auto& wireMesh7 = wireEnt7.Add<MeshRenderer>(wireEnt7, *wireM7, shader);
+	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireM1L3, shader);
+	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireM2L3, shader);
+	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireM3L3, shader);
+	auto& wireMesh4 = wireEnt4.Add<MeshRenderer>(wireEnt4, *wireM4L3, shader);
+	auto& wireMesh5 = wireEnt5.Add<MeshRenderer>(wireEnt5, *wireM5L3, shader);
+	auto& wireMesh6 = wireEnt6.Add<MeshRenderer>(wireEnt6, *wireM6L3, shader);
+	auto& wireMesh7 = wireEnt7.Add<MeshRenderer>(wireEnt7, *wireM7L3, shader);
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *screen, shader);
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
 	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
 	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
-	auto& boxM = boxEnt.Add<MeshRenderer>(boxEnt, *boxMesh, shader);
-	auto& boxM2 = boxEnt2.Add<MeshRenderer>(boxEnt2, *boxMesh, shader);
-	auto& boxM3 = boxEnt3.Add<MeshRenderer>(boxEnt3, *boxMesh, shader);
-	auto& boxM4 = boxEnt4.Add<MeshRenderer>(boxEnt4, *boxMesh, shader);
-	auto& panel = panelEnt.Add<MeshRenderer>(panelEnt, *panelMesh, shader);
-	auto& panel2 = panelEnt2.Add<MeshRenderer>(panelEnt2, *panelMesh, shader);
-	auto& panel3 = panelEnt3.Add<MeshRenderer>(panelEnt3, *panelMesh, shader);
-	auto& vent = ventEnt.Add<MeshRenderer>(ventEnt, *ventMesh, shader);
-	auto& vent2 = ventEnt2.Add<MeshRenderer>(ventEnt2, *ventMesh, shader);
-	auto& pipeCM = pipeC.Add<MeshRenderer>(pipeC, *pipeCMesh, shader);
-	auto& pipeCM2 = pipeC2.Add<MeshRenderer>(pipeC2, *pipeCMesh, shader);
-	auto& pipeCM3 = pipeC3.Add<MeshRenderer>(pipeC3, *pipeCMesh, shader);
-	auto& pipeSM = pipeS.Add<MeshRenderer>(pipeS, *pipeSMesh, shader);
+	auto& boxMesh = boxEnt.Add<MeshRenderer>(boxEnt, *boxM, shader);
+	auto& boxMesh2 = boxEnt2.Add<MeshRenderer>(boxEnt2, *boxM, shader);
+	auto& boxMesh3 = boxEnt3.Add<MeshRenderer>(boxEnt3, *boxM, shader);
+	auto& boxMesh4 = boxEnt4.Add<MeshRenderer>(boxEnt4, *boxM, shader);
+	auto& panelMesh = panelEnt.Add<MeshRenderer>(panelEnt, *panel, shader);
+	auto& panelMesh2 = panelEnt2.Add<MeshRenderer>(panelEnt2, *panel, shader);
+	auto& panelMesh3 = panelEnt3.Add<MeshRenderer>(panelEnt3, *panel, shader);
+	auto& vent = ventEnt.Add<MeshRenderer>(ventEnt, *ventB, shader);
+	auto& vent2 = ventEnt2.Add<MeshRenderer>(ventEnt2, *ventB, shader);
+	auto& pipeCM = pipeCEnt.Add<MeshRenderer>(pipeCEnt, *pipeC, shader);
+	auto& pipeCM2 = pipeC2Ent.Add<MeshRenderer>(pipeC2Ent, *pipeC, shader);
+	auto& pipeCM3 = pipeC3Ent.Add<MeshRenderer>(pipeC3Ent, *pipeC, shader);
+	auto& pipeSM = pipeSEnt.Add<MeshRenderer>(pipeSEnt, *pipeS, shader);
 	auto& tabletScreenMesh = tabletScreenEnt.Add<MeshRenderer>(tabletScreenEnt, *screen, pauseShader);
 	auto& tabletMesh = tabletEnt.Add<MeshRenderer>(tabletEnt, *tablet, shader);
 
@@ -806,10 +812,10 @@ void Level3::Update(float dt)
 	glm::mat4 transformPanel3 = panelEnt3.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformVent = ventEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformVent2 = ventEnt2.Get<Transform>().GetModelMatrix();
-	glm::mat4 transformPipeC = pipeC.Get<Transform>().GetModelMatrix();
-	glm::mat4 transformPipeC2 = pipeC2.Get<Transform>().GetModelMatrix();
-	glm::mat4 transformPipeC3 = pipeC3.Get<Transform>().GetModelMatrix();
-	glm::mat4 transformPipeS = pipeS.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformPipeC = pipeCEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformPipeC2 = pipeC2Ent.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformPipeC3 = pipeC3Ent.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformPipeS = pipeSEnt.Get<Transform>().GetModelMatrix();
 
 	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
@@ -1109,14 +1115,14 @@ void Level3::Update(float dt)
 			//Curved Pipe
 			shader->SetUniform("s_Diffuse", 10);
 			curvedPipeMat.Albedo->Bind(10);
-			pipeC.Get<MeshRenderer>().Render(camera, transformPipeC);
-			pipeC2.Get<MeshRenderer>().Render(camera, transformPipeC2);
-			pipeC3.Get<MeshRenderer>().Render(camera, transformPipeC3);
+			pipeCEnt.Get<MeshRenderer>().Render(camera, transformPipeC);
+			pipeC2Ent.Get<MeshRenderer>().Render(camera, transformPipeC2);
+			pipeC3Ent.Get<MeshRenderer>().Render(camera, transformPipeC3);
 
 			//Straight Pipe
 			shader->SetUniform("s_Diffuse", 11);
 			straightPipeMat.Albedo->Bind(11);
-			pipeS.Get<MeshRenderer>().Render(camera, transformPipeS);
+			pipeSEnt.Get<MeshRenderer>().Render(camera, transformPipeS);
 
 			shader->SetUniform("s_Diffuse", 12);
 			tabletMat.Albedo->Bind(12);
@@ -1180,10 +1186,10 @@ void Level3::Update(float dt)
 			panelEnt.Get<MeshRenderer>().Render(camera, transformPanel);
 			panelEnt2.Get<MeshRenderer>().Render(camera, transformPanel2);
 			panelEnt3.Get<MeshRenderer>().Render(camera, transformPanel3);
-			pipeC.Get<MeshRenderer>().Render(camera, transformPipeC);
-			pipeC2.Get<MeshRenderer>().Render(camera, transformPipeC2);
-			pipeC3.Get<MeshRenderer>().Render(camera, transformPipeC3);
-			pipeS.Get<MeshRenderer>().Render(camera, transformPipeS);
+			pipeCEnt.Get<MeshRenderer>().Render(camera, transformPipeC);
+			pipeC2Ent.Get<MeshRenderer>().Render(camera, transformPipeC2);
+			pipeC3Ent.Get<MeshRenderer>().Render(camera, transformPipeC3);
+			pipeSEnt.Get<MeshRenderer>().Render(camera, transformPipeS);
 			tabletEnt.Get<MeshRenderer>().Render(camera, transformTablet);
 
 			//untexturedShader->Bind();	
@@ -1219,9 +1225,9 @@ void Level3::Update(float dt)
 	boxEnt2.Get<AABB>().Update();
 	boxEnt3.Get<AABB>().Update();
 	boxEnt4.Get<AABB>().Update();
-	pipeC.Get<AABB>().Update();
-	pipeC2.Get<AABB>().Update();
-	pipeC3.Get<AABB>().Update();
+	pipeCEnt.Get<AABB>().Update();
+	pipeC2Ent.Get<AABB>().Update();
+	pipeC3Ent.Get<AABB>().Update();
 	andEnt.Get<AndGate>().Update();
 	andEnt2.Get<AndGate>().Update();
 	andEnt3.Get<AndGate>().Update();

@@ -50,13 +50,13 @@ private:
 
 	Entity screenEnt;
 
-	Shader::sptr shader, animShader, untexturedShader;
+	//Shader::sptr shader, animShader, untexturedShader;
 
 	GLfloat time = 0.0f;
 
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, gateMat, wireMat, wirePowerMat, completeMat, boxMat, panelMat, ventMat, coilMatOn, coilMatOff;
+	//Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, gateMat, wireMat, wirePowerMat, completeMat, boxMat, panelMat, ventMat, coilMatOn, coilMatOff;
 
-	Mesh* drumstick;
+	/*Mesh* drumstick;
 	Mesh* floor;
 	Mesh* screen;
 	Mesh* leftWall;
@@ -96,7 +96,7 @@ private:
 	std::string coilFile = "Models/TeslaCoil.obj";
 	std::string boxFile = "Models/Box.obj";
 	std::string panelFile = "Models/Panel.obj";
-	std::string ventFile = "Models/New_VentSmall.obj";
+	std::string ventFile = "Models/New_VentSmall.obj";*/
 
 	float t = 0.0f;
 	float totalTime;
