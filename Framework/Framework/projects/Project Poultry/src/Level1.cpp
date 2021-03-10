@@ -477,7 +477,7 @@ void Level1::InitScene()
 
 #pragma region Mesh Loading 
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
-	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floor, shader);
+	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floorL1, shader);
 	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *leftWall, shader);
 	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWall, shader);
 	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWall, shader);
@@ -609,7 +609,7 @@ void Level1::Update(float dt)
 	auto& buttonTrans = buttonEnt.Get<Transform>();
 	auto& buttonTrans2 = buttonEnt2.Get<Transform>();
 
-	floorEnt.Get<Transform>().SetPositionY(-0.9f);
+	//floorEnt.Get<Transform>().SetPositionY(-0.9f);
 
 	backEnt.Get<Transform>().SetPositionZ(-39.0f);
 	backEnt.Get<Transform>().SetPositionY(9.0f);
