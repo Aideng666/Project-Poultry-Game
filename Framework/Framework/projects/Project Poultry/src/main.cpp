@@ -17,7 +17,6 @@
 #include "MainMenuLevel.h"
 #include "Application.h"
 #include <ModelManager.h>
-#include "Greyscale.h"
 
 using namespace freebird; //referencing the module's includes/src's
 
@@ -68,8 +67,8 @@ int main()
 	scenes.push_back(new Level2("Level 2", window));
 	scenes.push_back(new Level3("Level 3", window));
 
-	SetActiveScene(2);
-	
+	SetActiveScene(0);
+	 
 	//Calculates our timer
 	Application::Tick();
 
@@ -85,6 +84,7 @@ int main()
 		{
 			currentScene->SetTextured(isTextured);
 		}
+
 		if (ImGui::CollapsingHeader("Effect Controls"))
 		{
 			ImGui::SliderInt("Chosen Effect", &activeEffect, 0, currentScene->GetEffects().size() - 1);
@@ -123,36 +123,68 @@ int main()
 					temp->SetIntensity(intensity);
 				}
 			}
+			//if (activeEffect == 3)
+			//{
+			//	currentScene->SetActiveEffect(3);
+
+			//	ImGui::Text("Active Effect: Bloom");
+
+			//	Bloom* temp = (Bloom*)currentScene->GetEffects()[activeEffect];
+			//	float threshold = temp->GetThreshold();
+			//	int blurValue = temp->GetPasses();
+
+			//	if (ImGui::SliderFloat("Threshold", &threshold, 1.0f, 0.0f))
+			//	{
+			//		temp->SetThreshold(threshold);
+			//	}
+			//	if (ImGui::SliderInt("Blur Value", &blurValue, 0.0f, 10.f))
+			//	{
+			//		temp->SetPasses(blurValue);
+			//	}
+
+			//	//float downscale = temp->GetDownscale();
+
+			//	//if (ImGui::SliderFloat("Blur", &downscale, 1.0f, 5.0f))
+			//	//{
+			//	//	temp->SetDownscale(downscale);
+			//	//}
+			//}
 			if (activeEffect == 3)
 			{
 				currentScene->SetActiveEffect(3);
-
-				ImGui::Text("Active Effect: Bloom");
-
-				Bloom* temp = (Bloom*)currentScene->GetEffects()[activeEffect];
-				float threshold = temp->GetThreshold();
-
-				if (ImGui::SliderFloat("Threshold", &threshold, 0.0f, 1.0f))
-				{
-					temp->SetThreshold(threshold);
-				}
-
-				float downscale = temp->GetDownscale();
-
-				if (ImGui::SliderFloat("Blur", &downscale, 1.0f, 5.0f))
-				{
-					temp->SetDownscale(downscale);
-				}
-			}
-			if (activeEffect == 4)
-			{
-				currentScene->SetActiveEffect(4);
 
 				ImGui::Text("Active Effect: Color Correct Effect");
 
 				ColorCorrect* temp = (ColorCorrect*)currentScene->GetEffects()[activeEffect];
 			}
+			if (activeEffect == 4)
+			{
+				currentScene->SetActiveEffect(4);
 
+				ImGui::Text("Active Effect: Film Grain Effect");
+
+				FilmGrain* temp = (FilmGrain*)currentScene->GetEffects()[activeEffect];
+				float strength = temp->GetStrength();
+
+				if (ImGui::SliderFloat("Strength", &strength, 0.0f, 64.f))
+				{
+					temp->SetStrength(strength);
+				}
+			}
+			if (activeEffect == 5)
+			{
+				currentScene->SetActiveEffect(5);
+
+				ImGui::Text("Active Effect: Pixelate Effect");
+
+				Pixelate* temp = (Pixelate*)currentScene->GetEffects()[activeEffect];
+				float pixelSize = temp->GetPixelSize();
+
+				if (ImGui::SliderFloat("Pixel Size", &pixelSize, 0.1, 32.f))
+				{
+					temp->SetPixelSize(pixelSize);
+				}
+			}
 		}
 	});
 
