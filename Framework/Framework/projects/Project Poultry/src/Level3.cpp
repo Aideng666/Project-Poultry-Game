@@ -60,6 +60,7 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	tabletEnt = Entity::Create();
 	tabletScreenEnt = Entity::Create();
 	pauseEnt = Entity::Create();
+	tutEnt = Entity::Create();
 
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
@@ -71,64 +72,8 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	bloomEnt = Entity::Create();
 #pragma endregion
 
-#pragma region Model Manager
-	/*drumstick = ModelManager::FindMesh(drumFile);
-	floor = ModelManager::FindMesh(floorFile);
-	screen = ModelManager::FindMesh(screenFile);
-	leftWall = ModelManager::FindMesh(leftWallFile);
-	rightWall = ModelManager::FindMesh(rightWallFile);
-	backWall = ModelManager::FindMesh(backWallFile);
-	doorM = ModelManager::FindMesh(doorFile);
-	buttonM = ModelManager::FindMesh(buttonFile);
-	and = ModelManager::FindMesh(gateFile);
-	not = ModelManager::FindMesh(notFile);
-	wireM1 = ModelManager::FindMesh(wire1File);
-	wireM2 = ModelManager::FindMesh(wire2File);
-	wireM3 = ModelManager::FindMesh(wire3File);
-	wireM4 = ModelManager::FindMesh(wire4File);
-	wireM5 = ModelManager::FindMesh(wire5File);
-	wireM6 = ModelManager::FindMesh(wire6File);
-	wireM7 = ModelManager::FindMesh(wire7File);
-	coil = ModelManager::FindMesh(coilFile);
-	options = ModelManager::FindMesh(pauseButtonFile);
-	exit = ModelManager::FindMesh(pauseButtonFile);
-	retry = ModelManager::FindMesh(pauseButtonFile);
-	boxMesh = ModelManager::FindMesh(boxFile);
-	panelMesh = ModelManager::FindMesh(panelFile);
-	ventMesh = ModelManager::FindMesh(ventFile);
-	pipeCMesh = ModelManager::FindMesh(pipeCFile);
-	pipeSMesh = ModelManager::FindMesh(pipeSFile);
-	tablet = ModelManager::FindMesh(tabletFile);
-
-	door1 = ModelManager::FindMesh(doorFile1);
-	door2 = ModelManager::FindMesh(doorFile2);
-	door3 = ModelManager::FindMesh(doorFile3);
-	door4 = ModelManager::FindMesh(doorFile4);
-	door5 = ModelManager::FindMesh(doorFile5);
-	door6 = ModelManager::FindMesh(doorFile6);
-	door7 = ModelManager::FindMesh(doorFile7);
-	door8 = ModelManager::FindMesh(doorFile8);
-	door9 = ModelManager::FindMesh(doorFile9);
-	door10 = ModelManager::FindMesh(doorFile10);
-
-	walk1 = ModelManager::FindMesh(walkFile1);
-	walk2 = ModelManager::FindMesh(walkFile2);
-	walk3 = ModelManager::FindMesh(walkFile3);
-	walk4 = ModelManager::FindMesh(walkFile4);
-	walk5 = ModelManager::FindMesh(walkFile5);
-	walk6 = ModelManager::FindMesh(walkFile6);
-	walk7 = ModelManager::FindMesh(walkFile7);
-	walk8 = ModelManager::FindMesh(walkFile8);
-	walk9 = ModelManager::FindMesh(walkFile9);
-	walk10 = ModelManager::FindMesh(walkFile10);
-	walk11 = ModelManager::FindMesh(walkFile11);
-	walk12 = ModelManager::FindMesh(walkFile12);
-	walk13 = ModelManager::FindMesh(walkFile13);
-	walk14 = ModelManager::FindMesh(walkFile14);*/
 
 	InitMeshes();
-#pragma endregion
-
 }
 
 void Level3::InitScene()
@@ -143,106 +88,10 @@ void Level3::InitScene()
 
 	totalTime = distance / speed;
 
-//	glm::vec3 lightPos = glm::vec3(0.0f, 9.5f, -45.0f);
-//	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
-//	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
-//	float     lightAmbientPow = 0.05f;
-//	float	  pauseAmbientPow = 0.25f;
-//	float     lightSpecularPow = 1.0f;
-//	float     lightSpecularPow2 = 0.2f;
-//	glm::vec3 ambientCol = glm::vec3(1.0f);
-//	float     ambientPow = 0.1f;
-//	float     shininess = 16.0f;
-//
-//#pragma region Shader Stuff
-//
-//	animShader = Shader::Create();
-//	animShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
-//	animShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-//	animShader->Link();
-//	SetShaderValues(animShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-//
-//	shader = Shader::Create();
-//	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-//	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-//	shader->Link();
-//	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-//
-//	untexturedShader = Shader::Create();
-//	untexturedShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-//	untexturedShader->LoadShaderPartFromFile("Shaders/frag_untextured.glsl", GL_FRAGMENT_SHADER);
-//	untexturedShader->Link();
-//	SetShaderValues(untexturedShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-//
-//	pauseShader = Shader::Create();
-//	pauseShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-//	pauseShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-//	pauseShader->Link();
-//	SetShaderValues(pauseShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess);
-
+	//Initialize the shaders for the level
 	InitShaders();
-#pragma endregion
-
-#pragma region Texture Stuff
-	/*Texture2D::sptr diffuseButton = Texture2D::LoadFromFile("Textures/ButtonTexture.png");
-	Texture2D::sptr diffuseDrum = Texture2D::LoadFromFile("Textures/DrumstickTexture.png");
-	Texture2D::sptr diffuseDoor = Texture2D::LoadFromFile("Textures/DoorTexture.png");
-	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTilesetFinal.png");
-	Texture2D::sptr diffuseWall = Texture2D::LoadFromFile("Textures/WallTileset.png");
-	Texture2D::sptr diffuseWire = Texture2D::LoadFromFile("Textures/Wire_Off_Texture.png");
-	Texture2D::sptr diffuseWireOn = Texture2D::LoadFromFile("Textures/Wire_On_Texture.png");
-	Texture2D::sptr diffuseComplete = Texture2D::LoadFromFile("Textures/LevelComplete.png");
-	Texture2D::sptr diffuseAnd = Texture2D::LoadFromFile("Textures/AndGate.png");
-	Texture2D::sptr diffuseNot = Texture2D::LoadFromFile("Textures/NotGate.png");
-	Texture2D::sptr diffusePause = Texture2D::LoadFromFile("Textures/PauseMenu.png");
-	Texture2D::sptr diffuseBox = Texture2D::LoadFromFile("Textures/Box_Texture.png");
-	Texture2D::sptr diffusePipeStraight = Texture2D::LoadFromFile("Textures/Pipe_Straight_Texture.png");
-	Texture2D::sptr diffusePipeCurved = Texture2D::LoadFromFile("Textures/Pipe_Curved_Texture.png");
-	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Option.png");
-	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Replay.png");
-	Texture2D::sptr diffuseExit = Texture2D::LoadFromFile("Textures/Buttons/Default/Exit.png");
-	Texture2D::sptr diffuseCoilOff = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_Off.png");
-	Texture2D::sptr diffuseCoilOn = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_On.png");
-	Texture2D::sptr diffusePanel = Texture2D::LoadFromFile("Textures/PanelTexture.png");
-	Texture2D::sptr diffuseVent = Texture2D::LoadFromFile("Textures/VentTexture.png");
-	Texture2D::sptr diffuseTablet = Texture2D::LoadFromFile("Textures/TabletTexture.png");
-	Texture2D::sptr diffuseTabletScreen = Texture2D::LoadFromFile("Textures/NotGateTablet.png");
-
-	Texture2DDescription desc = Texture2DDescription();
-	desc.Width = 1;
-	desc.Height = 1;
-	desc.Format = InternalFormat::RGB8;
-	Texture2D::sptr texture2 = Texture2D::Create(desc);
-	texture2->Clear();
-
-	buttonMat.Albedo = diffuseButton;
-	drumstickMat.Albedo = diffuseDrum;
-	doorMat.Albedo = diffuseDoor;
-	floorMat.Albedo = diffuseFloor;
-	wallMat.Albedo = diffuseWall;
-	wireMat.Albedo = diffuseWire;
-	wireMatOn.Albedo = diffuseWireOn;
-	completeMat.Albedo = diffuseComplete;
-	andMat.Albedo = diffuseAnd;
-	notMat.Albedo = diffuseNot;
-	pauseMat.Albedo = diffusePause;
-	boxMat.Albedo = diffuseBox;
-	straightPipeMat.Albedo = diffusePipeStraight;
-	curvedPipeMat.Albedo = diffusePipeCurved;
-	optionMat.Albedo = diffuseOptions;
-	retryMat.Albedo = diffuseRetry;
-	exitMat.Albedo = diffuseExit;
-	coilMatOff.Albedo = diffuseCoilOff;
-	coilMatOn.Albedo = diffuseCoilOn;
-	panelMat.Albedo = diffusePanel;
-	ventMat.Albedo = diffuseVent;
-	tabletMat.Albedo = diffuseTablet;
-	tabletScreenMat.Albedo = diffuseTabletScreen;
-	clearMat.Albedo = texture2;*/
-
+	//Initialize the Textures for the level
 	InitTextures();
-
-#pragma endregion
 
 #pragma region Transforms
 	//Player transforms
@@ -420,6 +269,11 @@ void Level3::InitScene()
 	tabletScreenTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	tabletScreenTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
 
+	//Interact text transform
+	auto& tutTrans = tutEnt.Add<Transform>();
+	tutTrans.SetPosition(glm::vec3(1.0f, 2.0f, 5.0f));
+	tutTrans.SetScale(glm::vec3(1.0f));
+
 #pragma endregion
 
 	//AABB
@@ -450,6 +304,12 @@ void Level3::InitScene()
 	pipeCol2.SetIsAmbient(true);
 	auto& pipeCol3 = pipeC3Ent.Add<AABB>(pipeC3Ent, mainPlayer, 2.5f, 2.5f);
 	pipeCol3.SetIsAmbient(true);
+	auto& buttonCol = buttonEnt.Add<AABB>(buttonEnt, mainPlayer, 2.0f, 2.0f);
+	buttonCol.SetIsAmbient(true);
+	auto& buttonCol2 = buttonEnt2.Add<AABB>(buttonEnt2, mainPlayer, 2.0f, 2.0f);
+	buttonCol2.SetIsAmbient(true);
+	auto& buttonCol3 = buttonEnt3.Add<AABB>(buttonEnt3, mainPlayer, 2.0f, 2.0f);
+	buttonCol3.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
@@ -554,6 +414,7 @@ void Level3::InitScene()
 	auto& pipeSM = pipeSEnt.Add<MeshRenderer>(pipeSEnt, *pipeS, shader);
 	auto& tabletScreenMesh = tabletScreenEnt.Add<MeshRenderer>(tabletScreenEnt, *screen, pauseShader);
 	auto& tabletMesh = tabletEnt.Add<MeshRenderer>(tabletEnt, *tablet, shader);
+	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -822,16 +683,17 @@ void Level3::Update(float dt)
 	glm::mat4 transformPipeC2 = pipeC2Ent.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformPipeC3 = pipeC3Ent.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformPipeS = pipeSEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformTut = tutEnt.Get<Transform>().GetModelMatrix();
 
-	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
+	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
 		button1Watch.Poll(window);
 	
-	if (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -2.0f
+	if (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
 		button2Watch.Poll(window);
 	
-	if (playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -2.0f
+	if (playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() > -3.0f)
 		button3Watch.Poll(window);
 
@@ -960,7 +822,7 @@ void Level3::Update(float dt)
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 3);
-			tabletScreenMat.Albedo->Bind(3);
+			notTabletScreenMat.Albedo->Bind(3);
 
 			if (tabletOpen)
 			{
@@ -1135,7 +997,18 @@ void Level3::Update(float dt)
 			tabletEnt.Get<MeshRenderer>().Render(camera, transformTablet);
 
 			//Bind and render the objects with no textures
-			//untexturedShader->Bind();
+			untexturedShader->Bind();
+
+			if (playerTrans.GetPositionX() > 5.0f && playerTrans.GetPositionX() < 11.0f
+				&& playerTrans.GetPositionZ() > 10.0f && playerTrans.GetPositionZ() < 16.0f)
+			{
+				if (!tabletOpen)
+					tutEnt.Get<MeshRenderer>().Render(orthoCam, transformTut);
+				else
+				{
+
+				}
+			}
 		}
 	}
 	else
@@ -1234,6 +1107,9 @@ void Level3::Update(float dt)
 	pipeCEnt.Get<AABB>().Update();
 	pipeC2Ent.Get<AABB>().Update();
 	pipeC3Ent.Get<AABB>().Update();
+	buttonEnt.Get<AABB>().Update();
+	buttonEnt2.Get<AABB>().Update();
+	buttonEnt3.Get<AABB>().Update();
 	andEnt.Get<AndGate>().Update();
 	andEnt2.Get<AndGate>().Update();
 	andEnt3.Get<AndGate>().Update();

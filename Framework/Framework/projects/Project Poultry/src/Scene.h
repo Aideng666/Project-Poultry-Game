@@ -20,6 +20,7 @@
 #include "ColorCorrect.h"
 #include "FilmGrain.h"
 #include "Pixelate.h"
+#include "GBuffer.h"
 
 #include "BloomEffect.h"
 
@@ -84,7 +85,7 @@ protected:
 	entt::registry* scene = nullptr;
 	std::string name = " ";
 
-	Shader::sptr shader, animShader, pauseShader, untexturedShader, particleShader;
+	Shader::sptr shader, animShader, pauseShader, untexturedShader, particleShader, gBufferShader;
 
 	GLFWwindow* window;
 
@@ -93,11 +94,12 @@ protected:
 	Entity FBO, greyscaleEnt, sepiaEnt, colorCorrectEnt;
 	Entity filmGrainEnt, pixelateEnt;
 	Entity bloomEnt;
+	Entity gBufferEnt;
 
 	Entity pauseEnt, optionEnt, exitEnt, retryEnt;
 
 	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat;
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, tabletScreenMat, coilMatOn, coilMatOff;
+	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
 	Mat andMat, notMat, wireMatOn;
 
 	//Meshes for multiple levels

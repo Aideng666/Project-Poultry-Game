@@ -48,55 +48,7 @@ private:
 	//Vents
 	Entity ventEnt, ventEnt2;
 
-	Entity screenEnt;
-
-	//Shader::sptr shader, animShader, untexturedShader;
-
 	GLfloat time = 0.0f;
-
-	//Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, gateMat, wireMat, wirePowerMat, completeMat, boxMat, panelMat, ventMat, coilMatOn, coilMatOff;
-
-	/*Mesh* drumstick;
-	Mesh* floor;
-	Mesh* screen;
-	Mesh* leftWall;
-	Mesh* rightWall;
-	Mesh* backWall;
-	Mesh* doorM;
-	Mesh* pipeS;
-	Mesh* pipeC;
-	Mesh* gate;
-	Mesh* buttonM;
-	Mesh* wireM1;
-	Mesh* wireM2;
-	Mesh* wireM3;
-	Mesh* wireM4;
-	Mesh* wireM5;
-	Mesh* coil;
-	Mesh* boxM;
-	Mesh* panel;
-	Mesh* vent;
-
-	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
-	std::string floorFile = "Models/Level2Floor.obj";
-	std::string screenFile = "Models/Floor.obj";
-	std::string leftWallFile = "Models/LeftWall.obj";
-	std::string rightWallFile = "Models/RightWall.obj";
-	std::string backWallFile = "Models/BackWall.obj";
-	std::string doorFile = "Models/DoorFrames/Door0.obj";
-	std::string pipeFileS = "Models/New2_StraightPipe.obj";
-	std::string pipeFileC = "Models/New2_CurvedPipe.obj";
-	std::string gateFile = "Models/AndGate.obj";
-	std::string buttonFile = "Models/Button.obj";
-	std::string wire1File = "Models/Level2Wire1.obj";
-	std::string wire2File = "Models/Level2Wire2.obj";
-	std::string wire3File = "Models/Level2Wire3.obj";
-	std::string wire4File = "Models/Level2Wire4.obj";
-	std::string wire5File = "Models/New_Level2Wire5.obj";
-	std::string coilFile = "Models/TeslaCoil.obj";
-	std::string boxFile = "Models/Box.obj";
-	std::string panelFile = "Models/Panel.obj";
-	std::string ventFile = "Models/New_VentSmall.obj";*/
 
 	float t = 0.0f;
 	float totalTime;
