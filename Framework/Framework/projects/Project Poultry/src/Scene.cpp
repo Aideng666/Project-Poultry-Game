@@ -59,7 +59,9 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Replay.png");
 	Texture2D::sptr diffuseExit = Texture2D::LoadFromFile("Textures/Buttons/Default/Exit.png");
 	Texture2D::sptr diffuseTablet = Texture2D::LoadFromFile("Textures/TabletTexture.png");
-	Texture2D::sptr diffuseTabletScreen = Texture2D::LoadFromFile("Textures/AndGateTablet.png");
+	Texture2D::sptr diffuseAndTabletScreen = Texture2D::LoadFromFile("Textures/AndGateTablet.png");
+	Texture2D::sptr diffuseNotTabletScreen = Texture2D::LoadFromFile("Textures/NotGateTablet.png");
+	Texture2D::sptr diffuseOrTabletScreen = Texture2D::LoadFromFile("Textures/OrGateTablet.png");
 	Texture2D::sptr diffuseCoilOff = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_Off.png");
 	Texture2D::sptr diffuseCoilOn = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_On.png");
 
@@ -90,7 +92,9 @@ void Scene::InitTextures()
 	retryMat.Albedo = diffuseRetry;
 	exitMat.Albedo = diffuseExit;
 	tabletMat.Albedo = diffuseTablet;
-	tabletScreenMat.Albedo = diffuseTabletScreen;
+	andTabletScreenMat.Albedo = diffuseAndTabletScreen;
+	notTabletScreenMat.Albedo = diffuseNotTabletScreen;
+	orTabletScreenMat.Albedo = diffuseOrTabletScreen;
 	coilMatOff.Albedo = diffuseCoilOff;
 	coilMatOn.Albedo = diffuseCoilOn;
 	clearMat.Albedo = texture2;
@@ -142,6 +146,11 @@ void Scene::InitShaders()
 	pauseShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	pauseShader->Link();
 	SetShaderValues(pauseShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess);
+
+	Shader::sptr gBufferShader = Shader::Create();
+	gBufferShader->LoadShaderPartFromFile("shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	gBufferShader->LoadShaderPartFromFile("shaders/gBuffer_pass_frag.glsl", GL_FRAGMENT_SHADER);
+	gBufferShader->Link();
 }
 
 void Scene::InitMeshes()

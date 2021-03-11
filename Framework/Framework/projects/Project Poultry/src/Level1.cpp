@@ -62,6 +62,8 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 
 	filmGrainEnt = Entity::Create();
 	pixelateEnt = Entity::Create();
+
+	gBufferEnt = Entity::Create();
 #pragma endregion
 
 	InitMeshes();
@@ -391,6 +393,9 @@ void Level1::InitScene()
 	int width, height;
 	glfwGetWindowSize(window, &width, &height);
 
+	auto gBuffer = &gBufferEnt.Add<GBuffer>();
+	gBuffer->Init(width, height);
+
 	auto basicEffect = &FBO.Add<PostEffect>();
 	basicEffect->Init(width, height);
 
@@ -622,8 +627,10 @@ void Level1::Update(float dt)
 
 	//Post-Effect Stuff
 	auto basicEffect = &FBO.Get<PostEffect>();
+	//auto gBuffer = &gBufferEnt.Get<GBuffer>();
 
 	basicEffect->Clear();
+	//gBuffer->Clear();
 
 	for (int i = 0; i < effects.size(); i++)
 	{
@@ -631,6 +638,7 @@ void Level1::Update(float dt)
 	}
 
 	basicEffect->BindBuffer(0);
+	//gBuffer->Bind();
 
 #pragma region Renders
 	if (isTextured)
@@ -932,6 +940,10 @@ void Level1::Update(float dt)
 #pragma endregion
 
 	basicEffect->UnbindBuffer();
+
+	//gBuffer->Unbind();
+
+	//gBuffer->DrawBuffersToScreen();
 
 	effects[activeEffect]->ApplyEffect(basicEffect);
 
