@@ -255,6 +255,12 @@ void Level2::InitScene()
 	pipeCol.SetIsAmbient(true);
 	auto& pipeCol2 = pipeEntC2.Add<AABB>(pipeEntC2, mainPlayer, 2.5f, 2.5f);
 	pipeCol2.SetIsAmbient(true);
+	auto& buttonCol = buttonEnt.Add<AABB>(buttonEnt, mainPlayer, 2.0f, 2.0f);
+	buttonCol.SetIsAmbient(true);
+	auto& buttonCol2 = buttonEnt2.Add<AABB>(buttonEnt2, mainPlayer, 2.0f, 2.0f);
+	buttonCol2.SetIsAmbient(true);
+	auto& buttonCol3 = buttonEnt3.Add<AABB>(buttonEnt3, mainPlayer, 2.0f, 2.0f);
+	buttonCol3.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
@@ -566,15 +572,15 @@ void Level2::Update(float dt)
 	glm::mat4 transformRetry = retryEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformExit = exitEnt.Get<Transform>().GetModelMatrix();
 
-	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
+	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
 		button1Watch.Poll(window);
 	
-	if (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -2.0f
+	if (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
 		button2Watch.Poll(window);
 	
-	if (playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -2.0f
+	if (playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() > -3.0f)
 		button3Watch.Poll(window);
 
@@ -921,6 +927,9 @@ void Level2::Update(float dt)
 	coilEnt.Get<AABB>().Update();
 	pipeEntC.Get<AABB>().Update();
 	pipeEntC2.Get<AABB>().Update();
+	buttonEnt.Get<AABB>().Update();
+	buttonEnt2.Get<AABB>().Update();
+	buttonEnt3.Get<AABB>().Update();
 	buttonEnt.Get<Lever>().Update();
 	buttonEnt2.Get<Lever>().Update();
 	buttonEnt3.Get<Lever>().Update();

@@ -71,61 +71,10 @@ private:
 	Entity tabletEnt;
 	Entity tabletScreenEnt;
 
-	//Shader::sptr shader, animShader, untexturedShader;
+	//Interact
+	Entity tutEnt;
 
 	GLfloat time = 0.0f;
-
-	//Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, andMat, notMat, wireMat, wireMatOn, coilMatOn, coilMatOff, completeMat, boxMat, panelMat, ventMat, pipeSMat, pipeCMat, tabletMat, tabletScreenMat;
-
-	/*Mesh* drumstick;
-	Mesh* floor;
-	Mesh* screen;
-	Mesh* leftWall;
-	Mesh* rightWall;
-	Mesh* backWall;
-	Mesh* doorM;
-	Mesh* and;
-	Mesh* not;
-	Mesh* buttonM;
-	Mesh* wireM1;
-	Mesh* wireM2;
-	Mesh* wireM3;
-	Mesh* wireM4;
-	Mesh* wireM5;
-	Mesh* wireM6;
-	Mesh* wireM7;
-	Mesh* coil;
-	Mesh* boxMesh;
-	Mesh* panelMesh;
-	Mesh* ventMesh;
-	Mesh* pipeSMesh;
-	Mesh* pipeCMesh;
-	Mesh* tablet;
-
-	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
-	std::string floorFile = "Models/Level3Floor.obj";
-	std::string screenFile = "Models/Floor.obj";
-	std::string leftWallFile = "Models/LeftWall.obj";
-	std::string rightWallFile = "Models/RightWall.obj";
-	std::string backWallFile = "Models/BackWall.obj";
-	std::string doorFile = "Models/DoorFrames/Door0.obj";
-	std::string gateFile = "Models/AndGate.obj";
-	std::string notFile = "Models/NotGate.obj";
-	std::string wire1File = "Models/New_Level3Wire1.obj";
-	std::string wire2File = "Models/New_Level3Wire2.obj";
-	std::string wire3File = "Models/New_Level3Wire3.obj";
-	std::string wire4File = "Models/New_Level3Wire4.obj";
-	std::string wire5File = "Models/New_Level3Wire5.obj";
-	std::string wire6File = "Models/New_Level3Wire6.obj";
-	std::string wire7File = "Models/New_Level3Wire7.obj";
-	std::string buttonFile = "Models/Button.obj";
-	std::string coilFile = "Models/TeslaCoil.obj";
-	std::string boxFile = "Models/Box.obj";
-	std::string panelFile = "Models/Panel.obj";
-	std::string ventFile = "Models/New2_VentLarge.obj";
-	std::string pipeSFile = "Models/New2_StraightPipe.obj";
-	std::string pipeCFile = "Models/New2_CurvedPipe.obj";
-	std::string tabletFile = "Models/Tablet.obj";*/
 
 	float t = 0.0f;
 	float totalTime;
