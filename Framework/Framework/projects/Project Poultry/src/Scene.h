@@ -21,6 +21,8 @@
 #include "FilmGrain.h"
 #include "Pixelate.h"
 
+#include "BloomEffect.h"
+
 using namespace freebird;
 
 class Scene
@@ -90,6 +92,7 @@ protected:
 
 	Entity FBO, greyscaleEnt, sepiaEnt, colorCorrectEnt;
 	Entity filmGrainEnt, pixelateEnt;
+	Entity bloomEnt;
 
 	Entity pauseEnt, optionEnt, exitEnt, retryEnt;
 

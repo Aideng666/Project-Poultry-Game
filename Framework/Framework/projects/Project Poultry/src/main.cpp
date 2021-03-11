@@ -67,7 +67,7 @@ int main()
 	scenes.push_back(new Level2("Level 2", window));
 	scenes.push_back(new Level3("Level 3", window));
 
-	SetActiveScene(2);
+	SetActiveScene(0);
 	 
 	//Calculates our timer
 	Application::Tick();
@@ -183,6 +183,25 @@ int main()
 				if (ImGui::SliderFloat("Pixel Size", &pixelSize, 0.1, 32.f))
 				{
 					temp->SetPixelSize(pixelSize);
+				}
+			}
+			if (activeEffect == 6)
+			{
+				currentScene->SetActiveEffect(6);
+
+				ImGui::Text("Active Effect: Bloom Effect");
+
+				BloomEffect* temp = (BloomEffect*)currentScene->GetEffects()[activeEffect];
+				float brightnessThreshold = temp->GetThreshold();
+				int blurValue = temp->GetPasses();
+
+				if (ImGui::SliderFloat("Brightness Threshold", &brightnessThreshold, 1.0f, 0.0f))
+				{
+					temp->SetThreshold(brightnessThreshold);
+				}
+				if (ImGui::SliderInt("Blur Value", &blurValue, 0.0f, 10.f))
+				{
+					temp->SetPasses(blurValue);
 				}
 			}
 		}
