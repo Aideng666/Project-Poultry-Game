@@ -253,6 +253,10 @@ void Level1::InitScene()
 	boxCol5.SetIsAmbient(true);
 	auto& pipeCol = pipeEntC.Add<AABB>(pipeEntC, mainPlayer, 2.5f, 2.5f);
 	pipeCol.SetIsAmbient(true);
+	auto& buttonCol = buttonEnt.Add<AABB>(buttonEnt, mainPlayer, 2.0f, 2.0f);
+	buttonCol.SetIsAmbient(true);
+	auto& buttonCol2 = buttonEnt2.Add<AABB>(buttonEnt2, mainPlayer, 2.0f, 2.0f);
+	buttonCol2.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
@@ -548,11 +552,11 @@ void Level1::Update(float dt)
 	//Particle Stuff
 	//auto& particleSystem = particleEnt.Get<ParticleSystem>();
 	
-	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
+	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
 		button1Watch.Poll(window);
 	
-	if (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -2.0f
+	if (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
 		button2Watch.Poll(window);
 
@@ -687,7 +691,7 @@ void Level1::Update(float dt)
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 3);
-			tabletScreenMat.Albedo->Bind(3);
+			andTabletScreenMat.Albedo->Bind(3);
 
 			if (tabletOpen)
 			{
@@ -812,12 +816,12 @@ void Level1::Update(float dt)
 
 			if ((playerTrans.GetPositionX() > -3.0f && playerTrans.GetPositionX() < 3.0f
 				&& playerTrans.GetPositionZ() > 7.0f && playerTrans.GetPositionZ() < 13.0f) 
-					|| (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f 
-					&& playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
+					|| (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f 
+					&& playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
 					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f
 					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f) 
-					|| (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 2.0f 
-					&& playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -2.0f
+					|| (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f 
+					&& playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
 					&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f 
 					&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f))
 			{
@@ -947,6 +951,8 @@ void Level1::Update(float dt)
 	andEnt.Get<AndGate>().Update();
 	coilEnt.Get<AABB>().Update();
 	pipeEntC.Get<AABB>().Update();
+	buttonEnt.Get<AABB>().Update();
+	buttonEnt2.Get<AABB>().Update();
 	buttonEnt.Get<Lever>().Update();
 	buttonEnt2.Get<Lever>().Update();
 	wireEnt.Get<Wire>().Update();

@@ -60,6 +60,7 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	tabletEnt = Entity::Create();
 	tabletScreenEnt = Entity::Create();
 	pauseEnt = Entity::Create();
+	tutEnt = Entity::Create();
 
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
@@ -267,6 +268,11 @@ void Level3::InitScene()
 	tabletScreenTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	tabletScreenTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
 
+	//Interact text transform
+	auto& tutTrans = tutEnt.Add<Transform>();
+	tutTrans.SetPosition(glm::vec3(1.0f, 2.0f, 5.0f));
+	tutTrans.SetScale(glm::vec3(1.0f));
+
 #pragma endregion
 
 	//AABB
@@ -297,6 +303,12 @@ void Level3::InitScene()
 	pipeCol2.SetIsAmbient(true);
 	auto& pipeCol3 = pipeC3Ent.Add<AABB>(pipeC3Ent, mainPlayer, 2.5f, 2.5f);
 	pipeCol3.SetIsAmbient(true);
+	auto& buttonCol = buttonEnt.Add<AABB>(buttonEnt, mainPlayer, 2.0f, 2.0f);
+	buttonCol.SetIsAmbient(true);
+	auto& buttonCol2 = buttonEnt2.Add<AABB>(buttonEnt2, mainPlayer, 2.0f, 2.0f);
+	buttonCol2.SetIsAmbient(true);
+	auto& buttonCol3 = buttonEnt3.Add<AABB>(buttonEnt3, mainPlayer, 2.0f, 2.0f);
+	buttonCol3.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
@@ -401,6 +413,7 @@ void Level3::InitScene()
 	auto& pipeSM = pipeSEnt.Add<MeshRenderer>(pipeSEnt, *pipeS, shader);
 	auto& tabletScreenMesh = tabletScreenEnt.Add<MeshRenderer>(tabletScreenEnt, *screen, pauseShader);
 	auto& tabletMesh = tabletEnt.Add<MeshRenderer>(tabletEnt, *tablet, shader);
+	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -664,16 +677,17 @@ void Level3::Update(float dt)
 	glm::mat4 transformPipeC2 = pipeC2Ent.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformPipeC3 = pipeC3Ent.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformPipeS = pipeSEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformTut = tutEnt.Get<Transform>().GetModelMatrix();
 
-	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -2.0f
+	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
 		button1Watch.Poll(window);
 	
-	if (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -2.0f
+	if (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
 		button2Watch.Poll(window);
 	
-	if (playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 2.0f && playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -2.0f
+	if (playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() > -3.0f)
 		button3Watch.Poll(window);
 
@@ -802,7 +816,7 @@ void Level3::Update(float dt)
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 3);
-			tabletScreenMat.Albedo->Bind(3);
+			notTabletScreenMat.Albedo->Bind(3);
 
 			if (tabletOpen)
 			{
@@ -977,7 +991,18 @@ void Level3::Update(float dt)
 			tabletEnt.Get<MeshRenderer>().Render(camera, transformTablet);
 
 			//Bind and render the objects with no textures
-			//untexturedShader->Bind();
+			untexturedShader->Bind();
+
+			if (playerTrans.GetPositionX() > 5.0f && playerTrans.GetPositionX() < 11.0f
+				&& playerTrans.GetPositionZ() > 10.0f && playerTrans.GetPositionZ() < 16.0f)
+			{
+				if (!tabletOpen)
+					tutEnt.Get<MeshRenderer>().Render(orthoCam, transformTut);
+				else
+				{
+
+				}
+			}
 		}
 	}
 	else
@@ -1076,6 +1101,9 @@ void Level3::Update(float dt)
 	pipeCEnt.Get<AABB>().Update();
 	pipeC2Ent.Get<AABB>().Update();
 	pipeC3Ent.Get<AABB>().Update();
+	buttonEnt.Get<AABB>().Update();
+	buttonEnt2.Get<AABB>().Update();
+	buttonEnt3.Get<AABB>().Update();
 	andEnt.Get<AndGate>().Update();
 	andEnt2.Get<AndGate>().Update();
 	andEnt3.Get<AndGate>().Update();
