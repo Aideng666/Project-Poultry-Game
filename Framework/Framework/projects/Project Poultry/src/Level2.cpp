@@ -63,60 +63,7 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	pixelateEnt = Entity::Create();
 #pragma endregion
 
-#pragma region Model Manager
-	/*drumstick = ModelManager::FindMesh(drumFile);
-	floor = ModelManager::FindMesh(floorFile);
-	screen = ModelManager::FindMesh(screenFile);
-	leftWall = ModelManager::FindMesh(leftWallFile);
-	rightWall = ModelManager::FindMesh(rightWallFile);
-	backWall = ModelManager::FindMesh(backWallFile);
-	doorM = ModelManager::FindMesh(doorFile);
-	pipeS = ModelManager::FindMesh(pipeFileS);
-	pipeC = ModelManager::FindMesh(pipeFileC);
-	gate = ModelManager::FindMesh(gateFile);
-	buttonM = ModelManager::FindMesh(buttonFile);
-	wireM1 = ModelManager::FindMesh(wire1File);
-	wireM2 = ModelManager::FindMesh(wire2File);
-	wireM3 = ModelManager::FindMesh(wire3File);
-	wireM4 = ModelManager::FindMesh(wire4File);
-	wireM5 = ModelManager::FindMesh(wire5File);
-	coil = ModelManager::FindMesh(coilFile, glm::vec3(1.0f, 0.0f, 0.0f));
-	boxM = ModelManager::FindMesh(boxFile);
-	panel = ModelManager::FindMesh(panelFile);
-	vent = ModelManager::FindMesh(ventFile);
-	gate = ModelManager::FindMesh(gateFile);
-	options = ModelManager::FindMesh(pauseButtonFile);
-	exit = ModelManager::FindMesh(pauseButtonFile);
-	retry = ModelManager::FindMesh(pauseButtonFile);
-
-	door1 = ModelManager::FindMesh(doorFile1);
-	door2 = ModelManager::FindMesh(doorFile2);
-	door3 = ModelManager::FindMesh(doorFile3);
-	door4 = ModelManager::FindMesh(doorFile4);
-	door5 = ModelManager::FindMesh(doorFile5);
-	door6 = ModelManager::FindMesh(doorFile6);
-	door7 = ModelManager::FindMesh(doorFile7);
-	door8 = ModelManager::FindMesh(doorFile8);
-	door9 = ModelManager::FindMesh(doorFile9);
-	door10 = ModelManager::FindMesh(doorFile10);
-
-	walk1 = ModelManager::FindMesh(walkFile1);
-	walk2 = ModelManager::FindMesh(walkFile2);
-	walk3 = ModelManager::FindMesh(walkFile3);
-	walk4 = ModelManager::FindMesh(walkFile4);
-	walk5 = ModelManager::FindMesh(walkFile5);
-	walk6 = ModelManager::FindMesh(walkFile6);
-	walk7 = ModelManager::FindMesh(walkFile7);
-	walk8 = ModelManager::FindMesh(walkFile8);
-	walk9 = ModelManager::FindMesh(walkFile9);
-	walk10 = ModelManager::FindMesh(walkFile10);
-	walk11 = ModelManager::FindMesh(walkFile11);
-	walk12 = ModelManager::FindMesh(walkFile12);
-	walk13 = ModelManager::FindMesh(walkFile13);
-	walk14 = ModelManager::FindMesh(walkFile14);*/
-
 	InitMeshes();
-#pragma endregion
 
 }
 
@@ -132,98 +79,10 @@ void Level2::InitScene()
 
 	totalTime = distance / speed;
 
-	/*glm::vec3 lightPos = glm::vec3(0.0f, 9.5f, -35.0f);
-	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
-	glm::vec3 lightCol = glm::vec3(1.f, 1.f, 1.f);
-	float     lightAmbientPow = 0.05f;
-	float	  pauseAmbientPow = 0.25f;
-	float     lightSpecularPow = 1.0f;
-	glm::vec3 ambientCol = glm::vec3(1.0f);
-	float     ambientPow = 0.1f;
-	float     shininess = 16.0f;*/
-
-#pragma region Shader Stuff
-
-	/*shader = Shader::Create();
-	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	shader->Link();
-	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	animShader = Shader::Create();
-	animShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
-	animShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	animShader->Link();
-	SetShaderValues(animShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	untexturedShader = Shader::Create();
-	untexturedShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	untexturedShader->LoadShaderPartFromFile("Shaders/frag_untextured.glsl", GL_FRAGMENT_SHADER);
-	untexturedShader->Link();
-	SetShaderValues(untexturedShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	pauseShader = Shader::Create();
-	pauseShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	pauseShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	pauseShader->Link();
-	SetShaderValues(pauseShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess);*/
-
+	//Initialize the shaders for the level
 	InitShaders();
-#pragma endregion
-
-#pragma region Texture Stuff
-	/*Texture2D::sptr diffuseButton = Texture2D::LoadFromFile("Textures/ButtonTexture.png");
-	Texture2D::sptr diffuseDrum = Texture2D::LoadFromFile("Textures/DrumstickTexture.png");
-	Texture2D::sptr diffuseDoor = Texture2D::LoadFromFile("Textures/DoorTexture.png");
-	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTilesetFinal.png");
-	Texture2D::sptr diffuseWall = Texture2D::LoadFromFile("Textures/WallTileset.png");
-	Texture2D::sptr diffuseWire = Texture2D::LoadFromFile("Textures/Wire_Off_Texture.png");
-	Texture2D::sptr diffuseWireOn = Texture2D::LoadFromFile("Textures/Wire_On_Texture.png");
-	Texture2D::sptr diffuseComplete = Texture2D::LoadFromFile("Textures/LevelComplete.png");
-	Texture2D::sptr diffuseAnd = Texture2D::LoadFromFile("Textures/AndGate.png");
-	Texture2D::sptr diffusePause = Texture2D::LoadFromFile("Textures/PauseMenu.png");
-	Texture2D::sptr diffuseBox = Texture2D::LoadFromFile("Textures/Box_Texture.png");
-	Texture2D::sptr diffusePipeStraight = Texture2D::LoadFromFile("Textures/Pipe_Straight_Texture.png");
-	Texture2D::sptr diffusePipeCurved = Texture2D::LoadFromFile("Textures/Pipe_Curved_Texture.png");
-	Texture2D::sptr diffusePanel = Texture2D::LoadFromFile("Textures/PanelTexture.png");
-	Texture2D::sptr diffuseVent = Texture2D::LoadFromFile("Textures/VentTexture.png");
-	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Option.png");
-	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Replay.png");
-	Texture2D::sptr diffuseExit = Texture2D::LoadFromFile("Textures/Buttons/Default/Exit.png");
-	Texture2D::sptr diffuseCoilOff = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_Off.png");
-	Texture2D::sptr diffuseCoilOn = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_On.png");
-
-	Texture2DDescription desc = Texture2DDescription();
-	desc.Width = 1;
-	desc.Height = 1;
-	desc.Format = InternalFormat::RGB8;
-	Texture2D::sptr texture2 = Texture2D::Create(desc);
-	texture2->Clear();
-
-	buttonMat.Albedo = diffuseButton;
-	drumstickMat.Albedo = diffuseDrum;
-	doorMat.Albedo = diffuseDoor;
-	floorMat.Albedo = diffuseFloor;
-	wallMat.Albedo = diffuseWall;
-	wireMat.Albedo = diffuseWire;
-	wirePowerMat.Albedo = diffuseWireOn;
-	completeMat.Albedo = diffuseComplete;
-	gateMat.Albedo = diffuseAnd;
-	pauseMat.Albedo = diffusePause;
-	straightPipeMat.Albedo = diffusePipeStraight;
-	curvedPipeMat.Albedo = diffusePipeCurved;
-	boxMat.Albedo = diffuseBox;
-	panelMat.Albedo = diffusePanel;
-	ventMat.Albedo = diffuseVent;
-	optionMat.Albedo = diffuseOptions;
-	retryMat.Albedo = diffuseRetry;
-	exitMat.Albedo = diffuseExit;
-	coilMatOff.Albedo = diffuseCoilOff;
-	coilMatOn.Albedo = diffuseCoilOn;
-	clearMat.Albedo = texture2;*/
-
+	//Initialize the Textures for the level
 	InitTextures();
-#pragma endregion
 
 #pragma region Transforms
 	//Player transform
