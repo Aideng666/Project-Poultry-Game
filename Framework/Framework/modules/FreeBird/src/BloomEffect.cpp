@@ -8,25 +8,21 @@ namespace freebird
 
 		_buffers.push_back(new Framebuffer());
 		_buffers[index]->AddColorTarget(GL_RGBA8);
-		_buffers[index]->AddDepthTarget();
 		_buffers[index]->Init(width, height);
 		index++;
 
 		_buffers.push_back(new Framebuffer());
 		_buffers[index]->AddColorTarget(GL_RGBA8);
-		_buffers[index]->AddDepthTarget();
 		_buffers[index]->Init(unsigned(width / _downscale), unsigned(height / _downscale));
 		index++;
 
 		_buffers.push_back(new Framebuffer());
 		_buffers[index]->AddColorTarget(GL_RGBA8);
-		_buffers[index]->AddDepthTarget();
 		_buffers[index]->Init(unsigned(width / _downscale), unsigned(height / _downscale));
 		index++;
 
 		_buffers.push_back(new Framebuffer());
 		_buffers[index]->AddColorTarget(GL_RGBA8);
-		_buffers[index]->AddDepthTarget();
 		_buffers[index]->Init(width, height);
 
 		//Load in the shaders
