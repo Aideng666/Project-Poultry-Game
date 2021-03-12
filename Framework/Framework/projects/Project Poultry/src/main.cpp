@@ -185,6 +185,25 @@ int main()
 					temp->SetPixelSize(pixelSize);
 				}
 			}
+			if (activeEffect == 6)
+			{
+				currentScene->SetActiveEffect(6);
+
+				ImGui::Text("Active Effect: Bloom Effect");
+
+				BloomEffect* temp = (BloomEffect*)currentScene->GetEffects()[activeEffect];
+				float brightnessThreshold = temp->GetThreshold();
+				int blurValue = temp->GetPasses();
+
+				if (ImGui::SliderFloat("Brightness Threshold", &brightnessThreshold, 1.0f, 0.0f))
+				{
+					temp->SetThreshold(brightnessThreshold);
+				}
+				if (ImGui::SliderInt("Blur Value", &blurValue, 0.0f, 10.f))
+				{
+					temp->SetPasses(blurValue);
+				}
+			}
 		}
 	});
 
