@@ -69,6 +69,7 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 
 	filmGrainEnt = Entity::Create();
 	pixelateEnt = Entity::Create();
+	bloomEnt = Entity::Create();
 #pragma endregion
 
 
@@ -471,6 +472,11 @@ void Level3::InitScene()
 	pixelateEffect->Init(width, height);
 
 	effects.push_back(pixelateEffect);
+
+	auto bloomEffect = &bloomEnt.Add<BloomEffect>();
+	bloomEffect->Init(width, height);
+
+	effects.push_back(bloomEffect);
 #pragma endregion
 
 	//Interpolation Stuff
