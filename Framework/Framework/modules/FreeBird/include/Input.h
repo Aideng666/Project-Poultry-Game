@@ -2,6 +2,9 @@
 
 #include <functional>
 #include <Entity.h>
+#include <Transform.h>
+#include <Camera.h>
+#include <MorphAnimation.h>
 
 struct GLFWwindow;
 
@@ -26,8 +29,9 @@ namespace freebird
 	{
 	public:
 
-
-
+		static void MovePlayer(GLFWwindow* window, Entity player, Entity camEnt, float dt, bool camFar, bool camClose, bool camLeft, bool camRight);
+		static void MoveCamera(GLFWwindow* window, Entity camEnt, float dt);
+		static int ChangeLighting(GLFWwindow* window, int lightNum);
 
 	private:
 	};
