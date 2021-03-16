@@ -25,7 +25,7 @@ namespace freebird
 			float lightAmbientPow = 0.f, float lightSpecularPow = 0.f, float lightSpecularPow2 = 0.f,
 			glm::vec3 ambientCol = glm::vec3(0.f, 0.f, 0.f), float ambientPow = 0.f, float shininess = 0.f);
 
-		virtual void Render(Camera& camera, glm::mat4 transform);
+		virtual void Render(Camera& camera, glm::mat4 transform, glm::mat4& lightSpaceMatrix = glm::mat4());
 
 	protected:
 		Entity* thisEnt;
