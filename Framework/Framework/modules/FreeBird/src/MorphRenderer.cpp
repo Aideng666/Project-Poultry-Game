@@ -45,14 +45,13 @@ namespace freebird
 
 		this->t = t;
 	}
-	void MorphRenderer::Render(Camera& camera, glm::mat4 transform, glm::mat4& lightSpaceMatrix)
+	void MorphRenderer::Render(Camera& camera, glm::mat4 transform)
 	{
 		//thisMat->Apply();
 
 		thisShader->SetUniformMatrix("u_Model", transform);
 		thisShader->SetUniformMatrix("u_ModelRotation", glm::mat3(transform));
 		thisShader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transform);
-		thisShader->SetUniformMatrix("u_LightSpaceMatrix", lightSpaceMatrix);
 		thisShader->SetUniform("u_CamPos", camera.GetPosition());
 		thisShader->SetUniform("u_MorphT", this->t);
 

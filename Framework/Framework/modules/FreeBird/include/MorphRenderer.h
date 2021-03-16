@@ -27,7 +27,7 @@ namespace freebird
 		VertexArrayObject::sptr MakeVAO(Mesh& mesh);
 
 		void UpdateData(Mesh& frame0, Mesh& frame1, float t);
-		virtual void Render(Camera& camera, glm::mat4 transform, glm::mat4& lightSpaceMatrix = glm::mat4());
+		virtual void Render(Camera& camera, glm::mat4 transform);
 
 	protected:
 
