@@ -62,13 +62,12 @@ int main()
 	Application::SetClearColor(glm::vec4(0.08f, 0.17f, 0.31f, 1.0f));
 
 	scenes.push_back(new MainMenu("Main Menu", window));
-	scenes.push_back(new MainMenuLevel("Main Menu Level", window));
-	scenes.push_back(new Level1("Level 1", window));
+	//scenes.push_back(new MainMenuLevel("Main Menu Level", window));
+	/*scenes.push_back(new Level1("Level 1", window));
 	scenes.push_back(new Level2("Level 2", window));
-	scenes.push_back(new Level3("Level 3", window));
-	scenes.push_back(new Level4("Level 4", window));
+	scenes.push_back(new Level3("Level 3", window));*/
 
-	SetActiveScene(5);
+	SetActiveScene(0);
 	 
 	//Calculates our timer
 	Application::Tick();
@@ -228,7 +227,6 @@ int main()
 			scenes.push_back(new Level1("Level 1", window));
 			scenes.push_back(new Level2("Level 2", window));
 			scenes.push_back(new Level3("Level 3", window));
-			scenes.push_back(new Level4("Level 4", window));
 			scenes.push_back(new MainMenuLevel("Main Menu Level", window));
 
 			SetActiveScene(1);
