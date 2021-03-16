@@ -102,10 +102,10 @@ void Scene::InitTextures()
 
 void Scene::InitShaders()
 {
-	glm::vec3 lightPos = glm::vec3(0.0f, 9.5f, -35.0f);
-	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 5.0f, -5.0f);
+	glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 1.0f);
 	glm::vec3 lightCol = glm::vec3(1.f);
-	float     lightAmbientPow = 0.05f;
+	float     lightAmbientPow = 0.25f;
 	float	  pauseAmbientPow = 0.25f;
 	float     lightSpecularPow = 1.0f;
 	glm::vec3 ambientCol = glm::vec3(1.0f);
@@ -147,11 +147,16 @@ void Scene::InitShaders()
 	pauseShader->Link();
 	SetShaderValues(pauseShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess);
 
-	//GBuffer Shader
-	Shader::sptr gBufferShader = Shader::Create();
+	simpleDepthShader = Shader::Create();
+	simpleDepthShader->LoadShaderPartFromFile("Shaders/simple_depth_vert.glsl", GL_VERTEX_SHADER);
+	simpleDepthShader->LoadShaderPartFromFile("Shaders/simple_depth_frag.glsl", GL_FRAGMENT_SHADER);
+	simpleDepthShader->Link();
+	SetShaderValues(simpleDepthShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess);
+
+	/*Shader::sptr gBufferShader = Shader::Create();
 	gBufferShader->LoadShaderPartFromFile("shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
 	gBufferShader->LoadShaderPartFromFile("shaders/gBuffer_pass_frag.glsl", GL_FRAGMENT_SHADER);
-	gBufferShader->Link();
+	gBufferShader->Link();*/
 }
 
 void Scene::InitMeshes()
@@ -238,8 +243,7 @@ void Scene::InitMeshes()
 	wireM7L3 = ModelManager::FindMesh(wire7L3File);
 	floorL3 = ModelManager::FindMesh(floorL3File);
 
-	//Level 4
-	floorL4 = ModelManager::FindMesh(floorL4File);
+	entList.clear();
 }
 
 bool Scene::GetComplete()

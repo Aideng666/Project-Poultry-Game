@@ -36,14 +36,14 @@ namespace freebird
 
 		return vao;
 	}
-	void MeshRenderer::Render(Camera& camera, glm::mat4 transform)
+	void MeshRenderer::Render(Camera& camera, glm::mat4 transform, glm::mat4& lightSpaceMatrix)
 	{
 		//thisMat->Apply();
-
 
 		thisShader->SetUniformMatrix("u_ModelRotation", glm::mat3(transform));
 		thisShader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transform);
 		thisShader->SetUniformMatrix("u_Model", transform);
+		thisShader->SetUniformMatrix("u_LightSpaceMatrix", lightSpaceMatrix);
 		thisShader->SetUniform("u_CamPos", camera.GetPosition());
 
 		vao->Render();
