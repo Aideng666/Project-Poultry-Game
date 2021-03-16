@@ -1,10 +1,6 @@
 #pragma once
 #include "Scene.h"
-#include "Input.h"
-#include "Wire.h"
-#include "Lever.h"
-#include <vector>
-#include <iostream>
+
 
 using namespace freebird;
 
@@ -21,18 +17,15 @@ public:
 	void Unload();
 
 private:
-	//Player
-	Entity mainPlayer;
-	//Floor
-	Entity floorEnt;
-	//Walls
-	Entity leftEnt, rightEnt, backEnt;
 
-	GLfloat time = 0.0f;
+	Entity andEnt, andEnt2;
 
-	bool camClose = false;
-	bool camFar = false;
+	Shader::sptr shader;
 
-	int lightNum = 5;
+	Mesh* gate;
+	Mesh* gate2;
+
+
+	std::string gateFile = "Models/AndGate.obj";
 
 };
