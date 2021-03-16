@@ -46,7 +46,7 @@ void SetActiveScene(int sceneNum)
 	currentScene = scenes[sceneNum];
 	level = sceneNum + 1;
 
-	if (level > 4)
+	if (level > 5)
 		level = 1;
 }
 

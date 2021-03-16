@@ -47,4 +47,6 @@ private:
 	Entity colPipeEnt, colPipeEnt2;
 	//Shelf Pipes
 	Entity shelfPipeEnt, shelfPipeEnt2, shelfPipeEnt3;
+	//Tesla Coil
+	Entity coilEnt;
 };
