@@ -123,32 +123,6 @@ int main()
 					temp->SetIntensity(intensity);
 				}
 			}
-			//if (activeEffect == 3)
-			//{
-			//	currentScene->SetActiveEffect(3);
-
-			//	ImGui::Text("Active Effect: Bloom");
-
-			//	Bloom* temp = (Bloom*)currentScene->GetEffects()[activeEffect];
-			//	float threshold = temp->GetThreshold();
-			//	int blurValue = temp->GetPasses();
-
-			//	if (ImGui::SliderFloat("Threshold", &threshold, 1.0f, 0.0f))
-			//	{
-			//		temp->SetThreshold(threshold);
-			//	}
-			//	if (ImGui::SliderInt("Blur Value", &blurValue, 0.0f, 10.f))
-			//	{
-			//		temp->SetPasses(blurValue);
-			//	}
-
-			//	//float downscale = temp->GetDownscale();
-
-			//	//if (ImGui::SliderFloat("Blur", &downscale, 1.0f, 5.0f))
-			//	//{
-			//	//	temp->SetDownscale(downscale);
-			//	//}
-			//}
 			if (activeEffect == 3)
 			{
 				currentScene->SetActiveEffect(3);
@@ -183,6 +157,25 @@ int main()
 				if (ImGui::SliderFloat("Pixel Size", &pixelSize, 0.1, 32.f))
 				{
 					temp->SetPixelSize(pixelSize);
+				}
+			}
+			if (activeEffect == 6)
+			{
+				currentScene->SetActiveEffect(6);
+
+				ImGui::Text("Active Effect: Bloom Effect");
+
+				BloomEffect* temp = (BloomEffect*)currentScene->GetEffects()[activeEffect];
+				float brightnessThreshold = temp->GetThreshold();
+				int blurValue = temp->GetPasses();
+
+				if (ImGui::SliderFloat("Brightness Threshold", &brightnessThreshold, 1.0f, 0.0f))
+				{
+					temp->SetThreshold(brightnessThreshold);
+				}
+				if (ImGui::SliderInt("Blur Value", &blurValue, 0.0f, 20.f))
+				{
+					temp->SetPasses(blurValue);
 				}
 			}
 		}

@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 #include "Entity.h"
 #include "Input.h"
@@ -21,6 +22,10 @@
 #include "FilmGrain.h"
 #include "Pixelate.h"
 #include "GBuffer.h"
+#include "DirectionalLight.h"
+#include "UniformBuffer.h"
+
+#include "BloomEffect.h"
 
 using namespace freebird;
 
@@ -83,7 +88,7 @@ protected:
 	entt::registry* scene = nullptr;
 	std::string name = " ";
 
-	Shader::sptr shader, animShader, pauseShader, untexturedShader, particleShader, gBufferShader;
+	Shader::sptr shader, animShader, pauseShader, untexturedShader, particleShader, simpleDepthShader;
 
 	GLFWwindow* window;
 
@@ -91,7 +96,8 @@ protected:
 
 	Entity FBO, greyscaleEnt, sepiaEnt, colorCorrectEnt;
 	Entity filmGrainEnt, pixelateEnt;
-	Entity gBufferEnt;
+	Entity bloomEnt;
+	Entity gBufferEnt, shadowBufferEnt;
 
 	Entity pauseEnt, optionEnt, exitEnt, retryEnt;
 
@@ -227,7 +233,7 @@ protected:
 	bool camLeft = false;
 	bool camRight = false;
 
-	int lightNum = 5;
+	int lightNum = 4;
 
 	std::vector<PostEffect*> effects;
 	int activeEffect = 0;
@@ -297,6 +303,11 @@ protected:
 	std::string walkFile14 = "Models/ChickenFrames/Walk14.obj";
 	///////////////
 
-	std::vector<Entity> entList;
-	std::vector<Mesh*> meshList;
+	DirectionalLight theSun;
+	UniformBuffer directionalLightBuffer;
+
+	int shadowWidth = 1024;
+	int shadowHeight = 1024;
+
+	std::vector<Entity*> entList;
 };
