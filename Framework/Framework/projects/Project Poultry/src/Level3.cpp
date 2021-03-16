@@ -105,11 +105,11 @@ void Level3::InitScene()
 
 	//Wall transforms
 	auto& leftTrans = leftEnt.Add<Transform>();
-	leftTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
+	//leftTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
 	auto& rightTrans = rightEnt.Add<Transform>();
-	rightTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
+	//rightTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
 	auto& backTrans = backEnt.Add<Transform>();
-	backTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
+	//backTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
 
 	//Door transform
 	auto& doorTrans = doorEnt.Add<Transform>();
@@ -581,15 +581,15 @@ void Level3::Update(float dt)
 	//floorEnt.Get<Transform>().SetPositionY(-0.9f);
 
 	backEnt.Get<Transform>().SetPositionZ(-39.0f);
-	backEnt.Get<Transform>().SetPositionY(9.0f);
+	backEnt.Get<Transform>().SetPositionY(22.0f);
 
 	leftEnt.Get<Transform>().SetPositionX(-39.0f);
 	leftEnt.Get<Transform>().SetRotationY(90.0f);
-	leftEnt.Get<Transform>().SetPositionY(9.0f);
+	leftEnt.Get<Transform>().SetPositionY(21.0f);
 
 	rightEnt.Get<Transform>().SetPositionX(39.0f);
 	rightEnt.Get<Transform>().SetRotationY(90.0f);
-	rightEnt.Get<Transform>().SetPositionY(9.0f);
+	rightEnt.Get<Transform>().SetPositionY(21.0f);
 
 	tabletEnt.Get<Transform>().SetRotationY(tabletEnt.Get<Transform>().GetRotation().y + 100 * dt);
 #pragma endregion

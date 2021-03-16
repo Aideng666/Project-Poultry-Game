@@ -161,6 +161,16 @@ protected:
 	Mesh* backWallL4;
 	Mesh* leftWallL4;
 	Mesh* rightWallL4;
+	Mesh* wireM1L4;
+	Mesh* wireM2L4;
+	Mesh* wireM3L4;
+	Mesh* wireM4L4;
+	Mesh* wireM5L4;
+	Mesh* wireM6L4;
+	Mesh* wireM7L4;
+	Mesh* wireM8L4;
+	Mesh* wireM9L4;
+	Mesh* wireM10L4;
 
 	//Files for multiple levels
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
@@ -170,9 +180,9 @@ protected:
 	std::string floorL3File = "Models/Level3Floor.obj";
 	std::string floorL4File = "Models/Level4Floor.obj";
 	std::string screenFile = "Models/Floor.obj";
-	std::string leftWallFile = "Models/LeftWall.obj";
-	std::string rightWallFile = "Models/RightWall.obj";
-	std::string backWallFile = "Models/BackWall.obj";
+	std::string leftWallFile = "Models/F-LW.obj";
+	std::string rightWallFile = "Models/F-RW.obj";
+	std::string backWallFile = "Models/F-FW.obj";
 	std::string doorFile = "Models/DoorFrames/Door0.obj";
 	std::string andFile = "Models/AndGate.obj";
 	std::string buttonFile = "Models/Button.obj";
@@ -218,6 +228,16 @@ protected:
 	std::string level4BackWallFile = "Models/Level4BackWall.obj";
 	std::string level4LeftWallFile = "Models/Level4LeftWall.obj";
 	std::string level4RightWallFile = "Models/Level4RightWall.obj";
+	std::string wire1L4File = "Models/Level4Wire1.obj";
+	std::string wire2L4File = "Models/Level4Wire2.obj";
+	std::string wire3L4File = "Models/Level4Wire3.obj";
+	std::string wire4L4File = "Models/Level4Wire4.obj";
+	std::string wire5L4File = "Models/Level4Wire5.obj";
+	std::string wire6L4File = "Models/Level4Wire6.obj";
+	std::string wire7L4File = "Models/Level4Wire7.obj";
+	std::string wire8L4File = "Models/Level4Wire8.obj";
+	std::string wire9L4File = "Models/Level4Wire9.obj";
+	std::string wire10L4File = "Models/Level4Wire10.obj";
 
 	std::vector<std::function<void()>> imGuiCallbacks;
 
