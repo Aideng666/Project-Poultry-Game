@@ -24,8 +24,10 @@
 #include "GBuffer.h"
 #include "DirectionalLight.h"
 #include "UniformBuffer.h"
-
 #include "BloomEffect.h"
+
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include <GLFW/glfw3native.h>
 
 using namespace freebird;
 
@@ -91,6 +93,8 @@ protected:
 	Shader::sptr shader, animShader, pauseShader, untexturedShader, particleShader, simpleDepthShader;
 
 	GLFWwindow* window;
+	HWND hWnd;
+	POINT mousePos;
 
 	Entity camEnt, uiCamEnt;
 
@@ -242,7 +246,7 @@ protected:
 		isPaused = !isPaused;
 
 		if (isPaused)
-			lightNum = 2;
+			lightNum = 5;
 		else
 			lightNum = 5;
 		});

@@ -53,7 +53,7 @@ void SetActiveScene(int sceneNum)
 int main()
 {
 	//Inits the window
-	if (!(window = Application::Init("Project Poultry", 1200, 1000)))
+	if (!(window = Application::Init("Project Poultry", 800, 800)))
 	{
 		return 1;
 	}

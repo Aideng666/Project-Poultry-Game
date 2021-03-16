@@ -8,6 +8,8 @@ Scene::Scene(std::string sceneName, GLFWwindow* wind)
 {
 	name = sceneName;
 	window = wind;
+
+	hWnd = glfwGetWin32Window(window);
 }
 
 void Scene::InitScene()
