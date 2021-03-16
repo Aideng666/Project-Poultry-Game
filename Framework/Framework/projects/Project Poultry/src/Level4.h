@@ -26,4 +26,25 @@ private:
 	Entity floorEnt;
 	//Walls
 	Entity leftEnt, rightEnt, backEnt;
+	//Door
+	Entity doorEnt;
+	//Buttons
+	Entity buttonEnt, buttonEnt2, buttonEnt3, buttonEnt4;
+	//And-Gates
+	Entity andEnt, andEnt2, andEnt3;
+	//Not-Gates
+	Entity notEnt, notEnt2, notEnt3;
+	//Wires
+	Entity wireEnt, wireEnt2, wireEnt3, wireEnt4, wireEnt5, wireEnt6,
+		wireEnt7, wireEnt8, wireEnt9, wireEnt10;
+	//Panels
+	Entity panelEnt, panelEnt2;
+	//Vents 
+	Entity ventEntS, ventEntL;
+	//Boxes
+	Entity boxEnt, boxEnt2, boxEnt3;
+	//Column Pipes
+	Entity colPipeEnt, colPipeEnt2;
+	//Shelf Pipes
+	Entity shelfPipeEnt, shelfPipeEnt2, shelfPipeEnt3;
 };

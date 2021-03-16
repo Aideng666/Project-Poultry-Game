@@ -98,7 +98,7 @@ protected:
 
 	Entity pauseEnt, optionEnt, exitEnt, retryEnt;
 
-	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat;
+	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, shelfPipeMat, columnPipeMat, optionMat, exitMat, retryMat;
 	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
 	Mat andMat, notMat, wireMatOn;
 
@@ -125,6 +125,8 @@ protected:
 	Mesh* tablet;
 	Mesh* tut;
 	Mesh* and;
+	Mesh* shelfPipe;
+	Mesh* columnPipe;
 
 	//Main Menu Level Meshes
 	Mesh* startWord;
@@ -196,6 +198,8 @@ protected:
 	std::string pauseButtonFile = "Models/UI_Button.obj";
 	std::string pipeFileS = "Models/New2_StraightPipe.obj";
 	std::string pipeFileC = "Models/New2_CurvedPipe.obj";
+	std::string shelfPipeFile = "Models/ShelfPipe.obj";
+	std::string columnPipeFile = "Models/New_Column_Pipe.obj";
 
 	//Main Menu Level Files
 	std::string startFile = "Models/Start.obj";

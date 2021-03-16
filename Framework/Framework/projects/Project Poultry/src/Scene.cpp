@@ -54,6 +54,8 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseVent = Texture2D::LoadFromFile("Textures/VentTexture.png");
 	Texture2D::sptr diffusePipeStraight = Texture2D::LoadFromFile("Textures/Pipe_Straight_Texture.png");
 	Texture2D::sptr diffusePipeCurved = Texture2D::LoadFromFile("Textures/Pipe_Curved_Texture.png");
+	Texture2D::sptr diffusePipeShelf = Texture2D::LoadFromFile("Textures/ShelfPipeTexture.png");
+	Texture2D::sptr diffusePipeColumn = Texture2D::LoadFromFile("Textures/ColumnPipeTexture.png");
 	Texture2D::sptr diffusePause = Texture2D::LoadFromFile("Textures/PauseMenu.png");
 	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Option.png");
 	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Replay.png");
@@ -87,6 +89,8 @@ void Scene::InitTextures()
 	ventMat.Albedo = diffuseVent;
 	straightPipeMat.Albedo = diffusePipeStraight;
 	curvedPipeMat.Albedo = diffusePipeCurved;
+	shelfPipeMat.Albedo = diffusePipeShelf;
+	columnPipeMat.Albedo = diffusePipeColumn;
 	pauseMat.Albedo = diffusePause;
 	optionMat.Albedo = diffuseOptions;
 	retryMat.Albedo = diffuseRetry;
@@ -206,6 +210,8 @@ void Scene::InitMeshes()
 	ventS = ModelManager::FindMesh(ventFileS);
 	pipeS = ModelManager::FindMesh(pipeFileS);
 	pipeC = ModelManager::FindMesh(pipeFileC);
+	shelfPipe = ModelManager::FindMesh(shelfPipeFile);
+	columnPipe = ModelManager::FindMesh(columnPipeFile);
 	tablet = ModelManager::FindMesh(tabletFile);
 	tut = ModelManager::FindMesh(tutFile, glm::vec3(1.0f, 0.0f, 0.0f));
 
