@@ -66,8 +66,9 @@ int main()
 	scenes.push_back(new Level1("Level 1", window));
 	scenes.push_back(new Level2("Level 2", window));
 	scenes.push_back(new Level3("Level 3", window));
+	scenes.push_back(new Level4("Level 4", window));
 
-	SetActiveScene(0);
+	SetActiveScene(5);
 	 
 	//Calculates our timer
 	Application::Tick();
@@ -228,6 +229,7 @@ int main()
 			scenes.push_back(new Level1("Level 1", window));
 			scenes.push_back(new Level2("Level 2", window));
 			scenes.push_back(new Level3("Level 3", window));
+			scenes.push_back(new Level4("Level 4", window));
 
 			SetActiveScene(1);
 		}

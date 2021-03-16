@@ -156,12 +156,19 @@ protected:
 	Mesh* wireM7L3;
 	Mesh* floorL3;
 
+	//Level 4 Meshes
+	Mesh* floorL4;
+	Mesh* backWallL4;
+	Mesh* leftWallL4;
+	Mesh* rightWallL4;
+
 	//Files for multiple levels
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
 	std::string floorFile = "Models/Floor.obj";
 	std::string floorL1File = "Models/Level1Floor.obj";
 	std::string floorL2File = "Models/Level2Floor.obj";
 	std::string floorL3File = "Models/Level3Floor.obj";
+	std::string floorL4File = "Models/Level4Floor.obj";
 	std::string screenFile = "Models/Floor.obj";
 	std::string leftWallFile = "Models/LeftWall.obj";
 	std::string rightWallFile = "Models/RightWall.obj";
@@ -207,6 +214,10 @@ protected:
 	std::string wire6L3File = "Models/New_Level3Wire6.obj";
 	std::string wire7L3File = "Models/New_Level3Wire7.obj";
 
+	//Level 4 files
+	std::string level4BackWallFile = "Models/Level4BackWall.obj";
+	std::string level4LeftWallFile = "Models/Level4LeftWall.obj";
+	std::string level4RightWallFile = "Models/Level4RightWall.obj";
 
 	std::vector<std::function<void()>> imGuiCallbacks;
 

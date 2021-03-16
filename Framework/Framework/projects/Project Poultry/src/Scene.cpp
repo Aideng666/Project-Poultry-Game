@@ -237,6 +237,12 @@ void Scene::InitMeshes()
 	wireM6L3 = ModelManager::FindMesh(wire6L3File);
 	wireM7L3 = ModelManager::FindMesh(wire7L3File);
 	floorL3 = ModelManager::FindMesh(floorL3File);
+
+	//Level4
+	floorL4 = ModelManager::FindMesh(floorL4File);
+	leftWallL4 = ModelManager::FindMesh(level4LeftWallFile);
+	rightWallL4 = ModelManager::FindMesh(level4RightWallFile);
+	backWallL4 = ModelManager::FindMesh(level4BackWallFile);
 }
 
 bool Scene::GetComplete()

@@ -1,6 +1,9 @@
 #pragma once
 #include "Scene.h"
-
+#include "Wire.h"
+#include "Lever.h"
+#include <vector>
+#include <iostream>
 
 using namespace freebird;
 
@@ -17,15 +20,10 @@ public:
 	void Unload();
 
 private:
-
-	Entity andEnt, andEnt2;
-
-	Shader::sptr shader;
-
-	Mesh* gate;
-	Mesh* gate2;
-
-
-	std::string gateFile = "Models/AndGate.obj";
-
+	//Main Player
+	Entity mainPlayer;
+	//Floor
+	Entity floorEnt;
+	//Walls
+	Entity leftEnt, rightEnt, backEnt;
 };
