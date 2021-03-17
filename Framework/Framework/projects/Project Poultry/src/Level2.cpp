@@ -863,7 +863,7 @@ void Level2::Update(float dt)
 
 			pauseShader->Bind();
 			pauseShader->SetUniform("s_Diffuse", 0);
-			pauseMat.Albedo->Bind(0);
+			clearMat.Albedo->Bind(0);
 
 			if (isPaused)
 			{

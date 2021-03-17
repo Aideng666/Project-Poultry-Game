@@ -1027,7 +1027,7 @@ void Level3::Update(float dt)
 
 			pauseShader->Bind();
 			pauseShader->SetUniform("s_Diffuse", 0);
-			pauseMat.Albedo->Bind(0);
+			clearMat.Albedo->Bind(0);
 
 			if (isPaused)
 			{
@@ -1070,8 +1070,6 @@ void Level3::Update(float dt)
 			pipeC3Ent.Get<MeshRenderer>().Render(camera, transformPipeC3);
 			pipeSEnt.Get<MeshRenderer>().Render(camera, transformPipeS);
 			tabletEnt.Get<MeshRenderer>().Render(camera, transformTablet);
-
-			//untexturedShader->Bind();	
 		}
 	}
 

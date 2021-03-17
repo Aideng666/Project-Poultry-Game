@@ -49,4 +49,14 @@ private:
 	Entity shelfPipeEnt, shelfPipeEnt2, shelfPipeEnt3;
 	//Tesla Coil
 	Entity coilEnt;
+	//Complete Ent
+
+	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
+		isPaused = !isPaused;
+
+		if (isPaused)
+			lightNum = 2;
+		else
+			lightNum = 5;
+		});
 };

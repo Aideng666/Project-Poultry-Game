@@ -63,6 +63,11 @@ Level4::Level4(std::string sceneName, GLFWwindow* wind)
 	boxEnt5 = Entity::Create();
 	boxEnt6 = Entity::Create();
 
+	pauseEnt = Entity::Create();
+	optionEnt = Entity::Create();
+	exitEnt = Entity::Create();
+	retryEnt = Entity::Create();
+
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
 	sepiaEnt = Entity::Create();
@@ -255,12 +260,37 @@ void Level4::InitScene()
 	auto& boxTrans6 = boxEnt6.Add<Transform>();
 	boxTrans6.SetPosition(glm::vec3(48.f, 4.6f, 17.f));
 
+	//Pause UI
+	auto& pauseTrans = pauseEnt.Add<Transform>();
+	pauseTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	pauseTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
+
+	auto& optionsTrans = optionEnt.Add<Transform>();
+	optionsTrans.SetPosition(glm::vec3(-5.0f, 2.0f, 0.0f));
+	optionsTrans.SetScale(glm::vec3(1.5f));
+	optionsTrans.SetRotationY(96.0f);
+
+	auto& retryTrans = retryEnt.Add<Transform>();
+	retryTrans.SetPosition(glm::vec3(0.0f, 2.0f, 0.0f));
+	retryTrans.SetScale(glm::vec3(1.5f));
+	retryTrans.SetRotationY(96.0f);
+
+	auto& exitTrans = exitEnt.Add<Transform>();
+	exitTrans.SetPosition(glm::vec3(5.0f, 2.0f, 0.0f));
+	exitTrans.SetScale(glm::vec3(1.5f));
+	exitTrans.SetRotationY(96.0f);
 #pragma endregion
 	
 	//AABB
 	//auto& leftCol = leftEnt.Add<AABB>(leftEnt, mainPlayer);
 	//auto& rightCol = rightEnt.Add<AABB>(rightEnt, mainPlayer);
 	//auto& backCol = backEnt.Add<AABB>(backEnt, mainPlayer);
+	//auto& gateCol = andEnt.Add<AABB>(andEnt, mainPlayer, 5.0f, 3.0f);
+	//gateCol.SetIsAmbient(true);
+	//auto& gateCol2 = andEnt2.Add<AABB>(andEnt2, mainPlayer, 5.0f, 3.0f);
+	//gateCol2.SetIsAmbient(true);
+	//auto& gateCol3 = andEnt3.Add<AABB>(andEnt3, mainPlayer, 5.0f, 3.0f);
+	//gateCol3.SetIsAmbient(true);
 
 #pragma region Animation Frames
 	//Door Animations
@@ -341,6 +371,11 @@ void Level4::InitScene()
 	auto& boxMesh5 = boxEnt5.Add<MeshRenderer>(boxEnt5, *boxM, shader);
 	auto& boxMesh6 = boxEnt6.Add<MeshRenderer>(boxEnt6, *boxM, shader);
 
+	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
+	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
+	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
+	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
+
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
 	doorAnimator.SetFrames(doorFrames);
@@ -357,6 +392,12 @@ void Level4::InitScene()
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
+
+	auto& orthoCam = uiCamEnt.Add<Camera>();
+	orthoCam.SetPosition(glm::vec3(0, 10, 0)); // Set initial position
+	orthoCam.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
+	orthoCam.LookAt(glm::vec3(0.0f)); // Look at center of the screen
+	orthoCam.SetFovDegrees(90.0f); // Set an initial FOV
 	
 #pragma region Post-Effects
 	int width, height;
@@ -421,6 +462,7 @@ void Level4::Update(float dt)
 #pragma endregion
 
 	auto& camera = camEnt.Get<Camera>();
+	auto& orthoCam = uiCamEnt.Get<Camera>();
 
 	//Get reference to the model matrix
 	glm::mat4 transform = mainPlayer.Get<Transform>().GetModelMatrix();
@@ -472,8 +514,18 @@ void Level4::Update(float dt)
 	glm::mat4 transformBox5 = boxEnt5.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformBox6 = boxEnt6.Get<Transform>().GetModelMatrix();
 
+	glm::mat4 transformPause = pauseEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformOptions = optionEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformRetry = retryEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformExit = exitEnt.Get<Transform>().GetModelMatrix();
+
+	pauseWatch.Poll(window);
+
 #pragma region PlayerMovement
-	Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+	if (!isPaused)
+	{
+		Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+	}
 #pragma endregion
 
 #pragma region Camera Movement
@@ -497,7 +549,11 @@ void Level4::Update(float dt)
 	else
 		camRight = false;
 
-	Input::MoveCamera(window, camEnt, dt);
+	if (!isPaused)
+	{
+		Input::MoveCamera(window, camEnt, dt);
+	}
+
 #pragma endregion
 
 	lightNum = Input::ChangeLighting(window, lightNum);
@@ -508,6 +564,7 @@ void Level4::Update(float dt)
 	animShader->SetUniform("u_LightNum", lightNum);
 	untexturedShader->SetUniform("u_LightNum", lightNum);
 	shader->SetUniform("u_LightNum", lightNum);
+	pauseShader->SetUniform("u_LightNum", lightNum);
 
 	//Post-Effect Stuff
 	auto basicEffect = &FBO.Get<PostEffect>();
@@ -543,6 +600,39 @@ void Level4::Update(float dt)
 		leftEnt.Get<MeshRenderer>().Render(camera, transformLeft);
 		rightEnt.Get<MeshRenderer>().Render(camera, transformRight);
 		backEnt.Get<MeshRenderer>().Render(camera, transformBack);
+
+		pauseShader->Bind();
+		pauseShader->SetUniform("s_Diffuse", 0);
+		pauseMat.Albedo->Bind(0);
+
+		if (isPaused)
+		{
+			pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause);
+		}
+
+		pauseShader->SetUniform("s_Diffuse", 1);
+		optionMat.Albedo->Bind(1);
+
+		if (isPaused)
+		{
+			optionEnt.Get<MeshRenderer>().Render(orthoCam, transformOptions);
+		}
+
+		pauseShader->SetUniform("s_Diffuse", 2);
+		retryMat.Albedo->Bind(2);
+
+		if (isPaused)
+		{
+			retryEnt.Get<MeshRenderer>().Render(orthoCam, transformRetry);
+		}
+
+		pauseShader->SetUniform("s_Diffuse", 2);
+		exitMat.Albedo->Bind(2);
+
+		if (isPaused)
+		{
+			exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit);
+		}
 
 		shader->Bind();
 
@@ -641,6 +731,15 @@ void Level4::Update(float dt)
 		rightEnt.Get<MeshRenderer>().Render(camera, transformRight);
 		backEnt.Get<MeshRenderer>().Render(camera, transformBack);
 
+		pauseShader->Bind();
+		pauseShader->SetUniform("s_Diffuse", 0);
+		clearMat.Albedo->Bind(0);
+
+		if (isPaused)
+		{
+			pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause);
+		}
+
 		shader->Bind();
 		shader->SetUniform("s_Diffuse", 0);
 		clearMat.Albedo->Bind(0);
@@ -693,7 +792,9 @@ void Level4::Update(float dt)
 	//leftEnt.Get<AABB>().Update();
 	//rightEnt.Get<AABB>().Update();
 	//backEnt.Get<AABB>().Update();
-	
+	//andEnt.Get<AABB>().Update();
+	//andEnt2.Get<AABB>().Update();
+	//andEnt3.Get<AABB>().Update();
 }
 
 void Level4::Unload()
