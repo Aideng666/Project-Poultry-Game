@@ -56,6 +56,13 @@ Level4::Level4(std::string sceneName, GLFWwindow* wind)
 	wireEnt9 = Entity::Create();
 	wireEnt10 = Entity::Create();
 
+	boxEnt = Entity::Create();
+	boxEnt2 = Entity::Create();
+	boxEnt3 = Entity::Create();
+	boxEnt4 = Entity::Create();
+	boxEnt5 = Entity::Create();
+	boxEnt6 = Entity::Create();
+
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
 	sepiaEnt = Entity::Create();
@@ -85,7 +92,7 @@ void Level4::InitScene()
 #pragma region Transforms
 	//Player transform
 	auto& playerTrans = mainPlayer.Add<Transform>();
-	playerTrans.SetPosition(glm::vec3(0.0f, 1.0f, 42.0f));
+	playerTrans.SetPosition(glm::vec3(0.0f, 1.1f, 42.0f));
 	playerTrans.SetRotationY(180.0f);
 
 	//Floor transform
@@ -229,6 +236,25 @@ void Level4::InitScene()
 	auto& wireTrans10 = wireEnt10.Add<Transform>();
 	wireTrans10.SetPosition(glm::vec3(0.f, 1.f, 0.f));
 
+	//Boxes
+	auto& boxTrans = boxEnt.Add<Transform>();
+	boxTrans.SetPosition(glm::vec3(-48.f, 4.6f, -35.f));
+
+	auto& boxTrans2 = boxEnt2.Add<Transform>();
+	boxTrans2.SetPosition(glm::vec3(-48.f, 4.6f, -10.f));
+
+	auto& boxTrans3 = boxEnt3.Add<Transform>();
+	boxTrans3.SetPosition(glm::vec3(-48.f, 4.6f, 20.f));
+
+	auto& boxTrans4 = boxEnt4.Add<Transform>();
+	boxTrans4.SetPosition(glm::vec3(48.f, 4.6f, -28.f));
+
+	auto& boxTrans5 = boxEnt5.Add<Transform>();
+	boxTrans5.SetPosition(glm::vec3(48.f, 4.6f, 0.f));
+
+	auto& boxTrans6 = boxEnt6.Add<Transform>();
+	boxTrans6.SetPosition(glm::vec3(48.f, 4.6f, 17.f));
+
 #pragma endregion
 	
 	//AABB
@@ -307,6 +333,13 @@ void Level4::InitScene()
 	auto& wireMesh8 = wireEnt8.Add<MeshRenderer>(wireEnt8, *wireM8L4, shader);
 	auto& wireMesh9 = wireEnt9.Add<MeshRenderer>(wireEnt9, *wireM9L4, shader);
 	auto& wireMesh10 = wireEnt10.Add<MeshRenderer>(wireEnt10, *wireM10L4, shader);
+
+	auto& boxMesh = boxEnt.Add<MeshRenderer>(boxEnt, *boxM, shader);
+	auto& boxMesh2 = boxEnt2.Add<MeshRenderer>(boxEnt2, *boxM, shader);
+	auto& boxMesh3 = boxEnt3.Add<MeshRenderer>(boxEnt3, *boxM, shader);
+	auto& boxMesh4 = boxEnt4.Add<MeshRenderer>(boxEnt4, *boxM, shader);
+	auto& boxMesh5 = boxEnt5.Add<MeshRenderer>(boxEnt5, *boxM, shader);
+	auto& boxMesh6 = boxEnt6.Add<MeshRenderer>(boxEnt6, *boxM, shader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -431,6 +464,13 @@ void Level4::Update(float dt)
 	glm::mat4 transformWire8 = wireEnt8.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformWire9 = wireEnt9.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformWire10 = wireEnt10.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformBox = boxEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformBox2 = boxEnt2.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformBox3 = boxEnt3.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformBox4 = boxEnt4.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformBox5 = boxEnt5.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformBox6 = boxEnt6.Get<Transform>().GetModelMatrix();
 
 #pragma region PlayerMovement
 	Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
@@ -572,6 +612,16 @@ void Level4::Update(float dt)
 		wireEnt8.Get<MeshRenderer>().Render(camera, transformWire8);
 		wireEnt9.Get<MeshRenderer>().Render(camera, transformWire9);
 		wireEnt10.Get<MeshRenderer>().Render(camera, transformWire10);
+
+		//Boxes
+		shader->SetUniform("s_Diffuse", 9);
+		boxMat.Albedo->Bind(9);
+		boxEnt.Get<MeshRenderer>().Render(camera, transformBox);
+		boxEnt2.Get<MeshRenderer>().Render(camera, transformBox2);
+		boxEnt3.Get<MeshRenderer>().Render(camera, transformBox3);
+		boxEnt4.Get<MeshRenderer>().Render(camera, transformBox4);
+		boxEnt5.Get<MeshRenderer>().Render(camera, transformBox5);
+		boxEnt6.Get<MeshRenderer>().Render(camera, transformBox6);
 	}
 	else
 	{
@@ -624,6 +674,12 @@ void Level4::Update(float dt)
 		wireEnt8.Get<MeshRenderer>().Render(camera, transformWire8);
 		wireEnt9.Get<MeshRenderer>().Render(camera, transformWire9);
 		wireEnt10.Get<MeshRenderer>().Render(camera, transformWire10);
+		boxEnt.Get<MeshRenderer>().Render(camera, transformBox);
+		boxEnt2.Get<MeshRenderer>().Render(camera, transformBox2);
+		boxEnt3.Get<MeshRenderer>().Render(camera, transformBox3);
+		boxEnt4.Get<MeshRenderer>().Render(camera, transformBox4);
+		boxEnt5.Get<MeshRenderer>().Render(camera, transformBox5);
+		boxEnt6.Get<MeshRenderer>().Render(camera, transformBox6);
 	}
 #pragma endregion
 

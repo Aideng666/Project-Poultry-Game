@@ -42,7 +42,7 @@ private:
 	//Vents 
 	Entity ventEntS, ventEntL;
 	//Boxes
-	Entity boxEnt, boxEnt2, boxEnt3;
+	Entity boxEnt, boxEnt2, boxEnt3, boxEnt4, boxEnt5, boxEnt6;
 	//Column Pipes
 	Entity colPipeEnt, colPipeEnt2;
 	//Shelf Pipes

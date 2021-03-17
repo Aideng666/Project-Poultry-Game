@@ -246,7 +246,7 @@ void Scene::InitMeshes()
 	floorL3 = ModelManager::FindMesh(floorL3File);
 
 	//Level4
-	floorL4 = ModelManager::FindMesh(floorL4File);
+	floorL4 = ModelManager::FindMesh(floorL4File, glm::vec3(0.2f, 0.7f, 0.0f));
 	leftWallL4 = ModelManager::FindMesh(level4LeftWallFile);
 	rightWallL4 = ModelManager::FindMesh(level4RightWallFile);
 	backWallL4 = ModelManager::FindMesh(level4BackWallFile);
