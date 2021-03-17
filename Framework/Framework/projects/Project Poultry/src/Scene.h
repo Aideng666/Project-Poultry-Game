@@ -36,7 +36,6 @@ public:
 	}
 	Scene(std::string sceneName, GLFWwindow* wind);
  
-
 	virtual void InitScene();
 	virtual void Update(float dt) {}
 
@@ -128,6 +127,12 @@ protected:
 	Mesh* shelfPipe;
 	Mesh* columnPipe;
 
+	//For bigger "lab" levels
+	Mesh* floorLab;
+	Mesh* backWallLab;
+	Mesh* leftWallLab;
+	Mesh* rightWallLab;
+
 	//Main Menu Level Meshes
 	Mesh* startWord;
 	Mesh* optionsWord;
@@ -160,10 +165,6 @@ protected:
 	Mesh* floorL3;
 
 	//Level 4 Meshes
-	Mesh* floorL4;
-	Mesh* backWallL4;
-	Mesh* leftWallL4;
-	Mesh* rightWallL4;
 	Mesh* wireM1L4;
 	Mesh* wireM2L4;
 	Mesh* wireM3L4;
@@ -202,6 +203,10 @@ protected:
 	std::string shelfPipeFile = "Models/ShelfPipe.obj";
 	std::string columnPipeFile = "Models/New_Column_Pipe.obj";
 
+	std::string labBackWallFile = "Models/Level4BackWall.obj";
+	std::string labLeftWallFile = "Models/Level4LeftWall.obj";
+	std::string labRightWallFile = "Models/Level4RightWall.obj";
+
 	//Main Menu Level Files
 	std::string startFile = "Models/Start.obj";
 	std::string exitFile = "Models/Exit.obj";
@@ -231,9 +236,6 @@ protected:
 	std::string wire7L3File = "Models/New_Level3Wire7.obj";
 
 	//Level 4 files
-	std::string level4BackWallFile = "Models/Level4BackWall.obj";
-	std::string level4LeftWallFile = "Models/Level4LeftWall.obj";
-	std::string level4RightWallFile = "Models/Level4RightWall.obj";
 	std::string wire1L4File = "Models/Level4Wire1.obj";
 	std::string wire2L4File = "Models/Level4Wire2.obj";
 	std::string wire3L4File = "Models/Level4Wire3.obj";

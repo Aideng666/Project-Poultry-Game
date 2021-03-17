@@ -324,10 +324,10 @@ void Level4::InitScene()
 
 #pragma region Mesh Loading
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
-	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floorL4, untexturedShader);
-	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *leftWallL4, untexturedShader);
-	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWallL4, untexturedShader);
-	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWallL4, untexturedShader);
+	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floorLab, untexturedShader);
+	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *leftWallLab, untexturedShader);
+	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWallLab, untexturedShader);
+	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWallLab, untexturedShader);
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
 	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
 	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
@@ -438,7 +438,6 @@ void Level4::InitScene()
 
 	effects.push_back(bloomEffect);
 #pragma endregion
-
 
 }
 

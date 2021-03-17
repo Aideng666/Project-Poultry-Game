@@ -13,6 +13,7 @@
 #include "Level2.h"
 #include "Level3.h"
 #include "Level4.h"
+#include "Level5.h"
 #include "MainMenu.h"
 #include "MainMenuLevel.h"
 #include "Application.h"
@@ -46,7 +47,7 @@ void SetActiveScene(int sceneNum)
 	currentScene = scenes[sceneNum];
 	level = sceneNum + 1;
 
-	if (level > 5)
+	if (level > 6)
 		level = 1;
 }
 
@@ -67,8 +68,9 @@ int main()
 	scenes.push_back(new Level2("Level 2", window));
 	scenes.push_back(new Level3("Level 3", window));
 	scenes.push_back(new Level4("Level 4", window));
+	scenes.push_back(new Level5("Level 5", window));
 
-	SetActiveScene(5);
+	SetActiveScene(6);
 	 
 	//Calculates our timer
 	Application::Tick();
@@ -196,7 +198,6 @@ int main()
 		//Grabs the time
 		float dt = Application::GetDT();
 
-
 		if (glfwGetKey(window, GLFW_KEY_KP_5) == GLFW_PRESS)
 		{
 			SetActiveScene(5);
@@ -235,10 +236,10 @@ int main()
 			scenes.push_back(new Level2("Level 2", window));
 			scenes.push_back(new Level3("Level 3", window));
 			scenes.push_back(new Level4("Level 4", window));
+			scenes.push_back(new Level5("Level 5", window));
 
 			SetActiveScene(1);
 		}
-
 
 		currentScene->Update(dt);
 

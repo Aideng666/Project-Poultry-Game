@@ -246,10 +246,10 @@ void Scene::InitMeshes()
 	floorL3 = ModelManager::FindMesh(floorL3File);
 
 	//Level4
-	floorL4 = ModelManager::FindMesh(floorL4File, glm::vec3(0.2f, 0.7f, 0.0f));
-	leftWallL4 = ModelManager::FindMesh(level4LeftWallFile);
-	rightWallL4 = ModelManager::FindMesh(level4RightWallFile);
-	backWallL4 = ModelManager::FindMesh(level4BackWallFile);
+	floorLab = ModelManager::FindMesh(floorL4File, glm::vec3(0.2f, 0.7f, 0.0f));
+	leftWallLab = ModelManager::FindMesh(labLeftWallFile);
+	rightWallLab = ModelManager::FindMesh(labRightWallFile);
+	backWallLab = ModelManager::FindMesh(labBackWallFile);
 	wireM1L4 = ModelManager::FindMesh(wire1L4File);
 	wireM2L4 = ModelManager::FindMesh(wire2L4File);
 	wireM3L4 = ModelManager::FindMesh(wire3L4File);
