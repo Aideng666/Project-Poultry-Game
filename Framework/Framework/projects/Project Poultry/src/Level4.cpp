@@ -162,33 +162,33 @@ void Level4::InitScene()
 	//Gate transforms
 	//And Gate
 	auto& gateTrans = andEnt.Add<Transform>();
-	gateTrans.SetPosition(glm::vec3(0.f, 1.2f, 0.f));
+	gateTrans.SetPosition(glm::vec3(-1.9f, 1.2f, -15.5f));
 	gateTrans.SetRotationY(-90.0f);
 	gateTrans.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans2 = andEnt2.Add<Transform>();
-	gateTrans2.SetPosition(glm::vec3(10.f, 1.2f, 0.f));
+	gateTrans2.SetPosition(glm::vec3(14.3f, 1.2f, 8.f));
 	gateTrans2.SetRotationY(-90.0f);
 	gateTrans2.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans3 = andEnt3.Add<Transform>();
-	gateTrans3.SetPosition(glm::vec3(-10.f, 1.2f, 0.f));
+	gateTrans3.SetPosition(glm::vec3(-18.2f, 1.2f, 6.8f));
 	gateTrans3.SetRotationY(-90.0f);
 	gateTrans3.SetScale(glm::vec3(2.0f));
 
 	//Not Gate
 	auto& notTrans = notEnt.Add<Transform>();
-	notTrans.SetPosition(glm::vec3(0.0f, 1.f, -10.f));
+	notTrans.SetPosition(glm::vec3(-5.f, 1.f, 16.f));
 	notTrans.SetRotationY(-90.0f);
 	notTrans.SetScale(glm::vec3(2.0f));
 
 	auto& notTrans2 = notEnt2.Add<Transform>();
-	notTrans2.SetPosition(glm::vec3(10.0f, 1.f, -10.f));
+	notTrans2.SetPosition(glm::vec3(14.1f, 1.f, -7.f));
 	notTrans2.SetRotationY(-90.0f);
 	notTrans2.SetScale(glm::vec3(2.0f));
 
 	auto& notTrans3 = notEnt3.Add<Transform>();
-	notTrans3.SetPosition(glm::vec3(-10.0f, 1.f, -10.f));
+	notTrans3.SetPosition(glm::vec3(-18.5f, 1.f, -8.6f));
 	notTrans3.SetRotationY(-90.0f);
 	notTrans3.SetScale(glm::vec3(2.0f));
 
