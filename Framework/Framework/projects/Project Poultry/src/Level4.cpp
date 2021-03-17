@@ -45,6 +45,17 @@ Level4::Level4(std::string sceneName, GLFWwindow* wind)
 	notEnt3 = Entity::Create();
 	coilEnt = Entity::Create();
 
+	wireEnt = Entity::Create();
+	wireEnt2 = Entity::Create();
+	wireEnt3 = Entity::Create();
+	wireEnt4 = Entity::Create();
+	wireEnt5 = Entity::Create();
+	wireEnt6 = Entity::Create();
+	wireEnt7 = Entity::Create();
+	wireEnt8 = Entity::Create();
+	wireEnt9 = Entity::Create();
+	wireEnt10 = Entity::Create();
+
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
 	sepiaEnt = Entity::Create();
@@ -74,7 +85,7 @@ void Level4::InitScene()
 #pragma region Transforms
 	//Player transform
 	auto& playerTrans = mainPlayer.Add<Transform>();
-	playerTrans.SetPosition(glm::vec3(0.0f, 1.0f, 30.0f));
+	playerTrans.SetPosition(glm::vec3(0.0f, 1.0f, 42.0f));
 	playerTrans.SetRotationY(180.0f);
 
 	//Floor transform
@@ -93,16 +104,16 @@ void Level4::InitScene()
 
 	//Button transforms
 	auto& buttonTrans = buttonEnt.Add<Transform>();
-	buttonTrans.SetPosition(glm::vec3(10.f, -1.0f, 10.f));
+	buttonTrans.SetPosition(glm::vec3(24.8f, -1.0f, 35.f));
 
 	auto& buttonTrans2 = buttonEnt2.Add<Transform>();
-	buttonTrans2.SetPosition(glm::vec3(5.f, -1.0f, 10.f));
+	buttonTrans2.SetPosition(glm::vec3(3.5f, -1.0f, 35.f));
 
 	auto& buttonTrans3 = buttonEnt3.Add<Transform>();
-	buttonTrans3.SetPosition(glm::vec3(-5.f, -1.0f, 10.f));
+	buttonTrans3.SetPosition(glm::vec3(-5.f, -1.0f, 35.f));
 
 	auto& buttonTrans4 = buttonEnt4.Add<Transform>();
-	buttonTrans4.SetPosition(glm::vec3(-10.f, -1.0f, 10.f));
+	buttonTrans4.SetPosition(glm::vec3(-20.2f, -1.0f, 35.5f));
 
 	//Column Pipe transforms
 	auto& colPipeTrans = colPipeEnt.Add<Transform>();
@@ -186,6 +197,38 @@ void Level4::InitScene()
 	coilTrans.SetPosition(glm::vec3(-13.0f, 1.0f, -48.f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 	coilTrans.SetRotationY(180.0f);
+
+	//Wire Objects
+	auto& wireTrans = wireEnt.Add<Transform>();
+	wireTrans.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans2 = wireEnt2.Add<Transform>();
+	wireTrans2.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans3 = wireEnt3.Add<Transform>();
+	wireTrans3.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans4 = wireEnt4.Add<Transform>();
+	wireTrans4.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans5 = wireEnt5.Add<Transform>();
+	wireTrans5.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans6 = wireEnt6.Add<Transform>();
+	wireTrans6.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans7 = wireEnt7.Add<Transform>();
+	wireTrans7.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans8 = wireEnt8.Add<Transform>();
+	wireTrans8.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans9 = wireEnt9.Add<Transform>();
+	wireTrans9.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans10 = wireEnt10.Add<Transform>();
+	wireTrans10.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
 #pragma endregion
 	
 	//AABB
@@ -253,6 +296,17 @@ void Level4::InitScene()
 	auto& notMesh3 = notEnt3.Add<MeshRenderer>(notEnt3, *not, shader);
 
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
+
+	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireM1L4, shader);
+	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireM2L4, shader);
+	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireM3L4, shader);
+	auto& wireMesh4 = wireEnt4.Add<MeshRenderer>(wireEnt4, *wireM4L4, shader);
+	auto& wireMesh5 = wireEnt5.Add<MeshRenderer>(wireEnt5, *wireM5L4, shader);
+	auto& wireMesh6 = wireEnt6.Add<MeshRenderer>(wireEnt6, *wireM6L4, shader);
+	auto& wireMesh7 = wireEnt7.Add<MeshRenderer>(wireEnt7, *wireM7L4, shader);
+	auto& wireMesh8 = wireEnt8.Add<MeshRenderer>(wireEnt8, *wireM8L4, shader);
+	auto& wireMesh9 = wireEnt9.Add<MeshRenderer>(wireEnt9, *wireM9L4, shader);
+	auto& wireMesh10 = wireEnt10.Add<MeshRenderer>(wireEnt10, *wireM10L4, shader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -367,6 +421,16 @@ void Level4::Update(float dt)
 
 	glm::mat4 transformCoil = coilEnt.Get<Transform>().GetModelMatrix();
 
+	glm::mat4 transformWire = wireEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire2 = wireEnt2.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire3 = wireEnt3.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire4 = wireEnt4.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire5 = wireEnt5.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire6 = wireEnt6.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire7 = wireEnt7.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire8 = wireEnt8.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire9 = wireEnt9.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire10 = wireEnt10.Get<Transform>().GetModelMatrix();
 
 #pragma region PlayerMovement
 	Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
@@ -494,6 +558,20 @@ void Level4::Update(float dt)
 		shader->SetUniform("s_Diffuse", 7);
 		coilMatOff.Albedo->Bind(7);
 		coilEnt.Get<MeshRenderer>().Render(camera, transformCoil);
+
+		//Wires
+		shader->SetUniform("s_Diffuse", 8);
+		wireMat.Albedo->Bind(8);
+		wireEnt.Get<MeshRenderer>().Render(camera, transformWire);
+		wireEnt2.Get<MeshRenderer>().Render(camera, transformWire2);
+		wireEnt3.Get<MeshRenderer>().Render(camera, transformWire3);
+		wireEnt4.Get<MeshRenderer>().Render(camera, transformWire4);
+		wireEnt5.Get<MeshRenderer>().Render(camera, transformWire5);
+		wireEnt6.Get<MeshRenderer>().Render(camera, transformWire6);
+		wireEnt7.Get<MeshRenderer>().Render(camera, transformWire7);
+		wireEnt8.Get<MeshRenderer>().Render(camera, transformWire8);
+		wireEnt9.Get<MeshRenderer>().Render(camera, transformWire9);
+		wireEnt10.Get<MeshRenderer>().Render(camera, transformWire10);
 	}
 	else
 	{
@@ -536,7 +614,16 @@ void Level4::Update(float dt)
 		buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3);
 		buttonEnt4.Get<MeshRenderer>().Render(camera, transformButton4);
 		coilEnt.Get<MeshRenderer>().Render(camera, transformCoil);
-
+		wireEnt.Get<MeshRenderer>().Render(camera, transformWire);
+		wireEnt2.Get<MeshRenderer>().Render(camera, transformWire2);
+		wireEnt3.Get<MeshRenderer>().Render(camera, transformWire3);
+		wireEnt4.Get<MeshRenderer>().Render(camera, transformWire4);
+		wireEnt5.Get<MeshRenderer>().Render(camera, transformWire5);
+		wireEnt6.Get<MeshRenderer>().Render(camera, transformWire6);
+		wireEnt7.Get<MeshRenderer>().Render(camera, transformWire7);
+		wireEnt8.Get<MeshRenderer>().Render(camera, transformWire8);
+		wireEnt9.Get<MeshRenderer>().Render(camera, transformWire9);
+		wireEnt10.Get<MeshRenderer>().Render(camera, transformWire10);
 	}
 #pragma endregion
 

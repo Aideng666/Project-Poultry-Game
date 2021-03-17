@@ -219,7 +219,8 @@ void Scene::InitMeshes()
 	startWord = ModelManager::FindMesh(startFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	exitWord = ModelManager::FindMesh(exitFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	optionsWord = ModelManager::FindMesh(optFile, glm::vec3(1.0f, 0.0f, 0.0f));
-	
+	mainMenuFloor = ModelManager::FindMesh(mainMenuFloorFile);
+
 	//Level 1
 	wireM1L1 = ModelManager::FindMesh(wire1L1File);
 	wireM2L1 = ModelManager::FindMesh(wire2L1File);

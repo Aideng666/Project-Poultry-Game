@@ -132,6 +132,7 @@ protected:
 	Mesh* startWord;
 	Mesh* optionsWord;
 	Mesh* exitWord;
+	Mesh* mainMenuFloor;
 
 	//Level 1 Meshes
 	Mesh* wireM1L1;
@@ -178,8 +179,8 @@ protected:
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
 	std::string floorFile = "Models/Floor.obj";
 	std::string floorL1File = "Models/Level1Floor.obj";
-	std::string floorL2File = "Models/Level2Floor.obj";
-	std::string floorL3File = "Models/Level3Floor.obj";
+	std::string floorL2File = "Models/L2-Floor.obj";
+	std::string floorL3File = "Models/L3-Floor.obj";
 	std::string floorL4File = "Models/Level4Floor.obj";
 	std::string screenFile = "Models/Floor.obj";
 	std::string leftWallFile = "Models/F-LW.obj";
@@ -205,6 +206,7 @@ protected:
 	std::string startFile = "Models/Start.obj";
 	std::string exitFile = "Models/Exit.obj";
 	std::string optFile = "Models/Options.obj";
+	std::string mainMenuFloorFile = "Models/MainMenu-Floor.obj";
 	
 	//Level 1 Files
 	std::string wire1L1File = "Models/New_Level1Wire1.obj";

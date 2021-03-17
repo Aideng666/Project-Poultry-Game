@@ -203,17 +203,17 @@ void MainMenuLevel::InitScene()
 
 	//Text Transforms
 	auto& sTrans = startEnt.Add<Transform>();
-	sTrans.SetPosition(glm::vec3(-4.0f, 2.5f, -25.0f));
+	sTrans.SetPosition(glm::vec3(-4.0f, 1.f, -25.0f));
 	sTrans.SetScale(glm::vec3(4.0f));
 
 	auto& eTrans = exitEnt.Add<Transform>();
 	eTrans.SetRotationY(-45.0f);
-	eTrans.SetPosition(glm::vec3(19.0f, 2.5f, -21.0f));
+	eTrans.SetPosition(glm::vec3(19.0f, 1.f, -21.0f));
 	eTrans.SetScale(glm::vec3(4.0f));
 
 	auto& oTrans = optEnt.Add<Transform>();
 	oTrans.SetRotationY(45.0f);
-	oTrans.SetPosition(glm::vec3(-26.0f, 2.5f, -13.0f));
+	oTrans.SetPosition(glm::vec3(-26.0f, 1.f, -13.0f));
 	oTrans.SetScale(glm::vec3(4.0f));
 #pragma endregion
 	
@@ -272,7 +272,7 @@ void MainMenuLevel::InitScene()
 	auto& rightMesh = rightWallEnt.Add<MeshRenderer>(rightWallEnt, *rightWall, shader);
 	auto& leftAMesh = leftAngledWall.Add<MeshRenderer>(leftAngledWall, *leftWall, shader);
 	auto& rightAMesh = rightAngledWall.Add<MeshRenderer>(rightAngledWall, *rightWall, shader);
-	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floor, shader);
+	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *mainMenuFloor, shader);
 	auto& playMesh = startDoor.Add<MorphRenderer>(startDoor, *doorM, animShader);
 	auto& exitMesh = exitDoor.Add<MorphRenderer>(exitDoor, *doorM, animShader);
 	auto& optMesh = optionDoor.Add<MorphRenderer>(optionDoor, *doorM, animShader);
