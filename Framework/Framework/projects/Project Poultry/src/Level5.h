@@ -23,6 +23,11 @@ private:
 	Entity mainPlayer;
 	//Floor
 	Entity floorEnt;
+	//Walls
+	Entity leftEnt, rightEnt, backEnt;
+	//Wires
+	Entity wireEnt, wireEnt2, wireEnt3, wireEnt4, wireEnt5, wireEnt6, wireEnt7;
+		
 
 	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
 		isPaused = !isPaused;

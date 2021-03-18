@@ -99,7 +99,7 @@ protected:
 
 	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, shelfPipeMat, columnPipeMat, optionMat, exitMat, retryMat;
 	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
-	Mat andMat, notMat, wireMatOn;
+	Mat andMat, notMat, wireMatOn, orMat;
 
 	//Meshes for multiple levels
 	Mesh* options;
@@ -176,6 +176,16 @@ protected:
 	Mesh* wireM9L4;
 	Mesh* wireM10L4;
 
+	//Level 5 Meshes
+	Mesh* orMesh;
+	Mesh* wireM1L5;
+	Mesh* wireM2L5;
+	Mesh* wireM3L5;
+	Mesh* wireM4L5;
+	Mesh* wireM5L5;
+	Mesh* wireM6L5;
+	Mesh* wireM7L5;
+
 	//Files for multiple levels
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
 	std::string floorFile = "Models/Floor.obj";
@@ -246,6 +256,15 @@ protected:
 	std::string wire8L4File = "Models/Level4Wire8.obj";
 	std::string wire9L4File = "Models/Level4Wire9.obj";
 	std::string wire10L4File = "Models/Level4Wire10.obj";
+
+	//Level 5 files
+	std::string wire1L5File = "Models/Level5Wire1.obj";
+	std::string wire2L5File = "Models/Level5Wire2.obj";
+	std::string wire3L5File = "Models/Level5Wire3.obj";
+	std::string wire4L5File = "Models/Level5Wire4.obj";
+	std::string wire5L5File = "Models/Level5Wire5.obj";
+	std::string wire6L5File = "Models/Level5Wire6.obj";
+	std::string wire7L5File = "Models/Level5Wire7.obj";
 
 	std::vector<std::function<void()>> imGuiCallbacks;
 

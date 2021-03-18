@@ -20,6 +20,17 @@ Level5::Level5(std::string sceneName, GLFWwindow* wind)
 #pragma region Entities
 	mainPlayer = Entity::Create();
 	floorEnt = Entity::Create();
+	leftEnt = Entity::Create();
+	rightEnt = Entity::Create();
+	backEnt = Entity::Create();
+
+	wireEnt = Entity::Create();
+	wireEnt2 = Entity::Create();
+	wireEnt3 = Entity::Create();
+	wireEnt4 = Entity::Create();
+	wireEnt5 = Entity::Create();
+	wireEnt6 = Entity::Create();
+	wireEnt7 = Entity::Create();
 
 	pauseEnt = Entity::Create();
 	optionEnt = Entity::Create();
@@ -61,6 +72,33 @@ void Level5::InitScene()
 	//Floor transform
 	auto& groundTrans = floorEnt.Add<Transform>();
 	groundTrans.SetPositionY(1.0f);
+
+	//Wall transforms
+	auto& leftTrans = leftEnt.Add<Transform>();
+	auto& rightTrans = rightEnt.Add<Transform>();
+	auto& backTrans = backEnt.Add<Transform>();
+
+	//Wire Objects
+	auto& wireTrans = wireEnt.Add<Transform>();
+	wireTrans.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans2 = wireEnt2.Add<Transform>();
+	wireTrans2.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans3 = wireEnt3.Add<Transform>();
+	wireTrans3.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans4 = wireEnt4.Add<Transform>();
+	wireTrans4.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans5 = wireEnt5.Add<Transform>();
+	wireTrans5.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans6 = wireEnt6.Add<Transform>();
+	wireTrans6.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans7 = wireEnt7.Add<Transform>();
+	wireTrans7.SetPosition(glm::vec3(0.f, 1.f, 0.f));
 
 	//Pause UI
 	auto& pauseTrans = pauseEnt.Add<Transform>();
@@ -104,11 +142,22 @@ void Level5::InitScene()
 #pragma region Mesh Loading
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floorLab, untexturedShader);
+	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *leftWallLab, untexturedShader);
+	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWallLab, untexturedShader);
+	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWallLab, untexturedShader);
 
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
 	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
 	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
+
+	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireM1L5, shader);
+	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireM2L5, shader);
+	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireM3L5, shader);
+	auto& wireMesh4 = wireEnt4.Add<MeshRenderer>(wireEnt4, *wireM4L5, shader);
+	auto& wireMesh5 = wireEnt5.Add<MeshRenderer>(wireEnt5, *wireM5L5, shader);
+	auto& wireMesh6 = wireEnt6.Add<MeshRenderer>(wireEnt6, *wireM6L5, shader);
+	auto& wireMesh7 = wireEnt7.Add<MeshRenderer>(wireEnt7, *wireM7L5, shader);
 
 	auto& walkAnimator = mainPlayer.Add<MorphAnimation>(mainPlayer);
 	walkAnimator.SetTime(0.05f);
@@ -175,6 +224,14 @@ void Level5::Update(float dt)
 #pragma region Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
 
+	backEnt.Get<Transform>().SetPositionZ(0.0f);
+	backEnt.Get<Transform>().SetPositionY(1.0f);
+
+	leftEnt.Get<Transform>().SetPositionX(0.0f);
+	leftEnt.Get<Transform>().SetPositionY(1.0f);
+
+	rightEnt.Get<Transform>().SetPositionX(0.0f);
+	rightEnt.Get<Transform>().SetPositionY(1.0f);
 #pragma endregion
 
 	auto& camera = camEnt.Get<Camera>();
@@ -183,6 +240,17 @@ void Level5::Update(float dt)
 	//Get reference to the model matrix
 	glm::mat4 transform = mainPlayer.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformGround = floorEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformLeft = leftEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformRight = rightEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformBack = backEnt.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformWire = wireEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire2 = wireEnt2.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire3 = wireEnt3.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire4 = wireEnt4.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire5 = wireEnt5.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire6 = wireEnt6.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire7 = wireEnt7.Get<Transform>().GetModelMatrix();
 
 	glm::mat4 transformPause = pauseEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformOptions = optionEnt.Get<Transform>().GetModelMatrix();
@@ -233,6 +301,7 @@ void Level5::Update(float dt)
 	animShader->SetUniform("u_LightNum", lightNum);
 	untexturedShader->SetUniform("u_LightNum", lightNum);
 	pauseShader->SetUniform("u_LightNum", lightNum);
+	shader->SetUniform("u_LightNum", lightNum);
 
 	//Post-Effect Stuff
 	auto basicEffect = &FBO.Get<PostEffect>();
@@ -258,6 +327,11 @@ void Level5::Update(float dt)
 		untexturedShader->Bind();
 		//Floor (no texture for now)
 		floorEnt.Get<MeshRenderer>().Render(camera, transformGround);
+
+		//Walls (no textures for now)
+		leftEnt.Get<MeshRenderer>().Render(camera, transformLeft);
+		rightEnt.Get<MeshRenderer>().Render(camera, transformRight);
+		backEnt.Get<MeshRenderer>().Render(camera, transformBack);
 
 		pauseShader->Bind();
 		pauseShader->SetUniform("s_Diffuse", 0);
@@ -291,6 +365,18 @@ void Level5::Update(float dt)
 		{
 			exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit);
 		}
+
+		shader->Bind();
+		//Wires
+		shader->SetUniform("s_Diffuse", 0);
+		wireMat.Albedo->Bind(0);
+		wireEnt.Get<MeshRenderer>().Render(camera, transformWire);
+		wireEnt2.Get<MeshRenderer>().Render(camera, transformWire2);
+		wireEnt3.Get<MeshRenderer>().Render(camera, transformWire3);
+		wireEnt4.Get<MeshRenderer>().Render(camera, transformWire4);
+		wireEnt5.Get<MeshRenderer>().Render(camera, transformWire5);
+		wireEnt6.Get<MeshRenderer>().Render(camera, transformWire6);
+		wireEnt7.Get<MeshRenderer>().Render(camera, transformWire7);
 	}
 	else
 	{
@@ -301,6 +387,9 @@ void Level5::Update(float dt)
 
 		untexturedShader->Bind();
 		floorEnt.Get<MeshRenderer>().Render(camera, transformGround);
+		leftEnt.Get<MeshRenderer>().Render(camera, transformLeft);
+		rightEnt.Get<MeshRenderer>().Render(camera, transformRight);
+		backEnt.Get<MeshRenderer>().Render(camera, transformBack);
 
 		pauseShader->Bind();
 		pauseShader->SetUniform("s_Diffuse", 0);
@@ -310,6 +399,17 @@ void Level5::Update(float dt)
 		{
 			pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause);
 		}
+
+		shader->Bind();
+		shader->SetUniform("s_Diffuse", 0);
+		clearMat.Albedo->Bind(0);
+		wireEnt.Get<MeshRenderer>().Render(camera, transformWire);
+		wireEnt2.Get<MeshRenderer>().Render(camera, transformWire2);
+		wireEnt3.Get<MeshRenderer>().Render(camera, transformWire3);
+		wireEnt4.Get<MeshRenderer>().Render(camera, transformWire4);
+		wireEnt5.Get<MeshRenderer>().Render(camera, transformWire5);
+		wireEnt6.Get<MeshRenderer>().Render(camera, transformWire6);
+		wireEnt7.Get<MeshRenderer>().Render(camera, transformWire7);
 	}
 #pragma endregion
 

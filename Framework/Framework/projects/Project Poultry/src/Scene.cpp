@@ -47,6 +47,7 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseComplete = Texture2D::LoadFromFile("Textures/LevelComplete.png");
 	Texture2D::sptr diffuseAnd = Texture2D::LoadFromFile("Textures/AndGate.png");
 	Texture2D::sptr diffuseNot = Texture2D::LoadFromFile("Textures/NotGate.png");
+	Texture2D::sptr diffuseOr = Texture2D::LoadFromFile("Textures/OrGate.png");
 	Texture2D::sptr diffuseWire = Texture2D::LoadFromFile("Textures/Wire_Off_Texture.png");
 	Texture2D::sptr diffuseWireOn = Texture2D::LoadFromFile("Textures/Wire_On_Texture.png");
 	Texture2D::sptr diffuseBox = Texture2D::LoadFromFile("Textures/Box_Texture.png");
@@ -82,6 +83,7 @@ void Scene::InitTextures()
 	completeMat.Albedo = diffuseComplete;
 	andMat.Albedo = diffuseAnd;
 	notMat.Albedo = diffuseNot;
+	orMat.Albedo = diffuseOr;
 	wireMat.Albedo = diffuseWire;
 	wireMatOn.Albedo = diffuseWireOn;
 	boxMat.Albedo = diffuseBox;
@@ -215,6 +217,12 @@ void Scene::InitMeshes()
 	tablet = ModelManager::FindMesh(tabletFile);
 	tut = ModelManager::FindMesh(tutFile, glm::vec3(1.0f, 0.0f, 0.0f));
 
+	//Lab Levels(tentative)
+	floorLab = ModelManager::FindMesh(floorL4File, glm::vec3(0.2f, 0.7f, 0.0f));
+	leftWallLab = ModelManager::FindMesh(labLeftWallFile);
+	rightWallLab = ModelManager::FindMesh(labRightWallFile);
+	backWallLab = ModelManager::FindMesh(labBackWallFile);
+
 	//Main Menu Level
 	startWord = ModelManager::FindMesh(startFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	exitWord = ModelManager::FindMesh(exitFile, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -246,10 +254,6 @@ void Scene::InitMeshes()
 	floorL3 = ModelManager::FindMesh(floorL3File);
 
 	//Level4
-	floorLab = ModelManager::FindMesh(floorL4File, glm::vec3(0.2f, 0.7f, 0.0f));
-	leftWallLab = ModelManager::FindMesh(labLeftWallFile);
-	rightWallLab = ModelManager::FindMesh(labRightWallFile);
-	backWallLab = ModelManager::FindMesh(labBackWallFile);
 	wireM1L4 = ModelManager::FindMesh(wire1L4File);
 	wireM2L4 = ModelManager::FindMesh(wire2L4File);
 	wireM3L4 = ModelManager::FindMesh(wire3L4File);
@@ -260,6 +264,15 @@ void Scene::InitMeshes()
 	wireM8L4 = ModelManager::FindMesh(wire8L4File);
 	wireM9L4 = ModelManager::FindMesh(wire9L4File);
 	wireM10L4 = ModelManager::FindMesh(wire10L4File);
+
+	//Level5
+	wireM1L5 = ModelManager::FindMesh(wire1L5File);
+	wireM2L5 = ModelManager::FindMesh(wire2L5File);
+	wireM3L5 = ModelManager::FindMesh(wire3L5File);
+	wireM4L5 = ModelManager::FindMesh(wire4L5File);
+	wireM5L5 = ModelManager::FindMesh(wire5L5File);
+	wireM6L5 = ModelManager::FindMesh(wire6L5File);
+	wireM7L5 = ModelManager::FindMesh(wire7L5File);
 }
 
 bool Scene::GetComplete()
