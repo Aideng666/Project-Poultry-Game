@@ -198,6 +198,10 @@ int main()
 		//Grabs the time
 		float dt = Application::GetDT();
 
+		if (glfwGetKey(window, GLFW_KEY_KP_6) == GLFW_PRESS)
+		{
+			SetActiveScene(6);
+		}
 		if (glfwGetKey(window, GLFW_KEY_KP_5) == GLFW_PRESS)
 		{
 			SetActiveScene(5);

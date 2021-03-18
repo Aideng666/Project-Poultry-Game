@@ -189,7 +189,7 @@ protected:
 	//Files for multiple levels
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
 	std::string floorFile = "Models/Floor.obj";
-	std::string floorL1File = "Models/Level1Floor.obj";
+	std::string floorL1File = "Models/L1-Floor.obj";
 	std::string floorL2File = "Models/L2-Floor.obj";
 	std::string floorL3File = "Models/L3-Floor.obj";
 	std::string floorL4File = "Models/Level4Floor.obj";
@@ -258,6 +258,7 @@ protected:
 	std::string wire10L4File = "Models/Level4Wire10.obj";
 
 	//Level 5 files
+	std::string orFile = "Models/OrGate.obj";
 	std::string wire1L5File = "Models/Level5Wire1.obj";
 	std::string wire2L5File = "Models/Level5Wire2.obj";
 	std::string wire3L5File = "Models/Level5Wire3.obj";

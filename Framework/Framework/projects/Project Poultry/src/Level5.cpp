@@ -32,6 +32,20 @@ Level5::Level5(std::string sceneName, GLFWwindow* wind)
 	wireEnt6 = Entity::Create();
 	wireEnt7 = Entity::Create();
 
+	ventEnt = Entity::Create();
+	ventEnt2 = Entity::Create();
+
+	doorEnt = Entity::Create();
+
+	andEnt = Entity::Create();
+	orEnt = Entity::Create();
+	orEnt2 = Entity::Create();
+
+	buttonEnt = Entity::Create();
+	buttonEnt2 = Entity::Create();
+	buttonEnt3 = Entity::Create();
+	buttonEnt4 = Entity::Create();
+
 	pauseEnt = Entity::Create();
 	optionEnt = Entity::Create();
 	exitEnt = Entity::Create();
@@ -78,6 +92,11 @@ void Level5::InitScene()
 	auto& rightTrans = rightEnt.Add<Transform>();
 	auto& backTrans = backEnt.Add<Transform>();
 
+	//Door transforms
+	auto& doorTrans = doorEnt.Add<Transform>();
+	doorTrans.SetPosition(glm::vec3(0.0f, -1.0f, -50.0f));
+	doorTrans.SetScale(glm::vec3(1.5f));
+
 	//Wire Objects
 	auto& wireTrans = wireEnt.Add<Transform>();
 	wireTrans.SetPosition(glm::vec3(0.f, 1.f, 0.f));
@@ -99,6 +118,48 @@ void Level5::InitScene()
 
 	auto& wireTrans7 = wireEnt7.Add<Transform>();
 	wireTrans7.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	//Vent transforms
+	auto& ventTrans = ventEnt.Add<Transform>();
+	ventTrans.SetPosition(glm::vec3(20.f, 25.f, -50.5f));
+	ventTrans.SetScale(glm::vec3(1.2f));
+	ventTrans.SetRotationY(90.f);
+
+	auto& ventTrans2 = ventEnt2.Add<Transform>();
+	ventTrans2.SetPosition(glm::vec3(-20.f, 25.f, -50.5f));
+	ventTrans2.SetScale(glm::vec3(1.2f));
+	ventTrans2.SetRotationY(90.f);
+
+	//Gate transforms
+	//And Gate
+	auto& gateTrans = andEnt.Add<Transform>();
+	gateTrans.SetPosition(glm::vec3(-1.74f, 1.2f, -1.75f));
+	gateTrans.SetRotationY(-90.0f);
+	gateTrans.SetScale(glm::vec3(2.0f));
+
+	//Or Gate
+	auto& orTrans = orEnt.Add<Transform>();
+	orTrans.SetPosition(glm::vec3(0.f, 1.f, 10.f));
+	orTrans.SetRotationY(-90.f);
+	orTrans.SetScale(glm::vec3(2.0f));
+
+	auto& orTrans2 = orEnt2.Add<Transform>();
+	orTrans2.SetPosition(glm::vec3(0.f, 1.f, 20.f));
+	orTrans2.SetRotationY(-90.f);
+	orTrans2.SetScale(glm::vec3(2.0f));
+
+	//Button transforms
+	auto& buttonTrans = buttonEnt.Add<Transform>();
+	buttonTrans.SetPosition(glm::vec3(27.5f, -1.0f, 38.5f));
+
+	auto& buttonTrans2 = buttonEnt2.Add<Transform>();
+	buttonTrans2.SetPosition(glm::vec3(3.5f, -1.0f, 35.f));
+
+	auto& buttonTrans3 = buttonEnt3.Add<Transform>();
+	buttonTrans3.SetPosition(glm::vec3(-5.f, -1.0f, 35.f));
+
+	auto& buttonTrans4 = buttonEnt4.Add<Transform>();
+	buttonTrans4.SetPosition(glm::vec3(-20.2f, -1.0f, 35.5f));
 
 	//Pause UI
 	auto& pauseTrans = pauseEnt.Add<Transform>();
@@ -122,6 +183,18 @@ void Level5::InitScene()
 #pragma endregion
 
 #pragma region Animation Frames
+	//Door Animations
+	doorFrames.push_back(std::unique_ptr<Mesh>(door1));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door3));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door4));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door5));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door6));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door7));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door8));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
+
 	//Walking Animations
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk2));
@@ -146,6 +219,8 @@ void Level5::InitScene()
 	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWallLab, untexturedShader);
 	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWallLab, untexturedShader);
 
+	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
+
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
 	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
@@ -158,6 +233,23 @@ void Level5::InitScene()
 	auto& wireMesh5 = wireEnt5.Add<MeshRenderer>(wireEnt5, *wireM5L5, shader);
 	auto& wireMesh6 = wireEnt6.Add<MeshRenderer>(wireEnt6, *wireM6L5, shader);
 	auto& wireMesh7 = wireEnt7.Add<MeshRenderer>(wireEnt7, *wireM7L5, shader);
+
+	auto& vent = ventEnt.Add<MeshRenderer>(ventEnt, *ventB, shader);
+	auto& vent2 = ventEnt2.Add<MeshRenderer>(ventEnt2, *ventB, shader);
+
+	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *and, shader);
+	auto& orM = orEnt.Add<MeshRenderer>(orEnt, *orMesh, shader);
+	auto& orM2 = orEnt2.Add<MeshRenderer>(orEnt2, *orMesh, shader);
+
+	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
+	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
+	auto& buttonMesh3 = buttonEnt3.Add<MeshRenderer>(buttonEnt3, *buttonM, shader);
+	auto& buttonMesh4 = buttonEnt4.Add<MeshRenderer>(buttonEnt4, *buttonM, shader);
+
+	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
+	doorAnimator.SetTime(0.2f);
+	doorAnimator.SetFrames(doorFrames);
+	doorAnimator.SetLoop(false);
 
 	auto& walkAnimator = mainPlayer.Add<MorphAnimation>(mainPlayer);
 	walkAnimator.SetTime(0.05f);
@@ -223,6 +315,10 @@ void Level5::Update(float dt)
 {
 #pragma region Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
+	auto& buttonTrans = buttonEnt.Get<Transform>();
+	auto& buttonTrans2 = buttonEnt2.Get<Transform>();
+	auto& buttonTrans3 = buttonEnt3.Get<Transform>();
+	auto& buttonTrans4 = buttonEnt4.Get<Transform>();
 
 	backEnt.Get<Transform>().SetPositionZ(0.0f);
 	backEnt.Get<Transform>().SetPositionY(1.0f);
@@ -244,6 +340,8 @@ void Level5::Update(float dt)
 	glm::mat4 transformRight = rightEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformBack = backEnt.Get<Transform>().GetModelMatrix();
 
+	glm::mat4 transformDoor = doorEnt.Get<Transform>().GetModelMatrix();
+
 	glm::mat4 transformWire = wireEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformWire2 = wireEnt2.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformWire3 = wireEnt3.Get<Transform>().GetModelMatrix();
@@ -251,6 +349,18 @@ void Level5::Update(float dt)
 	glm::mat4 transformWire5 = wireEnt5.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformWire6 = wireEnt6.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformWire7 = wireEnt7.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformVent = ventEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformVent2 = ventEnt2.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformGate = andEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformOr = orEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformOr2 = orEnt2.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformButton = buttonTrans.GetModelMatrix();
+	glm::mat4 transformButton2 = buttonTrans2.GetModelMatrix();
+	glm::mat4 transformButton3 = buttonTrans3.GetModelMatrix();
+	glm::mat4 transformButton4 = buttonTrans4.GetModelMatrix();
 
 	glm::mat4 transformPause = pauseEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformOptions = optionEnt.Get<Transform>().GetModelMatrix();
@@ -324,6 +434,11 @@ void Level5::Update(float dt)
 		drumstickMat.Albedo->Bind(0);
 		mainPlayer.Get<MorphRenderer>().Render(camera, transform);
 
+		animShader->SetUniform("s_Diffuse", 1);
+		doorMat.Albedo->Bind(1);
+		doorEnt.Get<MorphRenderer>().Render(camera, transformDoor);
+		doorMat.Albedo->Unbind(1);
+
 		untexturedShader->Bind();
 		//Floor (no texture for now)
 		floorEnt.Get<MeshRenderer>().Render(camera, transformGround);
@@ -377,6 +492,32 @@ void Level5::Update(float dt)
 		wireEnt5.Get<MeshRenderer>().Render(camera, transformWire5);
 		wireEnt6.Get<MeshRenderer>().Render(camera, transformWire6);
 		wireEnt7.Get<MeshRenderer>().Render(camera, transformWire7);
+
+		//Vents
+		shader->SetUniform("s_Diffuse", 1);
+		ventMat.Albedo->Bind(1);
+		ventEnt.Get<MeshRenderer>().Render(camera, transformVent);
+		ventEnt2.Get<MeshRenderer>().Render(camera, transformVent2);
+
+		//Gates
+		//And-Gate
+		shader->SetUniform("s_Diffuse", 2);
+		andMat.Albedo->Bind(2);
+		andEnt.Get<MeshRenderer>().Render(camera, transformGate);
+
+		//Or-Gate
+		shader->SetUniform("s_Diffuse", 3);
+		orMat.Albedo->Bind(3);
+		orEnt.Get<MeshRenderer>().Render(camera, transformOr);
+		orEnt2.Get<MeshRenderer>().Render(camera, transformOr2);
+
+		//Buttons
+		shader->SetUniform("s_Diffuse", 4);
+		buttonMat.Albedo->Bind(4);
+		buttonEnt.Get<MeshRenderer>().Render(camera, transformButton);
+		buttonEnt2.Get<MeshRenderer>().Render(camera, transformButton2);
+		buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3);
+		buttonEnt4.Get<MeshRenderer>().Render(camera, transformButton4);
 	}
 	else
 	{
@@ -384,6 +525,11 @@ void Level5::Update(float dt)
 		animShader->SetUniform("s_Diffuse", 0);
 		clearMat.Albedo->Bind(0);
 		mainPlayer.Get<MorphRenderer>().Render(camera, transform);
+
+		animShader->SetUniform("s_Diffuse", 1);
+		clearMat.Albedo->Bind(1);
+		doorEnt.Get<MorphRenderer>().Render(camera, transformDoor);
+		clearMat.Albedo->Unbind(1);
 
 		untexturedShader->Bind();
 		floorEnt.Get<MeshRenderer>().Render(camera, transformGround);
@@ -410,6 +556,15 @@ void Level5::Update(float dt)
 		wireEnt5.Get<MeshRenderer>().Render(camera, transformWire5);
 		wireEnt6.Get<MeshRenderer>().Render(camera, transformWire6);
 		wireEnt7.Get<MeshRenderer>().Render(camera, transformWire7);
+		ventEnt.Get<MeshRenderer>().Render(camera, transformVent);
+		ventEnt2.Get<MeshRenderer>().Render(camera, transformVent2);
+		andEnt.Get<MeshRenderer>().Render(camera, transformGate);
+		orEnt.Get<MeshRenderer>().Render(camera, transformOr);
+		orEnt2.Get<MeshRenderer>().Render(camera, transformOr2);
+		buttonEnt.Get<MeshRenderer>().Render(camera, transformButton);
+		buttonEnt2.Get<MeshRenderer>().Render(camera, transformButton2);
+		buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3);
+		buttonEnt4.Get<MeshRenderer>().Render(camera, transformButton4);
 	}
 #pragma endregion
 

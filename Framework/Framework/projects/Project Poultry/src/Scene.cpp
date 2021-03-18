@@ -204,6 +204,7 @@ void Scene::InitMeshes()
 	retry = ModelManager::FindMesh(pauseButtonFile);
 	and = ModelManager::FindMesh(andFile);
 	not = ModelManager::FindMesh(notFile);
+	orMesh = ModelManager::FindMesh(orFile);
 	buttonM = ModelManager::FindMesh(buttonFile);
 	coil = ModelManager::FindMesh(coilFile);
 	boxM = ModelManager::FindMesh(boxFile);
