@@ -689,7 +689,7 @@ void Level1::Update(float dt)
 #pragma endregion
 
 	GetCursorPos(&mousePos);
-
+	
 	ScreenToClient(hWnd, &mousePos);
 
 	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 323 && mousePos.y < 476 && mousePos.x > 575 && mousePos.x < 730)
@@ -701,11 +701,21 @@ void Level1::Update(float dt)
 
 	if (lightNum < 1 || lightNum > 5)
 		lightNum = 1;
-
+	
 	untexturedShader->SetUniform("u_LightNum", lightNum);
 	shader->SetUniform("u_LightNum", lightNum);
 	pauseShader->SetUniform("u_LightNum", lightNum);
 	animShader->SetUniform("u_LightNum", lightNum);
+
+	if (lightOn)
+		lightInt = 1;
+	else
+		lightInt = 0;
+
+	untexturedShader->SetUniform("u_LightOn", lightInt);
+	shader->SetUniform("u_LightOn", lightInt);
+	pauseShader->SetUniform("u_LightOn", lightInt);
+	animShader->SetUniform("u_LightOn", lightInt);
 
 	//Post-Effect Stuff
 	auto basicEffect = &FBO.Get<PostEffect>();

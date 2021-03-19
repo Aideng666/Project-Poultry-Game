@@ -74,6 +74,7 @@ int main()
 
 	int activeEffect = 0;
 	bool isTextured = true;
+	bool isLit = true;
 
 	//ImGui Stuff
 	Application::imGuiCallbacks.push_back([&]() {
@@ -83,6 +84,11 @@ int main()
 		if (ImGui::Checkbox("Texture Toggle", &isTextured))
 		{
 			currentScene->SetTextured(isTextured);
+		}
+
+		if (ImGui::Checkbox("Light Toggle", &isLit))
+		{
+			currentScene->SetLightOn(isLit);
 		}
 
 		if (ImGui::CollapsingHeader("Effect Controls"))

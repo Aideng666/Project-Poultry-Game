@@ -697,6 +697,16 @@ void Level2::Update(float dt)
 	pauseShader->SetUniform("u_LightNum", lightNum);
 	untexturedShader->SetUniform("u_LightNum", lightNum);
 
+	if (lightOn)
+		lightInt = 1;
+	else
+		lightInt = 0;
+
+	untexturedShader->SetUniform("u_LightOn", lightInt);
+	shader->SetUniform("u_LightOn", lightInt);
+	pauseShader->SetUniform("u_LightOn", lightInt);
+	animShader->SetUniform("u_LightOn", lightInt);
+
 	//Post-Effect stuff
 	auto basicEffect = &FBO.Get<PostEffect>();
 	auto shadowBuffer = &shadowBufferEnt.Get<Framebuffer>();
