@@ -310,8 +310,8 @@ protected:
 	DirectionalLight theSun;
 	UniformBuffer directionalLightBuffer;
 
-	int shadowWidth = 1024;
-	int shadowHeight = 1024;
+	int shadowWidth = 2048;
+	int shadowHeight = 2048;
 
 	std::vector<Entity*> entList;
 };

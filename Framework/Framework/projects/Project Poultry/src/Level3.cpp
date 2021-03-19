@@ -748,6 +748,15 @@ void Level3::Update(float dt)
 	}
 #pragma endregion
 
+	GetCursorPos(&mousePos);
+
+	ScreenToClient(hWnd, &mousePos);
+
+	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 323 && mousePos.y < 476 && mousePos.x > 575 && mousePos.x < 730)
+	{
+		glfwSetWindowShouldClose(window, true);
+	}
+
 	lightNum = Input::ChangeLighting(window, lightNum);
 
 	if (lightNum < 1 || lightNum > 5)

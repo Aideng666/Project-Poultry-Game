@@ -80,6 +80,7 @@ namespace freebird
 		glDebugMessageCallback(GlDebugMessage, nullptr);
 
 		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
 
 		//Default clear color to white
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);

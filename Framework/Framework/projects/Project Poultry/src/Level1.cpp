@@ -495,6 +495,12 @@ void Level1::InitScene()
 	effects.push_back(bloomEffect);
 #pragma endregion
 
+	Application::imGuiCallbacks.push_back([&]() {
+
+		ImGui::SliderFloat("Y", &theSun._lightDirection.y, -3.0f, 3.0f);
+		ImGui::SliderFloat("Z", &theSun._lightDirection.z, -3.0f, 3.0f);
+
+		});
 }
 
 void Level1::Update(float dt)
@@ -531,10 +537,11 @@ void Level1::Update(float dt)
 	auto& buttonTrans = buttonEnt.Get<Transform>();
 	auto& buttonTrans2 = buttonEnt2.Get<Transform>();
 
-	//floorEnt.Get<Transform>().SetPositionY(-0.9f);
+	floorEnt.Get<Transform>().SetRotationX(180.0f);
 
 	backEnt.Get<Transform>().SetPositionZ(-39.0f);
 	backEnt.Get<Transform>().SetPositionY(9.0f);
+	backEnt.Get<Transform>().SetRotationY(180.0f);
 	
 	leftEnt.Get<Transform>().SetPositionX(-39.0f);
 	leftEnt.Get<Transform>().SetRotationY(90.0f);
@@ -717,7 +724,7 @@ void Level1::Update(float dt)
 		effects[i]->Clear();
 	}
 
-	glm::mat4 LightProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 1000.0f);
+	glm::mat4 LightProjectionMatrix = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, -1000.0f, 1000.0f);
 	glm::mat4 LightViewMatrix = glm::lookAt(glm::vec3(-theSun._lightDirection), glm::vec3(), glm::vec3(0.0f, 0.0f, 1.0f));
 	glm::mat4 LightSpaceViewProjection = LightProjectionMatrix * LightViewMatrix;
 
@@ -728,17 +735,28 @@ void Level1::Update(float dt)
 	{
 		if (i < 3)
 		{
+			//glCullFace(GL_FRONT);
 			simpleDepthShader->Bind();
-			entList[i]->Get<MorphRenderer>().Render(camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
+			entList[i]->Get<MorphRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
 			simpleDepthShader->UnBind();
+			//glCullFace(GL_BACK);
 		}
 		else
 		{
+			//glCullFace(GL_FRONT);
 			simpleDepthShader->Bind();
-			entList[i]->Get<MeshRenderer>().Render(camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
+			entList[i]->Get<MeshRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
 			simpleDepthShader->UnBind();
+			//glCullFace(GL_BACK);
 		}
 	}
+
+	/*simpleDepthShader->Bind();
+	leftEnt.Get<MeshRenderer>().Render(simpleDepthShader, camera, transformLeft, LightSpaceViewProjection);
+	rightEnt.Get<MeshRenderer>().Render(simpleDepthShader, camera, transformRight, LightSpaceViewProjection);
+	backEnt.Get<MeshRenderer>().Render(simpleDepthShader, camera, transformBack, LightSpaceViewProjection);
+	simpleDepthShader->UnBind();*/
+
 
 	shadowBuffer->Unbind();
 
