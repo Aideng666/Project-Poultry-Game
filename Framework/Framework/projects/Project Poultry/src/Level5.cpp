@@ -46,6 +46,8 @@ Level5::Level5(std::string sceneName, GLFWwindow* wind)
 	buttonEnt3 = Entity::Create();
 	buttonEnt4 = Entity::Create();
 
+	coilEnt = Entity::Create();
+
 	pauseEnt = Entity::Create();
 	optionEnt = Entity::Create();
 	exitEnt = Entity::Create();
@@ -139,27 +141,33 @@ void Level5::InitScene()
 
 	//Or Gate
 	auto& orTrans = orEnt.Add<Transform>();
-	orTrans.SetPosition(glm::vec3(0.f, 1.f, 10.f));
+	orTrans.SetPosition(glm::vec3(-21.f, 1.f, 14.9f));
 	orTrans.SetRotationY(-90.f);
 	orTrans.SetScale(glm::vec3(2.0f));
 
 	auto& orTrans2 = orEnt2.Add<Transform>();
-	orTrans2.SetPosition(glm::vec3(0.f, 1.f, 20.f));
+	orTrans2.SetPosition(glm::vec3(17.2f, 1.f, 14.7f));
 	orTrans2.SetRotationY(-90.f);
 	orTrans2.SetScale(glm::vec3(2.0f));
 
 	//Button transforms
 	auto& buttonTrans = buttonEnt.Add<Transform>();
-	buttonTrans.SetPosition(glm::vec3(27.5f, -1.0f, 38.5f));
+	buttonTrans.SetPosition(glm::vec3(27.7f, -1.0f, 39.4f));
 
 	auto& buttonTrans2 = buttonEnt2.Add<Transform>();
-	buttonTrans2.SetPosition(glm::vec3(3.5f, -1.0f, 35.f));
+	buttonTrans2.SetPosition(glm::vec3(6.5f, -1.0f, 39.5f));
 
 	auto& buttonTrans3 = buttonEnt3.Add<Transform>();
-	buttonTrans3.SetPosition(glm::vec3(-5.f, -1.0f, 35.f));
+	buttonTrans3.SetPosition(glm::vec3(-10.4f, -1.0f, 39.5f));
 
 	auto& buttonTrans4 = buttonEnt4.Add<Transform>();
-	buttonTrans4.SetPosition(glm::vec3(-20.2f, -1.0f, 35.5f));
+	buttonTrans4.SetPosition(glm::vec3(-31.6f, -1.0f, 39.5f));
+
+	//Coil Object
+	auto& coilTrans = coilEnt.Add<Transform>();
+	coilTrans.SetPosition(glm::vec3(-16.0f, 1.0f, -48.f));
+	coilTrans.SetScale(glm::vec3(3.0f));
+	coilTrans.SetRotationY(180.0f);
 
 	//Pause UI
 	auto& pauseTrans = pauseEnt.Add<Transform>();
@@ -245,6 +253,8 @@ void Level5::InitScene()
 	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
 	auto& buttonMesh3 = buttonEnt3.Add<MeshRenderer>(buttonEnt3, *buttonM, shader);
 	auto& buttonMesh4 = buttonEnt4.Add<MeshRenderer>(buttonEnt4, *buttonM, shader);
+
+	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -361,6 +371,8 @@ void Level5::Update(float dt)
 	glm::mat4 transformButton2 = buttonTrans2.GetModelMatrix();
 	glm::mat4 transformButton3 = buttonTrans3.GetModelMatrix();
 	glm::mat4 transformButton4 = buttonTrans4.GetModelMatrix();
+
+	glm::mat4 transformCoil = coilEnt.Get<Transform>().GetModelMatrix();
 
 	glm::mat4 transformPause = pauseEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformOptions = optionEnt.Get<Transform>().GetModelMatrix();
@@ -518,6 +530,11 @@ void Level5::Update(float dt)
 		buttonEnt2.Get<MeshRenderer>().Render(camera, transformButton2);
 		buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3);
 		buttonEnt4.Get<MeshRenderer>().Render(camera, transformButton4);
+
+		//Tesla Coil (remember to add the other texture)
+		shader->SetUniform("s_Diffuse", 5);
+		coilMatOff.Albedo->Bind(5);
+		coilEnt.Get<MeshRenderer>().Render(camera, transformCoil);
 	}
 	else
 	{
@@ -565,6 +582,8 @@ void Level5::Update(float dt)
 		buttonEnt2.Get<MeshRenderer>().Render(camera, transformButton2);
 		buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3);
 		buttonEnt4.Get<MeshRenderer>().Render(camera, transformButton4);
+		coilEnt.Get<MeshRenderer>().Render(camera, transformCoil);
+
 	}
 #pragma endregion
 
