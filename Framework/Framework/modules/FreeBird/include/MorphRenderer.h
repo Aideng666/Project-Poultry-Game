@@ -29,6 +29,8 @@ namespace freebird
 		void UpdateData(Mesh& frame0, Mesh& frame1, float t);
 		virtual void Render(Camera& camera, glm::mat4 transform, glm::mat4& lightSpaceMatrix = glm::mat4());
 
+		virtual void Render(Shader::sptr& shader, Camera& camera, glm::mat4 transform, glm::mat4& lightSpaceMatrix = glm::mat4());
+
 	protected:
 
 		Mesh* frame0, frame1;

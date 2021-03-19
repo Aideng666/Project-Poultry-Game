@@ -12,6 +12,20 @@
 #include <stb_image.h>
 #include <MorphAnimation.h>
 
+
+#define MOUSEEVENTF_MOVE = 0x0001
+#define MOUSEEVENTF_LEFTDOWN = 0x0002
+#define MOUSEEVENTF_LEFTUP = 0x0004
+#define MOUSEEVENTF_RIGHTDOWN = 0x0008
+#define MOUSEEVENTF_RIGHTUP = 0x0010
+#define MOUSEEVENTF_MIDDLEDOWN = 0x0020
+#define MOUSEEVENTF_MIDDLEUP = 0x0040
+#define MOUSEEVENTF_XDOWN = 0x0080
+#define MOUSEEVENTF_XUP = 0x0100
+#define MOUSEEVENTF_WHEEL = 0x0800
+#define MOUSEEVENTF_VIRTUALDESK = 0x4000
+#define MOUSEEVENTF_ABSOLUTE = 0x8000
+
 using namespace freebird;
 
 Level1::Level1(std::string sceneName, GLFWwindow* wind)
@@ -68,6 +82,8 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 #pragma endregion
 
 	InitMeshes();
+
+	//hWnd = glfwGetWin32Window(window);
 }
 
 void Level1::InitScene()
@@ -367,7 +383,7 @@ void Level1::InitScene()
 	entList.push_back(&doorCloseEnt);
 	entList.push_back(&floorEnt);
 	entList.push_back(&leftEnt);
-	entList.push_back(&backEnt);
+	//entList.push_back(&backEnt);
 	entList.push_back(&rightEnt);
 	entList.push_back(&completeEnt);
 	entList.push_back(&andEnt);
@@ -389,13 +405,13 @@ void Level1::InitScene()
 	entList.push_back(&smallVentEnt2);
 	entList.push_back(&pipeEntC);
 	entList.push_back(&pipeEntS);
-	entList.push_back(&tutEnt);
+	entList.push_back(&tabletEnt);
+	/*entList.push_back(&tutEnt);
 	entList.push_back(&pauseEnt);
 	entList.push_back(&optionEnt);
 	entList.push_back(&retryEnt);
 	entList.push_back(&exitEnt);
-	entList.push_back(&tabletEnt);
-	entList.push_back(&tabletScreenEnt);
+	entList.push_back(&tabletScreenEnt);*/
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -479,6 +495,12 @@ void Level1::InitScene()
 	effects.push_back(bloomEffect);
 #pragma endregion
 
+	Application::imGuiCallbacks.push_back([&]() {
+
+		ImGui::SliderFloat("Y", &theSun._lightDirection.y, -3.0f, 3.0f);
+		ImGui::SliderFloat("Z", &theSun._lightDirection.z, -3.0f, 3.0f);
+
+		});
 }
 
 void Level1::Update(float dt)
@@ -514,8 +536,6 @@ void Level1::Update(float dt)
 	auto& playerTrans = mainPlayer.Get<Transform>();
 	auto& buttonTrans = buttonEnt.Get<Transform>();
 	auto& buttonTrans2 = buttonEnt2.Get<Transform>();
-
-	//floorEnt.Get<Transform>().SetPositionY(-0.9f);
 
 	backEnt.Get<Transform>().SetPositionZ(-39.0f);
 	backEnt.Get<Transform>().SetPositionY(9.0f);
@@ -668,6 +688,15 @@ void Level1::Update(float dt)
 	}
 #pragma endregion
 
+	GetCursorPos(&mousePos);
+
+	ScreenToClient(hWnd, &mousePos);
+
+	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 323 && mousePos.y < 476 && mousePos.x > 575 && mousePos.x < 730)
+	{
+		glfwSetWindowShouldClose(window, true);
+	}
+
 	lightNum = Input::ChangeLighting(window, lightNum);
 
 	if (lightNum < 1 || lightNum > 5)
@@ -692,7 +721,7 @@ void Level1::Update(float dt)
 		effects[i]->Clear();
 	}
 
-	glm::mat4 LightProjectionMatrix = glm::ortho(-20.0f, 20.0f, -20.0f, 20.0f, -30.0f, 30.0f);
+	glm::mat4 LightProjectionMatrix = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, -1000.0f, 1000.0f);
 	glm::mat4 LightViewMatrix = glm::lookAt(glm::vec3(-theSun._lightDirection), glm::vec3(), glm::vec3(0.0f, 0.0f, 1.0f));
 	glm::mat4 LightSpaceViewProjection = LightProjectionMatrix * LightViewMatrix;
 
@@ -704,13 +733,13 @@ void Level1::Update(float dt)
 		if (i < 3)
 		{
 			simpleDepthShader->Bind();
-			entList[i]->Get<MorphRenderer>().Render(camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
+			entList[i]->Get<MorphRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
 			simpleDepthShader->UnBind();
 		}
 		else
 		{
 			simpleDepthShader->Bind();
-			entList[i]->Get<MeshRenderer>().Render(camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
+			entList[i]->Get<MeshRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
 			simpleDepthShader->UnBind();
 		}
 	}

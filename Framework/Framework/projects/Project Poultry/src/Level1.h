@@ -89,10 +89,11 @@ private:
 		tabletOpen = !tabletOpen;
 
 		if (tabletOpen)
-			lightNum = 2;
+			lightNum = 5;
 		else
 			lightNum = 5;
 		});
 
-
+	//POINT mousePos;
+	//HWND hWnd = glfwGetWin32Window(window);
 };

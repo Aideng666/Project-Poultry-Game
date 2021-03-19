@@ -8,6 +8,8 @@ Scene::Scene(std::string sceneName, GLFWwindow* wind)
 {
 	name = sceneName;
 	window = wind;
+
+	hWnd = glfwGetWin32Window(window);
 }
 
 void Scene::InitScene()
@@ -111,20 +113,24 @@ void Scene::InitShaders()
 	glm::vec3 ambientCol = glm::vec3(1.0f);
 	float     ambientPow = 0.1f;
 	float     shininess = 16.0f;
+	float     lightLinearFalloff = 0.09f;
+	float     lightQuadraticFalloff = 0.032f;
+
+
 
 	//Basic shader
 	shader = Shader::Create();
 	shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
 	shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	shader->Link();
-	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
+	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess, lightLinearFalloff, lightQuadraticFalloff);
 
 	//For any objects with animations
 	animShader = Shader::Create();
 	animShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
 	animShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	animShader->Link();
-	SetShaderValues(animShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
+	SetShaderValues(animShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess, lightLinearFalloff, lightQuadraticFalloff);
 
 	//Particle shader
 	particleShader = Shader::Create();
@@ -138,20 +144,20 @@ void Scene::InitShaders()
 	untexturedShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
 	untexturedShader->LoadShaderPartFromFile("Shaders/frag_untextured.glsl", GL_FRAGMENT_SHADER);
 	untexturedShader->Link();
-	SetShaderValues(untexturedShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
+	SetShaderValues(untexturedShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess, lightLinearFalloff, lightQuadraticFalloff);
 
 	//Pause UI Shader
 	pauseShader = Shader::Create();
 	pauseShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
 	pauseShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
 	pauseShader->Link();
-	SetShaderValues(pauseShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess);
+	SetShaderValues(pauseShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess, lightLinearFalloff, lightQuadraticFalloff);
 
 	simpleDepthShader = Shader::Create();
 	simpleDepthShader->LoadShaderPartFromFile("Shaders/simple_depth_vert.glsl", GL_VERTEX_SHADER);
 	simpleDepthShader->LoadShaderPartFromFile("Shaders/simple_depth_frag.glsl", GL_FRAGMENT_SHADER);
 	simpleDepthShader->Link();
-	SetShaderValues(simpleDepthShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess);
+	SetShaderValues(simpleDepthShader, lightPos, lightDir, lightCol, pauseAmbientPow, lightSpecularPow, ambientCol, pauseAmbientPow, shininess, lightLinearFalloff, lightQuadraticFalloff);
 
 	/*Shader::sptr gBufferShader = Shader::Create();
 	gBufferShader->LoadShaderPartFromFile("shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
@@ -284,7 +290,7 @@ bool Scene::GetLoad()
 //	vao.Render();
 //}
 
-void Scene::SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos, glm::vec3 lightDir, glm::vec3 lightCol, float lightAmbientPow, float lightSpecularPow, glm::vec3 ambientCol, float ambientPow, float shininess)
+void Scene::SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos, glm::vec3 lightDir, glm::vec3 lightCol, float lightAmbientPow, float lightSpecularPow, glm::vec3 ambientCol, float ambientPow, float shininess, float lightLinearFalloff, float lightQuadraticFalloff)
 {
 	shader->SetUniform("u_LightPos", lightPos);
 	shader->SetUniform("u_LightDir", lightDir);
@@ -295,6 +301,9 @@ void Scene::SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos, glm::vec3 
 	shader->SetUniform("u_AmbientStrength", ambientPow);
 	shader->SetUniform("u_Shininess", shininess);
 	shader->SetUniform("u_AmbientLightStrength2", 0.01f);
+	shader->SetUniform("u_LightAttenuationConstant", 1.0f);
+	shader->SetUniform("u_LightAttenuationLinear", lightLinearFalloff);
+	shader->SetUniform("u_LightAttenuationQuadratic", lightQuadraticFalloff);
 }
 
 void Scene::LoadTexImage()

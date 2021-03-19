@@ -23,6 +23,10 @@ uniform float u_Time;
 uniform vec3 u_Position;
 uniform int u_LightNum;
 
+uniform float u_LightAttenuationConstant;
+uniform float u_LightAttenuationLinear;
+uniform float u_LightAttenuationQuadratic;
+
 uniform vec3  u_CamPos;
 
 out vec4 frag_color;
@@ -230,22 +234,27 @@ void main() {
 		
 		float dif = max(dot(N, lightDir), 0.0);
 		vec3 diffuse = dif * sun._lightCol.xyz;// add diffuse intensity
-		//float dist = length(u_LightPos - inPos);
-		//diffuse = diffuse / dist; // (dist*dist)
+		float dist = length(u_LightPos - inPos);
+
+		float attenuation = 1.0f / (
+		u_LightAttenuationConstant + 
+		u_LightAttenuationLinear * dist +
+		u_LightAttenuationQuadratic * dist * dist);
+
+		diffuse = diffuse / dist; // (dist*dist)
 
 		vec3 viewDir = normalize(u_CamPos - inPos);
 		vec3 h		 = normalize(lightDir + viewDir);
 		
 		vec3 reflectDir = reflect(-lightDir, N);
 		float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Shininess);
-		//vec3 specular = u_SpecularLightStrength * spec * u_LightCol; 
 		vec3 specular = sun._lightSpecularPow * spec * sun._lightCol.xyz; // Can also use a specular color
 
 		float shadow = ShadowCalculation(inFragPosLightSpace);
 
 		vec3 result = (
 		(sun._ambientPow * sun._ambientCol.xyz) + // global ambient light
-		(1.0 - shadow) * (diffuse + specular) // light factors from our single light
+		(1.0 - shadow) * (diffuse + specular)/* * attenuation*/ // light factors from our single light
 		) * inColor * textureColor.rgb; // Object color
 
 		frag_color = vec4(result  /** inColor * textureColor.rgb*/, 1.0);

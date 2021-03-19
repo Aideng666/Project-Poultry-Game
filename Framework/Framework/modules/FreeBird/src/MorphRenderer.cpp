@@ -58,4 +58,15 @@ namespace freebird
 
 		vao->Render();
 	}
+	void MorphRenderer::Render(Shader::sptr& shader, Camera& camera, glm::mat4 transform, glm::mat4& lightSpaceMatrix)
+	{
+		shader->SetUniformMatrix("u_Model", transform);
+		shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transform));
+		shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transform);
+		shader->SetUniformMatrix("u_LightSpaceMatrix", lightSpaceMatrix);
+		shader->SetUniform("u_CamPos", camera.GetPosition());
+		shader->SetUniform("u_MorphT", this->t);
+
+		vao->Render();
+	}
 }

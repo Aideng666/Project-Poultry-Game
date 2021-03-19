@@ -27,6 +27,7 @@ namespace freebird
 
 		virtual void Render(Camera& camera, glm::mat4 transform, glm::mat4& lightSpaceMatrix = glm::mat4());
 
+		virtual void Render(Shader::sptr& shader, Camera& camera, glm::mat4 transform, glm::mat4& lightSpaceMatrix = glm::mat4());
 	protected:
 		Entity* thisEnt;
 		Material* thisMat;

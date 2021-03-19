@@ -24,8 +24,10 @@
 #include "GBuffer.h"
 #include "DirectionalLight.h"
 #include "UniformBuffer.h"
-
 #include "BloomEffect.h"
+
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include <GLFW/glfw3native.h>
 
 using namespace freebird;
 
@@ -62,7 +64,7 @@ public:
 	void SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos = glm::vec3(0.f, 0.f, 0.f), 
 		glm::vec3 lightDir = glm::vec3(0.f, 0.f, 0.f), glm::vec3 lightCol = glm::vec3(1.0f, 1.0f, 1.0f),
 		float lightAmbientPow = 0.f, float lightSpecularPow = 0.f, 
-		glm::vec3 ambientCol = glm::vec3(0.f, 0.f, 0.f), float ambientPow = 0.f, float shininess = 0.f);
+		glm::vec3 ambientCol = glm::vec3(0.f, 0.f, 0.f), float ambientPow = 0.f, float shininess = 0.f, float lightLinearFalloff = 0.0f, float lightQuadraticFalloff = 0.0f);
 
 	struct Mat
 	{
@@ -91,6 +93,8 @@ protected:
 	Shader::sptr shader, animShader, pauseShader, untexturedShader, particleShader, simpleDepthShader;
 
 	GLFWwindow* window;
+	HWND hWnd;
+	POINT mousePos;
 
 	Entity camEnt, uiCamEnt;
 
@@ -242,7 +246,7 @@ protected:
 		isPaused = !isPaused;
 
 		if (isPaused)
-			lightNum = 2;
+			lightNum = 5;
 		else
 			lightNum = 5;
 		});
@@ -306,8 +310,8 @@ protected:
 	DirectionalLight theSun;
 	UniformBuffer directionalLightBuffer;
 
-	int shadowWidth = 1024;
-	int shadowHeight = 1024;
+	int shadowWidth = 2048;
+	int shadowHeight = 2048;
 
 	std::vector<Entity*> entList;
 };
