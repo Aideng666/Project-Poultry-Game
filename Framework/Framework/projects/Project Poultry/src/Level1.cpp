@@ -383,7 +383,7 @@ void Level1::InitScene()
 	entList.push_back(&doorCloseEnt);
 	entList.push_back(&floorEnt);
 	entList.push_back(&leftEnt);
-	entList.push_back(&backEnt);
+	//entList.push_back(&backEnt);
 	entList.push_back(&rightEnt);
 	entList.push_back(&completeEnt);
 	entList.push_back(&andEnt);
@@ -405,13 +405,13 @@ void Level1::InitScene()
 	entList.push_back(&smallVentEnt2);
 	entList.push_back(&pipeEntC);
 	entList.push_back(&pipeEntS);
-	entList.push_back(&tutEnt);
+	entList.push_back(&tabletEnt);
+	/*entList.push_back(&tutEnt);
 	entList.push_back(&pauseEnt);
 	entList.push_back(&optionEnt);
 	entList.push_back(&retryEnt);
 	entList.push_back(&exitEnt);
-	entList.push_back(&tabletEnt);
-	entList.push_back(&tabletScreenEnt);
+	entList.push_back(&tabletScreenEnt);*/
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -537,11 +537,8 @@ void Level1::Update(float dt)
 	auto& buttonTrans = buttonEnt.Get<Transform>();
 	auto& buttonTrans2 = buttonEnt2.Get<Transform>();
 
-	floorEnt.Get<Transform>().SetRotationX(180.0f);
-
 	backEnt.Get<Transform>().SetPositionZ(-39.0f);
 	backEnt.Get<Transform>().SetPositionY(9.0f);
-	backEnt.Get<Transform>().SetRotationY(180.0f);
 	
 	leftEnt.Get<Transform>().SetPositionX(-39.0f);
 	leftEnt.Get<Transform>().SetRotationY(90.0f);
@@ -735,28 +732,17 @@ void Level1::Update(float dt)
 	{
 		if (i < 3)
 		{
-			//glCullFace(GL_FRONT);
 			simpleDepthShader->Bind();
 			entList[i]->Get<MorphRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
 			simpleDepthShader->UnBind();
-			//glCullFace(GL_BACK);
 		}
 		else
 		{
-			//glCullFace(GL_FRONT);
 			simpleDepthShader->Bind();
 			entList[i]->Get<MeshRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
 			simpleDepthShader->UnBind();
-			//glCullFace(GL_BACK);
 		}
 	}
-
-	/*simpleDepthShader->Bind();
-	leftEnt.Get<MeshRenderer>().Render(simpleDepthShader, camera, transformLeft, LightSpaceViewProjection);
-	rightEnt.Get<MeshRenderer>().Render(simpleDepthShader, camera, transformRight, LightSpaceViewProjection);
-	backEnt.Get<MeshRenderer>().Render(simpleDepthShader, camera, transformBack, LightSpaceViewProjection);
-	simpleDepthShader->UnBind();*/
-
 
 	shadowBuffer->Unbind();
 

@@ -12,8 +12,8 @@ namespace freebird
 		glm::vec4 _ambientCol = glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
 
 		//FLOATS
-		float _ambientPow = 0.4f;
-		float _lightAmbientPow = 0.45f;
+		float _ambientPow = 0.6f;
+		float _lightAmbientPow = 0.55f;
 		float _lightSpecularPow = 1.0f;
 
 		float _shadowBias = 0.0001;
