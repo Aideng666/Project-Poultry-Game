@@ -48,6 +48,11 @@ Level5::Level5(std::string sceneName, GLFWwindow* wind)
 
 	coilEnt = Entity::Create();
 
+	shelfPipeEnt = Entity::Create();
+	shelfPipeEnt2 = Entity::Create();
+	shelfPipeEnt3 = Entity::Create();
+	shelfPipeEnt4 = Entity::Create();
+
 	pauseEnt = Entity::Create();
 	optionEnt = Entity::Create();
 	exitEnt = Entity::Create();
@@ -82,7 +87,7 @@ void Level5::InitScene()
 #pragma region Transforms
 	//Player transform
 	auto& playerTrans = mainPlayer.Add<Transform>();
-	playerTrans.SetPosition(glm::vec3(0.0f, 1.1f, 42.0f));
+	playerTrans.SetPosition(glm::vec3(0.0f, 1.1f, 43.0f));
 	playerTrans.SetRotationY(180.0f);
 
 	//Floor transform
@@ -168,6 +173,27 @@ void Level5::InitScene()
 	coilTrans.SetPosition(glm::vec3(-16.0f, 1.0f, -48.f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 	coilTrans.SetRotationY(180.0f);
+
+	//Shelf Pipe transforms
+	auto& shelfPipeTrans = shelfPipeEnt.Add<Transform>();
+	shelfPipeTrans.SetPosition(glm::vec3(46.5f, 17.f, 15.f));
+	shelfPipeTrans.SetRotationY(180.f);
+	shelfPipeTrans.SetScale(glm::vec3(1.5f));
+
+	auto& shelfPipeTrans2 = shelfPipeEnt2.Add<Transform>();
+	shelfPipeTrans2.SetPosition(glm::vec3(-46.5f, 17.f, 15.f));
+	shelfPipeTrans2.SetRotationY(180.f);
+	shelfPipeTrans2.SetScale(glm::vec3(1.5f));
+
+	auto& shelfPipeTrans3 = shelfPipeEnt3.Add<Transform>();
+	shelfPipeTrans3.SetPosition(glm::vec3(46.5f, 17.f, -30.f));
+	shelfPipeTrans3.SetRotationY(180.f);
+	shelfPipeTrans3.SetScale(glm::vec3(1.5f));
+
+	auto& shelfPipeTrans4 = shelfPipeEnt4.Add<Transform>();
+	shelfPipeTrans4.SetPosition(glm::vec3(-46.5f, 17.f, -30.f));
+	shelfPipeTrans4.SetRotationY(180.f);
+	shelfPipeTrans4.SetScale(glm::vec3(1.5f));
 
 	//Pause UI
 	auto& pauseTrans = pauseEnt.Add<Transform>();
@@ -255,6 +281,11 @@ void Level5::InitScene()
 	auto& buttonMesh4 = buttonEnt4.Add<MeshRenderer>(buttonEnt4, *buttonM, shader);
 
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
+
+	auto& shelfPipeMesh = shelfPipeEnt.Add<MeshRenderer>(shelfPipeEnt, *shelfPipe, shader);
+	auto& shelfPipeMesh2 = shelfPipeEnt2.Add<MeshRenderer>(shelfPipeEnt2, *shelfPipe, shader);
+	auto& shelfPipeMesh3 = shelfPipeEnt3.Add<MeshRenderer>(shelfPipeEnt3, *shelfPipe, shader);
+	auto& shelfPipeMesh4 = shelfPipeEnt4.Add<MeshRenderer>(shelfPipeEnt4, *shelfPipe, shader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -373,6 +404,12 @@ void Level5::Update(float dt)
 	glm::mat4 transformButton4 = buttonTrans4.GetModelMatrix();
 
 	glm::mat4 transformCoil = coilEnt.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformShelfPipe = shelfPipeEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformShelfPipe2 = shelfPipeEnt2.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformShelfPipe3 = shelfPipeEnt3.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformShelfPipe4 = shelfPipeEnt4.Get<Transform>().GetModelMatrix();
+
 
 	glm::mat4 transformPause = pauseEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformOptions = optionEnt.Get<Transform>().GetModelMatrix();
@@ -535,6 +572,14 @@ void Level5::Update(float dt)
 		shader->SetUniform("s_Diffuse", 5);
 		coilMatOff.Albedo->Bind(5);
 		coilEnt.Get<MeshRenderer>().Render(camera, transformCoil);
+
+		//Shelf Pipes
+		shader->SetUniform("s_Diffuse", 6);
+		shelfPipeMat.Albedo->Bind(6);
+		shelfPipeEnt.Get<MeshRenderer>().Render(camera, transformShelfPipe);
+		shelfPipeEnt2.Get<MeshRenderer>().Render(camera, transformShelfPipe2);
+		shelfPipeEnt3.Get<MeshRenderer>().Render(camera, transformShelfPipe3);
+		shelfPipeEnt4.Get<MeshRenderer>().Render(camera, transformShelfPipe4);
 	}
 	else
 	{
@@ -583,7 +628,10 @@ void Level5::Update(float dt)
 		buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3);
 		buttonEnt4.Get<MeshRenderer>().Render(camera, transformButton4);
 		coilEnt.Get<MeshRenderer>().Render(camera, transformCoil);
-
+		shelfPipeEnt.Get<MeshRenderer>().Render(camera, transformShelfPipe);
+		shelfPipeEnt2.Get<MeshRenderer>().Render(camera, transformShelfPipe2);
+		shelfPipeEnt3.Get<MeshRenderer>().Render(camera, transformShelfPipe3);
+		shelfPipeEnt4.Get<MeshRenderer>().Render(camera, transformShelfPipe4);
 	}
 #pragma endregion
 

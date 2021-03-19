@@ -39,6 +39,8 @@ private:
 	Entity buttonEnt, buttonEnt2, buttonEnt3, buttonEnt4;
 	//Coil
 	Entity coilEnt;
+	//Shelf Pipe
+	Entity shelfPipeEnt, shelfPipeEnt2, shelfPipeEnt3, shelfPipeEnt4;
 
 	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
 		isPaused = !isPaused;
