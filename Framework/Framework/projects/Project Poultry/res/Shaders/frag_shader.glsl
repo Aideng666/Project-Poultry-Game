@@ -29,6 +29,8 @@ uniform float u_LightAttenuationQuadratic;
 
 uniform vec3  u_CamPos;
 
+uniform int u_LightOn;
+
 out vec4 frag_color;
 
 
@@ -158,106 +160,48 @@ void main() {
 
 	float strength  = max(min(((2 * cos(u_Time * radians(180.0f))) + (4 * sin((u_Time * radians(180.0f)) / 4)) + (3 *cos(u_Time * radians(180.0f) * 3))) + (4 * sin(u_Time * radians(180.0f) * 3)), 1), 0);
 
-	vec3 result;
+	vec3 lightDir = normalize(-sun._lightDirection.xyz);
 
-	//float shadow = ShadowCalculation(inFragPosLightSpace);
+	vec3 ambient = ((u_AmbientLightStrength * u_LightCol) + (u_AmbientCol * u_AmbientStrength));
 
-	switch (u_LightNum)
+	vec3 N = normalize(inNormal);
+
+	
+	float dif = max(dot(N, lightDir), 0.0);
+	vec3 diffuse = dif * sun._lightCol.xyz;// add diffuse intensity
+	float dist = length(u_LightPos - inPos);
+
+	float attenuation = 1.0f / (
+	u_LightAttenuationConstant + 
+	u_LightAttenuationLinear * dist +
+	u_LightAttenuationQuadratic * dist * dist);
+
+	diffuse = diffuse / dist; // (dist*dist)
+
+	vec3 viewDir = normalize(u_CamPos - inPos);
+	vec3 h		 = normalize(lightDir + viewDir);
+	
+	vec3 reflectDir = reflect(-lightDir, N);
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Shininess);
+	vec3 specular = sun._lightSpecularPow * spec * sun._lightCol.xyz; // Can also use a specular color
+
+	float shadow = ShadowCalculation(inFragPosLightSpace);
+
+	vec3 result = (
+	(sun._ambientPow * sun._ambientCol.xyz) + // global ambient light
+	(1.0 - shadow) * (diffuse + specular)/* * attenuation*/ // light factors from our single light
+	) * inColor * textureColor.rgb; // Object color
+
+
+	switch (u_LightOn)
 	{
-
-	case 1:
-		frag_color = vec4(inColor * textureColor.rgb, 1.0);
-		break;
-
-	case 2:
-		//vec3 ambient = ((u_AmbientLightStrength * u_LightCol) + (u_AmbientCol * u_AmbientStrength));
-		//frag_color = vec4(ambient * inColor * textureColor.rgb, 1.0);
-		break;
-
-	case 3:
-//		vec3 lightDir = normalize(u_LightPos - inPos);
-//		vec3 N = normalize(inNormal);
-//
-//		vec3 viewDir = normalize(u_CamPos - inPos);
-//		vec3 h		 = normalize(lightDir + viewDir);
-//		
-//		vec3 reflectDir = reflect(-lightDir, N);
-//		float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Shininess);
-//		vec3 specular = u_SpecularLightStrength * spec * u_LightCol; 
-
-		//frag_color = vec4(specular * inColor * textureColor.rgb, 1.0);
-		break;
-
-	case 4:
-		//result = CreateDirectionLight(u_LightPos, u_SpecularLightStrength);
-
-//		vec3 lightDir = normalize(u_LightPos - inPos);
-//
-//		vec3 ambient = ((u_AmbientLightStrength * u_LightCol) + (u_AmbientCol * u_AmbientStrength));
-//
-//		vec3 N = normalize(inNormal);
-//
-//		
-//		float dif = max(dot(N, lightDir), 0.0);
-//		vec3 diffuse = dif * u_LightCol;// add diffuse intensity
-//		float dist = length(u_LightPos - inPos);
-//		diffuse = diffuse / dist; // (dist*dist)
-//
-//		vec3 viewDir = normalize(u_CamPos - inPos);
-//		vec3 h		 = normalize(lightDir + viewDir);
-//		
-//		vec3 reflectDir = reflect(-lightDir, N);
-//		float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Shininess);
-//		vec3 specular = strength * spec * u_LightCol; 
-//
-//		vec3 result = (
-//		(sun._ambientPow * sun._ambientCol.xyz) + // global ambient light
-//		(1.0 - shadow) * (diffuse + specular) // light factors from our single light
-//		) * inColor * textureColor.rgb; // Object color
-//
-//		frag_color = vec4(result  /** inColor * textureColor.rgb*/, 1.0);
-//		break;
-
-	case 5:
-//		result = CreateSpotlight(u_Position, u_LightDir, strength, cos(radians(60.0f)));
-//
-//		result += CreateDirectionLight(u_LightPos, u_SpecularLightStrength);
-//
-//		frag_color = vec4(result  * inColor * textureColor.rgb, 1.0);
-
-		vec3 lightDir = normalize(-sun._lightDirection.xyz);
-
-		vec3 ambient = ((u_AmbientLightStrength * u_LightCol) + (u_AmbientCol * u_AmbientStrength));
-
-		vec3 N = normalize(inNormal);
-
-		
-		float dif = max(dot(N, lightDir), 0.0);
-		vec3 diffuse = dif * sun._lightCol.xyz;// add diffuse intensity
-		float dist = length(u_LightPos - inPos);
-
-		float attenuation = 1.0f / (
-		u_LightAttenuationConstant + 
-		u_LightAttenuationLinear * dist +
-		u_LightAttenuationQuadratic * dist * dist);
-
-		diffuse = diffuse / dist; // (dist*dist)
-
-		vec3 viewDir = normalize(u_CamPos - inPos);
-		vec3 h		 = normalize(lightDir + viewDir);
-		
-		vec3 reflectDir = reflect(-lightDir, N);
-		float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Shininess);
-		vec3 specular = sun._lightSpecularPow * spec * sun._lightCol.xyz; // Can also use a specular color
-
-		float shadow = ShadowCalculation(inFragPosLightSpace);
-
-		vec3 result = (
-		(sun._ambientPow * sun._ambientCol.xyz) + // global ambient light
-		(1.0 - shadow) * (diffuse + specular)/* * attenuation*/ // light factors from our single light
-		) * inColor * textureColor.rgb; // Object color
-
-		frag_color = vec4(result  /** inColor * textureColor.rgb*/, 1.0);
-		break;
+		case 1:
+			frag_color = vec4(result, 1.0);
+			break;
+				
+		case 0:
+			frag_color = vec4(inColor * textureColor.rgb, 1.0);
+			break;
 	}
+
 }

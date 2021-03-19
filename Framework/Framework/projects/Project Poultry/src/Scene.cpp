@@ -352,3 +352,13 @@ void Scene::SetActiveEffect(int activeEffect)
 {
 	this->activeEffect = activeEffect;
 }
+
+bool Scene::GetLightOn()
+{
+	return lightOn;
+}
+
+void Scene::SetLightOn(bool isOn)
+{
+	lightOn = isOn;
+}

@@ -85,6 +85,9 @@ public:
 	int GetActiveEffect();
 	void SetActiveEffect(int activeEffect);
 
+	bool GetLightOn();
+	void SetLightOn(bool isOn);
+
 protected:
 
 	entt::registry* scene = nullptr;
@@ -237,18 +240,13 @@ protected:
 	bool camLeft = false;
 	bool camRight = false;
 
-	int lightNum = 4;
+	int lightNum = 5;
 
 	std::vector<PostEffect*> effects;
 	int activeEffect = 0;
 
 	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
 		isPaused = !isPaused;
-
-		if (isPaused)
-			lightNum = 5;
-		else
-			lightNum = 5;
 		});
 
 	//FOR ANIMATIONS//
@@ -314,4 +312,7 @@ protected:
 	int shadowHeight = 2048;
 
 	std::vector<Entity*> entList;
+
+	bool lightOn = true;
+	int lightInt;
 };
