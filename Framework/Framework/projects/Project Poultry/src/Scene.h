@@ -186,6 +186,17 @@ protected:
 	Mesh* wireM6L5;
 	Mesh* wireM7L5;
 
+	//Level 6 Meshes
+	Mesh* wireM1L6;
+	Mesh* wireM2L6;
+	Mesh* wireM3L6;
+	Mesh* wireM4L6;
+	Mesh* wireM5L6;
+	Mesh* wireM6L6;
+	Mesh* wireM7L6;
+	Mesh* wireM8L6;
+	Mesh* wireM9L6;
+
 	//Files for multiple levels
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
 	std::string floorFile = "Models/Floor.obj";
@@ -266,6 +277,17 @@ protected:
 	std::string wire5L5File = "Models/Level5Wire5.obj";
 	std::string wire6L5File = "Models/Level5Wire6.obj";
 	std::string wire7L5File = "Models/Level5Wire7.obj";
+
+	//Level 6 files
+	std::string wire1L6File = "Models/Level6Wire1.obj";
+	std::string wire2L6File = "Models/Level6Wire2.obj";
+	std::string wire3L6File = "Models/Level6Wire3.obj";
+	std::string wire4L6File = "Models/Level6Wire4.obj";
+	std::string wire5L6File = "Models/Level6Wire5.obj";
+	std::string wire6L6File = "Models/Level6Wire6.obj";
+	std::string wire7L6File = "Models/Level6Wire7.obj";
+	std::string wire8L6File = "Models/Level6Wire8.obj";
+	std::string wire9L6File = "Models/Level6Wire9.obj";
 
 	std::vector<std::function<void()>> imGuiCallbacks;
 

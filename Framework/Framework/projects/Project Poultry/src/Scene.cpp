@@ -274,6 +274,17 @@ void Scene::InitMeshes()
 	wireM5L5 = ModelManager::FindMesh(wire5L5File);
 	wireM6L5 = ModelManager::FindMesh(wire6L5File);
 	wireM7L5 = ModelManager::FindMesh(wire7L5File);
+
+	//Level6
+	wireM1L6 = ModelManager::FindMesh(wire1L6File);
+	wireM2L6 = ModelManager::FindMesh(wire2L6File);
+	wireM3L6 = ModelManager::FindMesh(wire3L6File);
+	wireM4L6 = ModelManager::FindMesh(wire4L6File);
+	wireM5L6 = ModelManager::FindMesh(wire5L6File);
+	wireM6L6 = ModelManager::FindMesh(wire6L6File);
+	wireM7L6 = ModelManager::FindMesh(wire7L6File);
+	wireM8L6 = ModelManager::FindMesh(wire8L6File);
+	wireM9L6 = ModelManager::FindMesh(wire9L6File);
 }
 
 bool Scene::GetComplete()
