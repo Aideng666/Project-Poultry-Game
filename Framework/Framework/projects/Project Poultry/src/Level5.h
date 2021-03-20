@@ -43,6 +43,10 @@ private:
 	Entity shelfPipeEnt, shelfPipeEnt2, shelfPipeEnt3, shelfPipeEnt4;
 	//Column Pipe
 	Entity columnPipeEnt, columnPipeEnt2;
+	//Pipes
+	Entity pipeEntC, pipeEntC2, pipeEntS, pipeEntS2;
+	//Panel
+	Entity panelEnt;
 
 	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
 		isPaused = !isPaused;

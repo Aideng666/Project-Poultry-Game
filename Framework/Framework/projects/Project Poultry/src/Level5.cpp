@@ -53,6 +53,16 @@ Level5::Level5(std::string sceneName, GLFWwindow* wind)
 	shelfPipeEnt3 = Entity::Create();
 	shelfPipeEnt4 = Entity::Create();
 
+	columnPipeEnt = Entity::Create();
+	columnPipeEnt2 = Entity::Create();
+
+	pipeEntC = Entity::Create();
+	pipeEntC2 = Entity::Create();
+	pipeEntS = Entity::Create();
+	pipeEntS2 = Entity::Create();
+
+	panelEnt = Entity::Create();
+
 	pauseEnt = Entity::Create();
 	optionEnt = Entity::Create();
 	exitEnt = Entity::Create();
@@ -87,7 +97,7 @@ void Level5::InitScene()
 #pragma region Transforms
 	//Player transform
 	auto& playerTrans = mainPlayer.Add<Transform>();
-	playerTrans.SetPosition(glm::vec3(0.0f, 1.1f, 43.0f));
+	playerTrans.SetPosition(glm::vec3(0.0f, 1.1f, 43.f));
 	playerTrans.SetRotationY(180.0f);
 
 	//Floor transform
@@ -176,24 +186,55 @@ void Level5::InitScene()
 
 	//Shelf Pipe transforms
 	auto& shelfPipeTrans = shelfPipeEnt.Add<Transform>();
-	shelfPipeTrans.SetPosition(glm::vec3(46.5f, 17.f, 15.f));
+	shelfPipeTrans.SetPosition(glm::vec3(46.5f, 9.5f, 20.f));
 	shelfPipeTrans.SetRotationY(180.f);
 	shelfPipeTrans.SetScale(glm::vec3(1.5f));
 
 	auto& shelfPipeTrans2 = shelfPipeEnt2.Add<Transform>();
-	shelfPipeTrans2.SetPosition(glm::vec3(-46.5f, 17.f, 15.f));
-	shelfPipeTrans2.SetRotationY(180.f);
+	shelfPipeTrans2.SetPosition(glm::vec3(-46.5f, 9.5f, -22.f));
 	shelfPipeTrans2.SetScale(glm::vec3(1.5f));
 
 	auto& shelfPipeTrans3 = shelfPipeEnt3.Add<Transform>();
-	shelfPipeTrans3.SetPosition(glm::vec3(46.5f, 17.f, -30.f));
+	shelfPipeTrans3.SetPosition(glm::vec3(46.5f, 9.5f, -34.f));
 	shelfPipeTrans3.SetRotationY(180.f);
 	shelfPipeTrans3.SetScale(glm::vec3(1.5f));
 
 	auto& shelfPipeTrans4 = shelfPipeEnt4.Add<Transform>();
-	shelfPipeTrans4.SetPosition(glm::vec3(-46.5f, 17.f, -30.f));
-	shelfPipeTrans4.SetRotationY(180.f);
+	shelfPipeTrans4.SetPosition(glm::vec3(-46.5f, 9.5f, 34.f));
 	shelfPipeTrans4.SetScale(glm::vec3(1.5f));
+
+	//Column Pipe transforms
+	auto& colPipeTrans = columnPipeEnt.Add<Transform>();
+	colPipeTrans.SetPosition(glm::vec3(49.f, 1.f, 0.f));
+	colPipeTrans.SetScale(glm::vec3(1.5f));
+
+	auto& colPipeTrans2 = columnPipeEnt2.Add<Transform>();
+	colPipeTrans2.SetPosition(glm::vec3(-49.f, 1.f, 0.f));
+	colPipeTrans2.SetScale(glm::vec3(1.5f));
+
+	//Panel transforms
+	auto& panelTrans = panelEnt.Add<Transform>();
+	panelTrans.SetScale(glm::vec3(4.0f));
+	panelTrans.SetPosition(glm::vec3(-51.f, 2.0f, 25.f));
+
+	//Pipe transforms
+	auto& pipeTrans = pipeEntC.Add<Transform>();
+	pipeTrans.SetPosition(glm::vec3(-51.5f, 47.f, -40.f));
+	pipeTrans.SetRotationX(90.f);
+	pipeTrans.SetRotationY(90.f);
+
+	auto& pipeTrans2 = pipeEntC2.Add<Transform>();
+	pipeTrans2.SetPosition(glm::vec3(51.5f, 47.f, -40.f));
+	pipeTrans2.SetRotationX(90.f);
+	pipeTrans2.SetRotationY(-90.f);
+
+	auto& pipeTrans3 = pipeEntS.Add<Transform>();
+	pipeTrans3.SetPosition(glm::vec3(40.f, 21.5f, -40.f));
+	pipeTrans3.SetRotationX(90.f);
+
+	auto& pipeTrans4 = pipeEntS2.Add<Transform>();
+	pipeTrans4.SetPosition(glm::vec3(-40.f, 21.5f, -40.f));
+	pipeTrans4.SetRotationX(90.f);
 
 	//Pause UI
 	auto& pauseTrans = pauseEnt.Add<Transform>();
@@ -286,6 +327,16 @@ void Level5::InitScene()
 	auto& shelfPipeMesh2 = shelfPipeEnt2.Add<MeshRenderer>(shelfPipeEnt2, *shelfPipe, shader);
 	auto& shelfPipeMesh3 = shelfPipeEnt3.Add<MeshRenderer>(shelfPipeEnt3, *shelfPipe, shader);
 	auto& shelfPipeMesh4 = shelfPipeEnt4.Add<MeshRenderer>(shelfPipeEnt4, *shelfPipe, shader);
+
+	auto& colPipeMesh = columnPipeEnt.Add<MeshRenderer>(columnPipeEnt, *columnPipe, shader);
+	auto& colPipeMesh2 = columnPipeEnt2.Add<MeshRenderer>(columnPipeEnt2, *columnPipe, shader);
+
+	auto& pipeMesh = pipeEntC.Add<MeshRenderer>(pipeEntC, *pipeC, shader);
+	auto& pipeMesh2 = pipeEntC2.Add<MeshRenderer>(pipeEntC2, *pipeC, shader);
+	auto& pipeMesh3 = pipeEntS.Add<MeshRenderer>(pipeEntS, *pipeS, shader);
+	auto& pipeMesh4 = pipeEntS2.Add<MeshRenderer>(pipeEntS2, *pipeS, shader);
+
+	auto& panelMesh = panelEnt.Add<MeshRenderer>(panelEnt, *panel, shader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -410,6 +461,15 @@ void Level5::Update(float dt)
 	glm::mat4 transformShelfPipe3 = shelfPipeEnt3.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformShelfPipe4 = shelfPipeEnt4.Get<Transform>().GetModelMatrix();
 
+	glm::mat4 transformColPipe = columnPipeEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformColPipe2 = columnPipeEnt2.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformPipe = pipeEntC.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformPipe2 = pipeEntC2.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformPipe3 = pipeEntS.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformPipe4 = pipeEntS2.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformPanel = panelEnt.Get<Transform>().GetModelMatrix();
 
 	glm::mat4 transformPause = pauseEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformOptions = optionEnt.Get<Transform>().GetModelMatrix();
@@ -580,6 +640,29 @@ void Level5::Update(float dt)
 		shelfPipeEnt2.Get<MeshRenderer>().Render(camera, transformShelfPipe2);
 		shelfPipeEnt3.Get<MeshRenderer>().Render(camera, transformShelfPipe3);
 		shelfPipeEnt4.Get<MeshRenderer>().Render(camera, transformShelfPipe4);
+
+		//Column Pipes
+		shader->SetUniform("s_Diffuse", 7);
+		columnPipeMat.Albedo->Bind(7);
+		columnPipeEnt.Get<MeshRenderer>().Render(camera, transformColPipe);
+		columnPipeEnt2.Get<MeshRenderer>().Render(camera, transformColPipe2);
+
+		//Panels
+		shader->SetUniform("s_Diffuse", 8);
+		panelMat.Albedo->Bind(8);
+		panelEnt.Get<MeshRenderer>().Render(camera, transformPanel);
+
+		//Curved Pipe
+		shader->SetUniform("s_Diffuse", 9);
+		curvedPipeMat.Albedo->Bind(9);
+		pipeEntC.Get<MeshRenderer>().Render(camera, transformPipe);
+		pipeEntC2.Get<MeshRenderer>().Render(camera, transformPipe2);
+
+		//Straight Pipe
+		shader->SetUniform("s_Diffuse", 10);
+		straightPipeMat.Albedo->Bind(10);
+		pipeEntS.Get<MeshRenderer>().Render(camera, transformPipe3);
+		pipeEntS2.Get<MeshRenderer>().Render(camera, transformPipe4);
 	}
 	else
 	{
@@ -632,6 +715,13 @@ void Level5::Update(float dt)
 		shelfPipeEnt2.Get<MeshRenderer>().Render(camera, transformShelfPipe2);
 		shelfPipeEnt3.Get<MeshRenderer>().Render(camera, transformShelfPipe3);
 		shelfPipeEnt4.Get<MeshRenderer>().Render(camera, transformShelfPipe4);
+		columnPipeEnt.Get<MeshRenderer>().Render(camera, transformColPipe);
+		columnPipeEnt2.Get<MeshRenderer>().Render(camera, transformColPipe2);
+		panelEnt.Get<MeshRenderer>().Render(camera, transformPanel);
+		pipeEntC.Get<MeshRenderer>().Render(camera, transformPipe);
+		pipeEntC2.Get<MeshRenderer>().Render(camera, transformPipe2);
+		pipeEntS.Get<MeshRenderer>().Render(camera, transformPipe3);
+		pipeEntS2.Get<MeshRenderer>().Render(camera, transformPipe4);
 	}
 #pragma endregion
 
