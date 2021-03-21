@@ -16,6 +16,6 @@ namespace freebird
 		float _lightAmbientPow = 0.55f;
 		float _lightSpecularPow = 1.0f;
 
-		float _shadowBias = 0.0001;
+		float _shadowBias = 0.0002;
 	};
 }

@@ -458,6 +458,7 @@ void Level1::InitScene()
 
 	Application::imGuiCallbacks.push_back([&]() {
 
+		ImGui::SliderFloat("X", &theSun._lightDirection.x, -3.0f, 3.0f);
 		ImGui::SliderFloat("Y", &theSun._lightDirection.y, -3.0f, 3.0f);
 		ImGui::SliderFloat("Z", &theSun._lightDirection.z, -3.0f, 3.0f);
 
