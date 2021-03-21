@@ -13,6 +13,8 @@
 #include "Level2.h"
 #include "Level3.h"
 #include "Level4.h"
+#include "Level5.h"
+#include "Level6.h"
 #include "MainMenu.h"
 #include "MainMenuLevel.h"
 #include "Application.h"
@@ -230,10 +232,13 @@ int main()
 
 		if (currentScene->GetLoad())
 		{
+			//scenes.push_back(new MainMenuLevel("Main Menu Level", window));
 			scenes.push_back(new Level1("Level 1", window));
 			scenes.push_back(new Level2("Level 2", window));
 			scenes.push_back(new Level3("Level 3", window));
-			scenes.push_back(new MainMenuLevel("Main Menu Level", window));
+			scenes.push_back(new Level4("Level 4", window));
+			scenes.push_back(new Level5("Level 5", window));
+			scenes.push_back(new Level6("Level 6", window));
 
 			SetActiveScene(1);
 		}

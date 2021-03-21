@@ -7,11 +7,10 @@
 
 using namespace freebird;
 
-class Level4 : public Scene
+class Level5 : public Scene
 {
 public:
-
-	Level4(std::string sceneName, GLFWwindow* wind);
+	Level5(std::string sceneName, GLFWwindow* wind);
 
 	void InitScene();
 
@@ -26,30 +25,28 @@ private:
 	Entity floorEnt;
 	//Walls
 	Entity leftEnt, rightEnt, backEnt;
+	//Wires
+	Entity wireEnt, wireEnt2, wireEnt3, wireEnt4, wireEnt5, wireEnt6, wireEnt7;
+	//Vents
+	Entity ventEnt, ventEnt2;
 	//Door
 	Entity doorEnt;
+	//And-Gate
+	Entity andEnt;
+	//Or-Gate
+	Entity orEnt, orEnt2;
 	//Buttons
 	Entity buttonEnt, buttonEnt2, buttonEnt3, buttonEnt4;
-	//And-Gates
-	Entity andEnt, andEnt2, andEnt3;
-	//Not-Gates
-	Entity notEnt, notEnt2, notEnt3;
-	//Wires
-	Entity wireEnt, wireEnt2, wireEnt3, wireEnt4, wireEnt5, wireEnt6,
-		wireEnt7, wireEnt8, wireEnt9, wireEnt10;
-	//Panels
-	Entity panelEnt, panelEnt2;
-	//Vents 
-	Entity ventEntS, ventEntL;
-	//Boxes
-	Entity boxEnt, boxEnt2, boxEnt3, boxEnt4, boxEnt5, boxEnt6;
-	//Column Pipes
-	Entity colPipeEnt, colPipeEnt2;
-	//Shelf Pipes
-	Entity shelfPipeEnt, shelfPipeEnt2, shelfPipeEnt3;
-	//Tesla Coil
+	//Coil
 	Entity coilEnt;
-	//Complete Ent
+	//Shelf Pipe
+	Entity shelfPipeEnt, shelfPipeEnt2, shelfPipeEnt3, shelfPipeEnt4;
+	//Column Pipe
+	Entity columnPipeEnt, columnPipeEnt2;
+	//Pipes
+	Entity pipeEntC, pipeEntC2, pipeEntS, pipeEntS2;
+	//Panel
+	Entity panelEnt;
 
 	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
 		isPaused = !isPaused;
@@ -58,5 +55,5 @@ private:
 			lightNum = 2;
 		else
 			lightNum = 5;
-		});
+	});
 };
