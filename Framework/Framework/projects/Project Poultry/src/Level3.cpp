@@ -341,35 +341,7 @@ void Level3::InitScene()
 	auto& door = doorEnt.Add<Door>();
 	door.SetOpen(false);
 
-#pragma region Animation Frames
-	//Door Animations
-	doorFrames.push_back(std::unique_ptr<Mesh>(door1));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door3));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door4));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door5));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door6));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door7));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door8));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
-
-	//Walking Animations
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk2));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk3));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk4));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk5));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk6));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk7));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk8));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk9));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk10));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk11));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk12));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk13));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk14));
-#pragma endregion
+	InitAnims();
 
 
 #pragma region Mesh Loading
@@ -762,7 +734,10 @@ void Level3::Update(float dt)
 #pragma region PlayerMovement
 	if (!showLevelComplete && !isPaused)
 	{
-		Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+
+		if (isWalking)
+			mainPlayer.Get<MorphAnimation>().Update(dt);
 	}
 #pragma endregion
 

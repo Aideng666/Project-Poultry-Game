@@ -30,10 +30,15 @@ namespace freebird
 		return false;
 	}
 
-	void Input::MovePlayer(GLFWwindow* window, Entity player, Entity camEnt, float dt, bool camFar, bool camClose, bool camLeft, bool camRight)
+	bool Input::MovePlayer(GLFWwindow* window, Entity player, Entity camEnt, float dt, bool camFar, bool camClose, bool camLeft, bool camRight)
 	{
 		auto& playerTrans = player.Get<Transform>();
 		auto& camera = camEnt.Get<Camera>();
+
+		if (!glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		{
+			return false;
+		}
 
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		{
@@ -49,7 +54,7 @@ namespace freebird
 			if (camFar)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
 
-			player.Get<MorphAnimation>().Update(dt);
+			return true;
 		}
 
 		else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -66,7 +71,7 @@ namespace freebird
 			if (camClose)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
 
-			player.Get<MorphAnimation>().Update(dt);
+			return true;
 		}
 
 		else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -83,7 +88,7 @@ namespace freebird
 			if (camClose)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
 
-			player.Get<MorphAnimation>().Update(dt);
+			return true;
 		}
 
 		else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -100,7 +105,7 @@ namespace freebird
 			if (camFar)
 				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
 
-			player.Get<MorphAnimation>().Update(dt);
+			return true;
 		}
 
 		else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
@@ -114,7 +119,7 @@ namespace freebird
 				if (camRight)
 					camera.SetPosition(glm::vec3(camera.GetPosition().x - 10 * dt, camera.GetPosition().y, camera.GetPosition().z));
 
-				player.Get<MorphAnimation>().Update(dt);
+				return true;
 			}
 		}
 		else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
@@ -128,7 +133,7 @@ namespace freebird
 				if (camLeft)
 					camera.SetPosition(glm::vec3(camera.GetPosition().x + 10 * dt, camera.GetPosition().y, camera.GetPosition().z));
 
-				player.Get<MorphAnimation>().Update(dt);
+				return true;
 			}
 		}
 		else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -142,7 +147,7 @@ namespace freebird
 				if (camFar)
 					camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
 
-				player.Get<MorphAnimation>().Update(dt);
+				return true;
 			}
 		}
 		else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -156,7 +161,7 @@ namespace freebird
 				if (camClose)
 					camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
 
-				player.Get<MorphAnimation>().Update(dt);
+				return true;
 			}
 		}
 	}

@@ -195,6 +195,25 @@ void Scene::InitMeshes()
 	walk13 = ModelManager::FindMesh(walkFile13);
 	walk14 = ModelManager::FindMesh(walkFile14);
 
+	//For Idle Anims
+	idle1 = ModelManager::FindMesh(idleFile1);
+	idle2 = ModelManager::FindMesh(idleFile2);
+	idle3 = ModelManager::FindMesh(idleFile3);
+	idle4 = ModelManager::FindMesh(idleFile4);
+	idle5 = ModelManager::FindMesh(idleFile5);
+	idle6 = ModelManager::FindMesh(idleFile6);
+	idle7 = ModelManager::FindMesh(idleFile7);
+	idle8 = ModelManager::FindMesh(idleFile8);
+	idle9 = ModelManager::FindMesh(idleFile9);
+	idle10 = ModelManager::FindMesh(idleFile10);
+	idle11 = ModelManager::FindMesh(idleFile11);
+	idle12 = ModelManager::FindMesh(idleFile12);
+	idle13 = ModelManager::FindMesh(idleFile13);
+	idle14 = ModelManager::FindMesh(idleFile14);
+	idle15 = ModelManager::FindMesh(idleFile15);
+	idle16 = ModelManager::FindMesh(idleFile16);
+	idle17 = ModelManager::FindMesh(idleFile17);
+
 	//Multiple Levels
 	drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
@@ -250,6 +269,67 @@ void Scene::InitMeshes()
 	floorL3 = ModelManager::FindMesh(floorL3File);
 
 	entList.clear();
+}
+
+void Scene::InitAnims()
+{
+	//Door Animations
+	doorFrames.push_back(std::unique_ptr<Mesh>(door1));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door3));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door4));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door5));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door6));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door7));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door8));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
+
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door10));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door9));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door8));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door7));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door6));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door5));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door4));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door3));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door2));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door1));
+
+	//Walking Animations
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk2));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk3));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk4));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk5));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk6));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk7));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk8));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk9));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk10));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk11));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk12));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk13));
+	walkFrames.push_back(std::unique_ptr<Mesh>(walk14));
+
+	//Idle Animations
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle1));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle2));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle3));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle4));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle5));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle6));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle7));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle8));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle9));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle10));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle11));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle12));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle13));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle14));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle15));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle16));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle17));
 }
 
 bool Scene::GetComplete()
