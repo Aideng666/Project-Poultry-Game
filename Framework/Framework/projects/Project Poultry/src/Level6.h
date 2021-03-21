@@ -37,6 +37,10 @@ private:
 	Entity panelEnt, panelEnt2;
 	//Buttons
 	Entity buttonEnt, buttonEnt2, buttonEnt3;
+	//Column Pipes
+	Entity columnPipeEnt, columnPipeEnt2;
+	//Vents
+	Entity ventEnt, ventEnt2, ventEnt3;
 
 	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
 		isPaused = !isPaused;

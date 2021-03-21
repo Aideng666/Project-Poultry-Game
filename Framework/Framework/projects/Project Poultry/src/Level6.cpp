@@ -43,6 +43,13 @@ Level6::Level6(std::string sceneName, GLFWwindow* wind)
 	buttonEnt2 = Entity::Create();
 	buttonEnt3 = Entity::Create();
 
+	columnPipeEnt = Entity::Create();
+	columnPipeEnt2 = Entity::Create();
+
+	ventEnt = Entity::Create();
+	ventEnt2 = Entity::Create();
+	ventEnt3 = Entity::Create();
+
 	pauseEnt = Entity::Create();
 	optionEnt = Entity::Create();
 	exitEnt = Entity::Create();
@@ -77,7 +84,7 @@ void Level6::InitScene()
 #pragma region Transforms
 	//Player transform
 	auto& playerTrans = mainPlayer.Add<Transform>();
-	playerTrans.SetPosition(glm::vec3(0.0f, 1.1f, 43.f));
+	playerTrans.SetPosition(glm::vec3(0.0f, 1.1f, 45.f));
 	playerTrans.SetRotationY(180.0f);
 
 	//Floor transform
@@ -148,6 +155,26 @@ void Level6::InitScene()
 
 	auto& buttonTrans3 = buttonEnt3.Add<Transform>();
 	buttonTrans3.SetPosition(glm::vec3(-21.6f, -1.0f, 40.f));
+
+	//Column Pipe transforms
+	auto& colPipeTrans = columnPipeEnt.Add<Transform>();
+	colPipeTrans.SetPosition(glm::vec3(49.f, 1.f, 20.f));
+	colPipeTrans.SetScale(glm::vec3(1.5f));
+
+	auto& colPipeTrans2 = columnPipeEnt2.Add<Transform>();
+	colPipeTrans2.SetPosition(glm::vec3(-49.f, 1.f, -30.f));
+	colPipeTrans2.SetScale(glm::vec3(1.5f));
+
+	//Vent transforms
+	auto& ventTrans = ventEnt.Add<Transform>();
+	ventTrans.SetPosition(glm::vec3(50.8f, 30.f, 20.f));
+	ventTrans.SetScale(glm::vec3(1.2f));
+	ventTrans.SetRotationZ(180.f);
+
+	auto& ventTrans2 = ventEnt2.Add<Transform>();
+	ventTrans2.SetPosition(glm::vec3(50.8f, 20.f, -30.f));
+	ventTrans2.SetScale(glm::vec3(1.2f));
+	ventTrans2.SetRotationZ(180.f);
 
 	//Pause UI
 	auto& pauseTrans = pauseEnt.Add<Transform>();
@@ -227,6 +254,13 @@ void Level6::InitScene()
 	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
 	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
 	auto& buttonMesh3 = buttonEnt3.Add<MeshRenderer>(buttonEnt3, *buttonM, shader);
+
+	auto& colPipeMesh = columnPipeEnt.Add<MeshRenderer>(columnPipeEnt, *columnPipe, shader);
+	auto& colPipeMesh2 = columnPipeEnt2.Add<MeshRenderer>(columnPipeEnt2, *columnPipe, shader);
+
+	auto& vent = ventEnt.Add<MeshRenderer>(ventEnt, *ventS, shader);
+	auto& vent2 = ventEnt2.Add<MeshRenderer>(ventEnt2, *ventS, shader);
+
 
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
@@ -346,6 +380,13 @@ void Level6::Update(float dt)
 	glm::mat4 transformButton = buttonTrans.GetModelMatrix();
 	glm::mat4 transformButton2 = buttonTrans2.GetModelMatrix();
 	glm::mat4 transformButton3 = buttonTrans3.GetModelMatrix();
+
+	glm::mat4 transformColPipe = columnPipeEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformColPipe2 = columnPipeEnt2.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformVent = ventEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformVent2 = ventEnt2.Get<Transform>().GetModelMatrix();
+
 
 	glm::mat4 transformPause = pauseEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformOptions = optionEnt.Get<Transform>().GetModelMatrix();
@@ -497,6 +538,19 @@ void Level6::Update(float dt)
 		buttonEnt.Get<MeshRenderer>().Render(camera, transformButton);
 		buttonEnt2.Get<MeshRenderer>().Render(camera, transformButton2);
 		buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3);
+
+		//Column Pipes
+		shader->SetUniform("s_Diffuse", 4);
+		columnPipeMat.Albedo->Bind(4);
+		columnPipeEnt.Get<MeshRenderer>().Render(camera, transformColPipe);
+		columnPipeEnt2.Get<MeshRenderer>().Render(camera, transformColPipe2);
+
+		//Vents
+		shader->SetUniform("s_Diffuse", 5);
+		ventMat.Albedo->Bind(5);
+		ventEnt.Get<MeshRenderer>().Render(camera, transformVent);
+		ventEnt2.Get<MeshRenderer>().Render(camera, transformVent2);
+
 	}
 	else
 	{
@@ -543,6 +597,11 @@ void Level6::Update(float dt)
 		buttonEnt.Get<MeshRenderer>().Render(camera, transformButton);
 		buttonEnt2.Get<MeshRenderer>().Render(camera, transformButton2);
 		buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3);
+		columnPipeEnt.Get<MeshRenderer>().Render(camera, transformColPipe);
+		columnPipeEnt2.Get<MeshRenderer>().Render(camera, transformColPipe2);
+		ventEnt.Get<MeshRenderer>().Render(camera, transformVent);
+		ventEnt2.Get<MeshRenderer>().Render(camera, transformVent2);
+
 	}
 #pragma endregion
 
