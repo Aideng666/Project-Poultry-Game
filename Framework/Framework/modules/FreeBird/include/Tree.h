@@ -42,8 +42,8 @@ private:
 	{
 		if (p != nullptr)
 		{
-			Destroy(p->_left);
-			Destroy(p->_right);
+			Destroy(p->leftNode);
+			Destroy(p->rightNode);
 			delete p;
 			p = nullptr;
 		}
