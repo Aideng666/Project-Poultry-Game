@@ -53,10 +53,20 @@ private:
 
 	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
 		isPaused = !isPaused;
+		});
 
-		if (isPaused)
-			lightNum = 2;
-		else
-			lightNum = 5;
+	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		buttonEnt.Get<Lever>().SetPowered(!buttonEnt.Get<Lever>().GetPowered());
+		std::cout << "Button 1 Power: " << buttonEnt.Get<Lever>().GetPowered() << std::endl;
+		});
+
+	KeyPressWatcher button2Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		buttonEnt2.Get<Lever>().SetPowered(!buttonEnt2.Get<Lever>().GetPowered());
+		std::cout << "Button 2 Power: " << buttonEnt2.Get<Lever>().GetPowered() << std::endl;
+		});
+
+	KeyPressWatcher button3Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		buttonEnt3.Get<Lever>().SetPowered(!buttonEnt3.Get<Lever>().GetPowered());
+		std::cout << "Button 3 Power: " << buttonEnt3.Get<Lever>().GetPowered() << std::endl;
 		});
 };

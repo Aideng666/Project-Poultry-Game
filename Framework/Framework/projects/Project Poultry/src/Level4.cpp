@@ -282,45 +282,86 @@ void Level4::InitScene()
 #pragma endregion
 	
 	//AABB
-	//auto& leftCol = leftEnt.Add<AABB>(leftEnt, mainPlayer);
-	//auto& rightCol = rightEnt.Add<AABB>(rightEnt, mainPlayer);
-	//auto& backCol = backEnt.Add<AABB>(backEnt, mainPlayer);
-	//auto& gateCol = andEnt.Add<AABB>(andEnt, mainPlayer, 5.0f, 3.0f);
-	//gateCol.SetIsAmbient(true);
-	//auto& gateCol2 = andEnt2.Add<AABB>(andEnt2, mainPlayer, 5.0f, 3.0f);
-	//gateCol2.SetIsAmbient(true);
-	//auto& gateCol3 = andEnt3.Add<AABB>(andEnt3, mainPlayer, 5.0f, 3.0f);
-	//gateCol3.SetIsAmbient(true);
+	/*auto& leftCol = leftEnt.Add<AABB>(leftEnt, mainPlayer);
+	auto& rightCol = rightEnt.Add<AABB>(rightEnt, mainPlayer);
+	auto& backCol = backEnt.Add<AABB>(backEnt, mainPlayer);*/
+	auto& andCol = andEnt.Add<AABB>(andEnt, mainPlayer, 5.0f, 3.0f);
+	andCol.SetIsAmbient(true);
+	auto& andCol2 = andEnt2.Add<AABB>(andEnt2, mainPlayer, 5.0f, 3.0f);
+	andCol2.SetIsAmbient(true);
+	auto& andCol3 = andEnt3.Add<AABB>(andEnt3, mainPlayer, 5.0f, 3.0f);
+	andCol3.SetIsAmbient(true);
+	auto& notCol = notEnt.Add<AABB>(notEnt, mainPlayer, 3.5f, 3.0f);
+	notCol.SetIsAmbient(true);
+	auto& notCol2 = notEnt2.Add<AABB>(notEnt2, mainPlayer, 3.5f, 3.0f);
+	notCol2.SetIsAmbient(true);
+	auto& notCol3 = notEnt3.Add<AABB>(notEnt3, mainPlayer, 3.5f, 3.0f);
+	notCol3.SetIsAmbient(true);
+	auto& boxCol = boxEnt.Add<AABB>(boxEnt, mainPlayer, 5.0f, 5.0f);
+	boxCol.SetIsAmbient(true);
+	auto& boxCol2 = boxEnt2.Add<AABB>(boxEnt2, mainPlayer, 5.0f, 5.0f);
+	boxCol2.SetIsAmbient(true);
+	auto& boxCol3 = boxEnt3.Add<AABB>(boxEnt3, mainPlayer, 5.0f, 5.0f);
+	boxCol3.SetIsAmbient(true);
+	auto& boxCol4 = boxEnt4.Add<AABB>(boxEnt4, mainPlayer, 5.0f, 5.0f);
+	boxCol4.SetIsAmbient(true);
+	auto& boxCol5 = boxEnt5.Add<AABB>(boxEnt5, mainPlayer, 5.0f, 5.0f);
+	boxCol5.SetIsAmbient(true);
+	auto& boxCol6 = boxEnt6.Add<AABB>(boxEnt6, mainPlayer, 5.0f, 5.0f);
+	boxCol6.SetIsAmbient(true);
+	auto& buttonCol = buttonEnt.Add<AABB>(buttonEnt, mainPlayer, 2.0f, 2.0f);
+	buttonCol.SetIsAmbient(true);
+	auto& buttonCol2 = buttonEnt2.Add<AABB>(buttonEnt2, mainPlayer, 2.0f, 2.0f);
+	buttonCol2.SetIsAmbient(true);
+	auto& buttonCol3 = buttonEnt3.Add<AABB>(buttonEnt3, mainPlayer, 2.0f, 2.0f);
+	buttonCol3.SetIsAmbient(true);
+	auto& buttonCol4 = buttonEnt4.Add<AABB>(buttonEnt4, mainPlayer, 2.0f, 2.0f);
+	buttonCol4.SetIsAmbient(true);
+	auto& coilCol = coilEnt.Add<AABB>(coilEnt, mainPlayer, 4.0f, 4.0f);
+	coilCol.SetIsAmbient(true);
+	auto& pipeCol = colPipeEnt.Add<AABB>(colPipeEnt, mainPlayer, 14.5f, 2.0f);
+	pipeCol.SetIsAmbient(true);
+	auto& pipeCol2 = colPipeEnt2.Add<AABB>(colPipeEnt2, mainPlayer, 14.5f, 2.0f);
+	pipeCol2.SetIsAmbient(true);
 
-#pragma region Animation Frames
-	//Door Animations
-	doorFrames.push_back(std::unique_ptr<Mesh>(door1));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door3));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door4));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door5));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door6));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door7));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door8));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
+	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
+	doorCol.SetComplete(false);
 
-	//Walking Animations
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk2));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk3));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk4));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk5));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk6));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk7));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk8));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk9));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk10));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk11));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk12));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk13));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk14));
-#pragma endregion
+	//Buttons
+	auto& button = buttonEnt.Add<Lever>(wireEnt);
+	button.SetPowered(false);
+	auto& button2 = buttonEnt2.Add<Lever>(wireEnt2);
+	button2.SetPowered(false);
+	auto& button3 = buttonEnt3.Add<Lever>(wireEnt3);
+	button3.SetPowered(false);
+	auto& button4 = buttonEnt4.Add<Lever>(wireEnt4);
+	button4.SetPowered(false);
+
+	//Wires
+	auto& wire = wireEnt.Add<Wire>(buttonEnt);
+	auto& wire2 = wireEnt2.Add<Wire>(buttonEnt2);
+	auto& wire3 = wireEnt3.Add<Wire>(buttonEnt3);
+	auto& wire4 = wireEnt4.Add<Wire>(buttonEnt4);
+	auto& wire5 = wireEnt5.Add<Wire>(notEnt);
+	auto& wire6 = wireEnt6.Add<Wire>(andEnt);
+	auto& wire7 = wireEnt7.Add<Wire>(andEnt2);
+	auto& wire8 = wireEnt8.Add<Wire>(notEnt2);
+	auto& wire9 = wireEnt9.Add<Wire>(notEnt3);
+	auto& wire10 = wireEnt10.Add<Wire>(andEnt3);
+
+	//Gates
+	auto& andGate = andEnt.Add<AndGate>(wireEnt, wireEnt5, wireEnt6);
+	auto& andGate2 = andEnt2.Add<AndGate>(wireEnt3, wireEnt4, wireEnt7);
+	auto& andGate3 = andEnt3.Add<AndGate>(wireEnt8, wireEnt9, doorEnt);
+	auto& notGate = notEnt.Add<NotGate>(wireEnt2, wireEnt5);
+	auto& notGate2 = notEnt2.Add<NotGate>(wireEnt6, wireEnt8);
+	auto& notGate3 = notEnt3.Add<NotGate>(wireEnt7, wireEnt9);
+
+	//Door
+	auto& door = doorEnt.Add<Door>();
+	door.SetOpen(false);
+
+	InitAnims();
 
 #pragma region Mesh Loading
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
@@ -376,6 +417,48 @@ void Level4::InitScene()
 	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
 	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
 
+	entList.push_back(&mainPlayer);
+	entList.push_back(&doorEnt);
+	entList.push_back(&floorEnt);
+	entList.push_back(&leftEnt);
+	entList.push_back(&rightEnt);
+	entList.push_back(&andEnt);
+	entList.push_back(&andEnt2);
+	entList.push_back(&andEnt3);
+	entList.push_back(&notEnt);
+	entList.push_back(&notEnt2);
+	entList.push_back(&notEnt3);
+	entList.push_back(&colPipeEnt);
+	entList.push_back(&colPipeEnt2);
+	entList.push_back(&shelfPipeEnt);
+	entList.push_back(&shelfPipeEnt2);
+	entList.push_back(&shelfPipeEnt3);
+	entList.push_back(&panelEnt);
+	entList.push_back(&panelEnt2);
+	entList.push_back(&ventEntL);
+	entList.push_back(&ventEntS);
+	entList.push_back(&buttonEnt);
+	entList.push_back(&buttonEnt2);
+	entList.push_back(&buttonEnt3);
+	entList.push_back(&buttonEnt4);
+	entList.push_back(&wireEnt);
+	entList.push_back(&wireEnt2);
+	entList.push_back(&wireEnt3);
+	entList.push_back(&wireEnt4);
+	entList.push_back(&wireEnt5);
+	entList.push_back(&wireEnt6);
+	entList.push_back(&wireEnt7);
+	entList.push_back(&wireEnt8);
+	entList.push_back(&wireEnt9);
+	entList.push_back(&wireEnt10);
+	entList.push_back(&boxEnt);
+	entList.push_back(&boxEnt2);
+	entList.push_back(&boxEnt3);
+	entList.push_back(&boxEnt4);
+	entList.push_back(&boxEnt5);
+	entList.push_back(&boxEnt6);
+	entList.push_back(&coilEnt);
+
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
 	doorAnimator.SetFrames(doorFrames);
@@ -399,9 +482,21 @@ void Level4::InitScene()
 	orthoCam.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	orthoCam.SetFovDegrees(90.0f); // Set an initial FOV
 	
+	//Allocates enough memory for one directional light (we can change this easily, but we only need 1 directional light)
+	directionalLightBuffer.AllocateMemory(sizeof(DirectionalLight));
+	//Casts our sun as "data" and sends it to the shader
+	directionalLightBuffer.SendData(reinterpret_cast<void*>(&theSun), sizeof(DirectionalLight));
+
+	directionalLightBuffer.Bind(0);
+
 #pragma region Post-Effects
+
 	int width, height;
 	glfwGetWindowSize(window, &width, &height);
+
+	auto shadowBuffer = &shadowBufferEnt.Add<Framebuffer>();
+	shadowBuffer->AddDepthTarget();
+	shadowBuffer->Init(shadowWidth, shadowHeight);
 
 	auto basicEffect = &FBO.Add<PostEffect>();
 	basicEffect->Init(width, height);
@@ -518,12 +613,36 @@ void Level4::Update(float dt)
 	glm::mat4 transformRetry = retryEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformExit = exitEnt.Get<Transform>().GetModelMatrix();
 
+	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
+		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
+		button1Watch.Poll(window);
+
+	if (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
+		&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
+		button2Watch.Poll(window);
+
+	if (playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -3.0f
+		&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() > -3.0f)
+		button3Watch.Poll(window);
+
 	pauseWatch.Poll(window);
+
+	/*if (showLevelComplete)
+	{
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		{
+			levelComplete = true;
+			lightNum = 5;
+		}
+	}*/
 
 #pragma region PlayerMovement
 	if (!isPaused)
 	{
-		Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+
+		if (isWalking)
+			mainPlayer.Get<MorphAnimation>().Update(dt);
 	}
 #pragma endregion
 
@@ -555,6 +674,16 @@ void Level4::Update(float dt)
 
 #pragma endregion
 
+	GetCursorPos(&mousePos);
+
+	ScreenToClient(hWnd, &mousePos);
+
+	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 323 && mousePos.y < 476 && mousePos.x > 575 && mousePos.x < 730)
+	{
+		std::cout << mousePos.x << " " << mousePos.y << std::endl;
+		glfwSetWindowShouldClose(window, true);
+	}
+
 	lightNum = Input::ChangeLighting(window, lightNum);
 
 	if (lightNum < 1 || lightNum > 5)
@@ -565,15 +694,56 @@ void Level4::Update(float dt)
 	shader->SetUniform("u_LightNum", lightNum);
 	pauseShader->SetUniform("u_LightNum", lightNum);
 
+	if (lightOn)
+		lightInt = 1;
+	else
+		lightInt = 0;
+
+	untexturedShader->SetUniform("u_LightOn", lightInt);
+	shader->SetUniform("u_LightOn", lightInt);
+	pauseShader->SetUniform("u_LightOn", lightInt);
+	animShader->SetUniform("u_LightOn", lightInt);
+
 	//Post-Effect Stuff
 	auto basicEffect = &FBO.Get<PostEffect>();
+	auto shadowBuffer = &shadowBufferEnt.Get<Framebuffer>();
 
 	basicEffect->Clear();
+	shadowBuffer->Clear();
 
 	for (int i = 0; i < effects.size(); i++)
 	{
 		effects[i]->Clear();
 	}
+
+	glm::mat4 LightProjectionMatrix = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, -1000.0f, 1000.0f);
+	glm::mat4 LightViewMatrix = glm::lookAt(glm::vec3(-theSun._lightDirection), glm::vec3(), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 LightSpaceViewProjection = LightProjectionMatrix * LightViewMatrix;
+
+	glViewport(0, 0, shadowWidth, shadowHeight);
+	shadowBuffer->Bind();
+
+	for (int i = 0; i < entList.size(); i++)
+	{
+		if (i < 3)
+		{
+			simpleDepthShader->Bind();
+			entList[i]->Get<MorphRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
+			simpleDepthShader->UnBind();
+		}
+		else
+		{
+			simpleDepthShader->Bind();
+			entList[i]->Get<MeshRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
+			simpleDepthShader->UnBind();
+		}
+	}
+
+	shadowBuffer->Unbind();
+
+	glfwGetWindowSize(window, &width, &height);
+
+	glViewport(0, 0, width, height);
 
 	basicEffect->BindBuffer(0);
 
@@ -788,12 +958,26 @@ void Level4::Update(float dt)
 	effects[activeEffect]->DrawToScreen();
 
 	//Update the collisions
-	//leftEnt.Get<AABB>().Update();
-	//rightEnt.Get<AABB>().Update();
-	//backEnt.Get<AABB>().Update();
-	//andEnt.Get<AABB>().Update();
-	//andEnt2.Get<AABB>().Update();
-	//andEnt3.Get<AABB>().Update();
+	doorEnt.Get<AABB>().Update();
+	andEnt.Get<AABB>().Update();
+	andEnt2.Get<AABB>().Update();
+	andEnt3.Get<AABB>().Update();
+	notEnt.Get<AABB>().Update();
+	notEnt2.Get<AABB>().Update();
+	notEnt3.Get<AABB>().Update();
+	boxEnt.Get<AABB>().Update();
+	boxEnt2.Get<AABB>().Update();
+	boxEnt3.Get<AABB>().Update();
+	boxEnt4.Get<AABB>().Update();
+	boxEnt5.Get<AABB>().Update();
+	boxEnt6.Get<AABB>().Update();
+	coilEnt.Get<AABB>().Update();
+	buttonEnt.Get<AABB>().Update();
+	buttonEnt2.Get<AABB>().Update();
+	buttonEnt3.Get<AABB>().Update();
+	buttonEnt4.Get<AABB>().Update();
+	colPipeEnt.Get<AABB>().Update();
+	colPipeEnt2.Get<AABB>().Update();
 }
 
 void Level4::Unload()

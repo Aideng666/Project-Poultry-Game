@@ -481,7 +481,10 @@ void Level5::Update(float dt)
 #pragma region PlayerMovement
 	if (!isPaused)
 	{
-		Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+
+		if (isWalking)
+			mainPlayer.Get<MorphAnimation>().Update(dt);
 	}
 #pragma endregion
 

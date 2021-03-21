@@ -12,20 +12,6 @@
 #include <stb_image.h>
 #include <MorphAnimation.h>
 
-
-#define MOUSEEVENTF_MOVE = 0x0001
-#define MOUSEEVENTF_LEFTDOWN = 0x0002
-#define MOUSEEVENTF_LEFTUP = 0x0004
-#define MOUSEEVENTF_RIGHTDOWN = 0x0008
-#define MOUSEEVENTF_RIGHTUP = 0x0010
-#define MOUSEEVENTF_MIDDLEDOWN = 0x0020
-#define MOUSEEVENTF_MIDDLEUP = 0x0040
-#define MOUSEEVENTF_XDOWN = 0x0080
-#define MOUSEEVENTF_XUP = 0x0100
-#define MOUSEEVENTF_WHEEL = 0x0800
-#define MOUSEEVENTF_VIRTUALDESK = 0x4000
-#define MOUSEEVENTF_ABSOLUTE = 0x8000
-
 using namespace freebird;
 
 Level1::Level1(std::string sceneName, GLFWwindow* wind)
@@ -344,7 +330,6 @@ void Level1::InitScene()
 	entList.push_back(&doorCloseEnt);
 	entList.push_back(&floorEnt);
 	entList.push_back(&leftEnt);
-	//entList.push_back(&backEnt);
 	entList.push_back(&rightEnt);
 	entList.push_back(&completeEnt);
 	entList.push_back(&andEnt);
@@ -367,12 +352,6 @@ void Level1::InitScene()
 	entList.push_back(&pipeEntC);
 	entList.push_back(&pipeEntS);
 	entList.push_back(&tabletEnt);
-	/*entList.push_back(&tutEnt);
-	entList.push_back(&pauseEnt);
-	entList.push_back(&optionEnt);
-	entList.push_back(&retryEnt);
-	entList.push_back(&exitEnt);
-	entList.push_back(&tabletScreenEnt);*/
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -467,7 +446,7 @@ void Level1::InitScene()
 
 void Level1::Update(float dt)
 {
-	time += dt;
+	/*time += dt;
 	untexturedShader->SetUniform("u_Time", time);
 	shader->SetUniform("u_Time", time);
 	pauseShader->SetUniform("u_Time", time);
@@ -492,7 +471,7 @@ void Level1::Update(float dt)
 	untexturedShader->SetUniform("u_Position", currentPos);
 	shader->SetUniform("u_Position", currentPos);
 	pauseShader->SetUniform("u_Position", currentPos);
-	animShader->SetUniform("u_Position", currentPos);
+	animShader->SetUniform("u_Position", currentPos);*/
 
 #pragma region Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -675,6 +654,7 @@ void Level1::Update(float dt)
 
 	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 323 && mousePos.y < 476 && mousePos.x > 575 && mousePos.x < 730)
 	{
+		std::cout << mousePos.x << " " << mousePos.y << std::endl;
 		glfwSetWindowShouldClose(window, true);
 	}
 
@@ -1088,11 +1068,11 @@ void Level1::Update(float dt)
 	boxEnt3.Get<AABB>().Update();
 	boxEnt4.Get<AABB>().Update();
 	boxEnt5.Get<AABB>().Update();
-	andEnt.Get<AndGate>().Update();
 	coilEnt.Get<AABB>().Update();
 	pipeEntC.Get<AABB>().Update();
 	buttonEnt.Get<AABB>().Update();
 	buttonEnt2.Get<AABB>().Update();
+	andEnt.Get<AndGate>().Update();
 	buttonEnt.Get<Lever>().Update();
 	buttonEnt2.Get<Lever>().Update();
 	wireEnt.Get<Wire>().Update();
