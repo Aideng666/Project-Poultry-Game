@@ -69,4 +69,9 @@ private:
 		buttonEnt3.Get<Lever>().SetPowered(!buttonEnt3.Get<Lever>().GetPowered());
 		std::cout << "Button 3 Power: " << buttonEnt3.Get<Lever>().GetPowered() << std::endl;
 		});
+
+	KeyPressWatcher button4Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		buttonEnt4.Get<Lever>().SetPowered(!buttonEnt4.Get<Lever>().GetPowered());
+		std::cout << "Button 4 Power: " << buttonEnt4.Get<Lever>().GetPowered() << std::endl;
+		});
 };
