@@ -50,6 +50,8 @@ Level6::Level6(std::string sceneName, GLFWwindow* wind)
 	ventEnt2 = Entity::Create();
 	ventEnt3 = Entity::Create();
 
+	andEnt = Entity::Create();
+
 	pauseEnt = Entity::Create();
 	optionEnt = Entity::Create();
 	exitEnt = Entity::Create();
@@ -158,7 +160,7 @@ void Level6::InitScene()
 
 	//Column Pipe transforms
 	auto& colPipeTrans = columnPipeEnt.Add<Transform>();
-	colPipeTrans.SetPosition(glm::vec3(49.f, 1.f, 20.f));
+	colPipeTrans.SetPosition(glm::vec3(49.f, 1.f, 10.f));
 	colPipeTrans.SetScale(glm::vec3(1.5f));
 
 	auto& colPipeTrans2 = columnPipeEnt2.Add<Transform>();
@@ -167,14 +169,26 @@ void Level6::InitScene()
 
 	//Vent transforms
 	auto& ventTrans = ventEnt.Add<Transform>();
-	ventTrans.SetPosition(glm::vec3(50.8f, 30.f, 20.f));
+	ventTrans.SetPosition(glm::vec3(50.8f, 30.f, 10.f));
 	ventTrans.SetScale(glm::vec3(1.2f));
 	ventTrans.SetRotationZ(180.f);
 
 	auto& ventTrans2 = ventEnt2.Add<Transform>();
-	ventTrans2.SetPosition(glm::vec3(50.8f, 20.f, -30.f));
+	ventTrans2.SetPosition(glm::vec3(50.8f, 15.f, -40.f));
 	ventTrans2.SetScale(glm::vec3(1.2f));
 	ventTrans2.SetRotationZ(180.f);
+
+	auto& ventTrans3 = ventEnt3.Add<Transform>();
+	ventTrans3.SetPosition(glm::vec3(50.8f, 15.f, -25.f));
+	ventTrans3.SetScale(glm::vec3(1.2f));
+	ventTrans3.SetRotationZ(180.f);
+
+	//Gate transforms
+	//And-Gate
+	auto& gateTrans = andEnt.Add<Transform>();
+	gateTrans.SetPosition(glm::vec3(-5.f, 1.0f, 10.f));
+	gateTrans.SetRotationY(-90.0f);
+	gateTrans.SetScale(glm::vec3(2.0f));
 
 	//Pause UI
 	auto& pauseTrans = pauseEnt.Add<Transform>();
@@ -260,7 +274,9 @@ void Level6::InitScene()
 
 	auto& vent = ventEnt.Add<MeshRenderer>(ventEnt, *ventS, shader);
 	auto& vent2 = ventEnt2.Add<MeshRenderer>(ventEnt2, *ventS, shader);
+	auto& vent3 = ventEnt3.Add<MeshRenderer>(ventEnt3, *ventS, shader);
 
+	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *and, shader);
 
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
@@ -386,7 +402,9 @@ void Level6::Update(float dt)
 
 	glm::mat4 transformVent = ventEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformVent2 = ventEnt2.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformVent3 = ventEnt3.Get<Transform>().GetModelMatrix();
 
+	glm::mat4 transformGate = andEnt.Get<Transform>().GetModelMatrix();
 
 	glm::mat4 transformPause = pauseEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformOptions = optionEnt.Get<Transform>().GetModelMatrix();
@@ -550,6 +568,13 @@ void Level6::Update(float dt)
 		ventMat.Albedo->Bind(5);
 		ventEnt.Get<MeshRenderer>().Render(camera, transformVent);
 		ventEnt2.Get<MeshRenderer>().Render(camera, transformVent2);
+		ventEnt3.Get<MeshRenderer>().Render(camera, transformVent3);
+
+		//Gates
+		//And-Gate
+		shader->SetUniform("s_Diffuse", 6);
+		andMat.Albedo->Bind(6);
+		andEnt.Get<MeshRenderer>().Render(camera, transformGate);
 
 	}
 	else
@@ -601,6 +626,8 @@ void Level6::Update(float dt)
 		columnPipeEnt2.Get<MeshRenderer>().Render(camera, transformColPipe2);
 		ventEnt.Get<MeshRenderer>().Render(camera, transformVent);
 		ventEnt2.Get<MeshRenderer>().Render(camera, transformVent2);
+		ventEnt3.Get<MeshRenderer>().Render(camera, transformVent3);
+		andEnt.Get<MeshRenderer>().Render(camera, transformGate);
 
 	}
 #pragma endregion

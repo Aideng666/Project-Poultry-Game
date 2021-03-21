@@ -41,6 +41,13 @@ private:
 	Entity columnPipeEnt, columnPipeEnt2;
 	//Vents
 	Entity ventEnt, ventEnt2, ventEnt3;
+	//Gates
+	//And-Gate
+	Entity andEnt;
+	//Not-Gate
+	Entity notEnt, notEnt2, notEnt3, notEnt4;
+	//Or-Gate
+	Entity orEnt, orEnt2;
 
 	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
 		isPaused = !isPaused;
