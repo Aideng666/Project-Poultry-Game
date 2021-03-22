@@ -23,9 +23,6 @@ private:
 	Entity mainPlayer;
 	Entity startEnt, optEnt, exitEnt;
 
-	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames;
-
-
 	GLfloat time = 0.0f;
 
 	float t = 0.0f;

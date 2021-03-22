@@ -233,9 +233,9 @@ protected:
 	std::string shelfPipeFile = "Models/ShelfPipe.obj";
 	std::string columnPipeFile = "Models/New_Column_Pipe.obj";
 
-	std::string labBackWallFile = "Models/Level4BackWall.obj";
-	std::string labLeftWallFile = "Models/Level4LeftWall.obj";
-	std::string labRightWallFile = "Models/Level4RightWall.obj";
+	std::string labBackWallFile = "Models/BackWall_New.obj";
+	std::string labLeftWallFile = "Models/LeftWall_New.obj";
+	std::string labRightWallFile = "Models/RightWall_New.obj";
 
 	//Main Menu Level Files
 	std::string startFile = "Models/Start.obj";

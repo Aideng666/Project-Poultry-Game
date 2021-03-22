@@ -201,7 +201,7 @@ void Level6::InitScene()
 	InitAnims();
 
 #pragma region Mesh Loading
-	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
+	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *idle1, animShader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floorLab, untexturedShader);
 	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *leftWallLab, untexturedShader);
 	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWallLab, untexturedShader);
@@ -313,14 +313,16 @@ void Level6::Update(float dt)
 	auto& buttonTrans2 = buttonEnt2.Get<Transform>();
 	auto& buttonTrans3 = buttonEnt3.Get<Transform>();
 
-	backEnt.Get<Transform>().SetPositionZ(0.0f);
-	backEnt.Get<Transform>().SetPositionY(1.0f);
+	backEnt.Get<Transform>().SetPositionZ(-51.5f);
+	backEnt.Get<Transform>().SetPositionY(0.0f);
 
-	leftEnt.Get<Transform>().SetPositionX(0.0f);
-	leftEnt.Get<Transform>().SetPositionY(1.0f);
+	leftEnt.Get<Transform>().SetPositionX(-51.5f);
+	leftEnt.Get<Transform>().SetRotationY(90.0f);
+	leftEnt.Get<Transform>().SetPositionY(0.0f);
 
-	rightEnt.Get<Transform>().SetPositionX(0.0f);
-	rightEnt.Get<Transform>().SetPositionY(1.0f);
+	rightEnt.Get<Transform>().SetPositionX(51.5f);
+	rightEnt.Get<Transform>().SetRotationY(90.0f);
+	rightEnt.Get<Transform>().SetPositionY(0.0f);
 #pragma endregion
 
 	auto& camera = camEnt.Get<Camera>();

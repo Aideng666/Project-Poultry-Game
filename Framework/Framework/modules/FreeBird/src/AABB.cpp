@@ -34,32 +34,32 @@ namespace freebird
 			&& playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() > -0.1f
 			&& thisEnt.Get<Transform>().GetRotation().y == 90.0f && !isAmbientObject)
 		{
-			playerEnt.Get<Transform>().SetPositionX(playerEnt.Get<Transform>().GetPositionX() + 0.2f);
+			playerEnt.Get<Transform>().SetPositionX(playerEnt.Get<Transform>().GetPositionX() + 0.1f);
 		}
 
 		if (thisEnt.Get<Transform>().GetPositionX() - playerEnt.Get<Transform>().GetPositionX() < 1.8f
 			&& thisEnt.Get<Transform>().GetPositionX() - playerEnt.Get<Transform>().GetPositionX() > -0.1f
 			&& thisEnt.Get<Transform>().GetRotation().y == 90.0f && !isAmbientObject)
 		{
-			playerEnt.Get<Transform>().SetPositionX(playerEnt.Get<Transform>().GetPositionX() - 0.2f);
+			playerEnt.Get<Transform>().SetPositionX(playerEnt.Get<Transform>().GetPositionX() - 0.1f);
 		}
 
 		if (playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() < 1.8f
 			&& playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() > -0.1f
 			&& thisEnt.Get<Transform>().GetRotation().y == 0.0f && !isAmbientObject)
 		{
-			playerEnt.Get<Transform>().SetPositionZ(playerEnt.Get<Transform>().GetPositionZ() + 0.2f);
+			playerEnt.Get<Transform>().SetPositionZ(playerEnt.Get<Transform>().GetPositionZ() + 0.1f);
 		}
 
 		if (!playerEnt.Get<Transform>().GetBigLevel())
 		{
 			if (playerEnt.Get<Transform>().GetPositionZ() > 35.0f)
-				playerEnt.Get<Transform>().SetPositionZ(playerEnt.Get<Transform>().GetPositionZ() - 0.2f);
+				playerEnt.Get<Transform>().SetPositionZ(playerEnt.Get<Transform>().GetPositionZ() - 0.1f);
 		}
 		else
 		{
 			if (playerEnt.Get<Transform>().GetPositionZ() > 45.0f)
-				playerEnt.Get<Transform>().SetPositionZ(playerEnt.Get<Transform>().GetPositionZ() - 0.2f);
+				playerEnt.Get<Transform>().SetPositionZ(playerEnt.Get<Transform>().GetPositionZ() - 0.1f);
 		}
 
 		//DOOR COLLISION
