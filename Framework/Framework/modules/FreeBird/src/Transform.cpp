@@ -87,6 +87,16 @@ namespace freebird
 		canMoveDown = move;
 	}
 
+	bool Transform::GetBigLevel()
+	{
+		return bigLevel;
+	}
+
+	void Transform::SetBigLevel(bool isBig)
+	{
+		bigLevel = isBig;
+	}
+
 	void Transform::SetPosition(glm::vec3 newPos)
 	{
 		position = newPos;

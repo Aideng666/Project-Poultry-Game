@@ -232,7 +232,7 @@ int main()
 
 		if (currentScene->GetLoad())
 		{
-			scenes.push_back(new MainMenuLevel("Main Menu Level", window));
+			//scenes.push_back(new MainMenuLevel("Main Menu Level", window));
 			scenes.push_back(new Level1("Level 1", window));
 			scenes.push_back(new Level2("Level 2", window));
 			scenes.push_back(new Level3("Level 3", window));

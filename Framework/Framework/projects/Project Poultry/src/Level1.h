@@ -54,8 +54,6 @@ private:
 	Entity tabletScreenEnt;
 	//Particle
 	//Entity particleEnt;
-	//Interact
-	Entity tutEnt;
 
 	GLfloat time = 0.0f;
 
@@ -72,8 +70,6 @@ private:
 	glm::vec3 currentPos = glm::vec3(3.0f, 15.0f, 3.0f);
 
 	bool forwards = true;
-
-	bool showLevelComplete = false;
 
 	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		buttonEnt.Get<Lever>().SetPowered(!buttonEnt.Get<Lever>().GetPowered());

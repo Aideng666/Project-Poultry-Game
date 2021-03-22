@@ -107,7 +107,7 @@ protected:
 	Entity bloomEnt;
 	Entity gBufferEnt, shadowBufferEnt;
 
-	Entity pauseEnt, optionEnt, exitEnt, retryEnt;
+	Entity pauseEnt, optionEnt, exitEnt, retryEnt, tutEnt, completeEnt;
 
 	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat;
 	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
@@ -378,6 +378,7 @@ protected:
 	Mesh* idle15;
 	Mesh* idle16;
 	Mesh* idle17;
+	Mesh* idle18;
 
 	std::string doorFile1 = "Models/DoorFrames/Door0.obj";
 	std::string doorFile2 = "Models/DoorFrames/Door1.obj";
@@ -405,23 +406,24 @@ protected:
 	std::string walkFile13 = "Models/ChickenFrames/Walk13.obj";
 	std::string walkFile14 = "Models/ChickenFrames/Walk14.obj";
 
-	std::string idleFile1 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame1.obj";
-	std::string idleFile2 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame2.obj";
-	std::string idleFile3 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame3.obj";
-	std::string idleFile4 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame4.obj";
-	std::string idleFile5 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame5.obj";
-	std::string idleFile6 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame6.obj";
-	std::string idleFile7 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame7.obj";
-	std::string idleFile8 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame8.obj";
-	std::string idleFile9 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame9.obj";
-	std::string idleFile10 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame10.obj";
-	std::string idleFile11 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame11.obj";
-	std::string idleFile12 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame12.obj";
-	std::string idleFile13 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame13.obj";
-	std::string idleFile14 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame14.obj";
-	std::string idleFile15 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame15.obj";
-	std::string idleFile16 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame16.obj";
-	std::string idleFile17 = "Models/ChickenFrames/Idle/Drumstick_Idle_Frame17.obj";
+	std::string idleFile1 = "Models/ChickenFrames/Idle/Idle1.obj";
+	std::string idleFile2 = "Models/ChickenFrames/Idle/Idle2.obj";
+	std::string idleFile3 = "Models/ChickenFrames/Idle/Idle3.obj";
+	std::string idleFile4 = "Models/ChickenFrames/Idle/Idle4.obj";
+	std::string idleFile5 = "Models/ChickenFrames/Idle/Idle5.obj";
+	std::string idleFile6 = "Models/ChickenFrames/Idle/Idle6.obj";
+	std::string idleFile7 = "Models/ChickenFrames/Idle/Idle7.obj";
+	std::string idleFile8 = "Models/ChickenFrames/Idle/Idle8.obj";
+	std::string idleFile9 = "Models/ChickenFrames/Idle/Idle9.obj";
+	std::string idleFile10 = "Models/ChickenFrames/Idle/Idle10.obj";
+	std::string idleFile11 = "Models/ChickenFrames/Idle/Idle11.obj";
+	std::string idleFile12 = "Models/ChickenFrames/Idle/Idle12.obj";
+	std::string idleFile13 = "Models/ChickenFrames/Idle/Idle13.obj";
+	std::string idleFile14 = "Models/ChickenFrames/Idle/Idle14.obj";
+	std::string idleFile15 = "Models/ChickenFrames/Idle/Idle15.obj";
+	std::string idleFile16 = "Models/ChickenFrames/Idle/Idle16.obj";
+	std::string idleFile17 = "Models/ChickenFrames/Idle/Idle17.obj";
+	std::string idleFile18 = "Models/ChickenFrames/Idle/Idle18.obj";
 	///////////////
 
 	DirectionalLight theSun;
@@ -438,4 +440,6 @@ protected:
 	bool isWalking;
 	bool walkFramesApplied = false;
 	bool idleFramesApplied = true;
+
+	bool showLevelComplete = false;
 };
