@@ -224,7 +224,7 @@ void Scene::InitMeshes()
 	idle18 = ModelManager::FindMesh(idleFile18);
 
 	//Multiple Levels
-	drumstick = ModelManager::FindMesh(drumFile);
+	//drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
 	screen = ModelManager::FindMesh(screenFile);
 	leftWall = ModelManager::FindMesh(leftWallFile);

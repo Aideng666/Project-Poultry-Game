@@ -150,35 +150,29 @@ void MainMenuLevel::InitScene()
 	auto& optCol = optionDoor.Add<AABB>(optionDoor, mainPlayer);
 	auto& exitCol = exitDoor.Add<AABB>(exitDoor, mainPlayer);
 
-	doorFrames.push_back(std::unique_ptr<Mesh>(door1));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door3));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door4));
-	/*doorFrames.push_back(std::unique_ptr<Mesh>(door5));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door6));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door7));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door8));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door10));*/
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door1));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door2));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door3));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door4));
 
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk2));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk3));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk4));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk5));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk6));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk7));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk8));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk9));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk10));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk11));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk12));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk13));
-	walkFrames.push_back(std::unique_ptr<Mesh>(walk14));
-	//InitAnims();
+	//walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
+	//walkFrames.push_back(std::unique_ptr<Mesh>(walk2));
+	//walkFrames.push_back(std::unique_ptr<Mesh>(walk3));
+	//walkFrames.push_back(std::unique_ptr<Mesh>(walk4));
+	//walkFrames.push_back(std::unique_ptr<Mesh>(walk5));
+	//walkFrames.push_back(std::unique_ptr<Mesh>(walk6));
+	//walkFrames.push_back(std::unique_ptr<Mesh>(walk7));
+	//walkFrames.push_back(std::unique_ptr<Mesh>(walk8));
+	//walkFrames.push_back(std::unique_ptr<Mesh>(walk9));
+	//walkFrames.push_back(std::unique_ptr<Mesh>(walk10));
+	//walkFrames.push_back(std::unique_ptr<Mesh>(walk11));
+	//walkFrames.push_back(std::unique_ptr<Mesh>(walk12));
+	//walkFrames.push_back(std::unique_ptr<Mesh>(walk13));
+	//walkFrames.push_back(std::unique_ptr<Mesh>(walk14));
+	InitAnims();
 
 	//Load the meshes
-	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *walk1, animShader);
+	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *idle1, animShader);
 	auto& backMesh = backWallEnt.Add<MeshRenderer>(backWallEnt, *backWall, shader);
 	auto& leftMesh = leftWallEnt.Add<MeshRenderer>(leftWallEnt, *leftWall, shader);
 	auto& rightMesh = rightWallEnt.Add<MeshRenderer>(rightWallEnt, *rightWall, shader);
@@ -222,8 +216,8 @@ void MainMenuLevel::InitScene()
 	optAnimator.SetLoop(false);
 
 	auto& walkAnimator = mainPlayer.Add<MorphAnimation>(mainPlayer);
-	walkAnimator.SetTime(0.05f);
-	walkAnimator.SetFrames(walkFrames);
+	walkAnimator.SetTime(0.3f);
+	walkAnimator.SetFrames(idleFrames);
 
 	//Camera Object
 	auto& camera = camEnt.Add<Camera>();
@@ -359,10 +353,25 @@ void MainMenuLevel::Update(float dt)
 #pragma region PlayerMovement
 	isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
 
-	if (isWalking)
+	if (isWalking && !walkFramesApplied)
 	{
-		mainPlayer.Get<MorphAnimation>().Update(dt);
+		mainPlayer.Get<MorphRenderer>().SetMesh(*walk1);
+		mainPlayer.Get<MorphAnimation>().SetFrames(walkFrames);
+		mainPlayer.Get<MorphAnimation>().SetTime(0.05f);
+		walkFramesApplied = true;
+		idleFramesApplied = false;
 	}
+
+	if (!isWalking && !idleFramesApplied)
+	{
+		mainPlayer.Get<MorphRenderer>().SetMesh(*idle1);
+		mainPlayer.Get<MorphAnimation>().SetFrames(idleFrames);
+		mainPlayer.Get<MorphAnimation>().SetTime(0.3f);
+		idleFramesApplied = true;
+		walkFramesApplied = false;
+	}
+
+	mainPlayer.Get<MorphAnimation>().Update(dt);
 #pragma endregion
 
 #pragma region CameraMovement

@@ -270,6 +270,9 @@ void Level5::InitScene()
 	tutTrans.SetScale(glm::vec3(1.0f));
 #pragma endregion
 
+	auto& leftCol = leftEnt.Add<AABB>(leftEnt, mainPlayer);
+	auto& rightCol = rightEnt.Add<AABB>(rightEnt, mainPlayer);
+	auto& backCol = backEnt.Add<AABB>(backEnt, mainPlayer);
 	auto& andCol = andEnt.Add<AABB>(andEnt, mainPlayer, 5.0f, 3.0f);
 	andCol.SetIsAmbient(true);
 	auto& orCol = orEnt.Add<AABB>(orEnt, mainPlayer, 5.0f, 3.0f);
@@ -500,14 +503,16 @@ void Level5::Update(float dt)
 	auto& buttonTrans3 = buttonEnt3.Get<Transform>();
 	auto& buttonTrans4 = buttonEnt4.Get<Transform>();
 
-	backEnt.Get<Transform>().SetPositionZ(0.0f);
-	backEnt.Get<Transform>().SetPositionY(1.0f);
+	backEnt.Get<Transform>().SetPositionZ(-51.5f);
+	backEnt.Get<Transform>().SetPositionY(0.0f);
 
-	leftEnt.Get<Transform>().SetPositionX(0.0f);
-	leftEnt.Get<Transform>().SetPositionY(1.0f);
+	leftEnt.Get<Transform>().SetPositionX(-51.5f);
+	leftEnt.Get<Transform>().SetRotationY(90.0f);
+	leftEnt.Get<Transform>().SetPositionY(0.0f);
 
-	rightEnt.Get<Transform>().SetPositionX(0.0f);
-	rightEnt.Get<Transform>().SetPositionY(1.0f);
+	rightEnt.Get<Transform>().SetPositionX(51.5f);
+	rightEnt.Get<Transform>().SetRotationY(90.0f);
+	rightEnt.Get<Transform>().SetPositionY(0.0f);
 #pragma endregion
 
 	auto& camera = camEnt.Get<Camera>();
@@ -1052,6 +1057,9 @@ void Level5::Update(float dt)
 
 	effects[activeEffect]->DrawToScreen();
 
+	backEnt.Get<AABB>().Update();
+	leftEnt.Get<AABB>().Update();
+	rightEnt.Get<AABB>().Update();
 	doorEnt.Get<AABB>().Update();
 	andEnt.Get<AABB>().Update();
 	orEnt.Get<AABB>().Update();

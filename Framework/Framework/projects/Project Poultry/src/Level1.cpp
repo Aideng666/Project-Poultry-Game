@@ -708,14 +708,14 @@ void Level1::Update(float dt)
 			animShader->SetUniform("s_Diffuse", 1);
 			doorMat.Albedo->Bind(1);
 
-			if (doorEnt.Get<Door>().GetOpen())
-			{
+			//if (doorEnt.Get<Door>().GetOpen())
+			//{
 				doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
-			}
-			else
-			{
-				doorCloseEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
-			}
+			//}
+			//else
+			//{
+			//	doorCloseEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
+			//}
 			doorMat.Albedo->Unbind(1);
 
 			shadowBuffer->UnbindTexture(30);
@@ -931,14 +931,14 @@ void Level1::Update(float dt)
 			shadowBuffer->BindDepthAsTexture(30);
 			mainPlayer.Get<MorphRenderer>().Render(camera, transform, LightSpaceViewProjection);
 
-			if (doorEnt.Get<Door>().GetOpen())
-			{
+			/*if (doorEnt.Get<Door>().GetOpen())
+			{*/
 				doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
-			}
+			/*}
 			else
 			{
 				doorCloseEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
-			}
+			}*/
 			doorMat.Albedo->Unbind(1);
 
 			shadowBuffer->UnbindTexture(30);
@@ -1049,7 +1049,7 @@ void Level1::Update(float dt)
 	wireEnt3.Get<Wire>().Update();
 
 	//Door Logic
-	if (doorEnt.Get<Door>().GetOpen())
+	/*if (doorEnt.Get<Door>().GetOpen())
 	{
 		doorEnt.Get<MorphAnimation>().SetLoop(true);
 		doorEnt.Get<MorphAnimation>().SetLoop(false);
@@ -1061,7 +1061,10 @@ void Level1::Update(float dt)
 		doorCloseEnt.Get<MorphAnimation>().SetLoop(true);
 		doorCloseEnt.Get<MorphAnimation>().SetLoop(false);
 		doorCloseEnt.Get<MorphAnimation>().Update(dt);
-	}
+	}*/
+
+	if (doorEnt.Get<Door>().GetOpen())
+		doorEnt.Get<MorphAnimation>().Update(dt);
 
 	if (doorEnt.Get<AABB>().GetComplete())
 		showLevelComplete = true;
