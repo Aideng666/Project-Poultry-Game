@@ -350,7 +350,7 @@ void Level3::InitScene()
 	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *leftWall, shader);
 	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWall, shader);
 	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWall, shader);
-	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
+	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *door1, animShader);
 	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
 	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
 	auto& buttonMesh3 = buttonEnt3.Add<MeshRenderer>(buttonEnt3, *buttonM, shader);
@@ -424,7 +424,7 @@ void Level3::InitScene()
 	entList.push_back(&tabletEnt);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
-	doorAnimator.SetTime(0.2f);
+	doorAnimator.SetTime(0.5f);
 	doorAnimator.SetFrames(doorFrames);
 	doorAnimator.SetLoop(false);
 

@@ -240,7 +240,7 @@ int main()
 			scenes.push_back(new Level5("Level 5", window));
 			scenes.push_back(new Level6("Level 6", window));
 
-			SetActiveScene(1);
+			SetActiveScene(2);
 		}
 
 

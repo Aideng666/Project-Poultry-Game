@@ -43,7 +43,8 @@ void Scene::InitTextures()
 {
 	Texture2D::sptr diffuseButton = Texture2D::LoadFromFile("Textures/ButtonTexture.png");
 	Texture2D::sptr diffuseDrum = Texture2D::LoadFromFile("Textures/DrumstickTexture.png");
-	Texture2D::sptr diffuseDoor = Texture2D::LoadFromFile("Textures/DoorTexture.png");
+	Texture2D::sptr diffuseDoor = Texture2D::LoadFromFile("Textures/DoorTex.png");
+	Texture2D::sptr diffuseDoorOn = Texture2D::LoadFromFile("Textures/DoorTexOn.png");
 	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTilesetFinal.png");
 	Texture2D::sptr diffuseWall = Texture2D::LoadFromFile("Textures/WallTileset.png");
 	Texture2D::sptr diffuseComplete = Texture2D::LoadFromFile("Textures/LevelComplete.png");
@@ -80,6 +81,7 @@ void Scene::InitTextures()
 	buttonMat.Albedo = diffuseButton;
 	drumstickMat.Albedo = diffuseDrum;
 	doorMat.Albedo = diffuseDoor;
+	doorOnMat.Albedo = diffuseDoorOn;
 	floorMat.Albedo = diffuseFloor;
 	wallMat.Albedo = diffuseWall;
 	completeMat.Albedo = diffuseComplete;
@@ -178,12 +180,12 @@ void Scene::InitMeshes()
 	door2 = ModelManager::FindMesh(doorFile2);
 	door3 = ModelManager::FindMesh(doorFile3);
 	door4 = ModelManager::FindMesh(doorFile4);
-	door5 = ModelManager::FindMesh(doorFile5);
+	/*door5 = ModelManager::FindMesh(doorFile5);
 	door6 = ModelManager::FindMesh(doorFile6);
 	door7 = ModelManager::FindMesh(doorFile7);
 	door8 = ModelManager::FindMesh(doorFile8);
 	door9 = ModelManager::FindMesh(doorFile9);
-	door10 = ModelManager::FindMesh(doorFile10);
+	door10 = ModelManager::FindMesh(doorFile10);*/
 
 	//For Walking Anim
 	walk1 = ModelManager::FindMesh(walkFile1);
@@ -228,8 +230,6 @@ void Scene::InitMeshes()
 	leftWall = ModelManager::FindMesh(leftWallFile);
 	rightWall = ModelManager::FindMesh(rightWallFile);
 	backWall = ModelManager::FindMesh(backWallFile);
-	doorM = ModelManager::FindMesh(doorFile);
-	doorCloseM = ModelManager::FindMesh(doorFile10);
 	options = ModelManager::FindMesh(pauseButtonFile);
 	exit = ModelManager::FindMesh(pauseButtonFile);
 	retry = ModelManager::FindMesh(pauseButtonFile);
@@ -332,19 +332,19 @@ void Scene::InitAnims()
 	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door3));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door4));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door5));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door6));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door7));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door8));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door5));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door6));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door7));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door8));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door9));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door10));
 
-	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door10));
-	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door9));
-	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door8));
-	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door7));
-	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door6));
-	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door5));
+	//doorCloseFrames.push_back(std::unique_ptr<Mesh>(door10));
+	//doorCloseFrames.push_back(std::unique_ptr<Mesh>(door9));
+	//doorCloseFrames.push_back(std::unique_ptr<Mesh>(door8));
+	//doorCloseFrames.push_back(std::unique_ptr<Mesh>(door7));
+	//doorCloseFrames.push_back(std::unique_ptr<Mesh>(door6));
+	//doorCloseFrames.push_back(std::unique_ptr<Mesh>(door5));
 	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door4));
 	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door3));
 	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door2));

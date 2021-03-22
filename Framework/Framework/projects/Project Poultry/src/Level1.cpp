@@ -295,8 +295,8 @@ void Level1::InitScene()
 	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *leftWall, shader);
 	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWall, shader);
 	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWall, shader);
-	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
-	auto& doorCloseMesh = doorCloseEnt.Add<MorphRenderer>(doorCloseEnt, *doorCloseM, animShader);
+	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *door1, animShader);
+	auto& doorCloseMesh = doorCloseEnt.Add<MorphRenderer>(doorCloseEnt, *door4, animShader);
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *screen, shader);
 	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *and, shader);
 	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
@@ -354,18 +354,19 @@ void Level1::InitScene()
 	entList.push_back(&tabletEnt);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
-	doorAnimator.SetTime(0.2f);
+	doorAnimator.SetTime(0.5f);
 	doorAnimator.SetFrames(doorFrames);
 	doorAnimator.SetLoop(false);
 
 	auto& doorCloseAnimator = doorCloseEnt.Add<MorphAnimation>(doorCloseEnt);
-	doorCloseAnimator.SetTime(0.2f);
+	doorCloseAnimator.SetTime(0.5f);
 	doorCloseAnimator.SetFrames(doorCloseFrames);
 	doorCloseAnimator.SetLoop(false);
 
 	auto& walkAnimator = mainPlayer.Add<MorphAnimation>(mainPlayer);
 	walkAnimator.SetTime(0.05f);
 	walkAnimator.SetFrames(walkFrames);
+
 #pragma endregion 
 	 
 	//Camera Objects
