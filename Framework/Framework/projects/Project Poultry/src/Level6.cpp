@@ -51,6 +51,8 @@ Level6::Level6(std::string sceneName, GLFWwindow* wind)
 	ventEnt3 = Entity::Create();
 
 	andEnt = Entity::Create();
+	orEnt = Entity::Create();
+	orEnt2 = Entity::Create();
 
 	pauseEnt = Entity::Create();
 	optionEnt = Entity::Create();
@@ -186,9 +188,20 @@ void Level6::InitScene()
 	//Gate transforms
 	//And-Gate
 	auto& gateTrans = andEnt.Add<Transform>();
-	gateTrans.SetPosition(glm::vec3(-5.f, 1.0f, 10.f));
+	gateTrans.SetPosition(glm::vec3(-8.9f, 1.2f, 16.5f));
 	gateTrans.SetRotationY(-90.0f);
 	gateTrans.SetScale(glm::vec3(2.0f));
+
+	//Or-Gate
+	auto& gateTrans2 = orEnt.Add<Transform>();
+	gateTrans2.SetPosition(glm::vec3(6.7f, 1.f, 16.5f));
+	gateTrans2.SetRotationY(-90.0f);
+	gateTrans2.SetScale(glm::vec3(2.0f));
+
+	auto& gateTrans3 = orEnt2.Add<Transform>();
+	gateTrans3.SetPosition(glm::vec3(-1.1f, 1.f, -6.f));
+	gateTrans3.SetRotationY(-90.0f);
+	gateTrans3.SetScale(glm::vec3(2.0f));
 
 	//Pause UI
 	auto& pauseTrans = pauseEnt.Add<Transform>();
@@ -277,6 +290,8 @@ void Level6::InitScene()
 	auto& vent3 = ventEnt3.Add<MeshRenderer>(ventEnt3, *ventS, shader);
 
 	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *and, shader);
+	auto& gateMesh2 = orEnt.Add<MeshRenderer>(orEnt, *orMesh, shader);
+	auto& gateMesh3 = orEnt2.Add<MeshRenderer>(orEnt2, *orMesh, shader);
 
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
@@ -405,6 +420,8 @@ void Level6::Update(float dt)
 	glm::mat4 transformVent3 = ventEnt3.Get<Transform>().GetModelMatrix();
 
 	glm::mat4 transformGate = andEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformGate2 = orEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformGate3 = orEnt2.Get<Transform>().GetModelMatrix();
 
 	glm::mat4 transformPause = pauseEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformOptions = optionEnt.Get<Transform>().GetModelMatrix();
@@ -576,6 +593,12 @@ void Level6::Update(float dt)
 		andMat.Albedo->Bind(6);
 		andEnt.Get<MeshRenderer>().Render(camera, transformGate);
 
+		//Or-Gate
+		shader->SetUniform("s_Diffuse", 7);
+		orMat.Albedo->Bind(7);
+		orEnt.Get<MeshRenderer>().Render(camera, transformGate2);
+		orEnt2.Get<MeshRenderer>().Render(camera, transformGate3);
+
 	}
 	else
 	{
@@ -628,6 +651,8 @@ void Level6::Update(float dt)
 		ventEnt2.Get<MeshRenderer>().Render(camera, transformVent2);
 		ventEnt3.Get<MeshRenderer>().Render(camera, transformVent3);
 		andEnt.Get<MeshRenderer>().Render(camera, transformGate);
+		orEnt.Get<MeshRenderer>().Render(camera, transformGate2);
+		orEnt2.Get<MeshRenderer>().Render(camera, transformGate3);
 
 	}
 #pragma endregion
