@@ -343,9 +343,8 @@ void Level3::InitScene()
 
 	InitAnims();
 
-
 #pragma region Mesh Loading
-	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
+	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *idle1, animShader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floorL3, shader);
 	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *leftWall, shader);
 	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWall, shader);
@@ -429,8 +428,8 @@ void Level3::InitScene()
 	doorAnimator.SetLoop(false);
 
 	auto& walkAnimator = mainPlayer.Add<MorphAnimation>(mainPlayer);
-	walkAnimator.SetTime(0.05f);
-	walkAnimator.SetFrames(walkFrames);
+	walkAnimator.SetTime(0.3f);
+	walkAnimator.SetFrames(idleFrames);
 #pragma endregion
 
 	//Camera Objects
@@ -655,8 +654,25 @@ void Level3::Update(float dt)
 	{
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
 
-		if (isWalking)
-			mainPlayer.Get<MorphAnimation>().Update(dt);
+		if (isWalking && !walkFramesApplied)
+		{
+			mainPlayer.Get<MorphRenderer>().SetMesh(*walk1);
+			mainPlayer.Get<MorphAnimation>().SetFrames(walkFrames);
+			mainPlayer.Get<MorphAnimation>().SetTime(0.05f);
+			walkFramesApplied = true;
+			idleFramesApplied = false;
+		}
+
+		if (!isWalking && !idleFramesApplied)
+		{
+			mainPlayer.Get<MorphRenderer>().SetMesh(*idle1);
+			mainPlayer.Get<MorphAnimation>().SetFrames(idleFrames);
+			mainPlayer.Get<MorphAnimation>().SetTime(0.3f);
+			idleFramesApplied = true;
+			walkFramesApplied = false;
+		}
+
+		mainPlayer.Get<MorphAnimation>().Update(dt);
 	}
 #pragma endregion
 

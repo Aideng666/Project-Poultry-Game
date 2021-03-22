@@ -48,7 +48,7 @@ void SetActiveScene(int sceneNum)
 	currentScene = scenes[sceneNum];
 	level = sceneNum + 1;
 
-	if (level > 4)
+	if (level > 7)
 		level = 1;
 }
 
@@ -74,7 +74,7 @@ int main()
 	//Calculates our timer
 	Application::Tick();
 
-	int activeEffect = 0;
+	int activeEffect = 3;
 	bool isTextured = true;
 	bool isLit = true;
 
@@ -232,17 +232,16 @@ int main()
 
 		if (currentScene->GetLoad())
 		{
-			//scenes.push_back(new MainMenuLevel("Main Menu Level", window));
+			scenes.push_back(new MainMenuLevel("Main Menu Level", window));
 			scenes.push_back(new Level1("Level 1", window));
 			scenes.push_back(new Level2("Level 2", window));
 			scenes.push_back(new Level3("Level 3", window));
 			scenes.push_back(new Level4("Level 4", window));
 			scenes.push_back(new Level5("Level 5", window));
-			scenes.push_back(new Level6("Level 6", window));
+			//scenes.push_back(new Level6("Level 6", window));
 
-			SetActiveScene(2);
+			SetActiveScene(1);
 		}
-
 
 		currentScene->Update(dt);
 

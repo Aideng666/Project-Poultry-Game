@@ -117,7 +117,6 @@ protected:
 	Mesh* options;
 	Mesh* exit;
 	Mesh* retry;
-	Mesh* drumstick;
 	Mesh* floor;
 	Mesh* screen;
 	Mesh* leftWall;
