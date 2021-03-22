@@ -6,7 +6,6 @@ namespace freebird
 	MeshRenderer::MeshRenderer(Entity& ent, Mesh& mesh, Shader::sptr& shader)
 	{
 		thisEnt = &ent;
-		/*thisMat = &mat;*/
 		thisShader = shader;
 		thisMesh = &mesh;
 		vao = std::make_unique<VertexArrayObject>();
@@ -16,6 +15,8 @@ namespace freebird
 	void MeshRenderer::SetMesh(Mesh& mesh)
 	{
 		thisMesh = &mesh;
+
+		MakeVAO(mesh);
 	}
 	void MeshRenderer::SetMaterial(Material& mat)
 	{

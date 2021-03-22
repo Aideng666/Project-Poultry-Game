@@ -178,16 +178,16 @@ void MainMenuLevel::InitScene()
 	//InitAnims();
 
 	//Load the meshes
-	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
+	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *walk1, animShader);
 	auto& backMesh = backWallEnt.Add<MeshRenderer>(backWallEnt, *backWall, shader);
 	auto& leftMesh = leftWallEnt.Add<MeshRenderer>(leftWallEnt, *leftWall, shader);
 	auto& rightMesh = rightWallEnt.Add<MeshRenderer>(rightWallEnt, *rightWall, shader);
 	auto& leftAMesh = leftAngledWall.Add<MeshRenderer>(leftAngledWall, *leftWall, shader);
 	auto& rightAMesh = rightAngledWall.Add<MeshRenderer>(rightAngledWall, *rightWall, shader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floor, shader);
-	auto& playMesh = startDoor.Add<MorphRenderer>(startDoor, *door1, animShader);
-	auto& exitMesh = exitDoor.Add<MorphRenderer>(exitDoor, *door1, animShader);
-	auto& optMesh = optionDoor.Add<MorphRenderer>(optionDoor, *door1, animShader);
+	auto& playMesh = startDoor.Add<MorphRenderer>(startDoor, *door4, animShader);
+	auto& exitMesh = exitDoor.Add<MorphRenderer>(exitDoor, *door4, animShader);
+	auto& optMesh = optionDoor.Add<MorphRenderer>(optionDoor, *door4, animShader);
 	auto& sMesh = startEnt.Add<MeshRenderer>(startEnt, *startWord, shader);
 	auto& oMesh = optEnt.Add<MeshRenderer>(optEnt, *optionsWord, shader);
 	auto& eMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exitWord, shader);
