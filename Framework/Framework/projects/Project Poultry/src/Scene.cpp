@@ -219,6 +219,7 @@ void Scene::InitMeshes()
 	idle15 = ModelManager::FindMesh(idleFile15);
 	idle16 = ModelManager::FindMesh(idleFile16);
 	idle17 = ModelManager::FindMesh(idleFile17);
+	idle18 = ModelManager::FindMesh(idleFile18);
 
 	//Multiple Levels
 	drumstick = ModelManager::FindMesh(drumFile);
@@ -321,6 +322,11 @@ void Scene::InitMeshes()
 
 void Scene::InitAnims()
 {
+	doorFrames.clear();
+	doorCloseFrames.clear();
+	walkFrames.clear();
+	idleFrames.clear();
+
 	//Door Animations
 	doorFrames.push_back(std::unique_ptr<Mesh>(door1));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
@@ -378,6 +384,7 @@ void Scene::InitAnims()
 	idleFrames.push_back(std::unique_ptr<Mesh>(idle15));
 	idleFrames.push_back(std::unique_ptr<Mesh>(idle16));
 	idleFrames.push_back(std::unique_ptr<Mesh>(idle17));
+	idleFrames.push_back(std::unique_ptr<Mesh>(idle18));
 }
 
 bool Scene::GetComplete()

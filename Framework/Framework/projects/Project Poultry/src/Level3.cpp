@@ -558,45 +558,6 @@ void Level3::Update(float dt)
 	auto& buttonTrans = buttonEnt.Get<Transform>();
 	auto& buttonTrans2 = buttonEnt2.Get<Transform>();
 	auto& buttonTrans3 = buttonEnt3.Get<Transform>();
-	//auto& groundTrans = floorEnt.Get<Transform>();
-	//auto& leftTrans = leftEnt.Get<Transform>();
-	//auto& rightTrans = rightEnt.Get<Transform>();
-	//auto& backTrans = backEnt.Get<Transform>();
-	//auto& doorTrans = doorEnt.Get<Transform>();
-	//auto& gateTrans = andEnt.Get<Transform>();
-	//auto& gateTrans2 = andEnt2.Get<Transform>();
-	//auto& gateTrans3 = andEnt3.Get<Transform>();
-	//auto& notTrans = notEnt.Get<Transform>();
-	//auto& wireTrans = wireEnt.Get<Transform>();
-	//auto& wireTrans2 = wireEnt2.Get<Transform>();
-	//auto& wireTrans3 = wireEnt3.Get<Transform>();
-	//auto& wireTrans4 = wireEnt4.Get<Transform>();
-	//auto& wireTrans5 = wireEnt5.Get<Transform>();
-	//auto& wireTrans6 = wireEnt6.Get<Transform>();
-	//auto& wireTrans7 = wireEnt7.Get<Transform>();
-	//auto& coilTrans = coilEnt.Get<Transform>();
-	//auto& completeTrans = completeEnt.Get<Transform>();
-	//auto& pauseTrans = pauseEnt.Get<Transform>();
-	//auto& optionsTrans = optionEnt.Get<Transform>();
-	//auto& retryTrans = retryEnt.Get<Transform>();
-	//auto& exitTrans = exitEnt.Get<Transform>();
-	//auto& boxTrans = boxEnt.Get<Transform>();
-	//auto& boxTrans2 = boxEnt2.Get<Transform>();
-	//auto& boxTrans3 = boxEnt3.Get<Transform>();
-	//auto& boxTrans4 = boxEnt4.Get<Transform>();
-	//auto& panelTrans = panelEnt.Get<Transform>();
-	//auto& panelTrans2 = panelEnt2.Get<Transform>();
-	//auto& panelTrans3 = panelEnt3.Get<Transform>();
-	//auto& ventTrans = ventEnt.Get<Transform>();
-	//auto& ventTrans2 = ventEnt2.Get<Transform>();
-	//auto& pipeCTrans = pipeC.Get<Transform>();
-	//auto& pipeCTrans2 = pipeC2.Get<Transform>();
-	//auto& pipeCTrans3 = pipeC3.Get<Transform>();
-	//auto& pipeSTrans = pipeS.Get<Transform>();
-	//auto& tabletTrans = tabletEnt.Get<Transform>();
-	//auto& tabletScreenTrans = tabletScreenEnt.Get<Transform>();
-
-	//floorEnt.Get<Transform>().SetPositionY(-0.9f);
 
 	backEnt.Get<Transform>().SetPositionZ(-39.0f);
 	backEnt.Get<Transform>().SetPositionY(22.0f);
@@ -616,49 +577,7 @@ void Level3::Update(float dt)
 	auto& orthoCam = uiCamEnt.Get<Camera>();
 	//camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
 
-	//Get references to the meshes
-	/*auto& meshMain = mainPlayer.Get<MorphRenderer>();
-	auto& groundMesh = floorEnt.Get<MeshRenderer>();
-	auto& leftMesh = leftEnt.Get<MeshRenderer>();
-	auto& rightMesh = rightEnt.Get<MeshRenderer>();
-	auto& backMesh = backEnt.Get<MeshRenderer>();
-	auto& doorMesh = doorEnt.Get<MorphRenderer>();
-	auto& buttonMesh = buttonEnt.Get<MeshRenderer>();
-	auto& buttonMesh2 = buttonEnt2.Get<MeshRenderer>();
-	auto& buttonMesh3 = buttonEnt3.Get<MeshRenderer>();
-	auto& gateMesh = andEnt.Get<MeshRenderer>();
-	auto& gateMesh2 = andEnt2.Get<MeshRenderer>();
-	auto& gateMesh3 = andEnt3.Get<MeshRenderer>();
-	auto& notMesh = notEnt.Get<MeshRenderer>();
-	auto& wireMesh = wireEnt.Get<MeshRenderer>();
-	auto& wireMesh2 = wireEnt2.Get<MeshRenderer>();
-	auto& wireMesh3 = wireEnt3.Get<MeshRenderer>();
-	auto& wireMesh4 = wireEnt4.Get<MeshRenderer>();
-	auto& wireMesh5 = wireEnt5.Get<MeshRenderer>();
-	auto& wireMesh6 = wireEnt6.Get<MeshRenderer>();
-	auto& wireMesh7 = wireEnt7.Get<MeshRenderer>();
-	auto& coilMesh = coilEnt.Get<MeshRenderer>();
-	auto& completeMesh = completeEnt.Get<MeshRenderer>();
-	auto& pauseMesh = pauseEnt.Get<MeshRenderer>();
-	auto& optionMesh = optionEnt.Get<MeshRenderer>();
-	auto& retryMesh = retryEnt.Get<MeshRenderer>();
-	auto& exitMesh = exitEnt.Get<MeshRenderer>();
-	auto& boxM = boxEnt.Get<MeshRenderer>();
-	auto& boxM2 = boxEnt2.Get<MeshRenderer>();
-	auto& boxM3 = boxEnt3.Get<MeshRenderer>();
-	auto& boxM4 = boxEnt4.Get<MeshRenderer>();
-	auto& panel = panelEnt.Get<MeshRenderer>();
-	auto& panel2 = panelEnt2.Get<MeshRenderer>();
-	auto& panel3 = panelEnt3.Get<MeshRenderer>();
-	auto& vent = ventEnt.Get<MeshRenderer>();
-	auto& vent2 = ventEnt2.Get<MeshRenderer>();
-	auto& pipeCM = pipeC.Get<MeshRenderer>();
-	auto& pipeCM2 = pipeC2.Get<MeshRenderer>();
-	auto& pipeCM3 = pipeC3.Get<MeshRenderer>();
-	auto& pipeSM = pipeS.Get<MeshRenderer>();
-	auto& tabletMesh = tabletEnt.Get<MeshRenderer>();
-	auto& tabletScreenMesh = tabletScreenEnt.Get<MeshRenderer>();*/
-
+	
 	//Get reference to the model matrix
 	glm::mat4 transform = playerTrans.GetModelMatrix();
 	glm::mat4 transformGround = floorEnt.Get<Transform>().GetModelMatrix();
@@ -868,7 +787,7 @@ void Level3::Update(float dt)
 
 			if (isPaused)
 			{
-				pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause, LightSpaceViewProjection);
+				pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause);
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 1);
@@ -876,7 +795,7 @@ void Level3::Update(float dt)
 
 			if (isPaused)
 			{
-				optionEnt.Get<MeshRenderer>().Render(orthoCam, transformOptions, LightSpaceViewProjection);
+				optionEnt.Get<MeshRenderer>().Render(orthoCam, transformOptions);
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 2);
@@ -884,7 +803,7 @@ void Level3::Update(float dt)
 
 			if (isPaused)
 			{
-				retryEnt.Get<MeshRenderer>().Render(orthoCam, transformRetry, LightSpaceViewProjection);
+				retryEnt.Get<MeshRenderer>().Render(orthoCam, transformRetry);
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 2);
@@ -892,7 +811,7 @@ void Level3::Update(float dt)
 
 			if (isPaused)
 			{
-				exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit, LightSpaceViewProjection);
+				exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit);
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 3);
@@ -900,7 +819,7 @@ void Level3::Update(float dt)
 
 			if (tabletOpen)
 			{
-				tabletScreenEnt.Get<MeshRenderer>().Render(orthoCam, transformTabletScreen, LightSpaceViewProjection);
+				tabletScreenEnt.Get<MeshRenderer>().Render(orthoCam, transformTabletScreen);
 			}
 			shadowBuffer->UnbindTexture(30);
 
@@ -1075,13 +994,25 @@ void Level3::Update(float dt)
 
 			//Bind and render the objects with no textures
 			untexturedShader->Bind();
-
 			shadowBuffer->BindDepthAsTexture(30);
+
 			if (playerTrans.GetPositionX() > 5.0f && playerTrans.GetPositionX() < 11.0f
-				&& playerTrans.GetPositionZ() > 10.0f && playerTrans.GetPositionZ() < 16.0f)
+					&& playerTrans.GetPositionZ() > 10.0f && playerTrans.GetPositionZ() < 16.0f
+				|| (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f
+					&& playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
+					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f
+					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
+				|| (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f
+					&& playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
+					&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f
+					&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
+				|| (playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 3.0f
+					&& playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -3.0f
+					&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() < 3.0f
+					&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() > -3.0f))
 			{
 				if (!tabletOpen)
-					tutEnt.Get<MeshRenderer>().Render(orthoCam, transformTut, LightSpaceViewProjection);
+					tutEnt.Get<MeshRenderer>().Render(orthoCam, transformTut);
 				else
 				{
 
@@ -1113,7 +1044,7 @@ void Level3::Update(float dt)
 
 			if (isPaused)
 			{
-				pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause, LightSpaceViewProjection);
+				pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause);
 			}
 			shadowBuffer->UnbindTexture(30);
 
@@ -1167,7 +1098,7 @@ void Level3::Update(float dt)
 		shader->SetUniform("s_Diffuse", 0);
 		completeMat.Albedo->Bind(0);
 		shadowBuffer->BindDepthAsTexture(30);
-		completeEnt.Get<MeshRenderer>().Render(orthoCam, transformComplete, LightSpaceViewProjection);
+		completeEnt.Get<MeshRenderer>().Render(orthoCam, transformComplete);
 		shadowBuffer->UnbindTexture(30);
 	}
 #pragma endregion

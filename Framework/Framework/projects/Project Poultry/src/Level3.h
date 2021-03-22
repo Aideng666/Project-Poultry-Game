@@ -71,8 +71,6 @@ private:
 	Entity tabletEnt;
 	Entity tabletScreenEnt;
 
-	//Interact
-	Entity tutEnt;
 
 	GLfloat time = 0.0f;
 

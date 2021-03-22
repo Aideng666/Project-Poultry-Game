@@ -162,7 +162,7 @@ void main() {
 
 	vec3 lightDir = normalize(-sun._lightDirection.xyz);
 
-	vec3 ambient = ((u_AmbientLightStrength * u_LightCol) + (u_AmbientCol * u_AmbientStrength));
+	vec3 ambient = ((/*u_AmbientLightStrength*/ strength * u_LightCol) + (u_AmbientCol * u_AmbientStrength));
 
 	vec3 N = normalize(inNormal);
 
@@ -183,7 +183,7 @@ void main() {
 	
 	vec3 reflectDir = reflect(-lightDir, N);
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Shininess);
-	vec3 specular = sun._lightSpecularPow * spec * sun._lightCol.xyz; // Can also use a specular color
+	vec3 specular = /*sun._lightSpecularPow*/ strength * spec * sun._lightCol.xyz; // Can also use a specular color
 
 	float shadow = ShadowCalculation(inFragPosLightSpace);
 

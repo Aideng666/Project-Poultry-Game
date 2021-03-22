@@ -446,13 +446,13 @@ void Level1::InitScene()
 
 void Level1::Update(float dt)
 {
-	/*time += dt;
+	time += dt;
 	untexturedShader->SetUniform("u_Time", time);
 	shader->SetUniform("u_Time", time);
 	pauseShader->SetUniform("u_Time", time);
 	animShader->SetUniform("u_Time", time);
 
-	if (forwards)
+	/*if (forwards)
 		t += dt / totalTime;
 	else
 		t -= dt / totalTime;

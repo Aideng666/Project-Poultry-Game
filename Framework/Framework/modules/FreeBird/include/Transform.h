@@ -56,6 +56,9 @@ namespace freebird
 		bool GetCanMoveDown();
 		void SetCanMoveDown(bool move);
 
+		bool GetBigLevel();
+		void SetBigLevel(bool isBig);
+
 
 	private:
 		glm::vec3 position;
@@ -68,5 +71,7 @@ namespace freebird
 		bool canMoveRight = true;
 		bool canMoveUp = true;
 		bool canMoveDown = true;
+
+		bool bigLevel = false;
 	};
 }
