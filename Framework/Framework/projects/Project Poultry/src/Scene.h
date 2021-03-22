@@ -100,6 +100,7 @@ protected:
 	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, shelfPipeMat, columnPipeMat, optionMat, exitMat, retryMat;
 	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
 	Mat andMat, notMat, wireMatOn, orMat;
+	Mat newDoorMat;
 
 	//Meshes for multiple levels
 	Mesh* options;
@@ -126,6 +127,9 @@ protected:
 	Mesh* and;
 	Mesh* shelfPipe;
 	Mesh* columnPipe;
+
+	//NEW DOOR
+	Mesh* newDoorMesh;
 
 	//For bigger "lab" levels
 	Mesh* floorLab;
@@ -227,6 +231,9 @@ protected:
 	std::string labBackWallFile = "Models/Level4BackWall.obj";
 	std::string labLeftWallFile = "Models/Level4LeftWall.obj";
 	std::string labRightWallFile = "Models/Level4RightWall.obj";
+
+	//NEW DOOR
+	std::string newDoorFile = "Models/SquareDoor.obj";
 
 	//Main Menu Level Files
 	std::string startFile = "Models/Start.obj";

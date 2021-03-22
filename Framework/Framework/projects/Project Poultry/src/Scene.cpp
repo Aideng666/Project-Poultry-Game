@@ -68,6 +68,8 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseCoilOff = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_Off.png");
 	Texture2D::sptr diffuseCoilOn = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_On.png");
 
+	Texture2D::sptr diffuseSquareDoor = Texture2D::LoadFromFile("Textures/SquareDoorTexture.png");
+
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
 	desc.Height = 1;
@@ -103,6 +105,9 @@ void Scene::InitTextures()
 	orTabletScreenMat.Albedo = diffuseOrTabletScreen;
 	coilMatOff.Albedo = diffuseCoilOff;
 	coilMatOn.Albedo = diffuseCoilOn;
+
+	newDoorMat.Albedo = diffuseSquareDoor;
+
 	clearMat.Albedo = texture2;
 }
 
@@ -217,6 +222,9 @@ void Scene::InitMeshes()
 	columnPipe = ModelManager::FindMesh(columnPipeFile);
 	tablet = ModelManager::FindMesh(tabletFile);
 	tut = ModelManager::FindMesh(tutFile, glm::vec3(1.0f, 0.0f, 0.0f));
+
+	//NEW DOOR
+	newDoorMesh = ModelManager::FindMesh(newDoorFile);
 
 	//Lab Levels(tentative)
 	floorLab = ModelManager::FindMesh(floorL4File, glm::vec3(0.2f, 0.7f, 0.0f));

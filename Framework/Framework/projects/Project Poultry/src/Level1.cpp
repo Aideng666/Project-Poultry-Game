@@ -55,6 +55,8 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	tutEnt = Entity::Create();
 	//particleEnt = Entity::Create();
 
+	newDoorEnt = Entity::Create();
+
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
 	sepiaEnt = Entity::Create();
@@ -117,6 +119,10 @@ void Level1::InitScene()
 	auto& doorCloseTrans = doorCloseEnt.Add<Transform>();
 	doorCloseTrans.SetPosition(glm::vec3(0.0f, -1.0f, -36.0f));
 	doorCloseTrans.SetScale(glm::vec3(1.5f));
+
+	//NEW DOOR TRANSFORM
+	auto& newDoorTrans = newDoorEnt.Add<Transform>();
+	newDoorTrans.SetPosition(glm::vec3(0.0f, 1.3f, 1.0f));	
 
 	//Button transforms
 	auto& buttonTrans = buttonEnt.Add<Transform>();
@@ -362,6 +368,8 @@ void Level1::InitScene()
 	auto& tabletScreenMesh = tabletScreenEnt.Add<MeshRenderer>(tabletScreenEnt, *screen, pauseShader);
 	auto& tabletMesh = tabletEnt.Add<MeshRenderer>(tabletEnt, *tablet, shader);
 
+	auto& newDoorM = newDoorEnt.Add<MeshRenderer>(newDoorEnt, *newDoorMesh, shader);
+
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
 	doorAnimator.SetFrames(doorFrames);
@@ -559,6 +567,8 @@ void Level1::Update(float dt)
 	glm::mat4 transformExit = exitEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformTablet = tabletEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformTabletScreen = tabletScreenEnt.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformNewDoor = newDoorEnt.Get<Transform>().GetModelMatrix();
 
 	//Particle Stuff
 	//auto& particleSystem = particleEnt.Get<ParticleSystem>();
@@ -825,6 +835,10 @@ void Level1::Update(float dt)
 				coilEnt.Get<MeshRenderer>().Render(camera, transformCoil);
 			}
 
+			//shader->SetUniform("s_Diffuse", 11);
+			//newDoorMat.Albedo->Bind(11);
+			//newDoorEnt.Get<MeshRenderer>().Render(camera, transformNewDoor);
+
 			//Bind and render the objects with no textures
 			untexturedShader->Bind();
 
@@ -916,6 +930,7 @@ void Level1::Update(float dt)
 			pipeEntC.Get<MeshRenderer>().Render(camera, transformPipe2);
 			tabletEnt.Get<MeshRenderer>().Render(camera, transformTablet);
 			coilEnt.Get<MeshRenderer>().Render(camera, transformCoil);
+			//newDoorEnt.Get<MeshRenderer>().Render(camera, transformNewDoor);
 
 			//untexturedShader->Bind();
 

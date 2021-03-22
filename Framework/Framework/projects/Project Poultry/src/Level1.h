@@ -57,6 +57,9 @@ private:
 	//Interact
 	Entity tutEnt;
 
+	//NEW DOOR
+	Entity newDoorEnt;
+
 	GLfloat time = 0.0f;
 
 	ParticleParam particleData;
