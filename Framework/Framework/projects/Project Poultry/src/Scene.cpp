@@ -49,6 +49,7 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseComplete = Texture2D::LoadFromFile("Textures/LevelComplete.png");
 	Texture2D::sptr diffuseAnd = Texture2D::LoadFromFile("Textures/AndGate.png");
 	Texture2D::sptr diffuseNot = Texture2D::LoadFromFile("Textures/NotGate.png");
+	Texture2D::sptr diffuseOr = Texture2D::LoadFromFile("Textures/OrGate.png");
 	Texture2D::sptr diffuseWire = Texture2D::LoadFromFile("Textures/Wire_Off_Texture.png");
 	Texture2D::sptr diffuseWireOn = Texture2D::LoadFromFile("Textures/Wire_On_Texture.png");
 	Texture2D::sptr diffuseBox = Texture2D::LoadFromFile("Textures/Box_Texture.png");
@@ -56,6 +57,8 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseVent = Texture2D::LoadFromFile("Textures/VentTexture.png");
 	Texture2D::sptr diffusePipeStraight = Texture2D::LoadFromFile("Textures/Pipe_Straight_Texture.png");
 	Texture2D::sptr diffusePipeCurved = Texture2D::LoadFromFile("Textures/Pipe_Curved_Texture.png");
+	Texture2D::sptr diffusePipeShelf = Texture2D::LoadFromFile("Textures/ShelfPipeTexture.png");
+	Texture2D::sptr diffusePipeColumn = Texture2D::LoadFromFile("Textures/ColumnPipeTexture.png");
 	Texture2D::sptr diffusePause = Texture2D::LoadFromFile("Textures/PauseMenu.png");
 	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Option.png");
 	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Replay.png");
@@ -82,6 +85,7 @@ void Scene::InitTextures()
 	completeMat.Albedo = diffuseComplete;
 	andMat.Albedo = diffuseAnd;
 	notMat.Albedo = diffuseNot;
+	orMat.Albedo = diffuseOr;
 	wireMat.Albedo = diffuseWire;
 	wireMatOn.Albedo = diffuseWireOn;
 	boxMat.Albedo = diffuseBox;
@@ -89,6 +93,8 @@ void Scene::InitTextures()
 	ventMat.Albedo = diffuseVent;
 	straightPipeMat.Albedo = diffusePipeStraight;
 	curvedPipeMat.Albedo = diffusePipeCurved;
+	shelfPipeMat.Albedo = diffusePipeShelf;
+	columnPipeMat.Albedo = diffusePipeColumn;
 	pauseMat.Albedo = diffusePause;
 	optionMat.Albedo = diffuseOptions;
 	retryMat.Albedo = diffuseRetry;
@@ -228,6 +234,7 @@ void Scene::InitMeshes()
 	retry = ModelManager::FindMesh(pauseButtonFile);
 	and = ModelManager::FindMesh(andFile);
 	not = ModelManager::FindMesh(notFile);
+	orMesh = ModelManager::FindMesh(orFile);
 	buttonM = ModelManager::FindMesh(buttonFile);
 	coil = ModelManager::FindMesh(coilFile);
 	boxM = ModelManager::FindMesh(boxFile);
@@ -236,14 +243,23 @@ void Scene::InitMeshes()
 	ventS = ModelManager::FindMesh(ventFileS);
 	pipeS = ModelManager::FindMesh(pipeFileS);
 	pipeC = ModelManager::FindMesh(pipeFileC);
+	shelfPipe = ModelManager::FindMesh(shelfPipeFile);
+	columnPipe = ModelManager::FindMesh(columnPipeFile);
 	tablet = ModelManager::FindMesh(tabletFile);
 	tut = ModelManager::FindMesh(tutFile, glm::vec3(1.0f, 0.0f, 0.0f));
+
+	//Lab Levels(tentative)
+	floorLab = ModelManager::FindMesh(floorL4File, glm::vec3(0.2f, 0.7f, 0.0f));
+	leftWallLab = ModelManager::FindMesh(labLeftWallFile);
+	rightWallLab = ModelManager::FindMesh(labRightWallFile);
+	backWallLab = ModelManager::FindMesh(labBackWallFile);
 
 	//Main Menu Level
 	startWord = ModelManager::FindMesh(startFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	exitWord = ModelManager::FindMesh(exitFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	optionsWord = ModelManager::FindMesh(optFile, glm::vec3(1.0f, 0.0f, 0.0f));
-	
+	mainMenuFloor = ModelManager::FindMesh(mainMenuFloorFile);
+
 	//Level 1
 	wireM1L1 = ModelManager::FindMesh(wire1L1File);
 	wireM2L1 = ModelManager::FindMesh(wire2L1File);
@@ -267,6 +283,38 @@ void Scene::InitMeshes()
 	wireM6L3 = ModelManager::FindMesh(wire6L3File);
 	wireM7L3 = ModelManager::FindMesh(wire7L3File);
 	floorL3 = ModelManager::FindMesh(floorL3File);
+
+	//Level4
+	wireM1L4 = ModelManager::FindMesh(wire1L4File);
+	wireM2L4 = ModelManager::FindMesh(wire2L4File);
+	wireM3L4 = ModelManager::FindMesh(wire3L4File);
+	wireM4L4 = ModelManager::FindMesh(wire4L4File);
+	wireM5L4 = ModelManager::FindMesh(wire5L4File);
+	wireM6L4 = ModelManager::FindMesh(wire6L4File);
+	wireM7L4 = ModelManager::FindMesh(wire7L4File);
+	wireM8L4 = ModelManager::FindMesh(wire8L4File);
+	wireM9L4 = ModelManager::FindMesh(wire9L4File);
+	wireM10L4 = ModelManager::FindMesh(wire10L4File);
+
+	//Level5
+	wireM1L5 = ModelManager::FindMesh(wire1L5File);
+	wireM2L5 = ModelManager::FindMesh(wire2L5File);
+	wireM3L5 = ModelManager::FindMesh(wire3L5File);
+	wireM4L5 = ModelManager::FindMesh(wire4L5File);
+	wireM5L5 = ModelManager::FindMesh(wire5L5File);
+	wireM6L5 = ModelManager::FindMesh(wire6L5File);
+	wireM7L5 = ModelManager::FindMesh(wire7L5File);
+
+	//Level6
+	wireM1L6 = ModelManager::FindMesh(wire1L6File);
+	wireM2L6 = ModelManager::FindMesh(wire2L6File);
+	wireM3L6 = ModelManager::FindMesh(wire3L6File);
+	wireM4L6 = ModelManager::FindMesh(wire4L6File);
+	wireM5L6 = ModelManager::FindMesh(wire5L6File);
+	wireM6L6 = ModelManager::FindMesh(wire6L6File);
+	wireM7L6 = ModelManager::FindMesh(wire7L6File);
+	wireM8L6 = ModelManager::FindMesh(wire8L6File);
+	wireM9L6 = ModelManager::FindMesh(wire9L6File);
 
 	entList.clear();
 }

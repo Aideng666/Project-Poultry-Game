@@ -503,15 +503,15 @@ void Level2::Update(float dt)
 	//floorEnt.Get<Transform>().SetPositionY(-0.9f);
 
 	backEnt.Get<Transform>().SetPositionZ(-39.0f);
-	backEnt.Get<Transform>().SetPositionY(9.0f);
+	backEnt.Get<Transform>().SetPositionY(22.0f);
 
 	leftEnt.Get<Transform>().SetPositionX(-39.0f);
 	leftEnt.Get<Transform>().SetRotationY(90.0f);
-	leftEnt.Get<Transform>().SetPositionY(9.0f);
+	leftEnt.Get<Transform>().SetPositionY(21.0f);
 
 	rightEnt.Get<Transform>().SetPositionX(39.0f);
 	rightEnt.Get<Transform>().SetRotationY(90.0f);
-	rightEnt.Get<Transform>().SetPositionY(9.0f);
+	rightEnt.Get<Transform>().SetPositionY(21.0f);
 #pragma endregion
 
 	auto& camera = camEnt.Get<Camera>();

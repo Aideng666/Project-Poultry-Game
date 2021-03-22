@@ -38,44 +38,7 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	bloomEnt = Entity::Create();
 #pragma endregion
 
-#pragma region Model Manager
-	/*drumstick = ModelManager::FindMesh(drumFile);
-	floor = ModelManager::FindMesh(floorFile);
-	wall = ModelManager::FindMesh(wallFile);
-	doorM = ModelManager::FindMesh(doorFile);
-	start = ModelManager::FindMesh(startFile, glm::vec3(1.0f, 0.0f, 0.0f));
-	exit = ModelManager::FindMesh(exitFile, glm::vec3(1.0f, 0.0f, 0.0f));
-	options = ModelManager::FindMesh(optFile, glm::vec3(1.0f, 0.0f, 0.0f));
-
-	door1 = ModelManager::FindMesh(doorFile1);
-	door2 = ModelManager::FindMesh(doorFile2);
-	door3 = ModelManager::FindMesh(doorFile3);
-	door4 = ModelManager::FindMesh(doorFile4);
-	door5 = ModelManager::FindMesh(doorFile5);
-	door6 = ModelManager::FindMesh(doorFile6);
-	door7 = ModelManager::FindMesh(doorFile7);
-	door8 = ModelManager::FindMesh(doorFile8);
-	door9 = ModelManager::FindMesh(doorFile9);
-	door10 = ModelManager::FindMesh(doorFile10);
-
-	walk1 = ModelManager::FindMesh(walkFile1);
-	walk2 = ModelManager::FindMesh(walkFile2);
-	walk3 = ModelManager::FindMesh(walkFile3);
-	walk4 = ModelManager::FindMesh(walkFile4);
-	walk5 = ModelManager::FindMesh(walkFile5);
-	walk6 = ModelManager::FindMesh(walkFile6);
-	walk7 = ModelManager::FindMesh(walkFile7);
-	walk8 = ModelManager::FindMesh(walkFile8);
-	walk9 = ModelManager::FindMesh(walkFile9);
-	walk10 = ModelManager::FindMesh(walkFile10);
-	walk11 = ModelManager::FindMesh(walkFile11);
-	walk12 = ModelManager::FindMesh(walkFile12);
-	walk13 = ModelManager::FindMesh(walkFile13);
-	walk14 = ModelManager::FindMesh(walkFile14);*/
-
 	InitMeshes();
-#pragma endregion
-
 }
 
 void MainMenuLevel::InitScene()
@@ -92,56 +55,8 @@ void MainMenuLevel::InitScene()
 
 	effects.clear();
 
-#pragma region Shader Stuff
-
-	//glm::vec3 lightPos = glm::vec3(0.0f, 10.0f, 0.0f);
-	//glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
-	//glm::vec3 lightCol = glm::vec3(1.f);
-	//float     lightAmbientPow = 0.20f;
-	//float     lightSpecularPow = 1.0f;
-	//glm::vec3 ambientCol = glm::vec3(1.0f);
-	//float     ambientPow = 0.1f;
-	//float     shininess = 16.0f;
-
-	//shader = Shader::Create();
-	//shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	//shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	//shader->Link();
-
-	//SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	//animShader = Shader::Create();
-	//animShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
-	//animShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	//animShader->Link();
-
-	//SetShaderValues(animShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
 	InitShaders();
-#pragma endregion
-
-#pragma region Texture Stuff
-
-	/*Texture2D::sptr diffuseDrum = Texture2D::LoadFromFile("Textures/DrumstickTexture.png");
-	Texture2D::sptr diffuseDoor = Texture2D::LoadFromFile("Textures/DoorTexture.png");
-	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTexture.jpg");
-	Texture2D::sptr diffuseWall = Texture2D::LoadFromFile("Textures/WallTexture.jpg");
-
-	Texture2DDescription desc = Texture2DDescription();
-	desc.Width = 1;
-	desc.Height = 1;
-	desc.Format = InternalFormat::RGB8;
-	Texture2D::sptr texture2 = Texture2D::Create(desc);
-	texture2->Clear();
-
-	drumstickMat.Albedo = diffuseDrum;
-	doorMat.Albedo = diffuseDoor;
-	floorMat.Albedo = diffuseFloor;
-	wallMat.Albedo = diffuseWall;
-	clearMat.Albedo = texture2;*/
-
 	InitTextures();
-#pragma endregion
 
 #pragma region Transforms
 
@@ -235,8 +150,6 @@ void MainMenuLevel::InitScene()
 	auto& optCol = optionDoor.Add<AABB>(optionDoor, mainPlayer);
 	auto& exitCol = exitDoor.Add<AABB>(exitDoor, mainPlayer);
 
-#pragma region Animation Frames
-	//Door Anim
 	doorFrames.push_back(std::unique_ptr<Mesh>(door1));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door3));
@@ -248,7 +161,6 @@ void MainMenuLevel::InitScene()
 	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
 
-	//Walking Anim
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk2));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk3));
@@ -263,7 +175,7 @@ void MainMenuLevel::InitScene()
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk12));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk13));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk14));
-#pragma endregion
+	//InitAnims();
 
 	//Load the meshes
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
@@ -279,6 +191,19 @@ void MainMenuLevel::InitScene()
 	auto& sMesh = startEnt.Add<MeshRenderer>(startEnt, *startWord, shader);
 	auto& oMesh = optEnt.Add<MeshRenderer>(optEnt, *optionsWord, shader);
 	auto& eMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exitWord, shader);
+
+	entList.push_back(&mainPlayer);
+	entList.push_back(&startDoor);
+	entList.push_back(&exitDoor);
+	entList.push_back(&optionDoor);
+	entList.push_back(&floorEnt);
+	entList.push_back(&leftWallEnt);
+	entList.push_back(&leftAngledWall);
+	entList.push_back(&rightWallEnt);
+	entList.push_back(&rightAngledWall);
+	entList.push_back(&startEnt);
+	entList.push_back(&optEnt);
+	entList.push_back(&exitEnt);
 
 	//Load the animations
 	auto& startAnimator = startDoor.Add<MorphAnimation>(startDoor);
@@ -307,9 +232,20 @@ void MainMenuLevel::InitScene()
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
 
+	//Allocates enough memory for one directional light (we can change this easily, but we only need 1 directional light)
+	directionalLightBuffer.AllocateMemory(sizeof(DirectionalLight));
+	//Casts our sun as "data" and sends it to the shader
+	directionalLightBuffer.SendData(reinterpret_cast<void*>(&theSun), sizeof(DirectionalLight));
+
+	directionalLightBuffer.Bind(0);
+
 #pragma region Post-Effects
 	int width, height;
 	glfwGetWindowSize(window, &width, &height);
+
+	auto shadowBuffer = &shadowBufferEnt.Add<Framebuffer>();
+	shadowBuffer->AddDepthTarget();
+	shadowBuffer->Init(shadowWidth, shadowHeight);
 
 	auto basicEffect = &FBO.Add<PostEffect>();
 	basicEffect->Init(width, height);
@@ -421,12 +357,27 @@ void MainMenuLevel::Update(float dt)
 	glm::mat4 transformE = eTrans.GetModelMatrix();
 
 #pragma region PlayerMovement
-	Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+	isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+
+	if (isWalking)
+	{
+		mainPlayer.Get<MorphAnimation>().Update(dt);
+	}
 #pragma endregion
 
 #pragma region CameraMovement
 	Input::MoveCamera(window, camEnt, dt);
 #pragma endregion
+
+	GetCursorPos(&mousePos);
+
+	ScreenToClient(hWnd, &mousePos);
+
+	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 323 && mousePos.y < 476 && mousePos.x > 575 && mousePos.x < 730)
+	{
+		std::cout << mousePos.x << " " << mousePos.y << std::endl;
+		glfwSetWindowShouldClose(window, true);
+	}
 
 	lightNum = Input::ChangeLighting(window, lightNum);
 
@@ -436,14 +387,53 @@ void MainMenuLevel::Update(float dt)
 	shader->SetUniform("u_LightNum", lightNum);
 	animShader->SetUniform("u_LightNum", lightNum);
 
+	if (lightOn)
+		lightInt = 1;
+	else
+		lightInt = 0;
+
+	shader->SetUniform("u_LightOn", lightInt);
+	animShader->SetUniform("u_LightOn", lightInt);
+
 	auto basicEffect = &FBO.Get<PostEffect>();
+	auto shadowBuffer = &shadowBufferEnt.Get<Framebuffer>();
 
 	basicEffect->Clear();
+	shadowBuffer->Clear();
 
 	for (int i = 0; i < effects.size(); i++)
 	{
 		effects[i]->Clear();
 	}
+
+	glm::mat4 LightProjectionMatrix = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, -1000.0f, 1000.0f);
+	glm::mat4 LightViewMatrix = glm::lookAt(glm::vec3(-theSun._lightDirection), glm::vec3(), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 LightSpaceViewProjection = LightProjectionMatrix * LightViewMatrix;
+
+	glViewport(0, 0, shadowWidth, shadowHeight);
+	shadowBuffer->Bind();
+
+	for (int i = 0; i < entList.size(); i++)
+	{
+		if (i < 4)
+		{
+			simpleDepthShader->Bind();
+			entList[i]->Get<MorphRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
+			simpleDepthShader->UnBind();
+		}
+		else
+		{
+			simpleDepthShader->Bind();
+			entList[i]->Get<MeshRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
+			simpleDepthShader->UnBind();
+		}
+	}
+
+	shadowBuffer->Unbind();
+
+	glfwGetWindowSize(window, &width, &height);
+
+	glViewport(0, 0, width, height);
 
 	basicEffect->BindBuffer(0);
 
@@ -453,6 +443,7 @@ void MainMenuLevel::Update(float dt)
 		animShader->Bind();
 		animShader->SetUniform("s_Diffuse", 0);
 		drumstickMat.Albedo->Bind(0);
+		shadowBuffer->BindDepthAsTexture(30);
 		drumMesh.Render(camera, transform);
 		animShader->SetUniform("s_Diffuse", 1);
 		doorMat.Albedo->Bind(1);
@@ -460,10 +451,12 @@ void MainMenuLevel::Update(float dt)
 		exitMesh.Render(camera, transformExit);
 		optMesh.Render(camera, transformOpt);
 		doorMat.Albedo->Unbind(1);	
+		shadowBuffer->UnbindTexture(30);
 
 		shader->Bind();
 		shader->SetUniform("s_Diffuse", 0);
 		wallMat.Albedo->Bind(0);
+		shadowBuffer->BindDepthAsTexture(30);
 		leftMesh.Render(camera, transformLeft);
 		rightMesh.Render(camera, transformRight);
 		backMesh.Render(camera, transformBack);
@@ -475,12 +468,14 @@ void MainMenuLevel::Update(float dt)
 		shader->SetUniform("s_Diffuse", 1);
 		floorMat.Albedo->Bind(1);
 		floorMesh.Render(camera, transformFloor); 
+		shadowBuffer->UnbindTexture(30);
 	}
 	else
 	{
 		animShader->Bind();
 		animShader->SetUniform("s_Diffuse", 0);
 		clearMat.Albedo->Bind(0);
+		shadowBuffer->BindDepthAsTexture(30);
 		drumMesh.Render(camera, transform);
 		animShader->SetUniform("s_Diffuse", 1);
 		clearMat.Albedo->Bind(1);
@@ -488,10 +483,12 @@ void MainMenuLevel::Update(float dt)
 		exitMesh.Render(camera, transformExit);
 		optMesh.Render(camera, transformOpt);
 		clearMat.Albedo->Unbind(1); 
+		shadowBuffer->UnbindTexture(30);
 
 		shader->Bind();
 		shader->SetUniform("s_Diffuse", 0);
 		clearMat.Albedo->Bind(0);
+		shadowBuffer->BindDepthAsTexture(30);
 		leftMesh.Render(camera, transformLeft);
 		rightMesh.Render(camera, transformRight);
 		backMesh.Render(camera, transformBack);
@@ -503,6 +500,7 @@ void MainMenuLevel::Update(float dt)
 		shader->SetUniform("s_Diffuse", 1);
 		clearMat.Albedo->Bind(1);
 		floorMesh.Render(camera, transformFloor); 
+		shadowBuffer->UnbindTexture(30);
 	}
 
 #pragma endregion

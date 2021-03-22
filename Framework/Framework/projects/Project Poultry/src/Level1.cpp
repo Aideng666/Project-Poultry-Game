@@ -12,20 +12,6 @@
 #include <stb_image.h>
 #include <MorphAnimation.h>
 
-
-#define MOUSEEVENTF_MOVE = 0x0001
-#define MOUSEEVENTF_LEFTDOWN = 0x0002
-#define MOUSEEVENTF_LEFTUP = 0x0004
-#define MOUSEEVENTF_RIGHTDOWN = 0x0008
-#define MOUSEEVENTF_RIGHTUP = 0x0010
-#define MOUSEEVENTF_MIDDLEDOWN = 0x0020
-#define MOUSEEVENTF_MIDDLEUP = 0x0040
-#define MOUSEEVENTF_XDOWN = 0x0080
-#define MOUSEEVENTF_XUP = 0x0100
-#define MOUSEEVENTF_WHEEL = 0x0800
-#define MOUSEEVENTF_VIRTUALDESK = 0x4000
-#define MOUSEEVENTF_ABSOLUTE = 0x8000
-
 using namespace freebird;
 
 Level1::Level1(std::string sceneName, GLFWwindow* wind)
@@ -344,7 +330,6 @@ void Level1::InitScene()
 	entList.push_back(&doorCloseEnt);
 	entList.push_back(&floorEnt);
 	entList.push_back(&leftEnt);
-	//entList.push_back(&backEnt);
 	entList.push_back(&rightEnt);
 	entList.push_back(&completeEnt);
 	entList.push_back(&andEnt);
@@ -367,12 +352,6 @@ void Level1::InitScene()
 	entList.push_back(&pipeEntC);
 	entList.push_back(&pipeEntS);
 	entList.push_back(&tabletEnt);
-	/*entList.push_back(&tutEnt);
-	entList.push_back(&pauseEnt);
-	entList.push_back(&optionEnt);
-	entList.push_back(&retryEnt);
-	entList.push_back(&exitEnt);
-	entList.push_back(&tabletScreenEnt);*/
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.2f);
@@ -458,6 +437,7 @@ void Level1::InitScene()
 
 	Application::imGuiCallbacks.push_back([&]() {
 
+		ImGui::SliderFloat("X", &theSun._lightDirection.x, -3.0f, 3.0f);
 		ImGui::SliderFloat("Y", &theSun._lightDirection.y, -3.0f, 3.0f);
 		ImGui::SliderFloat("Z", &theSun._lightDirection.z, -3.0f, 3.0f);
 
@@ -466,7 +446,7 @@ void Level1::InitScene()
 
 void Level1::Update(float dt)
 {
-	time += dt;
+	/*time += dt;
 	untexturedShader->SetUniform("u_Time", time);
 	shader->SetUniform("u_Time", time);
 	pauseShader->SetUniform("u_Time", time);
@@ -491,7 +471,7 @@ void Level1::Update(float dt)
 	untexturedShader->SetUniform("u_Position", currentPos);
 	shader->SetUniform("u_Position", currentPos);
 	pauseShader->SetUniform("u_Position", currentPos);
-	animShader->SetUniform("u_Position", currentPos);
+	animShader->SetUniform("u_Position", currentPos);*/
 
 #pragma region Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -499,15 +479,15 @@ void Level1::Update(float dt)
 	auto& buttonTrans2 = buttonEnt2.Get<Transform>();
 
 	backEnt.Get<Transform>().SetPositionZ(-39.0f);
-	backEnt.Get<Transform>().SetPositionY(9.0f);
+	backEnt.Get<Transform>().SetPositionY(22.0f);
 	
 	leftEnt.Get<Transform>().SetPositionX(-39.0f);
 	leftEnt.Get<Transform>().SetRotationY(90.0f);
-	leftEnt.Get<Transform>().SetPositionY(9.0f);
+	leftEnt.Get<Transform>().SetPositionY(21.0f);
 	
 	rightEnt.Get<Transform>().SetPositionX(39.0f);
 	rightEnt.Get<Transform>().SetRotationY(90.0f);
-	rightEnt.Get<Transform>().SetPositionY(9.0f);
+	rightEnt.Get<Transform>().SetPositionY(21.0f);
 
 	tabletEnt.Get<Transform>().SetRotationY(tabletEnt.Get<Transform>().GetRotation().y + 100 * dt);
 #pragma endregion
@@ -515,42 +495,6 @@ void Level1::Update(float dt)
 	auto& camera = camEnt.Get<Camera>();
 	auto& orthoCam = uiCamEnt.Get<Camera>();
 	//camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
-
-	////Get references to the meshes
-	//auto& meshMain = mainPlayer.Get<MorphRenderer>();
-	//auto& groundMesh = floorEnt.Get<MeshRenderer>();
-	//auto& leftMesh = leftEnt.Get<MeshRenderer>();
-	//auto& rightMesh = rightEnt.Get<MeshRenderer>();
-	//auto& backMesh = backEnt.Get<MeshRenderer>();
-	//auto& doorMesh = doorEnt.Get<MorphRenderer>();
-	//auto& doorCloseMesh = doorCloseEnt.Get<MorphRenderer>();
-	//auto& completeMesh = completeEnt.Get<MeshRenderer>();
-	//auto& gateMesh = andEnt.Get<MeshRenderer>();
-	//auto& buttonMesh = buttonEnt.Get<MeshRenderer>();
-	//auto& buttonMesh2 = buttonEnt2.Get<MeshRenderer>();
-	//auto& wireMesh = wireEnt.Get<MeshRenderer>();
-	//auto& wireMesh2 = wireEnt2.Get<MeshRenderer>();
-	//auto& wireMesh3 = wireEnt3.Get<MeshRenderer>();
-	//auto& coilMesh = coilEnt.Get<MeshRenderer>();
-	//auto& boxMesh = boxEnt.Get<MeshRenderer>();
-	//auto& boxMesh2 = boxEnt2.Get<MeshRenderer>();
-	//auto& boxMesh3 = boxEnt3.Get<MeshRenderer>();
-	//auto& boxMesh4 = boxEnt4.Get<MeshRenderer>();
-	//auto& boxMesh5 = boxEnt5.Get<MeshRenderer>();
-	//auto& panelMesh = panelEnt.Get<MeshRenderer>();
-	//auto& panelMesh2 = panelEnt2.Get<MeshRenderer>();
-	//auto& ventMesh = bigVentEnt.Get<MeshRenderer>();
-	//auto& ventMesh2 = smallVentEnt.Get<MeshRenderer>();
-	//auto& ventMesh3 = smallVentEnt2.Get<MeshRenderer>();
-	//auto& pipeMesh = pipeEntS.Get<MeshRenderer>();
-	//auto& pipeMesh2 = pipeEntC.Get<MeshRenderer>();
-	//auto& tutMesh = tutEnt.Get<MeshRenderer>();
-	//auto& pauseMesh = pauseEnt.Get<MeshRenderer>();
-	//auto& optionMesh = optionEnt.Get<MeshRenderer>();
-	//auto& retryMesh = retryEnt.Get<MeshRenderer>();
-	//auto& exitMesh = exitEnt.Get<MeshRenderer>();
-	//auto& tabletMesh = tabletEnt.Get<MeshRenderer>();
-	//auto& tabletScreenMesh = tabletScreenEnt.Get<MeshRenderer>();
 
 	//Get reference to the model matrix
 	glm::mat4 transform = mainPlayer.Get<Transform>().GetModelMatrix();
@@ -674,6 +618,7 @@ void Level1::Update(float dt)
 
 	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 323 && mousePos.y < 476 && mousePos.x > 575 && mousePos.x < 730)
 	{
+		std::cout << mousePos.x << " " << mousePos.y << std::endl;
 		glfwSetWindowShouldClose(window, true);
 	}
 
@@ -779,7 +724,7 @@ void Level1::Update(float dt)
 
 			if (isPaused)
 			{
-				pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause, LightSpaceViewProjection);
+				pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause);
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 1);
@@ -787,7 +732,7 @@ void Level1::Update(float dt)
 
 			if (isPaused)
 			{
-				optionEnt.Get<MeshRenderer>().Render(orthoCam, transformOptions, LightSpaceViewProjection);
+				optionEnt.Get<MeshRenderer>().Render(orthoCam, transformOptions);
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 2);
@@ -795,7 +740,7 @@ void Level1::Update(float dt)
 
 			if (isPaused)
 			{
-				retryEnt.Get<MeshRenderer>().Render(orthoCam, transformRetry, LightSpaceViewProjection);
+				retryEnt.Get<MeshRenderer>().Render(orthoCam, transformRetry);
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 2);
@@ -803,7 +748,7 @@ void Level1::Update(float dt)
 
 			if (isPaused)
 			{
-				exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit, LightSpaceViewProjection);
+				exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit);
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 3);
@@ -811,7 +756,7 @@ void Level1::Update(float dt)
 
 			if (tabletOpen)
 			{
-				tabletScreenEnt.Get<MeshRenderer>().Render(orthoCam, transformTabletScreen, LightSpaceViewProjection);
+				tabletScreenEnt.Get<MeshRenderer>().Render(orthoCam, transformTabletScreen);
 			}
 
 			shadowBuffer->UnbindTexture(30);
@@ -1059,7 +1004,7 @@ void Level1::Update(float dt)
 		shader->SetUniform("s_Diffuse", 0);
 		completeMat.Albedo->Bind(0);
 		shadowBuffer->BindDepthAsTexture(30);
-		completeEnt.Get<MeshRenderer>().Render(orthoCam, transformComplete, LightSpaceViewProjection);
+		completeEnt.Get<MeshRenderer>().Render(orthoCam, transformComplete);
 
 		shadowBuffer->UnbindTexture(30);
 	}
@@ -1087,11 +1032,11 @@ void Level1::Update(float dt)
 	boxEnt3.Get<AABB>().Update();
 	boxEnt4.Get<AABB>().Update();
 	boxEnt5.Get<AABB>().Update();
-	andEnt.Get<AndGate>().Update();
 	coilEnt.Get<AABB>().Update();
 	pipeEntC.Get<AABB>().Update();
 	buttonEnt.Get<AABB>().Update();
 	buttonEnt2.Get<AABB>().Update();
+	andEnt.Get<AndGate>().Update();
 	buttonEnt.Get<Lever>().Update();
 	buttonEnt2.Get<Lever>().Update();
 	wireEnt.Get<Wire>().Update();

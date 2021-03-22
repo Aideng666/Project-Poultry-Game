@@ -111,7 +111,7 @@ protected:
 
 	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat;
 	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
-	Mat andMat, notMat, wireMatOn;
+	Mat andMat, notMat, orMat, wireMatOn, shelfPipeMat, columnPipeMat;
 
 	//Meshes for multiple levels
 	Mesh* options;
@@ -135,12 +135,21 @@ protected:
 	Mesh* pipeC;
 	Mesh* tablet;
 	Mesh* tut;
-	Mesh* and;
+	Mesh*and;
+	Mesh* shelfPipe;
+	Mesh* columnPipe;
+
+	//For bigger "lab" levels
+	Mesh* floorLab;
+	Mesh* backWallLab;
+	Mesh* leftWallLab;
+	Mesh* rightWallLab;
 
 	//Main Menu Level Meshes
 	Mesh* startWord;
 	Mesh* optionsWord;
 	Mesh* exitWord;
+	Mesh* mainMenuFloor;
 
 	//Level 1 Meshes
 	Mesh* wireM1L1;
@@ -157,7 +166,7 @@ protected:
 	Mesh* floorL2;
 
 	//Level 3 Meshes
-	Mesh* not;
+	Mesh * not;
 	Mesh* wireM1L3;
 	Mesh* wireM2L3;
 	Mesh* wireM3L3;
@@ -167,16 +176,50 @@ protected:
 	Mesh* wireM7L3;
 	Mesh* floorL3;
 
+	//Level 4 Meshes
+	Mesh* wireM1L4;
+	Mesh* wireM2L4;
+	Mesh* wireM3L4;
+	Mesh* wireM4L4;
+	Mesh* wireM5L4;
+	Mesh* wireM6L4;
+	Mesh* wireM7L4;
+	Mesh* wireM8L4;
+	Mesh* wireM9L4;
+	Mesh* wireM10L4;
+
+	//Level 5 Meshes
+	Mesh* orMesh;
+	Mesh* wireM1L5;
+	Mesh* wireM2L5;
+	Mesh* wireM3L5;
+	Mesh* wireM4L5;
+	Mesh* wireM5L5;
+	Mesh* wireM6L5;
+	Mesh* wireM7L5;
+
+	//Level 6 Meshes
+	Mesh* wireM1L6;
+	Mesh* wireM2L6;
+	Mesh* wireM3L6;
+	Mesh* wireM4L6;
+	Mesh* wireM5L6;
+	Mesh* wireM6L6;
+	Mesh* wireM7L6;
+	Mesh* wireM8L6;
+	Mesh* wireM9L6;
+
 	//Files for multiple levels
 	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
 	std::string floorFile = "Models/Floor.obj";
-	std::string floorL1File = "Models/Level1Floor.obj";
-	std::string floorL2File = "Models/Level2Floor.obj";
-	std::string floorL3File = "Models/Level3Floor.obj";
+	std::string floorL1File = "Models/L1-Floor.obj";
+	std::string floorL2File = "Models/L2-Floor.obj";
+	std::string floorL3File = "Models/L3-Floor.obj";
+	std::string floorL4File = "Models/Level4Floor.obj";
 	std::string screenFile = "Models/Floor.obj";
-	std::string leftWallFile = "Models/LeftWall.obj";
-	std::string rightWallFile = "Models/RightWall.obj";
-	std::string backWallFile = "Models/BackWall.obj";
+	std::string leftWallFile = "Models/F-LW.obj";
+	std::string rightWallFile = "Models/F-RW.obj";
+	std::string backWallFile = "Models/F-FW.obj";
 	std::string doorFile = "Models/DoorFrames/Door0.obj";
 	std::string andFile = "Models/AndGate.obj";
 	std::string buttonFile = "Models/Button.obj";
@@ -190,12 +233,19 @@ protected:
 	std::string pauseButtonFile = "Models/UI_Button.obj";
 	std::string pipeFileS = "Models/New2_StraightPipe.obj";
 	std::string pipeFileC = "Models/New2_CurvedPipe.obj";
+	std::string shelfPipeFile = "Models/ShelfPipe.obj";
+	std::string columnPipeFile = "Models/New_Column_Pipe.obj";
+
+	std::string labBackWallFile = "Models/Level4BackWall.obj";
+	std::string labLeftWallFile = "Models/Level4LeftWall.obj";
+	std::string labRightWallFile = "Models/Level4RightWall.obj";
 
 	//Main Menu Level Files
 	std::string startFile = "Models/Start.obj";
 	std::string exitFile = "Models/Exit.obj";
 	std::string optFile = "Models/Options.obj";
-	
+	std::string mainMenuFloorFile = "Models/MainMenu-Floor.obj";
+
 	//Level 1 Files
 	std::string wire1L1File = "Models/New_Level1Wire1.obj";
 	std::string wire2L1File = "Models/New_Level1Wire2.obj";
@@ -218,6 +268,38 @@ protected:
 	std::string wire6L3File = "Models/New_Level3Wire6.obj";
 	std::string wire7L3File = "Models/New_Level3Wire7.obj";
 
+	//Level 4 files
+	std::string wire1L4File = "Models/Level4Wire1.obj";
+	std::string wire2L4File = "Models/Level4Wire2.obj";
+	std::string wire3L4File = "Models/Level4Wire3.obj";
+	std::string wire4L4File = "Models/Level4Wire4.obj";
+	std::string wire5L4File = "Models/Level4Wire5.obj";
+	std::string wire6L4File = "Models/Level4Wire6.obj";
+	std::string wire7L4File = "Models/Level4Wire7.obj";
+	std::string wire8L4File = "Models/Level4Wire8.obj";
+	std::string wire9L4File = "Models/Level4Wire9.obj";
+	std::string wire10L4File = "Models/Level4Wire10.obj";
+
+	//Level 5 files
+	std::string orFile = "Models/OrGate.obj";
+	std::string wire1L5File = "Models/Level5Wire1.obj";
+	std::string wire2L5File = "Models/Level5Wire2.obj";
+	std::string wire3L5File = "Models/Level5Wire3.obj";
+	std::string wire4L5File = "Models/Level5Wire4.obj";
+	std::string wire5L5File = "Models/Level5Wire5.obj";
+	std::string wire6L5File = "Models/Level5Wire6.obj";
+	std::string wire7L5File = "Models/Level5Wire7.obj";
+
+	//Level 6 files
+	std::string wire1L6File = "Models/Level6Wire1.obj";
+	std::string wire2L6File = "Models/Level6Wire2.obj";
+	std::string wire3L6File = "Models/Level6Wire3.obj";
+	std::string wire4L6File = "Models/Level6Wire4.obj";
+	std::string wire5L6File = "Models/Level6Wire5.obj";
+	std::string wire6L6File = "Models/Level6Wire6.obj";
+	std::string wire7L6File = "Models/Level6Wire7.obj";
+	std::string wire8L6File = "Models/Level6Wire8.obj";
+	std::string wire9L6File = "Models/Level6Wire9.obj";
 
 	std::vector<std::function<void()>> imGuiCallbacks;
 
