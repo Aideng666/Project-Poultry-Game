@@ -24,6 +24,7 @@ Level4::Level4(std::string sceneName, GLFWwindow* wind)
 	rightEnt = Entity::Create();
 	backEnt = Entity::Create();
 	doorEnt = Entity::Create();
+	completeEnt = Entity::Create();
 	buttonEnt = Entity::Create();
 	buttonEnt2 = Entity::Create();
 	buttonEnt3 = Entity::Create();
@@ -115,17 +116,17 @@ void Level4::InitScene()
 	doorTrans.SetScale(glm::vec3(1.5f));
 
 	//Button transforms
-	auto& buttonTrans = buttonEnt.Add<Transform>();
-	buttonTrans.SetPosition(glm::vec3(24.8f, -1.0f, 35.f));
-
-	auto& buttonTrans2 = buttonEnt2.Add<Transform>();
-	buttonTrans2.SetPosition(glm::vec3(3.5f, -1.0f, 35.f));
+	auto& buttonTrans4 = buttonEnt4.Add<Transform>();
+	buttonTrans4.SetPosition(glm::vec3(24.8f, -1.0f, 35.f));
 
 	auto& buttonTrans3 = buttonEnt3.Add<Transform>();
-	buttonTrans3.SetPosition(glm::vec3(-5.f, -1.0f, 35.f));
+	buttonTrans3.SetPosition(glm::vec3(3.5f, -1.0f, 35.f));
 
-	auto& buttonTrans4 = buttonEnt4.Add<Transform>();
-	buttonTrans4.SetPosition(glm::vec3(-20.2f, -1.0f, 35.5f));
+	auto& buttonTrans2 = buttonEnt2.Add<Transform>();
+	buttonTrans2.SetPosition(glm::vec3(-5.f, -1.0f, 35.f));
+
+	auto& buttonTrans = buttonEnt.Add<Transform>();
+	buttonTrans.SetPosition(glm::vec3(-20.2f, -1.0f, 35.5f));
 
 	//Column Pipe transforms
 	auto& colPipeTrans = colPipeEnt.Add<Transform>();
@@ -151,6 +152,11 @@ void Level4::InitScene()
 	auto& shelfPipeTrans3 = shelfPipeEnt3.Add<Transform>();
 	shelfPipeTrans3.SetPosition(glm::vec3(-46.5f, 17.f, 20.f));
 	shelfPipeTrans3.SetScale(glm::vec3(1.5f));
+
+	//Level complete transform
+	auto& completeTrans = completeEnt.Add<Transform>();
+	completeTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	completeTrans.SetScale(glm::vec3(0.22f));
 
 	//Panel transforms
 	auto& panelTrans = panelEnt.Add<Transform>();
@@ -319,9 +325,9 @@ void Level4::InitScene()
 	buttonCol4.SetIsAmbient(true);
 	auto& coilCol = coilEnt.Add<AABB>(coilEnt, mainPlayer, 4.0f, 4.0f);
 	coilCol.SetIsAmbient(true);
-	auto& pipeCol = colPipeEnt.Add<AABB>(colPipeEnt, mainPlayer, 14.5f, 2.0f);
+	auto& pipeCol = colPipeEnt.Add<AABB>(colPipeEnt, mainPlayer, 14.5f, 3.0f);
 	pipeCol.SetIsAmbient(true);
-	auto& pipeCol2 = colPipeEnt2.Add<AABB>(colPipeEnt2, mainPlayer, 14.5f, 2.0f);
+	auto& pipeCol2 = colPipeEnt2.Add<AABB>(colPipeEnt2, mainPlayer, 14.5f, 3.0f);
 	pipeCol2.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
@@ -331,11 +337,11 @@ void Level4::InitScene()
 	auto& button = buttonEnt.Add<Lever>(wireEnt);
 	button.SetPowered(false);
 	auto& button2 = buttonEnt2.Add<Lever>(wireEnt2);
-	button2.SetPowered(false);
+	button2.SetPowered(true);
 	auto& button3 = buttonEnt3.Add<Lever>(wireEnt3);
-	button3.SetPowered(false);
+	button3.SetPowered(true);
 	auto& button4 = buttonEnt4.Add<Lever>(wireEnt4);
-	button4.SetPowered(false);
+	button4.SetPowered(true);
 
 	//Wires
 	auto& wire = wireEnt.Add<Wire>(buttonEnt);

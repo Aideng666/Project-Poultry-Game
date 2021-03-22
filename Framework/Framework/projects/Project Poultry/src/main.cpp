@@ -232,7 +232,7 @@ int main()
 
 		if (currentScene->GetLoad())
 		{
-			//scenes.push_back(new MainMenuLevel("Main Menu Level", window));
+			scenes.push_back(new MainMenuLevel("Main Menu Level", window));
 			scenes.push_back(new Level1("Level 1", window));
 			scenes.push_back(new Level2("Level 2", window));
 			scenes.push_back(new Level3("Level 3", window));
@@ -240,7 +240,7 @@ int main()
 			scenes.push_back(new Level5("Level 5", window));
 			scenes.push_back(new Level6("Level 6", window));
 
-			SetActiveScene(4);
+			SetActiveScene(1);
 		}
 
 

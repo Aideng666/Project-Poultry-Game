@@ -50,6 +50,7 @@ private:
 	//Tesla Coil
 	Entity coilEnt;
 	//Complete Ent
+	Entity completeEnt;
 
 	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
 		isPaused = !isPaused;

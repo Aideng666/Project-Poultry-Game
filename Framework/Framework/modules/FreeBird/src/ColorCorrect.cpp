@@ -18,7 +18,7 @@ namespace freebird
 		_shaders[index]->Link();
 
 		//Load in cube
-		_Lut.loadFromFile("BrightenedCorrection.cube");
+		_Lut.loadFromFile("GameColorCorrection.cube");
 
 		PostEffect::Init(width, height);
 	}
