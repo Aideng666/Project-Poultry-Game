@@ -335,7 +335,7 @@ void Level5::InitScene()
 	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWallLab, untexturedShader);
 	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWallLab, untexturedShader);
 
-	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
+	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *door1, animShader);
 
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
@@ -416,7 +416,7 @@ void Level5::InitScene()
 	entList.push_back(&ventEnt2);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
-	doorAnimator.SetTime(0.2f);
+	doorAnimator.SetTime(0.5f);
 	doorAnimator.SetFrames(doorFrames);
 	doorAnimator.SetLoop(false);
 

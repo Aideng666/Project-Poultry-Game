@@ -207,7 +207,7 @@ void Level6::InitScene()
 	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWallLab, untexturedShader);
 	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWallLab, untexturedShader);
 
-	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
+	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *door1, animShader);
 
 	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireM1L6, shader);
 	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireM2L6, shader);
@@ -241,7 +241,7 @@ void Level6::InitScene()
 	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
-	doorAnimator.SetTime(0.2f);
+	doorAnimator.SetTime(0.5f);
 	doorAnimator.SetFrames(doorFrames);
 	doorAnimator.SetLoop(false);
 

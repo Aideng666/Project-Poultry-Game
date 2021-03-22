@@ -317,7 +317,7 @@ void Level2::InitScene()
 	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireM3L2, shader);
 	auto& wireMesh4 = wireEnt4.Add<MeshRenderer>(wireEnt4, *wireM4L2, shader);
 	auto& wireMesh5 = wireEnt5.Add<MeshRenderer>(wireEnt5, *wireM5L2, shader);
-	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
+	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *door1, animShader);
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *screen, shader);
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
@@ -367,7 +367,7 @@ void Level2::InitScene()
 	entList.push_back(&pipeEntS2);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
-	doorAnimator.SetTime(0.2f);
+	doorAnimator.SetTime(0.5f);
 	doorAnimator.SetFrames(doorFrames);
 	doorAnimator.SetLoop(false);
 

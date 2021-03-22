@@ -384,7 +384,7 @@ void Level4::InitScene()
 	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWallLab, untexturedShader);
 	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *screen, shader);
-	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *doorM, animShader);
+	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *door1, animShader);
 	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
 	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
 	auto& buttonMesh3 = buttonEnt3.Add<MeshRenderer>(buttonEnt3, *buttonM, shader);
@@ -475,7 +475,7 @@ void Level4::InitScene()
 	entList.push_back(&coilEnt);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
-	doorAnimator.SetTime(0.2f);
+	doorAnimator.SetTime(0.5f);
 	doorAnimator.SetFrames(doorFrames);
 	doorAnimator.SetLoop(false);
 

@@ -154,12 +154,12 @@ void MainMenuLevel::InitScene()
 	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door3));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door4));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door5));
+	/*doorFrames.push_back(std::unique_ptr<Mesh>(door5));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door6));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door7));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door8));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
+	doorFrames.push_back(std::unique_ptr<Mesh>(door10));*/
 
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk2));
@@ -185,9 +185,9 @@ void MainMenuLevel::InitScene()
 	auto& leftAMesh = leftAngledWall.Add<MeshRenderer>(leftAngledWall, *leftWall, shader);
 	auto& rightAMesh = rightAngledWall.Add<MeshRenderer>(rightAngledWall, *rightWall, shader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floor, shader);
-	auto& playMesh = startDoor.Add<MorphRenderer>(startDoor, *doorM, animShader);
-	auto& exitMesh = exitDoor.Add<MorphRenderer>(exitDoor, *doorM, animShader);
-	auto& optMesh = optionDoor.Add<MorphRenderer>(optionDoor, *doorM, animShader);
+	auto& playMesh = startDoor.Add<MorphRenderer>(startDoor, *door1, animShader);
+	auto& exitMesh = exitDoor.Add<MorphRenderer>(exitDoor, *door1, animShader);
+	auto& optMesh = optionDoor.Add<MorphRenderer>(optionDoor, *door1, animShader);
 	auto& sMesh = startEnt.Add<MeshRenderer>(startEnt, *startWord, shader);
 	auto& oMesh = optEnt.Add<MeshRenderer>(optEnt, *optionsWord, shader);
 	auto& eMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exitWord, shader);

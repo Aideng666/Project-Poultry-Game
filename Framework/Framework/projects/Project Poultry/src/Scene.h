@@ -110,7 +110,7 @@ protected:
 	Entity pauseEnt, optionEnt, exitEnt, retryEnt, tutEnt, completeEnt;
 
 	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat;
-	Mat buttonMat, drumstickMat, doorMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
+	Mat buttonMat, drumstickMat, doorMat, doorOnMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
 	Mat andMat, notMat, orMat, wireMatOn, shelfPipeMat, columnPipeMat;
 
 	//Meshes for multiple levels
@@ -123,8 +123,6 @@ protected:
 	Mesh* leftWall;
 	Mesh* rightWall;
 	Mesh* backWall;
-	Mesh* doorM;
-	Mesh* doorCloseM;
 	Mesh* buttonM;
 	Mesh* coil;
 	Mesh* boxM;
@@ -220,7 +218,7 @@ protected:
 	std::string leftWallFile = "Models/F-LW.obj";
 	std::string rightWallFile = "Models/F-RW.obj";
 	std::string backWallFile = "Models/F-FW.obj";
-	std::string doorFile = "Models/DoorFrames/Door0.obj";
+	std::string doorFile = "Models/DoorFrames/DoorFrame1.obj";
 	std::string andFile = "Models/AndGate.obj";
 	std::string buttonFile = "Models/Button.obj";
 	std::string coilFile = "Models/TeslaCoil.obj";
@@ -339,12 +337,12 @@ protected:
 	Mesh* door2;
 	Mesh* door3;
 	Mesh* door4;
-	Mesh* door5;
-	Mesh* door6;
-	Mesh* door7;
-	Mesh* door8;
-	Mesh* door9;
-	Mesh* door10;
+	//Mesh* door5;
+	//Mesh* door6;
+	//Mesh* door7;
+	//Mesh* door8;
+	//Mesh* door9;
+	//Mesh* door10;
 
 	Mesh* walk1;
 	Mesh* walk2;
@@ -380,16 +378,16 @@ protected:
 	Mesh* idle17;
 	Mesh* idle18;
 
-	std::string doorFile1 = "Models/DoorFrames/Door0.obj";
-	std::string doorFile2 = "Models/DoorFrames/Door1.obj";
-	std::string doorFile3 = "Models/DoorFrames/Door2.obj";
-	std::string doorFile4 = "Models/DoorFrames/Door3.obj";
-	std::string doorFile5 = "Models/DoorFrames/Door4.obj";
-	std::string doorFile6 = "Models/DoorFrames/Door5.obj";
-	std::string doorFile7 = "Models/DoorFrames/Door6.obj";
-	std::string doorFile8 = "Models/DoorFrames/Door7.obj";
-	std::string doorFile9 = "Models/DoorFrames/Door8.obj";
-	std::string doorFile10 = "Models/DoorFrames/Door9.obj";
+	std::string doorFile1 = "Models/DoorFrames/DoorFrame1.obj";
+	std::string doorFile2 = "Models/DoorFrames/DoorFrame2.obj";
+	std::string doorFile3 = "Models/DoorFrames/DoorFrame3.obj";
+	std::string doorFile4 = "Models/DoorFrames/DoorFrame4.obj";
+	//std::string doorFile5 = "Models/DoorFrames/Door4.obj";
+	//std::string doorFile6 = "Models/DoorFrames/Door5.obj";
+	//std::string doorFile7 = "Models/DoorFrames/Door6.obj";
+	//std::string doorFile8 = "Models/DoorFrames/Door7.obj";
+	//std::string doorFile9 = "Models/DoorFrames/Door8.obj";
+	//std::string doorFile10 = "Models/DoorFrames/Door9.obj";
 
 	std::string walkFile1 = "Models/ChickenFrames/Walk1.obj";
 	std::string walkFile2 = "Models/ChickenFrames/Walk2.obj";
