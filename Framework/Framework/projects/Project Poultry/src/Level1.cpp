@@ -65,6 +65,10 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	bloomEnt = Entity::Create();
 
 	gBufferEnt = Entity::Create();
+
+	camEnt = Entity::Create();
+	uiCamEnt = Entity::Create();
+	topViewCamEnt = Entity::Create();
 #pragma endregion
 
 	InitMeshes();
@@ -382,6 +386,12 @@ void Level1::InitScene()
 	orthoCam.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	orthoCam.SetFovDegrees(90.0f); // Set an initial FOV
 
+	auto& topCam = topViewCamEnt.Add<Camera>();
+	topCam.SetPosition(glm::vec3(0, 45, 0)); // Set initial position
+	topCam.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
+	topCam.LookAt(glm::vec3(0.0f)); // Look at center of the screen
+	topCam.SetFovDegrees(90.0f); // Set an initial FOV
+
 	//Allocates enough memory for one directional light (we can change this easily, but we only need 1 directional light)
 	directionalLightBuffer.AllocateMemory(sizeof(DirectionalLight));
 	//Casts our sun as "data" and sends it to the shader
@@ -492,9 +502,14 @@ void Level1::Update(float dt)
 
 	tabletEnt.Get<Transform>().SetRotationY(tabletEnt.Get<Transform>().GetRotation().y + 100 * dt);
 #pragma endregion
-	
+
 	auto& camera = camEnt.Get<Camera>();
 	auto& orthoCam = uiCamEnt.Get<Camera>();
+
+	topViewToggle.Poll(window);
+
+	camera = Input::ToggleCam(mainPlayer, camEnt, topViewCamEnt, topView, camChanged, topChanged);
+
 	//camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
 
 	//Get reference to the model matrix
@@ -556,7 +571,6 @@ void Level1::Update(float dt)
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
 			levelComplete = true;
-			lightNum = 5;
 		}	
 	}
 
@@ -706,11 +720,19 @@ void Level1::Update(float dt)
 			mainPlayer.Get<MorphRenderer>().Render(camera, transform, LightSpaceViewProjection);
 
 			animShader->SetUniform("s_Diffuse", 1);
-			doorMat.Albedo->Bind(1);
 
 			//if (doorEnt.Get<Door>().GetOpen())
 			//{
+			if (!doorEnt.Get<Door>().GetOpen())
+			{
+				doorMat.Albedo->Bind(1);
 				doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
+			}
+			else
+			{
+				doorOnMat.Albedo->Bind(1);
+				doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
+			}
 			//}
 			//else
 			//{
@@ -1067,7 +1089,10 @@ void Level1::Update(float dt)
 		doorEnt.Get<MorphAnimation>().Update(dt);
 
 	if (doorEnt.Get<AABB>().GetComplete())
+	{
+		lightOn = false;
 		showLevelComplete = true;
+	}
 }
 
 void Level1::Unload()

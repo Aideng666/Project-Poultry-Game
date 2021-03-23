@@ -223,4 +223,35 @@ namespace freebird
 			return lightNum;
 		}
 	}
+	Camera& Input::ToggleCam(Entity mainPlayer, Entity camEnt, Entity topEnt, bool topView, bool& camChanged, bool& topChanged)
+	{
+		auto& camera = camEnt.Get<Camera>();
+
+		if (topView)
+		{
+			camera = topEnt.Get<Camera>();
+			if (!topChanged)
+			{
+				camera.SetPosition(glm::vec3(0, 45, 0)); // Set initial position
+				camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
+				camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
+				topChanged = true;
+				camChanged = false;
+			}
+		}
+		else if (!topView && !camChanged)
+		{
+			camera = camEnt.Get<Camera>();
+			if (!camChanged)
+			{
+				camera.SetPosition(glm::vec3(mainPlayer.Get<Transform>().GetPositionX(), 12, mainPlayer.Get<Transform>().GetPositionZ() + 12)); // Set initial position 
+				camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
+				camera.LookAt(glm::vec3(mainPlayer.Get<Transform>().GetPositionX(), mainPlayer.Get<Transform>().GetPositionY() + 5.0f, mainPlayer.Get<Transform>().GetPositionZ()));
+				camChanged = true;
+				topChanged = false;
+			}
+		}
+
+		return camera;
+	}
 }

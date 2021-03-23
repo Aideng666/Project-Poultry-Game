@@ -497,3 +497,13 @@ void Scene::SetLightOn(bool isOn)
 {
 	lightOn = isOn;
 }
+
+bool Scene::GetTopView()
+{
+	return topView;
+}
+
+void Scene::SetTopView(bool isTop)
+{
+	topView = isTop;
+}

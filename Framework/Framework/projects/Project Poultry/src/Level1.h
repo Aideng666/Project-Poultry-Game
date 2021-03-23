@@ -89,7 +89,6 @@ private:
 		else
 			lightNum = 5;
 		});
-
 	//POINT mousePos;
 	//HWND hWnd = glfwGetWin32Window(window);
 };
