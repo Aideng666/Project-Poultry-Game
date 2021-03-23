@@ -89,6 +89,9 @@ public:
 	bool GetLightOn();
 	void SetLightOn(bool isOn);
 
+	bool GetTopView();
+	void SetTopView(bool isTop);
+
 protected:
 
 	entt::registry* scene = nullptr;
@@ -100,7 +103,9 @@ protected:
 	HWND hWnd;
 	POINT mousePos;
 
-	Entity camEnt, uiCamEnt;
+	Entity camEnt, uiCamEnt, topViewCamEnt;
+
+	Camera::sptr toggleCam;
 
 	Entity FBO, greyscaleEnt, sepiaEnt, colorCorrectEnt;
 	Entity filmGrainEnt, pixelateEnt;
@@ -207,7 +212,7 @@ protected:
 	Mesh* wireM9L6;
 
 	//Files for multiple levels
-	std::string drumFile = "Models/ChickenFrames/Walk1.obj";
+	std::string drumFile = "Models/ChickenFrames/Walk/Walk1.obj";
 	std::string floorFile = "Models/Floor.obj";
 	std::string floorL1File = "Models/L1-Floor.obj";
 	std::string floorL2File = "Models/L2-Floor.obj";
@@ -329,6 +334,10 @@ protected:
 		isPaused = !isPaused;
 		});
 
+	KeyPressWatcher topViewToggle = KeyPressWatcher(GLFW_KEY_SPACE, [&]() {
+		topView = !topView;
+		});
+
 	//FOR ANIMATIONS//
 	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames, doorCloseFrames, idleFrames, peckFrames;
 
@@ -336,12 +345,6 @@ protected:
 	Mesh* door2;
 	Mesh* door3;
 	Mesh* door4;
-	//Mesh* door5;
-	//Mesh* door6;
-	//Mesh* door7;
-	//Mesh* door8;
-	//Mesh* door9;
-	//Mesh* door10;
 
 	Mesh* walk1;
 	Mesh* walk2;
@@ -439,4 +442,8 @@ protected:
 	bool idleFramesApplied = true;
 
 	bool showLevelComplete = false;
+
+	bool topView = false;
+	bool topChanged = false;
+	bool camChanged = false;
 };

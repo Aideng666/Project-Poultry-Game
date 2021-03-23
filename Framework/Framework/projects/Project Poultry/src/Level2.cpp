@@ -63,6 +63,10 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	filmGrainEnt = Entity::Create();
 	pixelateEnt = Entity::Create();
 	bloomEnt = Entity::Create();
+
+	camEnt = Entity::Create();
+	uiCamEnt = Entity::Create();
+	topViewCamEnt = Entity::Create();
 #pragma endregion
 
 	InitMeshes();
@@ -389,6 +393,12 @@ void Level2::InitScene()
 	orthoCam.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	orthoCam.SetFovDegrees(90.0f); // Set an initial FOV
 
+	auto& topCam = topViewCamEnt.Add<Camera>();
+	topCam.SetPosition(glm::vec3(0, 45, 0)); // Set initial position
+	topCam.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
+	topCam.LookAt(glm::vec3(0.0f)); // Look at center of the screen
+	topCam.SetFovDegrees(90.0f); // Set an initial FOV
+
 	//Allocates enough memory for one directional light (we can change this easily, but we only need 1 directional light)
 	directionalLightBuffer.AllocateMemory(sizeof(DirectionalLight));
 	//Casts our sun as "data" and sends it to the shader
@@ -490,6 +500,11 @@ void Level2::Update(float dt)
 
 	auto& camera = camEnt.Get<Camera>();
 	auto& orthoCam = uiCamEnt.Get<Camera>();
+
+	topViewToggle.Poll(window);
+
+	camera = Input::ToggleCam(mainPlayer, camEnt, topViewCamEnt, topView, camChanged, topChanged);
+
 	//camera.LookAt(glm::vec3(playerTrans.GetPositionX(), playerTrans.GetPositionY() + 5.0f, playerTrans.GetPositionZ()));
 
 	//Get reference to the model matrix
@@ -694,8 +709,16 @@ void Level2::Update(float dt)
 			mainPlayer.Get<MorphRenderer>().Render(camera, transform, LightSpaceViewProjection);
 
 			animShader->SetUniform("s_Diffuse", 1);
-			doorMat.Albedo->Bind(1);
-			doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
+			if (!doorEnt.Get<Door>().GetOpen())
+			{
+				doorMat.Albedo->Bind(1);
+				doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
+			}
+			else
+			{
+				doorOnMat.Albedo->Bind(1);
+				doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
+			}
 			doorMat.Albedo->Unbind(1);
 
 			shadowBuffer->UnbindTexture(30);
@@ -1016,7 +1039,10 @@ void Level2::Update(float dt)
 		doorEnt.Get<MorphAnimation>().Update(dt);
 
 	if (doorEnt.Get<AABB>().GetComplete())
+	{
+		lightOn = false;
 		showLevelComplete = true;
+	}
 }
 
 void Level2::Unload()
