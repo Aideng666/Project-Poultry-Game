@@ -54,6 +54,11 @@ private:
 
 	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
 		isPaused = !isPaused;
+
+		if (isPaused)
+			lightOn = false;
+		else
+			lightOn = true;
 		});
 
 	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {

@@ -453,6 +453,7 @@ void Level1::InitScene()
 		ImGui::SliderFloat("Z", &theSun._lightDirection.z, -3.0f, 3.0f);
 
 		});
+	
 }
 
 void Level1::Update(float dt)
@@ -506,7 +507,8 @@ void Level1::Update(float dt)
 	auto& camera = camEnt.Get<Camera>();
 	auto& orthoCam = uiCamEnt.Get<Camera>();
 
-	topViewToggle.Poll(window);
+	if (!showLevelComplete)
+		topViewToggle.Poll(window);
 
 	camera = Input::ToggleCam(mainPlayer, camEnt, topViewCamEnt, topView, camChanged, topChanged);
 
@@ -635,16 +637,17 @@ void Level1::Update(float dt)
 	
 	ScreenToClient(hWnd, &mousePos);
 
-	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 323 && mousePos.y < 476 && mousePos.x > 575 && mousePos.x < 730)
+	//Exits the game if exit is clicked in pause menu
+	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 597 && mousePos.x > 865 && mousePos.x < 1097)
 	{
-		std::cout << mousePos.x << " " << mousePos.y << std::endl;
 		glfwSetWindowShouldClose(window, true);
 	}
 
-	lightNum = Input::ChangeLighting(window, lightNum);
-
-	if (lightNum < 1 || lightNum > 5)
-		lightNum = 1;
+	//Retry the level
+	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 595 && mousePos.x > 487 && mousePos.x < 714)
+	{
+		levelRetry = true;
+	}
 	
 	untexturedShader->SetUniform("u_LightNum", lightNum);
 	shader->SetUniform("u_LightNum", lightNum);
@@ -763,23 +766,33 @@ void Level1::Update(float dt)
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 2);
-			retryMat.Albedo->Bind(2);
 
-			if (isPaused)
+			if (isPaused && mousePos.y > 403 && mousePos.y < 595 && mousePos.x > 487 && mousePos.x < 714)
 			{
+				retryPressMat.Albedo->Bind(2);
+				retryEnt.Get<MeshRenderer>().Render(orthoCam, transformRetry);
+			}
+			else if (isPaused)
+			{
+				retryMat.Albedo->Bind(2);
 				retryEnt.Get<MeshRenderer>().Render(orthoCam, transformRetry);
 			}
 
-			pauseShader->SetUniform("s_Diffuse", 2);
-			exitMat.Albedo->Bind(2);
+			pauseShader->SetUniform("s_Diffuse", 3);
 
-			if (isPaused)
+			if (isPaused && mousePos.y > 403 && mousePos.y < 597 && mousePos.x > 865 && mousePos.x < 1097)
 			{
+				exitPressMat.Albedo->Bind(3);
+				exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit);
+			}
+			else if (isPaused)
+			{
+				exitMat.Albedo->Bind(3);
 				exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit);
 			}
 
-			pauseShader->SetUniform("s_Diffuse", 3);
-			andTabletScreenMat.Albedo->Bind(3);
+			pauseShader->SetUniform("s_Diffuse", 4);
+			andTabletScreenMat.Albedo->Bind(4);
 
 			if (tabletOpen)
 			{
@@ -1026,7 +1039,6 @@ void Level1::Update(float dt)
 
 	if (showLevelComplete)
 	{
-		lightNum = 1;
 		shader->Bind();
 		shader->SetUniform("s_Diffuse", 0);
 		completeMat.Albedo->Bind(0);

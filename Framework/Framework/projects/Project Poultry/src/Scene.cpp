@@ -64,6 +64,9 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Option.png");
 	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Replay.png");
 	Texture2D::sptr diffuseExit = Texture2D::LoadFromFile("Textures/Buttons/Default/Exit.png");
+	Texture2D::sptr diffusePressOptions = Texture2D::LoadFromFile("Textures/Buttons/Pressed/Option.png");
+	Texture2D::sptr diffusePressRetry = Texture2D::LoadFromFile("Textures/Buttons/Pressed/Replay.png");
+	Texture2D::sptr diffusePressExit = Texture2D::LoadFromFile("Textures/Buttons/Pressed/Exit.png");
 	Texture2D::sptr diffuseTablet = Texture2D::LoadFromFile("Textures/TabletTexture.png");
 	Texture2D::sptr diffuseAndTabletScreen = Texture2D::LoadFromFile("Textures/AndGateTablet.png");
 	Texture2D::sptr diffuseNotTabletScreen = Texture2D::LoadFromFile("Textures/NotGateTablet.png");
@@ -101,6 +104,9 @@ void Scene::InitTextures()
 	optionMat.Albedo = diffuseOptions;
 	retryMat.Albedo = diffuseRetry;
 	exitMat.Albedo = diffuseExit;
+	optionPressMat.Albedo = diffusePressOptions;
+	exitPressMat.Albedo = diffusePressExit;
+	retryPressMat.Albedo = diffusePressRetry;
 	tabletMat.Albedo = diffuseTablet;
 	andTabletScreenMat.Albedo = diffuseAndTabletScreen;
 	notTabletScreenMat.Albedo = diffuseNotTabletScreen;
@@ -332,19 +338,8 @@ void Scene::InitAnims()
 	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door3));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door4));
-	//doorFrames.push_back(std::unique_ptr<Mesh>(door5));
-	//doorFrames.push_back(std::unique_ptr<Mesh>(door6));
-	//doorFrames.push_back(std::unique_ptr<Mesh>(door7));
-	//doorFrames.push_back(std::unique_ptr<Mesh>(door8));
-	//doorFrames.push_back(std::unique_ptr<Mesh>(door9));
-	//doorFrames.push_back(std::unique_ptr<Mesh>(door10));
+	
 
-	//doorCloseFrames.push_back(std::unique_ptr<Mesh>(door10));
-	//doorCloseFrames.push_back(std::unique_ptr<Mesh>(door9));
-	//doorCloseFrames.push_back(std::unique_ptr<Mesh>(door8));
-	//doorCloseFrames.push_back(std::unique_ptr<Mesh>(door7));
-	//doorCloseFrames.push_back(std::unique_ptr<Mesh>(door6));
-	//doorCloseFrames.push_back(std::unique_ptr<Mesh>(door5));
 	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door4));
 	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door3));
 	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door2));
@@ -395,6 +390,16 @@ bool Scene::GetComplete()
 void Scene::SetComplete(bool complete)
 {
 	levelComplete = complete;
+}
+
+bool Scene::GetRetry()
+{
+	return levelRetry;
+}
+
+void Scene::SetRetry(bool retry)
+{
+	levelRetry = retry;
 }
 
 Entity Scene::GetCamera()
