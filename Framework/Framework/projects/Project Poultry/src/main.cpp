@@ -72,7 +72,7 @@ int main()
 	scenes.push_back(new Level5("Level 5", window));
 	scenes.push_back(new Level6("Level 6", window));
 
-	SetActiveScene(7);
+	SetActiveScene(0);
 	 
 	//Calculates our timer
 	Application::Tick();
@@ -200,7 +200,6 @@ int main()
 		//Grabs the time
 		float dt = Application::GetDT();
 
-
 		if (glfwGetKey(window, GLFW_KEY_KP_7) == GLFW_PRESS)
 		{
 			SetActiveScene(7);
@@ -232,6 +231,12 @@ int main()
 		if (glfwGetKey(window, GLFW_KEY_KP_0) == GLFW_PRESS)
 		{
 			SetActiveScene(0);
+		}
+
+
+		if (currentScene == scenes[1])
+		{
+			currentScene->SetActiveEffect(4);
 		}
 
 		if (currentScene->GetComplete())
