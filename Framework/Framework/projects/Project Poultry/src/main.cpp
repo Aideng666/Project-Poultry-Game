@@ -224,10 +224,28 @@ int main()
 			SetActiveScene(0);
 		}
 
+
 		if (currentScene->GetComplete())
 		{
 			currentScene->SetComplete(false);
 			SetActiveScene(level);
+		}
+
+		if (currentScene->GetRetry())
+		{
+			currentScene->SetRetry(false);
+			scenes.clear();
+
+			scenes.push_back(new MainMenu("Main Menu", window));
+			//scenes.push_back(new MainMenuLevel("Main Menu Level", window));
+			scenes.push_back(new Level1("Level 1", window));
+			scenes.push_back(new Level2("Level 2", window));
+			scenes.push_back(new Level3("Level 3", window));
+			scenes.push_back(new Level4("Level 4", window));
+			scenes.push_back(new Level5("Level 5", window));
+			//scenes.push_back(new Level6("Level 6", window));
+
+			SetActiveScene(level - 1);
 		}
 
 		if (currentScene->GetLoad())

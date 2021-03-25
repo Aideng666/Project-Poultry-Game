@@ -118,17 +118,17 @@ private:
 		isPaused = !isPaused;
 
 		if (isPaused)
-			lightNum = 2;
+			lightOn = false;
 		else
-			lightNum = 5;
+			lightOn = true;
 		});
 
 	KeyPressWatcher tabletWatch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		tabletOpen = !tabletOpen;
 
 		if (tabletOpen)
-			lightNum = 2;
+			lightOn = false;
 		else
-			lightNum = 5;
+			lightOn = true;
 		});
 };

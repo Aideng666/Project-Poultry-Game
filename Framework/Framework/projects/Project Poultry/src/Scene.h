@@ -55,6 +55,9 @@ public:
 	bool GetComplete();
 	void SetComplete(bool complete);
 
+	bool GetRetry();
+	void SetRetry(bool retry);
+
 	Entity GetCamera();
 
 	entt::registry* GetScene();
@@ -114,7 +117,7 @@ protected:
 
 	Entity pauseEnt, optionEnt, exitEnt, retryEnt, tutEnt, completeEnt;
 
-	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat;
+	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat, optionPressMat, exitPressMat, retryPressMat;
 	Mat buttonMat, drumstickMat, doorMat, doorOnMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
 	Mat andMat, notMat, orMat, wireMatOn, shelfPipeMat, columnPipeMat;
 
@@ -308,6 +311,7 @@ protected:
 	std::vector<Entity> ents;
 
 	bool levelComplete = false;
+	bool levelRetry = false;
 
 	unsigned char* image;
 	const char* fileName;
@@ -332,9 +336,14 @@ protected:
 
 	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
 		isPaused = !isPaused;
+
+		if (isPaused)
+			lightOn = false;
+		else
+			lightOn = true;
 		});
 
-	KeyPressWatcher topViewToggle = KeyPressWatcher(GLFW_KEY_SPACE, [&]() {
+	KeyPressWatcher topViewToggle = KeyPressWatcher(GLFW_KEY_LEFT_SHIFT, [&]() {
 		topView = !topView;
 		});
 

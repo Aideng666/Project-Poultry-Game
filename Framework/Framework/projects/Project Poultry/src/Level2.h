@@ -88,9 +88,9 @@ private:
 		isPaused = !isPaused;
 
 		if (isPaused)
-			lightNum = 2;
+			lightOn = false;
 		else
-			lightNum = 5;
+			lightOn = true;
 		});
 
 };

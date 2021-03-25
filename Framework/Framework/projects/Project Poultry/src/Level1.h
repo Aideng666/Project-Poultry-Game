@@ -85,9 +85,9 @@ private:
 		tabletOpen = !tabletOpen;
 
 		if (tabletOpen)
-			lightNum = 5;
+			lightOn = false;
 		else
-			lightNum = 5;
+			lightOn = true;
 		});
 	//POINT mousePos;
 	//HWND hWnd = glfwGetWin32Window(window);
