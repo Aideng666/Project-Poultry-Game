@@ -1,6 +1,7 @@
 #include "MorphAnimation.h"
 #include "Mesh.h"
 #include <MorphRenderer.h>
+#include <iostream>
 
 namespace freebird
 {
@@ -46,6 +47,7 @@ namespace freebird
 		size_t nextFrame = (frame + 1) % data->frames.size();
 		if (!looping && frame >= data->frames.size() - 1)
 		{
+			isDone = true;
 			data->frameTime = 0.0f;
 		}
 		else
@@ -54,6 +56,8 @@ namespace freebird
 
 	void MorphAnimation::SetFrames(const std::vector<std::unique_ptr<Mesh>>& frames)
 	{
+		isDone = false;
+		frame = 0;
 		data->frames.clear();
 		data->frames.reserve(frames.size());
 
@@ -71,6 +75,16 @@ namespace freebird
 	void MorphAnimation::SetLoop(bool loop)
 	{
 		looping = loop;
+	}
+
+	bool MorphAnimation::GetIsDone()
+	{
+		return isDone;
+	}
+
+	void MorphAnimation::SetIsDone(bool done)
+	{
+		isDone = done;
 	}
 
 }

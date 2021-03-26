@@ -73,12 +73,14 @@ private:
 
 	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		buttonEnt.Get<Lever>().SetPowered(!buttonEnt.Get<Lever>().GetPowered());
-		std::cout << "Button 1 Power: " << buttonEnt.Get<Lever>().GetPowered() << std::endl;
+
+		buttonAnimOn = true;
 		});
 
 	KeyPressWatcher button2Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		buttonEnt2.Get<Lever>().SetPowered(!buttonEnt2.Get<Lever>().GetPowered());
-		std::cout << "Button 2 Power: " << buttonEnt2.Get<Lever>().GetPowered() << std::endl;
+
+		button2AnimOn = true;
 		});
 
 	KeyPressWatcher tabletWatch = KeyPressWatcher(GLFW_KEY_E, [&]() {

@@ -313,9 +313,9 @@ void Level2::InitScene()
 	auto& pipeMesh4 = pipeEntC2.Add<MeshRenderer>(pipeEntC2, *pipeC, shader);
 	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *and, shader);
 	auto& gateMesh2 = andEnt2.Add<MeshRenderer>(andEnt2, *and, shader);
-	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
-	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
-	auto& buttonMesh3 = buttonEnt3.Add<MeshRenderer>(buttonEnt3, *buttonM, shader);
+	auto& buttonMesh = buttonEnt.Add<MorphRenderer>(buttonEnt, *button1, animShader);
+	auto& buttonMesh2 = buttonEnt2.Add<MorphRenderer>(buttonEnt2, *button1, animShader);
+	auto& buttonMesh3 = buttonEnt3.Add<MorphRenderer>(buttonEnt3, *button1, animShader);
 	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireM1L2, shader);
 	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireM2L2, shader);
 	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireM3L2, shader);
@@ -341,15 +341,15 @@ void Level2::InitScene()
 
 	entList.push_back(&mainPlayer);
 	entList.push_back(&doorEnt);
+	entList.push_back(&buttonEnt);
+	entList.push_back(&buttonEnt2);
+	entList.push_back(&buttonEnt3);
 	entList.push_back(&floorEnt);
 	entList.push_back(&leftEnt);
 	entList.push_back(&rightEnt);
 	entList.push_back(&completeEnt);
 	entList.push_back(&andEnt);
 	entList.push_back(&andEnt2);
-	entList.push_back(&buttonEnt);
-	entList.push_back(&buttonEnt2);
-	entList.push_back(&buttonEnt3);
 	entList.push_back(&wireEnt);
 	entList.push_back(&wireEnt2);
 	entList.push_back(&wireEnt3);
@@ -378,6 +378,21 @@ void Level2::InitScene()
 	auto& walkAnimator = mainPlayer.Add<MorphAnimation>(mainPlayer);
 	walkAnimator.SetTime(0.3f);
 	walkAnimator.SetFrames(idleFrames);
+
+	auto& buttonAnimator = buttonEnt.Add<MorphAnimation>(buttonEnt);
+	buttonAnimator.SetTime(0.2f);
+	buttonAnimator.SetFrames(buttonFrames);
+	buttonAnimator.SetLoop(false);
+
+	auto& buttonAnimator2 = buttonEnt2.Add<MorphAnimation>(buttonEnt2);
+	buttonAnimator2.SetTime(0.2f);
+	buttonAnimator2.SetFrames(buttonFrames);
+	buttonAnimator2.SetLoop(false);
+
+	auto& buttonAnimator3 = buttonEnt3.Add<MorphAnimation>(buttonEnt3);
+	buttonAnimator3.SetTime(0.2f);
+	buttonAnimator3.SetFrames(buttonFrames);
+	buttonAnimator3.SetLoop(false);
 #pragma endregion
 
 	//Camera Objects
@@ -547,15 +562,15 @@ void Level2::Update(float dt)
 	glm::mat4 transformExit = exitEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformTut = tutEnt.Get<Transform>().GetModelMatrix();
 
-	if (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
+	if (!buttonAnimOn && playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
 		button1Watch.Poll(window);
 	
-	if (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
+	if (!button2AnimOn && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
 		button2Watch.Poll(window);
 	
-	if (playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -3.0f
+	if (!button3AnimOn && playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() > -3.0f)
 		button3Watch.Poll(window);
 
@@ -625,6 +640,43 @@ void Level2::Update(float dt)
 	}
 #pragma endregion
 
+	if (buttonAnimOn)
+	{
+		if (buttonEnt.Get<MorphAnimation>().GetIsDone())
+		{
+			buttonEnt.Get<MorphAnimation>().SetFrames(buttonFrames);
+			buttonEnt.Get<MorphAnimation>().SetTime(0.2f);
+			buttonAnimOn = false;
+		}
+
+		buttonEnt.Get<MorphAnimation>().Update(dt);
+	}
+
+
+	if (button2AnimOn)
+	{
+		if (buttonEnt2.Get<MorphAnimation>().GetIsDone())
+		{
+			buttonEnt2.Get<MorphAnimation>().SetFrames(buttonFrames);
+			buttonEnt2.Get<MorphAnimation>().SetTime(0.2f);
+			button2AnimOn = false;
+		}
+
+		buttonEnt2.Get<MorphAnimation>().Update(dt);
+	}
+
+	if (button3AnimOn)
+	{
+		if (buttonEnt3.Get<MorphAnimation>().GetIsDone())
+		{
+			buttonEnt3.Get<MorphAnimation>().SetFrames(buttonFrames);
+			buttonEnt3.Get<MorphAnimation>().SetTime(0.2f);
+			button3AnimOn = false;
+		}
+
+		buttonEnt3.Get<MorphAnimation>().Update(dt);
+	}
+
 	GetCursorPos(&mousePos);
 
 	ScreenToClient(hWnd, &mousePos);
@@ -682,7 +734,7 @@ void Level2::Update(float dt)
 
 	for (int i = 0; i < entList.size(); i++)
 	{
-		if (i < 2)
+		if (i < 5)
 		{
 			simpleDepthShader->Bind();
 			entList[i]->Get<MorphRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
@@ -729,6 +781,13 @@ void Level2::Update(float dt)
 				doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
 			}
 			doorMat.Albedo->Unbind(1);
+
+			//Buttons
+			animShader->SetUniform("s_Diffuse", 3);
+			buttonMat.Albedo->Bind(3);
+			buttonEnt.Get<MorphRenderer>().Render(camera, transformButton, LightSpaceViewProjection);
+			buttonEnt2.Get<MorphRenderer>().Render(camera, transformButton2, LightSpaceViewProjection);
+			buttonEnt3.Get<MorphRenderer>().Render(camera, transformButton3, LightSpaceViewProjection);
 
 			shadowBuffer->UnbindTexture(30);
 
@@ -815,12 +874,12 @@ void Level2::Update(float dt)
 			andEnt.Get<MeshRenderer>().Render(camera, transformGate, LightSpaceViewProjection);
 			andEnt2.Get<MeshRenderer>().Render(camera, transformGate2, LightSpaceViewProjection);
 
-			//Button
-			shader->SetUniform("s_Diffuse", 5);
-			buttonMat.Albedo->Bind(5);
-			buttonEnt.Get<MeshRenderer>().Render(camera, transformButton, LightSpaceViewProjection);
-			buttonEnt2.Get<MeshRenderer>().Render(camera, transformButton2, LightSpaceViewProjection);
-			buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3, LightSpaceViewProjection);
+			////Button
+			//shader->SetUniform("s_Diffuse", 5);
+			//buttonMat.Albedo->Bind(5);
+			//buttonEnt.Get<MeshRenderer>().Render(camera, transformButton, LightSpaceViewProjection);
+			//buttonEnt2.Get<MeshRenderer>().Render(camera, transformButton2, LightSpaceViewProjection);
+			//buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3, LightSpaceViewProjection);
 
 			//Wires
 			shader->SetUniform("s_Diffuse", 6);
