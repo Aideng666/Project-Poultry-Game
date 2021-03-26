@@ -58,6 +58,8 @@ void MainMenuLevel::InitScene()
 	InitShaders();
 	InitTextures();
 
+	activeEffect = 4;
+
 #pragma region Transforms
 
 	//Floor Transform

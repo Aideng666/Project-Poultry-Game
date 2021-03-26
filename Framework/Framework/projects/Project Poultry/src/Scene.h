@@ -332,7 +332,7 @@ protected:
 	int lightNum = 5;
 
 	std::vector<PostEffect*> effects;
-	int activeEffect = 0;
+	int activeEffect = 3;
 
 	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
 		isPaused = !isPaused;
