@@ -229,6 +229,11 @@ void Scene::InitMeshes()
 	idle17 = ModelManager::FindMesh(idleFile17);
 	idle18 = ModelManager::FindMesh(idleFile18);
 
+	//For Button Anims
+	button1 = ModelManager::FindMesh(buttonFile1);
+	button2 = ModelManager::FindMesh(buttonFile2);
+	button3 = ModelManager::FindMesh(buttonFile3);
+
 	//Multiple Levels
 	//drumstick = ModelManager::FindMesh(drumFile);
 	floor = ModelManager::FindMesh(floorFile);
@@ -380,6 +385,10 @@ void Scene::InitAnims()
 	idleFrames.push_back(std::unique_ptr<Mesh>(idle16));
 	idleFrames.push_back(std::unique_ptr<Mesh>(idle17));
 	idleFrames.push_back(std::unique_ptr<Mesh>(idle18));
+
+	buttonFrames.push_back(std::unique_ptr<Mesh>(button1));
+	buttonFrames.push_back(std::unique_ptr<Mesh>(button2));
+	buttonFrames.push_back(std::unique_ptr<Mesh>(button3));
 }
 
 bool Scene::GetComplete()
@@ -422,14 +431,6 @@ bool Scene::GetLoad()
 	return loadModels;
 }
 
-//void Scene::RenderVAO(Shader::sptr& shader, MeshRenderer& vao, Camera& camera, glm::mat4 transform)
-//{
-//	shader->SetUniformMatrix("u_ModelRotation", glm::mat3(transform));
-//	shader->SetUniformMatrix("u_ModelViewProjection", camera.GetViewProjection() * transform);
-//	shader->SetUniformMatrix("u_Model", transform);
-//	vao.Render();
-//}
-
 void Scene::SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos, glm::vec3 lightDir, glm::vec3 lightCol, float lightAmbientPow, float lightSpecularPow, glm::vec3 ambientCol, float ambientPow, float shininess, float lightLinearFalloff, float lightQuadraticFalloff)
 {
 	shader->SetUniform("u_LightPos", lightPos);
@@ -457,16 +458,6 @@ void Scene::LoadTexImage()
 			std::cout << "Image loaded: " << width << " x " << height << std::endl;
 		else std::cout << "Failed to load image" << std::endl;
 }
-
-//Entity Scene::GetFBO()
-//{
-//	return FBO;
-//}
-//
-//Entity Scene::GetGreyscaleEnt()
-//{
-//	return greyscaleEnt;
-//}
 
 std::vector<PostEffect*> Scene::GetEffects()
 {

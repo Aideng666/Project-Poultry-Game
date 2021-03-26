@@ -17,6 +17,9 @@ namespace freebird
 		void SetTime(float time);
 		void SetLoop(bool loop);
 
+		bool GetIsDone();
+		void SetIsDone(bool done);
+
 	private:
 
 		class MorphData
@@ -36,5 +39,6 @@ namespace freebird
 		Entity* thisEnt;
 
 		bool looping = true;
+		bool isDone = false;
 	};
 }

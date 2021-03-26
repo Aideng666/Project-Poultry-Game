@@ -348,7 +348,7 @@ protected:
 		});
 
 	//FOR ANIMATIONS//
-	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames, doorCloseFrames, idleFrames, peckFrames;
+	std::vector<std::unique_ptr<Mesh>> doorFrames, walkFrames, doorCloseFrames, idleFrames, peckFrames, buttonFrames;
 
 	Mesh* door1;
 	Mesh* door2;
@@ -389,16 +389,14 @@ protected:
 	Mesh* idle17;
 	Mesh* idle18;
 
+	Mesh* button1;
+	Mesh* button2;
+	Mesh* button3;
+
 	std::string doorFile1 = "Models/DoorFrames/DoorFrame1.obj";
 	std::string doorFile2 = "Models/DoorFrames/DoorFrame2.obj";
 	std::string doorFile3 = "Models/DoorFrames/DoorFrame3.obj";
 	std::string doorFile4 = "Models/DoorFrames/DoorFrame4.obj";
-	//std::string doorFile5 = "Models/DoorFrames/Door4.obj";
-	//std::string doorFile6 = "Models/DoorFrames/Door5.obj";
-	//std::string doorFile7 = "Models/DoorFrames/Door6.obj";
-	//std::string doorFile8 = "Models/DoorFrames/Door7.obj";
-	//std::string doorFile9 = "Models/DoorFrames/Door8.obj";
-	//std::string doorFile10 = "Models/DoorFrames/Door9.obj";
 
 	std::string walkFile1 = "Models/ChickenFrames/Walk1.obj";
 	std::string walkFile2 = "Models/ChickenFrames/Walk2.obj";
@@ -433,6 +431,10 @@ protected:
 	std::string idleFile16 = "Models/ChickenFrames/Idle/Idle16.obj";
 	std::string idleFile17 = "Models/ChickenFrames/Idle/Idle17.obj";
 	std::string idleFile18 = "Models/ChickenFrames/Idle/Idle18.obj";
+
+	std::string buttonFile1 = "Models/ButtonFrames/Button_Press_Frame1.obj";
+	std::string buttonFile2 = "Models/ButtonFrames/Button_Press_Frame2.obj";
+	std::string buttonFile3 = "Models/ButtonFrames/Button_Press_Frame1.obj";
 	///////////////
 
 	DirectionalLight theSun;
@@ -455,4 +457,9 @@ protected:
 	bool topView = false;
 	bool topChanged = false;
 	bool camChanged = false;
+
+	bool buttonAnimOn = false;
+	bool button2AnimOn = false;
+	bool button3AnimOn = false;
+	bool button4AnimOn = false;
 };
