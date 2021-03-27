@@ -393,6 +393,16 @@ protected:
 	Mesh* button2;
 	Mesh* button3;
 
+	Mesh* peck1;
+	Mesh* peck2;
+	Mesh* peck3;
+	Mesh* peck4;
+	Mesh* peck5;
+	Mesh* peck6;
+	Mesh* peck7;
+	Mesh* peck8;
+	Mesh* peck9;
+
 	std::string doorFile1 = "Models/DoorFrames/DoorFrame1.obj";
 	std::string doorFile2 = "Models/DoorFrames/DoorFrame2.obj";
 	std::string doorFile3 = "Models/DoorFrames/DoorFrame3.obj";
@@ -435,6 +445,16 @@ protected:
 	std::string buttonFile1 = "Models/ButtonFrames/Button_Press_Frame1.obj";
 	std::string buttonFile2 = "Models/ButtonFrames/Button_Press_Frame2.obj";
 	std::string buttonFile3 = "Models/ButtonFrames/Button_Press_Frame1.obj";
+
+	std::string peckFile1 = "Models/ChickenFrames/Peck/Drumstick_Peck_Frame1.obj";
+	std::string peckFile2 = "Models/ChickenFrames/Peck/Drumstick_Peck_Frame2.obj";
+	std::string peckFile3 = "Models/ChickenFrames/Peck/Drumstick_Peck_Frame3.obj";
+	std::string peckFile4 = "Models/ChickenFrames/Peck/Drumstick_Peck_Frame4.obj";
+	std::string peckFile5 = "Models/ChickenFrames/Peck/Drumstick_Peck_Frame5.obj";
+	std::string peckFile6 = "Models/ChickenFrames/Peck/Drumstick_Peck_Frame6.obj";
+	std::string peckFile7 = "Models/ChickenFrames/Peck/Drumstick_Peck_Frame7.obj";
+	std::string peckFile8 = "Models/ChickenFrames/Peck/Drumstick_Peck_Frame8.obj";
+	std::string peckFile9 = "Models/ChickenFrames/Peck/Drumstick_Peck_Frame9.obj";
 	///////////////
 
 	DirectionalLight theSun;
@@ -451,6 +471,8 @@ protected:
 	bool isWalking;
 	bool walkFramesApplied = false;
 	bool idleFramesApplied = true;
+	bool peckingFramesApplied = false;
+	bool isPecking = false;
 
 	bool showLevelComplete = false;
 

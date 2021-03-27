@@ -75,12 +75,14 @@ private:
 		buttonEnt.Get<Lever>().SetPowered(!buttonEnt.Get<Lever>().GetPowered());
 
 		buttonAnimOn = true;
+		isPecking = true;
 		});
 
 	KeyPressWatcher button2Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		buttonEnt2.Get<Lever>().SetPowered(!buttonEnt2.Get<Lever>().GetPowered());
 
 		button2AnimOn = true;
+		isPecking = true;
 		});
 
 	KeyPressWatcher tabletWatch = KeyPressWatcher(GLFW_KEY_E, [&]() {

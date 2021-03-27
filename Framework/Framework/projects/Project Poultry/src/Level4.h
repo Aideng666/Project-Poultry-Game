@@ -64,20 +64,24 @@ private:
 	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		buttonEnt.Get<Lever>().SetPowered(!buttonEnt.Get<Lever>().GetPowered());
 		buttonAnimOn = true;
+		isPecking = true;
 		});
 
 	KeyPressWatcher button2Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		buttonEnt2.Get<Lever>().SetPowered(!buttonEnt2.Get<Lever>().GetPowered());
 		button2AnimOn = true;
+		isPecking = true;
 		});
 
 	KeyPressWatcher button3Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		buttonEnt3.Get<Lever>().SetPowered(!buttonEnt3.Get<Lever>().GetPowered());
 		button3AnimOn = true;
+		isPecking = true;
 		});
 
 	KeyPressWatcher button4Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		buttonEnt4.Get<Lever>().SetPowered(!buttonEnt4.Get<Lever>().GetPowered());
 		button4AnimOn = true;
+		isPecking = true;
 		});
 };

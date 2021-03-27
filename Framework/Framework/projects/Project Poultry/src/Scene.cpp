@@ -209,7 +209,7 @@ void Scene::InitMeshes()
 	walk13 = ModelManager::FindMesh(walkFile13);
 	walk14 = ModelManager::FindMesh(walkFile14);
 
-	//For Idle Anims
+	//For Idle Anim
 	idle1 = ModelManager::FindMesh(idleFile1);
 	idle2 = ModelManager::FindMesh(idleFile2);
 	idle3 = ModelManager::FindMesh(idleFile3);
@@ -229,10 +229,21 @@ void Scene::InitMeshes()
 	idle17 = ModelManager::FindMesh(idleFile17);
 	idle18 = ModelManager::FindMesh(idleFile18);
 
-	//For Button Anims
+	//For Button Anim
 	button1 = ModelManager::FindMesh(buttonFile1);
 	button2 = ModelManager::FindMesh(buttonFile2);
 	button3 = ModelManager::FindMesh(buttonFile3);
+
+	//For Pecking Anim
+	peck1 = ModelManager::FindMesh(peckFile1);
+	peck2 = ModelManager::FindMesh(peckFile2);
+	peck3 = ModelManager::FindMesh(peckFile3);
+	peck4 = ModelManager::FindMesh(peckFile4);
+	peck5 = ModelManager::FindMesh(peckFile5);
+	peck6 = ModelManager::FindMesh(peckFile6);
+	peck7 = ModelManager::FindMesh(peckFile7);
+	peck8 = ModelManager::FindMesh(peckFile8);
+	peck9 = ModelManager::FindMesh(peckFile9);
 
 	//Multiple Levels
 	//drumstick = ModelManager::FindMesh(drumFile);
@@ -337,6 +348,8 @@ void Scene::InitAnims()
 	doorCloseFrames.clear();
 	walkFrames.clear();
 	idleFrames.clear();
+	buttonFrames.clear();
+	peckFrames.clear();
 
 	//Door Animations
 	doorFrames.push_back(std::unique_ptr<Mesh>(door1));
@@ -386,9 +399,21 @@ void Scene::InitAnims()
 	idleFrames.push_back(std::unique_ptr<Mesh>(idle17));
 	idleFrames.push_back(std::unique_ptr<Mesh>(idle18));
 
+	//Button Animations
 	buttonFrames.push_back(std::unique_ptr<Mesh>(button1));
 	buttonFrames.push_back(std::unique_ptr<Mesh>(button2));
 	buttonFrames.push_back(std::unique_ptr<Mesh>(button3));
+
+	//Pecking Animation
+	peckFrames.push_back(std::unique_ptr<Mesh>(peck1));
+	peckFrames.push_back(std::unique_ptr<Mesh>(peck2));
+	peckFrames.push_back(std::unique_ptr<Mesh>(peck3));
+	peckFrames.push_back(std::unique_ptr<Mesh>(peck4));
+	peckFrames.push_back(std::unique_ptr<Mesh>(peck5));
+	peckFrames.push_back(std::unique_ptr<Mesh>(peck6));
+	peckFrames.push_back(std::unique_ptr<Mesh>(peck7));
+	peckFrames.push_back(std::unique_ptr<Mesh>(peck8));
+	peckFrames.push_back(std::unique_ptr<Mesh>(peck9));
 }
 
 bool Scene::GetComplete()

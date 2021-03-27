@@ -565,11 +565,15 @@ void Level1::Update(float dt)
 	
 	if (!buttonAnimOn && playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
+	{
 		button1Watch.Poll(window);
+	}
 	
 	if (!button2AnimOn && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
+	{
 		button2Watch.Poll(window);
+	}
 
 	if ((playerTrans.GetPositionX() > -3.0f && playerTrans.GetPositionX() < 3.0f
 		&& playerTrans.GetPositionZ() > 7.0f && playerTrans.GetPositionZ() < 13.0f
@@ -591,22 +595,38 @@ void Level1::Update(float dt)
 	{
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
 
-		/*if (isWalking)
-			mainPlayer.Get<MorphAnimation>().Update(dt);*/
+		if (!peckingFramesApplied && isPecking)
+		{
+			mainPlayer.Get<MorphRenderer>().SetMesh(*peck1);
+			mainPlayer.Get<MorphAnimation>().SetFrames(peckFrames);
+			mainPlayer.Get<MorphAnimation>().SetLoop(false);
+			mainPlayer.Get<MorphAnimation>().SetTime(0.15f);
+			peckingFramesApplied = true;
+			idleFramesApplied = false;
+			walkFramesApplied = false;
+		}
 
-		if (isWalking && !walkFramesApplied)
+		if (isPecking && mainPlayer.Get<MorphAnimation>().GetIsDone())
+		{
+			isPecking = false;
+			peckingFramesApplied = false;
+		}
+
+		if (!isPecking && isWalking && !walkFramesApplied)
 		{
 			mainPlayer.Get<MorphRenderer>().SetMesh(*walk1);
 			mainPlayer.Get<MorphAnimation>().SetFrames(walkFrames);
+			mainPlayer.Get<MorphAnimation>().SetLoop(true);
 			mainPlayer.Get<MorphAnimation>().SetTime(0.05f);
 			walkFramesApplied = true;
 			idleFramesApplied = false;
 		}
 
-		if (!isWalking && !idleFramesApplied)
+		if (!isPecking && !isWalking && !idleFramesApplied)
 		{
 			mainPlayer.Get<MorphRenderer>().SetMesh(*idle1);
 			mainPlayer.Get<MorphAnimation>().SetFrames(idleFrames);
+			mainPlayer.Get<MorphAnimation>().SetLoop(true);
 			mainPlayer.Get<MorphAnimation>().SetTime(0.3f);
 			idleFramesApplied = true;
 			walkFramesApplied = false;
