@@ -119,7 +119,7 @@ protected:
 
 	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat, optionPressMat, exitPressMat, retryPressMat;
 	Mat buttonMat, drumstickMat, doorMat, doorOnMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
-	Mat andMat, notMat, orMat, wireMatOn, shelfPipeMat, columnPipeMat;
+	Mat andMat, notMat, orMat, wireMatOn, shelfPipeMat, columnPipeMat, labWallMat;
 
 	//Meshes for multiple levels
 	Mesh* options;

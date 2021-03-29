@@ -350,9 +350,9 @@ void Level3::InitScene()
 	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWall, shader);
 	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWall, shader);
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *door1, animShader);
-	auto& buttonMesh = buttonEnt.Add<MorphRenderer>(buttonEnt, *button1, animShader);
-	auto& buttonMesh2 = buttonEnt2.Add<MorphRenderer>(buttonEnt2, *button1, animShader);
-	auto& buttonMesh3 = buttonEnt3.Add<MorphRenderer>(buttonEnt3, *button1, animShader);
+	auto& buttonMesh = buttonEnt.Add<MorphRenderer>(buttonEnt, *buttonM, animShader);
+	auto& buttonMesh2 = buttonEnt2.Add<MorphRenderer>(buttonEnt2, *buttonM, animShader);
+	auto& buttonMesh3 = buttonEnt3.Add<MorphRenderer>(buttonEnt3, *buttonM, animShader);
 	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *and, shader);
 	auto& gateMesh2 = andEnt2.Add<MeshRenderer>(andEnt2, *and, shader);
 	auto& gateMesh3 = andEnt3.Add<MeshRenderer>(andEnt3, *and, shader);

@@ -47,6 +47,7 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseDoorOn = Texture2D::LoadFromFile("Textures/DoorTexOn.png");
 	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTilesetFinal.png");
 	Texture2D::sptr diffuseWall = Texture2D::LoadFromFile("Textures/WallTileset.png");
+	Texture2D::sptr diffuseLabWall = Texture2D::LoadFromFile("Textures/Lab-WallTileset.png");
 	Texture2D::sptr diffuseComplete = Texture2D::LoadFromFile("Textures/LevelComplete.png");
 	Texture2D::sptr diffuseAnd = Texture2D::LoadFromFile("Textures/AndGate.png");
 	Texture2D::sptr diffuseNot = Texture2D::LoadFromFile("Textures/NotGate.png");
@@ -87,6 +88,7 @@ void Scene::InitTextures()
 	doorOnMat.Albedo = diffuseDoorOn;
 	floorMat.Albedo = diffuseFloor;
 	wallMat.Albedo = diffuseWall;
+	labWallMat.Albedo = diffuseLabWall;
 	completeMat.Albedo = diffuseComplete;
 	andMat.Albedo = diffuseAnd;
 	notMat.Albedo = diffuseNot;

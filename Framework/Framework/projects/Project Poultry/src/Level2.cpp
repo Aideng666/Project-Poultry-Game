@@ -313,9 +313,9 @@ void Level2::InitScene()
 	auto& pipeMesh4 = pipeEntC2.Add<MeshRenderer>(pipeEntC2, *pipeC, shader);
 	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *and, shader);
 	auto& gateMesh2 = andEnt2.Add<MeshRenderer>(andEnt2, *and, shader);
-	auto& buttonMesh = buttonEnt.Add<MorphRenderer>(buttonEnt, *button1, animShader);
-	auto& buttonMesh2 = buttonEnt2.Add<MorphRenderer>(buttonEnt2, *button1, animShader);
-	auto& buttonMesh3 = buttonEnt3.Add<MorphRenderer>(buttonEnt3, *button1, animShader);
+	auto& buttonMesh = buttonEnt.Add<MorphRenderer>(buttonEnt, *buttonM, animShader);
+	auto& buttonMesh2 = buttonEnt2.Add<MorphRenderer>(buttonEnt2, *buttonM, animShader);
+	auto& buttonMesh3 = buttonEnt3.Add<MorphRenderer>(buttonEnt3, *buttonM, animShader);
 	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireM1L2, shader);
 	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireM2L2, shader);
 	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireM3L2, shader);
@@ -628,518 +628,519 @@ void Level2::Update(float dt)
 		}
 
 		mainPlayer.Get<MorphAnimation>().Update(dt);
+	}
 #pragma endregion
 
 #pragma region CameraMovement
 
-	if (camera.GetPosition().z - playerTrans.GetPositionZ() < 10.0f)
-		camClose = true;
-	else
-		camClose = false;
+		if (camera.GetPosition().z - playerTrans.GetPositionZ() < 10.0f)
+			camClose = true;
+		else
+			camClose = false;
 
-	if (camera.GetPosition().z - playerTrans.GetPositionZ() > 12.5f)
-		camFar = true;
-	else
-		camFar = false;
+		if (camera.GetPosition().z - playerTrans.GetPositionZ() > 12.5f)
+			camFar = true;
+		else
+			camFar = false;
 
-	if (camera.GetPosition().x - playerTrans.GetPositionX() < -1.0f)
-		camLeft = true;
-	else
-		camLeft = false;
+		if (camera.GetPosition().x - playerTrans.GetPositionX() < -1.0f)
+			camLeft = true;
+		else
+			camLeft = false;
 
-	if (camera.GetPosition().x - playerTrans.GetPositionX() > 1.0f)
-		camRight = true;
-	else
-		camRight = false;
+		if (camera.GetPosition().x - playerTrans.GetPositionX() > 1.0f)
+			camRight = true;
+		else
+			camRight = false;
 
-	if (!showLevelComplete && !isPaused)
-	{
-		Input::MoveCamera(window, camEnt, dt);
-	}
+		if (!showLevelComplete && !isPaused)
+		{
+			Input::MoveCamera(window, camEnt, dt);
+		}
 #pragma endregion
 
-	if (buttonAnimOn)
-	{
-		if (buttonEnt.Get<MorphAnimation>().GetIsDone())
+		if (buttonAnimOn)
 		{
-			buttonEnt.Get<MorphAnimation>().SetFrames(buttonFrames);
-			buttonEnt.Get<MorphAnimation>().SetTime(0.2f);
-			buttonAnimOn = false;
+			if (buttonEnt.Get<MorphAnimation>().GetIsDone())
+			{
+				buttonEnt.Get<MorphAnimation>().SetFrames(buttonFrames);
+				buttonEnt.Get<MorphAnimation>().SetTime(0.2f);
+				buttonAnimOn = false;
+			}
+
+			buttonEnt.Get<MorphAnimation>().Update(dt);
 		}
 
-		buttonEnt.Get<MorphAnimation>().Update(dt);
-	}
 
-
-	if (button2AnimOn)
-	{
-		if (buttonEnt2.Get<MorphAnimation>().GetIsDone())
+		if (button2AnimOn)
 		{
-			buttonEnt2.Get<MorphAnimation>().SetFrames(buttonFrames);
-			buttonEnt2.Get<MorphAnimation>().SetTime(0.2f);
-			button2AnimOn = false;
+			if (buttonEnt2.Get<MorphAnimation>().GetIsDone())
+			{
+				buttonEnt2.Get<MorphAnimation>().SetFrames(buttonFrames);
+				buttonEnt2.Get<MorphAnimation>().SetTime(0.2f);
+				button2AnimOn = false;
+			}
+
+			buttonEnt2.Get<MorphAnimation>().Update(dt);
 		}
 
-		buttonEnt2.Get<MorphAnimation>().Update(dt);
-	}
-
-	if (button3AnimOn)
-	{
-		if (buttonEnt3.Get<MorphAnimation>().GetIsDone())
+		if (button3AnimOn)
 		{
-			buttonEnt3.Get<MorphAnimation>().SetFrames(buttonFrames);
-			buttonEnt3.Get<MorphAnimation>().SetTime(0.2f);
-			button3AnimOn = false;
+			if (buttonEnt3.Get<MorphAnimation>().GetIsDone())
+			{
+				buttonEnt3.Get<MorphAnimation>().SetFrames(buttonFrames);
+				buttonEnt3.Get<MorphAnimation>().SetTime(0.2f);
+				button3AnimOn = false;
+			}
+
+			buttonEnt3.Get<MorphAnimation>().Update(dt);
 		}
 
-		buttonEnt3.Get<MorphAnimation>().Update(dt);
-	}
+		GetCursorPos(&mousePos);
 
-	GetCursorPos(&mousePos);
+		ScreenToClient(hWnd, &mousePos);
 
-	ScreenToClient(hWnd, &mousePos);
-
-	//Exits the game if exit is clicked in pause menu
-	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 597 && mousePos.x > 865 && mousePos.x < 1097)
-	{
-		glfwSetWindowShouldClose(window, true);
-	}
-
-	//Retry the level
-	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 595 && mousePos.x > 487 && mousePos.x < 714)
-	{
-		levelRetry = true;
-	}
-
-	lightNum = Input::ChangeLighting(window, lightNum);
-
-	if (lightNum < 1 || lightNum > 5)
-		lightNum = 1;
-
-	animShader->SetUniform("u_LightNum", lightNum);
-	shader->SetUniform("u_LightNum", lightNum);
-	pauseShader->SetUniform("u_LightNum", lightNum);
-	untexturedShader->SetUniform("u_LightNum", lightNum);
-
-	if (lightOn)
-		lightInt = 1;
-	else
-		lightInt = 0;
-
-	untexturedShader->SetUniform("u_LightOn", lightInt);
-	shader->SetUniform("u_LightOn", lightInt);
-	pauseShader->SetUniform("u_LightOn", lightInt);
-	animShader->SetUniform("u_LightOn", lightInt);
-
-	//Post-Effect stuff
-	auto basicEffect = &FBO.Get<PostEffect>();
-	auto shadowBuffer = &shadowBufferEnt.Get<Framebuffer>();
-
-	basicEffect->Clear();
-	shadowBuffer->Clear();
-
-	for (int i = 0; i < effects.size(); i++)
-	{
-		effects[i]->Clear();
-	}
-
-	glm::mat4 LightProjectionMatrix = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, -1000.0f, 1000.0f);
-	glm::mat4 LightViewMatrix = glm::lookAt(glm::vec3(-theSun._lightDirection), glm::vec3(), glm::vec3(0.0f, 0.0f, 1.0f));
-	glm::mat4 LightSpaceViewProjection = LightProjectionMatrix * LightViewMatrix;
-
-	glViewport(0, 0, shadowWidth, shadowHeight);
-	shadowBuffer->Bind();
-
-	for (int i = 0; i < entList.size(); i++)
-	{
-		if (i < 5)
+		//Exits the game if exit is clicked in pause menu
+		if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 597 && mousePos.x > 865 && mousePos.x < 1097)
 		{
-			simpleDepthShader->Bind();
-			entList[i]->Get<MorphRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
-			simpleDepthShader->UnBind();
+			glfwSetWindowShouldClose(window, true);
 		}
+
+		//Retry the level
+		if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 595 && mousePos.x > 487 && mousePos.x < 714)
+		{
+			levelRetry = true;
+		}
+
+		lightNum = Input::ChangeLighting(window, lightNum);
+
+		if (lightNum < 1 || lightNum > 5)
+			lightNum = 1;
+
+		animShader->SetUniform("u_LightNum", lightNum);
+		shader->SetUniform("u_LightNum", lightNum);
+		pauseShader->SetUniform("u_LightNum", lightNum);
+		untexturedShader->SetUniform("u_LightNum", lightNum);
+
+		if (lightOn)
+			lightInt = 1;
 		else
+			lightInt = 0;
+
+		untexturedShader->SetUniform("u_LightOn", lightInt);
+		shader->SetUniform("u_LightOn", lightInt);
+		pauseShader->SetUniform("u_LightOn", lightInt);
+		animShader->SetUniform("u_LightOn", lightInt);
+
+		//Post-Effect stuff
+		auto basicEffect = &FBO.Get<PostEffect>();
+		auto shadowBuffer = &shadowBufferEnt.Get<Framebuffer>();
+
+		basicEffect->Clear();
+		shadowBuffer->Clear();
+
+		for (int i = 0; i < effects.size(); i++)
 		{
-			simpleDepthShader->Bind();
-			entList[i]->Get<MeshRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
-			simpleDepthShader->UnBind();
+			effects[i]->Clear();
 		}
-	}
 
-	shadowBuffer->Unbind();
+		glm::mat4 LightProjectionMatrix = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, -1000.0f, 1000.0f);
+		glm::mat4 LightViewMatrix = glm::lookAt(glm::vec3(-theSun._lightDirection), glm::vec3(), glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::mat4 LightSpaceViewProjection = LightProjectionMatrix * LightViewMatrix;
 
-	glfwGetWindowSize(window, &width, &height);
+		glViewport(0, 0, shadowWidth, shadowHeight);
+		shadowBuffer->Bind();
 
-	glViewport(0, 0, width, height);
+		for (int i = 0; i < entList.size(); i++)
+		{
+			if (i < 5)
+			{
+				simpleDepthShader->Bind();
+				entList[i]->Get<MorphRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
+				simpleDepthShader->UnBind();
+			}
+			else
+			{
+				simpleDepthShader->Bind();
+				entList[i]->Get<MeshRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);
+				simpleDepthShader->UnBind();
+			}
+		}
 
-	basicEffect->BindBuffer(0);
+		shadowBuffer->Unbind();
+
+		glfwGetWindowSize(window, &width, &height);
+
+		glViewport(0, 0, width, height);
+
+		basicEffect->BindBuffer(0);
 
 #pragma region Renders
 
-	if (isTextured)
-	{
-		if (!showLevelComplete)
+		if (isTextured)
 		{
-			//Bind and render the player and door using the animation shader
-			animShader->Bind();
-			animShader->SetUniform("s_Diffuse", 0);
-			drumstickMat.Albedo->Bind(0);
-			shadowBuffer->BindDepthAsTexture(30);
-			mainPlayer.Get<MorphRenderer>().Render(camera, transform, LightSpaceViewProjection);
-
-			animShader->SetUniform("s_Diffuse", 1);
-			if (!doorEnt.Get<Door>().GetOpen())
+			if (!showLevelComplete)
 			{
-				doorMat.Albedo->Bind(1);
-				doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
-			}
-			else
-			{
-				doorOnMat.Albedo->Bind(1);
-				doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
-			}
-			doorMat.Albedo->Unbind(1);
+				//Bind and render the player and door using the animation shader
+				animShader->Bind();
+				animShader->SetUniform("s_Diffuse", 0);
+				drumstickMat.Albedo->Bind(0);
+				shadowBuffer->BindDepthAsTexture(30);
+				mainPlayer.Get<MorphRenderer>().Render(camera, transform, LightSpaceViewProjection);
 
-			//Buttons
-			animShader->SetUniform("s_Diffuse", 3);
-			buttonMat.Albedo->Bind(3);
-			buttonEnt.Get<MorphRenderer>().Render(camera, transformButton, LightSpaceViewProjection);
-			buttonEnt2.Get<MorphRenderer>().Render(camera, transformButton2, LightSpaceViewProjection);
-			buttonEnt3.Get<MorphRenderer>().Render(camera, transformButton3, LightSpaceViewProjection);
+				animShader->SetUniform("s_Diffuse", 1);
+				if (!doorEnt.Get<Door>().GetOpen())
+				{
+					doorMat.Albedo->Bind(1);
+					doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
+				}
+				else
+				{
+					doorOnMat.Albedo->Bind(1);
+					doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
+				}
+				doorMat.Albedo->Unbind(1);
 
-			shadowBuffer->UnbindTexture(30);
+				//Buttons
+				animShader->SetUniform("s_Diffuse", 3);
+				buttonMat.Albedo->Bind(3);
+				buttonEnt.Get<MorphRenderer>().Render(camera, transformButton, LightSpaceViewProjection);
+				buttonEnt2.Get<MorphRenderer>().Render(camera, transformButton2, LightSpaceViewProjection);
+				buttonEnt3.Get<MorphRenderer>().Render(camera, transformButton3, LightSpaceViewProjection);
 
-			//Bind and render the pause UI using the pause shader
-			pauseShader->Bind();
-			pauseShader->SetUniform("s_Diffuse", 0);
-			pauseMat.Albedo->Bind(0);
+				shadowBuffer->UnbindTexture(30);
 
-			shadowBuffer->BindDepthAsTexture(30);
+				//Bind and render the pause UI using the pause shader
+				pauseShader->Bind();
+				pauseShader->SetUniform("s_Diffuse", 0);
+				pauseMat.Albedo->Bind(0);
 
-			if (isPaused)
-			{
-				pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause);
-			}
+				shadowBuffer->BindDepthAsTexture(30);
 
-			pauseShader->SetUniform("s_Diffuse", 1);
-			optionMat.Albedo->Bind(1);
+				if (isPaused)
+				{
+					pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause);
+				}
 
-			if (isPaused)
-			{
-				optionEnt.Get<MeshRenderer>().Render(orthoCam, transformOptions);
-			}
+				pauseShader->SetUniform("s_Diffuse", 1);
+				optionMat.Albedo->Bind(1);
 
-			pauseShader->SetUniform("s_Diffuse", 2);
+				if (isPaused)
+				{
+					optionEnt.Get<MeshRenderer>().Render(orthoCam, transformOptions);
+				}
 
-			if (isPaused && mousePos.y > 403 && mousePos.y < 595 && mousePos.x > 487 && mousePos.x < 714)
-			{
-				retryPressMat.Albedo->Bind(2);
-				retryEnt.Get<MeshRenderer>().Render(orthoCam, transformRetry);
-			}
-			else if (isPaused)
-			{
-				retryMat.Albedo->Bind(2);
-				retryEnt.Get<MeshRenderer>().Render(orthoCam, transformRetry);
-			}
+				pauseShader->SetUniform("s_Diffuse", 2);
 
-			pauseShader->SetUniform("s_Diffuse", 3);
+				if (isPaused && mousePos.y > 403 && mousePos.y < 595 && mousePos.x > 487 && mousePos.x < 714)
+				{
+					retryPressMat.Albedo->Bind(2);
+					retryEnt.Get<MeshRenderer>().Render(orthoCam, transformRetry);
+				}
+				else if (isPaused)
+				{
+					retryMat.Albedo->Bind(2);
+					retryEnt.Get<MeshRenderer>().Render(orthoCam, transformRetry);
+				}
 
-			if (isPaused && mousePos.y > 403 && mousePos.y < 597 && mousePos.x > 865 && mousePos.x < 1097)
-			{
-				exitPressMat.Albedo->Bind(3);
-				exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit);
-			}
-			else if (isPaused)
-			{
-				exitMat.Albedo->Bind(3);
-				exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit);
-			}
+				pauseShader->SetUniform("s_Diffuse", 3);
 
-			shadowBuffer->UnbindTexture(30);
+				if (isPaused && mousePos.y > 403 && mousePos.y < 597 && mousePos.x > 865 && mousePos.x < 1097)
+				{
+					exitPressMat.Albedo->Bind(3);
+					exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit);
+				}
+				else if (isPaused)
+				{
+					exitMat.Albedo->Bind(3);
+					exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit);
+				}
 
-			//Bind and render the objects using the basic shader
-			shader->Bind();
+				shadowBuffer->UnbindTexture(30);
 
-			//Floor
-			shader->SetUniform("s_Diffuse", 0);
-			floorMat.Albedo->Bind(0);
-			shadowBuffer->BindDepthAsTexture(30);
-			floorEnt.Get<MeshRenderer>().Render(camera, transformGround, LightSpaceViewProjection);
+				//Bind and render the objects using the basic shader
+				shader->Bind();
 
-			//Walls
-			shader->SetUniform("s_Diffuse", 1);
-			wallMat.Albedo->Bind(1);
-			leftEnt.Get<MeshRenderer>().Render(camera, transformLeft, LightSpaceViewProjection);
-			rightEnt.Get<MeshRenderer>().Render(camera, transformRight, LightSpaceViewProjection);
-			backEnt.Get<MeshRenderer>().Render(camera, transformBack, LightSpaceViewProjection);
+				//Floor
+				shader->SetUniform("s_Diffuse", 0);
+				floorMat.Albedo->Bind(0);
+				shadowBuffer->BindDepthAsTexture(30);
+				floorEnt.Get<MeshRenderer>().Render(camera, transformGround, LightSpaceViewProjection);
 
-			//Pipes
-			//Straight Pipe
-			shader->SetUniform("s_Diffuse", 2);
-			straightPipeMat.Albedo->Bind(2);
-			pipeEntS.Get<MeshRenderer>().Render(camera, transformPipe, LightSpaceViewProjection);
-			pipeEntS2.Get<MeshRenderer>().Render(camera, transformPipe2, LightSpaceViewProjection);
+				//Walls
+				shader->SetUniform("s_Diffuse", 1);
+				wallMat.Albedo->Bind(1);
+				leftEnt.Get<MeshRenderer>().Render(camera, transformLeft, LightSpaceViewProjection);
+				rightEnt.Get<MeshRenderer>().Render(camera, transformRight, LightSpaceViewProjection);
+				backEnt.Get<MeshRenderer>().Render(camera, transformBack, LightSpaceViewProjection);
 
-			//Curved Pipe
-			shader->SetUniform("s_Diffuse", 3);
-			curvedPipeMat.Albedo->Bind(3);
-			pipeEntC.Get<MeshRenderer>().Render(camera, transformPipe3, LightSpaceViewProjection);
-			pipeEntC2.Get<MeshRenderer>().Render(camera, transformPipe4, LightSpaceViewProjection);
+				//Pipes
+				//Straight Pipe
+				shader->SetUniform("s_Diffuse", 2);
+				straightPipeMat.Albedo->Bind(2);
+				pipeEntS.Get<MeshRenderer>().Render(camera, transformPipe, LightSpaceViewProjection);
+				pipeEntS2.Get<MeshRenderer>().Render(camera, transformPipe2, LightSpaceViewProjection);
 
-			//Gates
-			shader->SetUniform("s_Diffuse", 4);
-			andMat.Albedo->Bind(4);
-			andEnt.Get<MeshRenderer>().Render(camera, transformGate, LightSpaceViewProjection);
-			andEnt2.Get<MeshRenderer>().Render(camera, transformGate2, LightSpaceViewProjection);
+				//Curved Pipe
+				shader->SetUniform("s_Diffuse", 3);
+				curvedPipeMat.Albedo->Bind(3);
+				pipeEntC.Get<MeshRenderer>().Render(camera, transformPipe3, LightSpaceViewProjection);
+				pipeEntC2.Get<MeshRenderer>().Render(camera, transformPipe4, LightSpaceViewProjection);
 
-			////Button
-			//shader->SetUniform("s_Diffuse", 5);
-			//buttonMat.Albedo->Bind(5);
-			//buttonEnt.Get<MeshRenderer>().Render(camera, transformButton, LightSpaceViewProjection);
-			//buttonEnt2.Get<MeshRenderer>().Render(camera, transformButton2, LightSpaceViewProjection);
-			//buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3, LightSpaceViewProjection);
+				//Gates
+				shader->SetUniform("s_Diffuse", 4);
+				andMat.Albedo->Bind(4);
+				andEnt.Get<MeshRenderer>().Render(camera, transformGate, LightSpaceViewProjection);
+				andEnt2.Get<MeshRenderer>().Render(camera, transformGate2, LightSpaceViewProjection);
 
-			//Wires
-			shader->SetUniform("s_Diffuse", 6);
+				////Button
+				//shader->SetUniform("s_Diffuse", 5);
+				//buttonMat.Albedo->Bind(5);
+				//buttonEnt.Get<MeshRenderer>().Render(camera, transformButton, LightSpaceViewProjection);
+				//buttonEnt2.Get<MeshRenderer>().Render(camera, transformButton2, LightSpaceViewProjection);
+				//buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3, LightSpaceViewProjection);
 
-			if (wireEnt.Get<Wire>().GetIsPowered())
-			{
-				wireMatOn.Albedo->Bind(6);
-				wireEnt.Get<MeshRenderer>().Render(camera, transformWire, LightSpaceViewProjection);
-			}
-			else
-			{
-				wireMat.Albedo->Bind(6);
-				wireEnt.Get<MeshRenderer>().Render(camera, transformWire, LightSpaceViewProjection);
-			}
+				//Wires
+				shader->SetUniform("s_Diffuse", 6);
 
-			if (wireEnt2.Get<Wire>().GetIsPowered())
-			{
-				wireMatOn.Albedo->Bind(6);
-				wireEnt2.Get<MeshRenderer>().Render(camera, transformWire2, LightSpaceViewProjection);
-			}
-			else
-			{
-				wireMat.Albedo->Bind(6);
-				wireEnt2.Get<MeshRenderer>().Render(camera, transformWire2, LightSpaceViewProjection);
-			}
+				if (wireEnt.Get<Wire>().GetIsPowered())
+				{
+					wireMatOn.Albedo->Bind(6);
+					wireEnt.Get<MeshRenderer>().Render(camera, transformWire, LightSpaceViewProjection);
+				}
+				else
+				{
+					wireMat.Albedo->Bind(6);
+					wireEnt.Get<MeshRenderer>().Render(camera, transformWire, LightSpaceViewProjection);
+				}
 
-			if (wireEnt3.Get<Wire>().GetIsPowered())
-			{
-				wireMatOn.Albedo->Bind(6);
-				wireEnt3.Get<MeshRenderer>().Render(camera, transformWire3, LightSpaceViewProjection);
-			}
-			else
-			{
-				wireMat.Albedo->Bind(6);
-				wireEnt3.Get<MeshRenderer>().Render(camera, transformWire3, LightSpaceViewProjection);
-			}
+				if (wireEnt2.Get<Wire>().GetIsPowered())
+				{
+					wireMatOn.Albedo->Bind(6);
+					wireEnt2.Get<MeshRenderer>().Render(camera, transformWire2, LightSpaceViewProjection);
+				}
+				else
+				{
+					wireMat.Albedo->Bind(6);
+					wireEnt2.Get<MeshRenderer>().Render(camera, transformWire2, LightSpaceViewProjection);
+				}
 
-			if (wireEnt4.Get<Wire>().GetIsPowered())
-			{
-				wireMatOn.Albedo->Bind(6);
-				wireEnt4.Get<MeshRenderer>().Render(camera, transformWire4, LightSpaceViewProjection);
-			}
-			else
-			{
-				wireMat.Albedo->Bind(6);
-				wireEnt4.Get<MeshRenderer>().Render(camera, transformWire4, LightSpaceViewProjection);
-			}
+				if (wireEnt3.Get<Wire>().GetIsPowered())
+				{
+					wireMatOn.Albedo->Bind(6);
+					wireEnt3.Get<MeshRenderer>().Render(camera, transformWire3, LightSpaceViewProjection);
+				}
+				else
+				{
+					wireMat.Albedo->Bind(6);
+					wireEnt3.Get<MeshRenderer>().Render(camera, transformWire3, LightSpaceViewProjection);
+				}
 
-			if (wireEnt5.Get<Wire>().GetIsPowered())
-			{
-				wireMatOn.Albedo->Bind(6);
-				wireEnt5.Get<MeshRenderer>().Render(camera, transformWire5, LightSpaceViewProjection);
-			}
-			else
-			{
-				wireMat.Albedo->Bind(6);
-				wireEnt5.Get<MeshRenderer>().Render(camera, transformWire5, LightSpaceViewProjection);
-			}		
+				if (wireEnt4.Get<Wire>().GetIsPowered())
+				{
+					wireMatOn.Albedo->Bind(6);
+					wireEnt4.Get<MeshRenderer>().Render(camera, transformWire4, LightSpaceViewProjection);
+				}
+				else
+				{
+					wireMat.Albedo->Bind(6);
+					wireEnt4.Get<MeshRenderer>().Render(camera, transformWire4, LightSpaceViewProjection);
+				}
 
-			//Boxes
-			shader->SetUniform("s_Diffuse", 7);
-			boxMat.Albedo->Bind(7);
-			boxEnt.Get<MeshRenderer>().Render(camera, transformBox, LightSpaceViewProjection);
-			boxEnt2.Get<MeshRenderer>().Render(camera, transformBox2, LightSpaceViewProjection);
-			boxEnt3.Get<MeshRenderer>().Render(camera, transformBox3, LightSpaceViewProjection);
-			boxEnt4.Get<MeshRenderer>().Render(camera, transformBox4, LightSpaceViewProjection);
+				if (wireEnt5.Get<Wire>().GetIsPowered())
+				{
+					wireMatOn.Albedo->Bind(6);
+					wireEnt5.Get<MeshRenderer>().Render(camera, transformWire5, LightSpaceViewProjection);
+				}
+				else
+				{
+					wireMat.Albedo->Bind(6);
+					wireEnt5.Get<MeshRenderer>().Render(camera, transformWire5, LightSpaceViewProjection);
+				}
 
-			//Panels
-			shader->SetUniform("s_Diffuse", 8);
-			panelMat.Albedo->Bind(8);
-			panelEnt.Get<MeshRenderer>().Render(camera, transformPanel, LightSpaceViewProjection);
-			panelEnt2.Get<MeshRenderer>().Render(camera, transformPanel2, LightSpaceViewProjection);
-			panelEnt3.Get<MeshRenderer>().Render(camera, transformPanel3, LightSpaceViewProjection);
+				//Boxes
+				shader->SetUniform("s_Diffuse", 7);
+				boxMat.Albedo->Bind(7);
+				boxEnt.Get<MeshRenderer>().Render(camera, transformBox, LightSpaceViewProjection);
+				boxEnt2.Get<MeshRenderer>().Render(camera, transformBox2, LightSpaceViewProjection);
+				boxEnt3.Get<MeshRenderer>().Render(camera, transformBox3, LightSpaceViewProjection);
+				boxEnt4.Get<MeshRenderer>().Render(camera, transformBox4, LightSpaceViewProjection);
 
-			//Vents
-			shader->SetUniform("s_Diffuse", 9);
-			ventMat.Albedo->Bind(9);
-			ventEnt.Get<MeshRenderer>().Render(camera, transformVent, LightSpaceViewProjection);
-			ventEnt2.Get<MeshRenderer>().Render(camera, transformVent2, LightSpaceViewProjection);
+				//Panels
+				shader->SetUniform("s_Diffuse", 8);
+				panelMat.Albedo->Bind(8);
+				panelEnt.Get<MeshRenderer>().Render(camera, transformPanel, LightSpaceViewProjection);
+				panelEnt2.Get<MeshRenderer>().Render(camera, transformPanel2, LightSpaceViewProjection);
+				panelEnt3.Get<MeshRenderer>().Render(camera, transformPanel3, LightSpaceViewProjection);
 
-			//Tesla Coil
-			shader->SetUniform("s_Diffuse", 10);
+				//Vents
+				shader->SetUniform("s_Diffuse", 9);
+				ventMat.Albedo->Bind(9);
+				ventEnt.Get<MeshRenderer>().Render(camera, transformVent, LightSpaceViewProjection);
+				ventEnt2.Get<MeshRenderer>().Render(camera, transformVent2, LightSpaceViewProjection);
 
-			if (!doorEnt.Get<Door>().GetOpen())
-			{
-				coilMatOff.Albedo->Bind(10);
-				coilEnt.Get<MeshRenderer>().Render(camera, transformCoil, LightSpaceViewProjection);
-			}
-			else
-			{
-				coilMatOn.Albedo->Bind(10);
-				coilEnt.Get<MeshRenderer>().Render(camera, transformCoil, LightSpaceViewProjection);
-			}
+				//Tesla Coil
+				shader->SetUniform("s_Diffuse", 10);
 
-			shadowBuffer->UnbindTexture(30);
-			//Bind and render the objects with no textures
-			untexturedShader->Bind();
-			shadowBuffer->BindDepthAsTexture(30);
+				if (!doorEnt.Get<Door>().GetOpen())
+				{
+					coilMatOff.Albedo->Bind(10);
+					coilEnt.Get<MeshRenderer>().Render(camera, transformCoil, LightSpaceViewProjection);
+				}
+				else
+				{
+					coilMatOn.Albedo->Bind(10);
+					coilEnt.Get<MeshRenderer>().Render(camera, transformCoil, LightSpaceViewProjection);
+				}
 
-			if ((playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f
+				shadowBuffer->UnbindTexture(30);
+				//Bind and render the objects with no textures
+				untexturedShader->Bind();
+				shadowBuffer->BindDepthAsTexture(30);
+
+				if ((playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f
 					&& playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
 					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f
 					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
-				|| (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f
-					&& playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
-					&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f
-					&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
-				|| (playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 3.0f
-					&& playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -3.0f
-					&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() < 3.0f
-					&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() > -3.0f))
-			{
-				if (!tabletOpen)
-					tutEnt.Get<MeshRenderer>().Render(orthoCam, transformTut, LightSpaceViewProjection);
-				else
+					|| (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f
+						&& playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
+						&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f
+						&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f)
+					|| (playerTrans.GetPositionX() - buttonTrans3.GetPositionX() < 3.0f
+						&& playerTrans.GetPositionX() - buttonTrans3.GetPositionX() > -3.0f
+						&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() < 3.0f
+						&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() > -3.0f))
 				{
+					if (!tabletOpen)
+						tutEnt.Get<MeshRenderer>().Render(orthoCam, transformTut, LightSpaceViewProjection);
+					else
+					{
 
+					}
 				}
+				shadowBuffer->UnbindTexture(30);
 			}
-			shadowBuffer->UnbindTexture(30);
 		}
-	}
-	else
-	{
-		if (!showLevelComplete)
+		else
 		{
-			animShader->Bind();
-			animShader->SetUniform("s_Diffuse", 0);
-			clearMat.Albedo->Bind(0);
-			shadowBuffer->BindDepthAsTexture(30);
-			mainPlayer.Get<MorphRenderer>().Render(camera, transform, LightSpaceViewProjection);
-
-			animShader->SetUniform("s_Diffuse", 1);
-			clearMat.Albedo->Bind(1);
-			doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
-			clearMat.Albedo->Unbind(1);
-			shadowBuffer->UnbindTexture(30);
-
-			pauseShader->Bind();
-			pauseShader->SetUniform("s_Diffuse", 0);
-			pauseMat.Albedo->Bind(0);
-			shadowBuffer->BindDepthAsTexture(30);
-
-			if (isPaused)
+			if (!showLevelComplete)
 			{
-				pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause, LightSpaceViewProjection);
-			}
-			shadowBuffer->UnbindTexture(30);
+				animShader->Bind();
+				animShader->SetUniform("s_Diffuse", 0);
+				clearMat.Albedo->Bind(0);
+				shadowBuffer->BindDepthAsTexture(30);
+				mainPlayer.Get<MorphRenderer>().Render(camera, transform, LightSpaceViewProjection);
 
+				animShader->SetUniform("s_Diffuse", 1);
+				clearMat.Albedo->Bind(1);
+				doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
+				clearMat.Albedo->Unbind(1);
+				shadowBuffer->UnbindTexture(30);
+
+				pauseShader->Bind();
+				pauseShader->SetUniform("s_Diffuse", 0);
+				pauseMat.Albedo->Bind(0);
+				shadowBuffer->BindDepthAsTexture(30);
+
+				if (isPaused)
+				{
+					pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause, LightSpaceViewProjection);
+				}
+				shadowBuffer->UnbindTexture(30);
+
+				shader->Bind();
+				shader->SetUniform("s_Diffuse", 0);
+				clearMat.Albedo->Bind(0);
+				shadowBuffer->BindDepthAsTexture(30);
+				floorEnt.Get<MeshRenderer>().Render(camera, transformGround, LightSpaceViewProjection);
+				leftEnt.Get<MeshRenderer>().Render(camera, transformLeft, LightSpaceViewProjection);
+				rightEnt.Get<MeshRenderer>().Render(camera, transformRight, LightSpaceViewProjection);
+				backEnt.Get<MeshRenderer>().Render(camera, transformBack, LightSpaceViewProjection);
+				pipeEntS.Get<MeshRenderer>().Render(camera, transformPipe, LightSpaceViewProjection);
+				pipeEntS2.Get<MeshRenderer>().Render(camera, transformPipe2, LightSpaceViewProjection);
+				pipeEntC.Get<MeshRenderer>().Render(camera, transformPipe3, LightSpaceViewProjection);
+				pipeEntC2.Get<MeshRenderer>().Render(camera, transformPipe4, LightSpaceViewProjection);
+				andEnt.Get<MeshRenderer>().Render(camera, transformGate, LightSpaceViewProjection);
+				andEnt2.Get<MeshRenderer>().Render(camera, transformGate2, LightSpaceViewProjection);
+				buttonEnt.Get<MeshRenderer>().Render(camera, transformButton, LightSpaceViewProjection);
+				buttonEnt2.Get<MeshRenderer>().Render(camera, transformButton2, LightSpaceViewProjection);
+				buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3, LightSpaceViewProjection);
+				wireEnt.Get<MeshRenderer>().Render(camera, transformWire, LightSpaceViewProjection);
+				wireEnt2.Get<MeshRenderer>().Render(camera, transformWire2, LightSpaceViewProjection);
+				wireEnt3.Get<MeshRenderer>().Render(camera, transformWire3, LightSpaceViewProjection);
+				wireEnt4.Get<MeshRenderer>().Render(camera, transformWire4, LightSpaceViewProjection);
+				wireEnt5.Get<MeshRenderer>().Render(camera, transformWire5, LightSpaceViewProjection);
+				boxEnt.Get<MeshRenderer>().Render(camera, transformBox, LightSpaceViewProjection);
+				boxEnt2.Get<MeshRenderer>().Render(camera, transformBox2, LightSpaceViewProjection);
+				boxEnt3.Get<MeshRenderer>().Render(camera, transformBox3, LightSpaceViewProjection);
+				boxEnt4.Get<MeshRenderer>().Render(camera, transformBox4, LightSpaceViewProjection);
+				panelEnt.Get<MeshRenderer>().Render(camera, transformPanel, LightSpaceViewProjection);
+				panelEnt2.Get<MeshRenderer>().Render(camera, transformPanel2, LightSpaceViewProjection);
+				panelEnt3.Get<MeshRenderer>().Render(camera, transformPanel3, LightSpaceViewProjection);
+				ventEnt.Get<MeshRenderer>().Render(camera, transformVent, LightSpaceViewProjection);
+				ventEnt2.Get<MeshRenderer>().Render(camera, transformVent2, LightSpaceViewProjection);
+				coilEnt.Get<MeshRenderer>().Render(camera, transformCoil, LightSpaceViewProjection);
+				//untexturedShader->Bind();
+				shadowBuffer->UnbindTexture(30);
+			}
+		}
+
+		if (showLevelComplete)
+		{
+			lightNum = 1;
 			shader->Bind();
 			shader->SetUniform("s_Diffuse", 0);
-			clearMat.Albedo->Bind(0);
+			completeMat.Albedo->Bind(0);
 			shadowBuffer->BindDepthAsTexture(30);
-			floorEnt.Get<MeshRenderer>().Render(camera, transformGround, LightSpaceViewProjection);
-			leftEnt.Get<MeshRenderer>().Render(camera, transformLeft, LightSpaceViewProjection);
-			rightEnt.Get<MeshRenderer>().Render(camera, transformRight, LightSpaceViewProjection);
-			backEnt.Get<MeshRenderer>().Render(camera, transformBack, LightSpaceViewProjection);
-			pipeEntS.Get<MeshRenderer>().Render(camera, transformPipe, LightSpaceViewProjection);
-			pipeEntS2.Get<MeshRenderer>().Render(camera, transformPipe2, LightSpaceViewProjection);
-			pipeEntC.Get<MeshRenderer>().Render(camera, transformPipe3, LightSpaceViewProjection);
-			pipeEntC2.Get<MeshRenderer>().Render(camera, transformPipe4, LightSpaceViewProjection);
-			andEnt.Get<MeshRenderer>().Render(camera, transformGate, LightSpaceViewProjection);
-			andEnt2.Get<MeshRenderer>().Render(camera, transformGate2, LightSpaceViewProjection);
-			buttonEnt.Get<MeshRenderer>().Render(camera, transformButton, LightSpaceViewProjection);
-			buttonEnt2.Get<MeshRenderer>().Render(camera, transformButton2, LightSpaceViewProjection);
-			buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3, LightSpaceViewProjection);
-			wireEnt.Get<MeshRenderer>().Render(camera, transformWire, LightSpaceViewProjection);
-			wireEnt2.Get<MeshRenderer>().Render(camera, transformWire2, LightSpaceViewProjection);
-			wireEnt3.Get<MeshRenderer>().Render(camera, transformWire3, LightSpaceViewProjection);
-			wireEnt4.Get<MeshRenderer>().Render(camera, transformWire4, LightSpaceViewProjection);
-			wireEnt5.Get<MeshRenderer>().Render(camera, transformWire5, LightSpaceViewProjection);
-			boxEnt.Get<MeshRenderer>().Render(camera, transformBox, LightSpaceViewProjection);
-			boxEnt2.Get<MeshRenderer>().Render(camera, transformBox2, LightSpaceViewProjection);
-			boxEnt3.Get<MeshRenderer>().Render(camera, transformBox3, LightSpaceViewProjection);
-			boxEnt4.Get<MeshRenderer>().Render(camera, transformBox4, LightSpaceViewProjection);
-			panelEnt.Get<MeshRenderer>().Render(camera, transformPanel, LightSpaceViewProjection);
-			panelEnt2.Get<MeshRenderer>().Render(camera, transformPanel2, LightSpaceViewProjection);
-			panelEnt3.Get<MeshRenderer>().Render(camera, transformPanel3, LightSpaceViewProjection);
-			ventEnt.Get<MeshRenderer>().Render(camera, transformVent, LightSpaceViewProjection);
-			ventEnt2.Get<MeshRenderer>().Render(camera, transformVent2, LightSpaceViewProjection);
-			coilEnt.Get<MeshRenderer>().Render(camera, transformCoil, LightSpaceViewProjection);
-			//untexturedShader->Bind();
+			completeEnt.Get<MeshRenderer>().Render(orthoCam, transformComplete);
 			shadowBuffer->UnbindTexture(30);
 		}
-	}
-
-	if (showLevelComplete)
-	{
-		lightNum = 1;
-		shader->Bind();
-		shader->SetUniform("s_Diffuse", 0);
-		completeMat.Albedo->Bind(0);
-		shadowBuffer->BindDepthAsTexture(30);
-		completeEnt.Get<MeshRenderer>().Render(orthoCam, transformComplete);
-		shadowBuffer->UnbindTexture(30);
-	}
 #pragma endregion
-	
-	basicEffect->UnbindBuffer();
 
-	effects[activeEffect]->ApplyEffect(basicEffect);
+		basicEffect->UnbindBuffer();
 
-	effects[activeEffect]->DrawToScreen();
+		effects[activeEffect]->ApplyEffect(basicEffect);
 
-	//Update the collisions
-	leftEnt.Get<AABB>().Update();
-	rightEnt.Get<AABB>().Update();
-	backEnt.Get<AABB>().Update();
-	doorEnt.Get<AABB>().Update();
-	andEnt.Get<AABB>().Update();
-	andEnt2.Get<AABB>().Update();
-	andEnt.Get<AndGate>().Update();
-	andEnt2.Get<AndGate>().Update();
-	coilEnt.Get<AABB>().Update();
-	pipeEntC.Get<AABB>().Update();
-	pipeEntC2.Get<AABB>().Update();
-	buttonEnt.Get<AABB>().Update();
-	buttonEnt2.Get<AABB>().Update();
-	buttonEnt3.Get<AABB>().Update();
-	buttonEnt.Get<Lever>().Update();
-	buttonEnt2.Get<Lever>().Update();
-	buttonEnt3.Get<Lever>().Update();
-	wireEnt.Get<Wire>().Update();
-	wireEnt2.Get<Wire>().Update();
-	wireEnt3.Get<Wire>().Update();
-	wireEnt4.Get<Wire>().Update();
-	wireEnt5.Get<Wire>().Update();
-	boxEnt.Get<AABB>().Update();
-	boxEnt2.Get<AABB>().Update();
-	boxEnt3.Get<AABB>().Update();
-	boxEnt4.Get<AABB>().Update();
+		effects[activeEffect]->DrawToScreen();
 
-	//Door Logic
-	if (doorEnt.Get<Door>().GetOpen())
-		doorEnt.Get<MorphAnimation>().Update(dt);
+		//Update the collisions
+		leftEnt.Get<AABB>().Update();
+		rightEnt.Get<AABB>().Update();
+		backEnt.Get<AABB>().Update();
+		doorEnt.Get<AABB>().Update();
+		andEnt.Get<AABB>().Update();
+		andEnt2.Get<AABB>().Update();
+		andEnt.Get<AndGate>().Update();
+		andEnt2.Get<AndGate>().Update();
+		coilEnt.Get<AABB>().Update();
+		pipeEntC.Get<AABB>().Update();
+		pipeEntC2.Get<AABB>().Update();
+		buttonEnt.Get<AABB>().Update();
+		buttonEnt2.Get<AABB>().Update();
+		buttonEnt3.Get<AABB>().Update();
+		buttonEnt.Get<Lever>().Update();
+		buttonEnt2.Get<Lever>().Update();
+		buttonEnt3.Get<Lever>().Update();
+		wireEnt.Get<Wire>().Update();
+		wireEnt2.Get<Wire>().Update();
+		wireEnt3.Get<Wire>().Update();
+		wireEnt4.Get<Wire>().Update();
+		wireEnt5.Get<Wire>().Update();
+		boxEnt.Get<AABB>().Update();
+		boxEnt2.Get<AABB>().Update();
+		boxEnt3.Get<AABB>().Update();
+		boxEnt4.Get<AABB>().Update();
 
-	if (doorEnt.Get<AABB>().GetComplete())
-	{
-		lightOn = false;
-		showLevelComplete = true;
+		//Door Logic
+		if (doorEnt.Get<Door>().GetOpen())
+			doorEnt.Get<MorphAnimation>().Update(dt);
+
+		if (doorEnt.Get<AABB>().GetComplete())
+		{
+			lightOn = false;
+			showLevelComplete = true;
+		}
 	}
-}
 
 void Level2::Unload()
 {
