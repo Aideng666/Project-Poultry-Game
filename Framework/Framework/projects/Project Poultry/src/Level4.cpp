@@ -379,16 +379,16 @@ void Level4::InitScene()
 #pragma region Mesh Loading
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *idle1, animShader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floorLab, untexturedShader);
-	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *leftWallLab, untexturedShader);
-	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWallLab, untexturedShader);
-	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWallLab, untexturedShader);
+	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *leftWallLab, shader);
+	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWallLab, shader);
+	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWallLab, shader);
 	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *screen, shader);
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *door1, animShader);
-	auto& buttonMesh = buttonEnt.Add<MorphRenderer>(buttonEnt, *button1, animShader);
-	auto& buttonMesh2 = buttonEnt2.Add<MorphRenderer>(buttonEnt2, *button1, animShader);
-	auto& buttonMesh3 = buttonEnt3.Add<MorphRenderer>(buttonEnt3, *button1, animShader);
-	auto& buttonMesh4 = buttonEnt4.Add<MorphRenderer>(buttonEnt4, *button1, animShader);
+	auto& buttonMesh = buttonEnt.Add<MorphRenderer>(buttonEnt, *buttonM, animShader);
+	auto& buttonMesh2 = buttonEnt2.Add<MorphRenderer>(buttonEnt2, *buttonM, animShader);
+	auto& buttonMesh3 = buttonEnt3.Add<MorphRenderer>(buttonEnt3, *buttonM, animShader);
+	auto& buttonMesh4 = buttonEnt4.Add<MorphRenderer>(buttonEnt4, *buttonM, animShader);
 	auto& colPipeMesh = colPipeEnt.Add<MeshRenderer>(colPipeEnt, *columnPipe, shader);
 	auto& colPipeMesh2 = colPipeEnt2.Add<MeshRenderer>(colPipeEnt2, *columnPipe, shader);
 	auto& shelfPipeMesh = shelfPipeEnt.Add<MeshRenderer>(shelfPipeEnt, *shelfPipe, shader);
@@ -932,10 +932,6 @@ void Level4::Update(float dt)
 			shadowBuffer->BindDepthAsTexture(30);
 			floorEnt.Get<MeshRenderer>().Render(camera, transformGround, LightSpaceViewProjection);
 
-			//Walls (no textures for now)
-			leftEnt.Get<MeshRenderer>().Render(camera, transformLeft, LightSpaceViewProjection);
-			rightEnt.Get<MeshRenderer>().Render(camera, transformRight, LightSpaceViewProjection);
-			backEnt.Get<MeshRenderer>().Render(camera, transformBack, LightSpaceViewProjection);
 			shadowBuffer->UnbindTexture(30);
 
 			pauseShader->Bind();
@@ -1169,6 +1165,12 @@ void Level4::Update(float dt)
 			boxEnt5.Get<MeshRenderer>().Render(camera, transformBox5, LightSpaceViewProjection);
 			boxEnt6.Get<MeshRenderer>().Render(camera, transformBox6, LightSpaceViewProjection);
 
+			shader->SetUniform("s_Diffuse", 10);
+			labWallMat.Albedo->Bind(10);
+			leftEnt.Get<MeshRenderer>().Render(camera, transformLeft, LightSpaceViewProjection);
+			rightEnt.Get<MeshRenderer>().Render(camera, transformRight, LightSpaceViewProjection);
+			backEnt.Get<MeshRenderer>().Render(camera, transformBack, LightSpaceViewProjection);
+
 			shadowBuffer->UnbindTexture(30);
 
 			untexturedShader->Bind();
@@ -1220,9 +1222,6 @@ void Level4::Update(float dt)
 			untexturedShader->Bind();
 			shadowBuffer->BindDepthAsTexture(30);
 			floorEnt.Get<MeshRenderer>().Render(camera, transformGround, LightSpaceViewProjection);
-			leftEnt.Get<MeshRenderer>().Render(camera, transformLeft, LightSpaceViewProjection);
-			rightEnt.Get<MeshRenderer>().Render(camera, transformRight, LightSpaceViewProjection);
-			backEnt.Get<MeshRenderer>().Render(camera, transformBack, LightSpaceViewProjection);
 			shadowBuffer->UnbindTexture(30);
 
 			pauseShader->Bind();
@@ -1255,10 +1254,10 @@ void Level4::Update(float dt)
 			notEnt.Get<MeshRenderer>().Render(camera, transformNot, LightSpaceViewProjection);
 			notEnt2.Get<MeshRenderer>().Render(camera, transformNot2, LightSpaceViewProjection);
 			notEnt3.Get<MeshRenderer>().Render(camera, transformNot3, LightSpaceViewProjection);
-			buttonEnt.Get<MeshRenderer>().Render(camera, transformButton, LightSpaceViewProjection);
-			buttonEnt2.Get<MeshRenderer>().Render(camera, transformButton2, LightSpaceViewProjection);
-			buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3, LightSpaceViewProjection);
-			buttonEnt4.Get<MeshRenderer>().Render(camera, transformButton4, LightSpaceViewProjection);
+			buttonEnt.Get<MorphRenderer>().Render(camera, transformButton, LightSpaceViewProjection);
+			buttonEnt2.Get<MorphRenderer>().Render(camera, transformButton2, LightSpaceViewProjection);
+			buttonEnt3.Get<MorphRenderer>().Render(camera, transformButton3, LightSpaceViewProjection);
+			buttonEnt4.Get<MorphRenderer>().Render(camera, transformButton4, LightSpaceViewProjection);
 			coilEnt.Get<MeshRenderer>().Render(camera, transformCoil, LightSpaceViewProjection);
 			wireEnt.Get<MeshRenderer>().Render(camera, transformWire, LightSpaceViewProjection);
 			wireEnt2.Get<MeshRenderer>().Render(camera, transformWire2, LightSpaceViewProjection);
@@ -1276,6 +1275,9 @@ void Level4::Update(float dt)
 			boxEnt4.Get<MeshRenderer>().Render(camera, transformBox4, LightSpaceViewProjection);
 			boxEnt5.Get<MeshRenderer>().Render(camera, transformBox5, LightSpaceViewProjection);
 			boxEnt6.Get<MeshRenderer>().Render(camera, transformBox6, LightSpaceViewProjection);
+			leftEnt.Get<MeshRenderer>().Render(camera, transformLeft, LightSpaceViewProjection);
+			rightEnt.Get<MeshRenderer>().Render(camera, transformRight, LightSpaceViewProjection);
+			backEnt.Get<MeshRenderer>().Render(camera, transformBack, LightSpaceViewProjection);
 			shadowBuffer->UnbindTexture(30);
 		}
 	}

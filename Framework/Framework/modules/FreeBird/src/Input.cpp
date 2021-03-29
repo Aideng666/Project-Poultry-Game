@@ -172,27 +172,27 @@ namespace freebird
 
 		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x - 10 * dt, camera.GetPosition().y, camera.GetPosition().z));
+			camera.SetPosition(glm::vec3(camera.GetPosition().x - 2 * dt, camera.GetPosition().y, camera.GetPosition().z));
 		}
 		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x + 10 * dt, camera.GetPosition().y, camera.GetPosition().z));
+			camera.SetPosition(glm::vec3(camera.GetPosition().x + 2 * dt, camera.GetPosition().y, camera.GetPosition().z));
 		}
 		if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
 		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 10 * dt));
+			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 2 * dt));
 		}
 		if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
 		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 10 * dt));
+			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 2 * dt));
 		}
 		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y + 10 * dt, camera.GetPosition().z));
+			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y + 2 * dt, camera.GetPosition().z));
 		}
 		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 		{
-			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y - 10 * dt, camera.GetPosition().z));
+			camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y - 2 * dt, camera.GetPosition().z));
 		}
 	}
 

@@ -334,9 +334,9 @@ void Level5::InitScene()
 #pragma region Mesh Loading
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *idle1, animShader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floorLab, untexturedShader);
-	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *leftWallLab, untexturedShader);
-	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWallLab, untexturedShader);
-	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWallLab, untexturedShader);
+	auto& leftMesh = leftEnt.Add<MeshRenderer>(leftEnt, *leftWallLab, shader);
+	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWallLab, shader);
+	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWallLab, shader);
 
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *door1, animShader);
 
@@ -362,10 +362,10 @@ void Level5::InitScene()
 	auto& orM = orEnt.Add<MeshRenderer>(orEnt, *orMesh, shader);
 	auto& orM2 = orEnt2.Add<MeshRenderer>(orEnt2, *orMesh, shader);
 
-	auto& buttonMesh = buttonEnt.Add<MorphRenderer>(buttonEnt, *button1, animShader);
-	auto& buttonMesh2 = buttonEnt2.Add<MorphRenderer>(buttonEnt2, *button1, animShader);
-	auto& buttonMesh3 = buttonEnt3.Add<MorphRenderer>(buttonEnt3, *button1, animShader);
-	auto& buttonMesh4 = buttonEnt4.Add<MorphRenderer>(buttonEnt4, *button1, animShader);
+	auto& buttonMesh = buttonEnt.Add<MorphRenderer>(buttonEnt, *buttonM, animShader);
+	auto& buttonMesh2 = buttonEnt2.Add<MorphRenderer>(buttonEnt2, *buttonM, animShader);
+	auto& buttonMesh3 = buttonEnt3.Add<MorphRenderer>(buttonEnt3, *buttonM, animShader);
+	auto& buttonMesh4 = buttonEnt4.Add<MorphRenderer>(buttonEnt4, *buttonM, animShader);
 
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
 
@@ -869,10 +869,6 @@ void Level5::Update(float dt)
 			shadowBuffer->BindDepthAsTexture(30);
 			floorEnt.Get<MeshRenderer>().Render(camera, transformGround);
 
-			//Walls (no textures for now)
-			leftEnt.Get<MeshRenderer>().Render(camera, transformLeft);
-			rightEnt.Get<MeshRenderer>().Render(camera, transformRight);
-			backEnt.Get<MeshRenderer>().Render(camera, transformBack);
 
 			if ((playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f
 				&& playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
@@ -1044,13 +1040,13 @@ void Level5::Update(float dt)
 			orEnt.Get<MeshRenderer>().Render(camera, transformOr);
 			orEnt2.Get<MeshRenderer>().Render(camera, transformOr2);
 
-			//Buttons
-			/*shader->SetUniform("s_Diffuse", 4);
-			buttonMat.Albedo->Bind(4);
-			buttonEnt.Get<MeshRenderer>().Render(camera, transformButton);
-			buttonEnt2.Get<MeshRenderer>().Render(camera, transformButton2);
-			buttonEnt3.Get<MeshRenderer>().Render(camera, transformButton3);
-			buttonEnt4.Get<MeshRenderer>().Render(camera, transformButton4);*/
+			//Walls
+			shader->SetUniform("s_Diffuse", 4);
+			labWallMat.Albedo->Bind(4);
+
+			leftEnt.Get<MeshRenderer>().Render(camera, transformLeft, LightSpaceViewProjection);
+			rightEnt.Get<MeshRenderer>().Render(camera, transformRight, LightSpaceViewProjection);
+			backEnt.Get<MeshRenderer>().Render(camera, transformBack, LightSpaceViewProjection);
 
 			//Tesla Coil (remember to add the other texture)
 			shader->SetUniform("s_Diffuse", 5);
