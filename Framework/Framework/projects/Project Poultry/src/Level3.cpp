@@ -802,16 +802,6 @@ void Level3::Update(float dt)
 		levelRetry = true;
 	}
 
-	lightNum = Input::ChangeLighting(window, lightNum);
-
-	if (lightNum < 1 || lightNum > 5)
-		lightNum = 1;
-
-	animShader->SetUniform("u_LightNum", lightNum);
-	untexturedShader->SetUniform("u_LightNum", lightNum);
-	shader->SetUniform("u_LightNum", lightNum);
-	pauseShader->SetUniform("u_LightNum", lightNum);
-
 	if (lightOn)
 		lightInt = 1;
 	else

@@ -69,6 +69,8 @@ Level5::Level5(std::string sceneName, GLFWwindow* wind)
 	retryEnt = Entity::Create();
 	completeEnt = Entity::Create();
 	tutEnt = Entity::Create();
+	tabletEnt = Entity::Create();
+	tabletScreenEnt = Entity::Create();
 
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
@@ -141,12 +143,12 @@ void Level5::InitScene()
 
 	//Vent transforms
 	auto& ventTrans = ventEnt.Add<Transform>();
-	ventTrans.SetPosition(glm::vec3(20.f, 25.f, -50.5f));
+	ventTrans.SetPosition(glm::vec3(25.f, 25.f, -50.5f));
 	ventTrans.SetScale(glm::vec3(1.2f));
 	ventTrans.SetRotationY(90.f);
 
 	auto& ventTrans2 = ventEnt2.Add<Transform>();
-	ventTrans2.SetPosition(glm::vec3(-20.f, 25.f, -50.5f));
+	ventTrans2.SetPosition(glm::vec3(-25.f, 25.f, -50.5f));
 	ventTrans2.SetScale(glm::vec3(1.2f));
 	ventTrans2.SetRotationY(90.f);
 
@@ -263,6 +265,15 @@ void Level5::InitScene()
 	exitTrans.SetPosition(glm::vec3(5.0f, 2.0f, 0.0f));
 	exitTrans.SetScale(glm::vec3(1.5f));
 	exitTrans.SetRotationY(96.0f);
+
+	//Tablet Stuff
+	auto& tabletTrans = tabletEnt.Add<Transform>();
+	tabletTrans.SetPosition(glm::vec3(-2.0f, 5.0f, 20.0f));
+	tabletTrans.SetRotationY(180.0f);
+
+	auto& tabletScreenTrans = tabletScreenEnt.Add<Transform>();
+	tabletScreenTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	tabletScreenTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
 
 	//Interact text transform
 	auto& tutTrans = tutEnt.Add<Transform>();
@@ -384,6 +395,9 @@ void Level5::InitScene()
 
 	auto& panelMesh = panelEnt.Add<MeshRenderer>(panelEnt, *panel, shader);
 
+	auto& tabletScreenMesh = tabletScreenEnt.Add<MeshRenderer>(tabletScreenEnt, *screen, pauseShader);
+	auto& tabletMesh = tabletEnt.Add<MeshRenderer>(tabletEnt, *tablet, shader);
+
 	entList.push_back(&mainPlayer);
 	entList.push_back(&doorEnt);
 	entList.push_back(&buttonEnt);
@@ -417,6 +431,7 @@ void Level5::InitScene()
 	entList.push_back(&pipeEntS2);
 	entList.push_back(&ventEnt);
 	entList.push_back(&ventEnt2);
+	entList.push_back(&tabletEnt);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.5f);
@@ -539,6 +554,8 @@ void Level5::Update(float dt)
 	rightEnt.Get<Transform>().SetPositionX(51.5f);
 	rightEnt.Get<Transform>().SetRotationY(90.0f);
 	rightEnt.Get<Transform>().SetPositionY(0.0f);
+
+	tabletEnt.Get<Transform>().SetRotationY(tabletEnt.Get<Transform>().GetRotation().y + 100 * dt);
 #pragma endregion
 
 	auto& camera = camEnt.Get<Camera>();
@@ -601,6 +618,8 @@ void Level5::Update(float dt)
 	glm::mat4 transformExit = exitEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformComplete = completeEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformTut = tutEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformTablet = tabletEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformTabletScreen = tabletScreenEnt.Get<Transform>().GetModelMatrix();
 
 	if (!buttonAnimOn && playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
@@ -617,6 +636,11 @@ void Level5::Update(float dt)
 	if (!button4AnimOn && playerTrans.GetPositionX() - buttonTrans4.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans4.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans4.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans4.GetPositionZ() > -3.0f)
 		button4Watch.Poll(window);
+
+	if ((playerTrans.GetPositionX() > -5.0f && playerTrans.GetPositionX() < 1.0f
+		&& playerTrans.GetPositionZ() > 17.0f && playerTrans.GetPositionZ() < 23.0f
+		&& !tabletOpen) || tabletOpen)
+		tabletWatch.Poll(window);
 
 	pauseWatch.Poll(window);
 
@@ -870,10 +894,13 @@ void Level5::Update(float dt)
 			floorEnt.Get<MeshRenderer>().Render(camera, transformGround);
 
 
-			if ((playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f
-				&& playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
-				&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f
-				&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
+			if ((playerTrans.GetPositionX() > -5.0f && playerTrans.GetPositionX() < 1.0f
+					&& playerTrans.GetPositionZ() > 17.0f && playerTrans.GetPositionZ() < 23.0f
+					&& !tabletOpen) 
+				|| (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f
+					&& playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
+					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f
+					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
 				|| (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f
 					&& playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
 					&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f
@@ -938,6 +965,14 @@ void Level5::Update(float dt)
 			{
 				exitMat.Albedo->Bind(3);
 				exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit);
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 4);
+			orTabletScreenMat.Albedo->Bind(4);
+
+			if (tabletOpen)
+			{
+				tabletScreenEnt.Get<MeshRenderer>().Render(orthoCam, transformTabletScreen);
 			}
 			shadowBuffer->UnbindTexture(30);
 
@@ -1091,6 +1126,10 @@ void Level5::Update(float dt)
 			straightPipeMat.Albedo->Bind(10);
 			pipeEntS.Get<MeshRenderer>().Render(camera, transformPipe3);
 			pipeEntS2.Get<MeshRenderer>().Render(camera, transformPipe4);
+
+			shader->SetUniform("s_Diffuse", 11);
+			tabletMat.Albedo->Bind(11);
+			tabletEnt.Get<MeshRenderer>().Render(camera, transformTablet, LightSpaceViewProjection);
 			shadowBuffer->UnbindTexture(30);
 		}
 	}
@@ -1161,6 +1200,7 @@ void Level5::Update(float dt)
 			pipeEntC2.Get<MeshRenderer>().Render(camera, transformPipe2);
 			pipeEntS.Get<MeshRenderer>().Render(camera, transformPipe3);
 			pipeEntS2.Get<MeshRenderer>().Render(camera, transformPipe4);
+			tabletEnt.Get<MeshRenderer>().Render(camera, transformTablet, LightSpaceViewProjection);
 			shadowBuffer->UnbindTexture(30);
 		}
 	}
