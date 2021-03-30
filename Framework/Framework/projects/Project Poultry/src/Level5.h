@@ -47,6 +47,9 @@ private:
 	Entity pipeEntC, pipeEntC2, pipeEntS, pipeEntS2;
 	//Panel
 	Entity panelEnt;
+	//Tablet
+	Entity tabletEnt;
+	Entity tabletScreenEnt;
 
 	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
 		isPaused = !isPaused;
@@ -79,5 +82,14 @@ private:
 		buttonEnt4.Get<Lever>().SetPowered(!buttonEnt4.Get<Lever>().GetPowered());
 		button4AnimOn = true;
 		isPecking = true;
+		});
+
+	KeyPressWatcher tabletWatch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		tabletOpen = !tabletOpen;
+
+		if (tabletOpen)
+			lightOn = false;
+		else
+			lightOn = true;
 		});
 };
