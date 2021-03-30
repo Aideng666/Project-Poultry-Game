@@ -119,7 +119,7 @@ protected:
 
 	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat, optionPressMat, exitPressMat, retryPressMat;
 	Mat buttonMat, drumstickMat, doorMat, doorOnMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
-	Mat andMat, notMat, orMat, wireMatOn, shelfPipeMat, columnPipeMat, labWallMat;
+	Mat andMat, notMat, orMat, wireMatOn, shelfPipeMat, columnPipeMat, labWallMat, labFloorMat;
 
 	//Meshes for multiple levels
 	Mesh* options;
@@ -220,7 +220,7 @@ protected:
 	std::string floorL1File = "Models/L1-Floor.obj";
 	std::string floorL2File = "Models/L2-Floor.obj";
 	std::string floorL3File = "Models/L3-Floor.obj";
-	std::string floorL4File = "Models/Level4Floor.obj";
+	std::string floorL4File = "Models/Floor-Level4.obj";
 	std::string screenFile = "Models/Floor.obj";
 	std::string leftWallFile = "Models/F-LW.obj";
 	std::string rightWallFile = "Models/F-RW.obj";
@@ -484,4 +484,7 @@ protected:
 	bool button2AnimOn = false;
 	bool button3AnimOn = false;
 	bool button4AnimOn = false;
+
+	bool doorOpenApplied = true;
+	bool doorClosingApplied = false;
 };

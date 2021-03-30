@@ -362,11 +362,6 @@ void Level1::InitScene()
 	doorAnimator.SetFrames(doorFrames);
 	doorAnimator.SetLoop(false);
 
-	auto& doorCloseAnimator = doorCloseEnt.Add<MorphAnimation>(doorCloseEnt);
-	doorCloseAnimator.SetTime(0.5f);
-	doorCloseAnimator.SetFrames(doorCloseFrames);
-	doorCloseAnimator.SetLoop(false);
-
 	auto& walkAnimator = mainPlayer.Add<MorphAnimation>(mainPlayer);
 	walkAnimator.SetTime(0.3f);
 	walkAnimator.SetFrames(idleFrames);
@@ -686,6 +681,28 @@ void Level1::Update(float dt)
 		}
 
 		buttonEnt2.Get<MorphAnimation>().Update(dt);
+	}
+
+	if (doorEnt.Get<Door>().GetOpen())
+	{
+		if (doorEnt.Get<MorphAnimation>().GetIsDone())
+		{
+			doorEnt.Get<MorphAnimation>().SetFrames(doorCloseFrames);
+			doorEnt.Get<MorphAnimation>().SetTime(0.5f);
+			doorClosingApplied = true;
+			doorOpenApplied = false;
+		}
+	}
+
+	if (!doorEnt.Get<Door>().GetOpen())
+	{
+		if (doorEnt.Get<MorphAnimation>().GetIsDone())
+		{
+			doorEnt.Get<MorphAnimation>().SetFrames(doorFrames);
+			doorEnt.Get<MorphAnimation>().SetTime(0.5f);
+			doorClosingApplied = false;
+			doorOpenApplied = true;
+		}
 	}
 
 	GetCursorPos(&mousePos);
@@ -1144,21 +1161,9 @@ void Level1::Update(float dt)
 	wireEnt3.Get<Wire>().Update();
 
 	//Door Logic
-	/*if (doorEnt.Get<Door>().GetOpen())
-	{
-		doorEnt.Get<MorphAnimation>().SetLoop(true);
-		doorEnt.Get<MorphAnimation>().SetLoop(false);
+	if (doorEnt.Get<Door>().GetOpen() && doorOpenApplied)
 		doorEnt.Get<MorphAnimation>().Update(dt);
-	}
-
-	if (!doorEnt.Get<Door>().GetOpen())
-	{
-		doorCloseEnt.Get<MorphAnimation>().SetLoop(true);
-		doorCloseEnt.Get<MorphAnimation>().SetLoop(false);
-		doorCloseEnt.Get<MorphAnimation>().Update(dt);
-	}*/
-
-	if (doorEnt.Get<Door>().GetOpen())
+	if (!doorEnt.Get<Door>().GetOpen() && doorClosingApplied)
 		doorEnt.Get<MorphAnimation>().Update(dt);
 
 	if (doorEnt.Get<AABB>().GetComplete())

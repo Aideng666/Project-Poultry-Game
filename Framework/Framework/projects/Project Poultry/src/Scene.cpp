@@ -46,6 +46,7 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseDoor = Texture2D::LoadFromFile("Textures/DoorTex.png");
 	Texture2D::sptr diffuseDoorOn = Texture2D::LoadFromFile("Textures/DoorTexOn.png");
 	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTilesetFinal.png");
+	Texture2D::sptr diffuseLabFloor = Texture2D::LoadFromFile("Textures/LabFloorTileset.png");
 	Texture2D::sptr diffuseWall = Texture2D::LoadFromFile("Textures/WallTileset.png");
 	Texture2D::sptr diffuseLabWall = Texture2D::LoadFromFile("Textures/Lab-WallTileset.png");
 	Texture2D::sptr diffuseComplete = Texture2D::LoadFromFile("Textures/LevelComplete.png");
@@ -87,6 +88,7 @@ void Scene::InitTextures()
 	doorMat.Albedo = diffuseDoor;
 	doorOnMat.Albedo = diffuseDoorOn;
 	floorMat.Albedo = diffuseFloor;
+	labFloorMat.Albedo = diffuseLabFloor;
 	wallMat.Albedo = diffuseWall;
 	labWallMat.Albedo = diffuseLabWall;
 	completeMat.Albedo = diffuseComplete;
@@ -274,7 +276,7 @@ void Scene::InitMeshes()
 	tut = ModelManager::FindMesh(tutFile, glm::vec3(1.0f, 0.0f, 0.0f));
 
 	//Lab Levels(tentative)
-	floorLab = ModelManager::FindMesh(floorL4File, glm::vec3(0.2f, 0.7f, 0.0f));
+	floorLab = ModelManager::FindMesh(floorL4File);
 	leftWallLab = ModelManager::FindMesh(labLeftWallFile);
 	rightWallLab = ModelManager::FindMesh(labRightWallFile);
 	backWallLab = ModelManager::FindMesh(labBackWallFile);
@@ -362,8 +364,8 @@ void Scene::InitAnims()
 
 	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door4));
 	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door3));
-	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door2));
-	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door1));
+	/*doorCloseFrames.push_back(std::unique_ptr<Mesh>(door2));
+	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door1));*/
 
 	//Walking Animations
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
