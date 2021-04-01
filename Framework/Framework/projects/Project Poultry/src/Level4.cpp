@@ -475,7 +475,7 @@ void Level4::InitScene()
 	entList.push_back(&coilEnt);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
-	doorAnimator.SetTime(0.5f);
+	doorAnimator.SetTime(0.1f);
 	doorAnimator.SetFrames(doorFrames);
 	doorAnimator.SetLoop(false);
 
@@ -811,6 +811,28 @@ void Level4::Update(float dt)
 		}
 
 		buttonEnt4.Get<MorphAnimation>().Update(dt);
+	}
+
+	if (doorEnt.Get<Door>().GetOpen())
+	{
+		if (doorEnt.Get<MorphAnimation>().GetIsDone())
+		{
+			doorEnt.Get<MorphAnimation>().SetFrames(doorCloseFrames);
+			doorEnt.Get<MorphAnimation>().SetTime(0.1f);
+			doorClosingApplied = true;
+			doorOpenApplied = false;
+		}
+	}
+
+	if (!doorEnt.Get<Door>().GetOpen())
+	{
+		if (doorEnt.Get<MorphAnimation>().GetIsDone())
+		{
+			doorEnt.Get<MorphAnimation>().SetFrames(doorFrames);
+			doorEnt.Get<MorphAnimation>().SetTime(0.1f);
+			doorClosingApplied = false;
+			doorOpenApplied = true;
+		}
 	}
 
 	GetCursorPos(&mousePos);
@@ -1297,6 +1319,12 @@ void Level4::Update(float dt)
 
 	effects[activeEffect]->DrawToScreen();
 
+	//Door Logic
+	if (doorEnt.Get<Door>().GetOpen() && doorOpenApplied)
+		doorEnt.Get<MorphAnimation>().Update(dt);
+	if (!doorEnt.Get<Door>().GetOpen() && doorClosingApplied)
+		doorEnt.Get<MorphAnimation>().Update(dt);
+
 	//Update the collisions
 	backEnt.Get<AABB>().Update();
 	leftEnt.Get<AABB>().Update();
@@ -1341,12 +1369,6 @@ void Level4::Update(float dt)
 	wireEnt8.Get<Wire>().Update();
 	wireEnt9.Get<Wire>().Update();
 	wireEnt10.Get<Wire>().Update();
-
-	//Door Logic
-	if (doorEnt.Get<Door>().GetOpen())
-	{
-		doorEnt.Get<MorphAnimation>().Update(dt);
-	}
 
 	if (doorEnt.Get<AABB>().GetComplete())
 	{

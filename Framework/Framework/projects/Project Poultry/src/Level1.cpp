@@ -358,7 +358,7 @@ void Level1::InitScene()
 	entList.push_back(&tabletEnt);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
-	doorAnimator.SetTime(0.5f);
+	doorAnimator.SetTime(0.1f);
 	doorAnimator.SetFrames(doorFrames);
 	doorAnimator.SetLoop(false);
 
@@ -688,7 +688,7 @@ void Level1::Update(float dt)
 		if (doorEnt.Get<MorphAnimation>().GetIsDone())
 		{
 			doorEnt.Get<MorphAnimation>().SetFrames(doorCloseFrames);
-			doorEnt.Get<MorphAnimation>().SetTime(0.5f);
+			doorEnt.Get<MorphAnimation>().SetTime(0.1f);
 			doorClosingApplied = true;
 			doorOpenApplied = false;
 		}
@@ -699,7 +699,7 @@ void Level1::Update(float dt)
 		if (doorEnt.Get<MorphAnimation>().GetIsDone())
 		{
 			doorEnt.Get<MorphAnimation>().SetFrames(doorFrames);
-			doorEnt.Get<MorphAnimation>().SetTime(0.5f);
+			doorEnt.Get<MorphAnimation>().SetTime(0.1f);
 			doorClosingApplied = false;
 			doorOpenApplied = true;
 		}
