@@ -51,6 +51,8 @@ private:
 	Entity tabletEnt;
 	Entity tabletScreenEnt;
 
+	GLfloat time = 0.0f;
+
 	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
 		isPaused = !isPaused;
 
