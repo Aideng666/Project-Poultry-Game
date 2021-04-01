@@ -537,6 +537,12 @@ void Level5::InitScene()
 
 void Level5::Update(float dt)
 {
+	time += dt;
+	untexturedShader->SetUniform("u_Time", time);
+	shader->SetUniform("u_Time", time);
+	pauseShader->SetUniform("u_Time", time);
+	animShader->SetUniform("u_Time", time);
+
 #pragma region Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
 	auto& buttonTrans = buttonEnt.Get<Transform>();
