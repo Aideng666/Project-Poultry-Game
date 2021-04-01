@@ -119,7 +119,7 @@ protected:
 
 	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat, optionPressMat, exitPressMat, retryPressMat;
 	Mat buttonMat, drumstickMat, doorMat, doorOnMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
-	Mat andMat, notMat, orMat, wireMatOn, shelfPipeMat, columnPipeMat, labWallMat;
+	Mat andMat, notMat, orMat, wireMatOn, shelfPipeMat, columnPipeMat, labWallMat, labFloorMat;
 
 	//Meshes for multiple levels
 	Mesh* options;
@@ -220,7 +220,7 @@ protected:
 	std::string floorL1File = "Models/L1-Floor.obj";
 	std::string floorL2File = "Models/L2-Floor.obj";
 	std::string floorL3File = "Models/L3-Floor.obj";
-	std::string floorL4File = "Models/Level4Floor.obj";
+	std::string floorL4File = "Models/Floor-Level4.obj";
 	std::string screenFile = "Models/Floor.obj";
 	std::string leftWallFile = "Models/F-LW.obj";
 	std::string rightWallFile = "Models/F-RW.obj";
@@ -354,6 +354,13 @@ protected:
 	Mesh* door2;
 	Mesh* door3;
 	Mesh* door4;
+	Mesh* door5;
+	Mesh* door6;
+	Mesh* door7;
+	Mesh* door8;
+	Mesh* door9;
+	Mesh* door10;
+	Mesh* door11;
 
 	Mesh* walk1;
 	Mesh* walk2;
@@ -407,6 +414,13 @@ protected:
 	std::string doorFile2 = "Models/DoorFrames/DoorFrame2.obj";
 	std::string doorFile3 = "Models/DoorFrames/DoorFrame3.obj";
 	std::string doorFile4 = "Models/DoorFrames/DoorFrame4.obj";
+	std::string doorFile5 = "Models/DoorFrames/DoorFrame5.obj";
+	std::string doorFile6 = "Models/DoorFrames/DoorFrame6.obj";
+	std::string doorFile7 = "Models/DoorFrames/DoorFrame7.obj";
+	std::string doorFile8 = "Models/DoorFrames/DoorFrame8.obj";
+	std::string doorFile9 = "Models/DoorFrames/DoorFrame9.obj";
+	std::string doorFile10 = "Models/DoorFrames/DoorFrame10.obj";
+	std::string doorFile11 = "Models/DoorFrames/DoorFrame11.obj";
 
 	std::string walkFile1 = "Models/ChickenFrames/Walk1.obj";
 	std::string walkFile2 = "Models/ChickenFrames/Walk2.obj";
@@ -484,4 +498,7 @@ protected:
 	bool button2AnimOn = false;
 	bool button3AnimOn = false;
 	bool button4AnimOn = false;
+
+	bool doorOpenApplied = true;
+	bool doorClosingApplied = false;
 };
