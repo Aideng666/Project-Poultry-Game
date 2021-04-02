@@ -142,6 +142,8 @@ protected:
 	Mesh* mainMenuBackWall;
 	Mesh* mainMenuLeftWall;
 	Mesh* mainMenuRightWall;
+	Mesh* mainMenuWire1;
+	Mesh* mainMenuWire2;
 
 	//Level 1 Meshes
 	Mesh* wireM1L1;
@@ -243,6 +245,8 @@ protected:
 	std::string mainMenuBackWallFile = "Models/MainMenu_BW_Updated.obj";
 	std::string mainMenuLeftWallFile = "Models/MainMenu_LW_Updated.obj";
 	std::string mainMenuRightWallFile = "Models/MainMenu_RW_Updated.obj";
+	std::string mainMenuWire1File = "Models/MainMenu_Wire1.obj";
+	std::string mainMenuWire2File = "Models/MainMenu_Wire2.obj";
 	
 	//Level 1 Files
 	std::string wire1L1File = "Models/New_Level1Wire1.obj";

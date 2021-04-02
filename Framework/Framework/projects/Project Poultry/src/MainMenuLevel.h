@@ -19,9 +19,11 @@ public:
 private:
 
 	//Entity startDoor, optionDoor, exitDoor;
-	//Entity floorEnt, backWallEnt, leftAngledWall, rightAngledWall, leftWallEnt, rightWallEnt;
 	Entity floorEnt, backWallEnt, leftWallEnt, rightWallEnt;
+	Entity startDoor, exitDoor;
 	Entity mainPlayer;
+	Entity coilEnt, coilEnt2;
+	Entity wireEnt, wireEnt2;
 	//Entity startEnt, optEnt, exitEnt;
 
 	std::vector<std::unique_ptr<Mesh>> /*doorFrames,*/ walkFrames;

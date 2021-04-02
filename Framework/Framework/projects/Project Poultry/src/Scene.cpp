@@ -240,6 +240,8 @@ void Scene::InitMeshes()
 	mainMenuBackWall = ModelManager::FindMesh(mainMenuBackWallFile);
 	mainMenuLeftWall = ModelManager::FindMesh(mainMenuLeftWallFile);
 	mainMenuRightWall = ModelManager::FindMesh(mainMenuRightWallFile);
+	mainMenuWire1 = ModelManager::FindMesh(mainMenuWire1File);
+	mainMenuWire2 = ModelManager::FindMesh(mainMenuWire2File);
 
 	//Level 1
 	wireM1L1 = ModelManager::FindMesh(wire1L1File);

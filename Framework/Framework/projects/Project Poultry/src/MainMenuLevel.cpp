@@ -16,18 +16,23 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 {
 #pragma region Entities
 	mainPlayer = Entity::Create();
-	//startDoor = Entity::Create();
-	//optionDoor = Entity::Create();
-	//exitDoor = Entity::Create();
+	startDoor = Entity::Create();
+	exitDoor = Entity::Create();
 	floorEnt = Entity::Create();
 	backWallEnt = Entity::Create();
 	leftWallEnt = Entity::Create();
 	rightWallEnt = Entity::Create();
-	//leftAngledWall = Entity::Create();
-	//rightAngledWall = Entity::Create();
+	
+	coilEnt = Entity::Create();
+	coilEnt2 = Entity::Create();
+
+	wireEnt = Entity::Create();
+	wireEnt2 = Entity::Create();
+
 	//startEnt = Entity::Create();
 	//optEnt = Entity::Create();
 	//exitEnt = Entity::Create();
+
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
 	sepiaEnt = Entity::Create();
@@ -63,45 +68,23 @@ void MainMenuLevel::InitScene()
 
 	//Floor Transform
 	auto& floorTrans = floorEnt.Add<Transform>();
-	//floorTrans.SetScale(glm::vec3(2.0f));
 
 	//Wall Transforms
 	auto& leftTrans = leftWallEnt.Add<Transform>();
-	//leftTrans.SetPositionX(-39.0f);
 	leftTrans.SetRotationY(45.0f);
 	leftTrans.SetPositionX(-40.0f);
 	leftTrans.SetPositionZ(-11.0f);
 	leftTrans.SetPositionY(1.3f);
-	//leftTrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
-	
-	//auto& leftATrans = leftAngledWall.Add<Transform>();
-	//leftATrans.SetRotationY(45.0f);
-	//leftATrans.SetPositionX(-45.0f);
-	//leftATrans.SetPositionZ(-10.0f);
-	//leftATrans.SetPositionY(9.0f);
-	//leftATrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
-	//
-	//auto& rightATrans = rightAngledWall.Add<Transform>();
-	//rightATrans.SetRotationY(-45.0f);
-	//rightATrans.SetPositionX(45.0f);
-	//rightATrans.SetPositionZ(-10.0f);
-	//rightATrans.SetPositionY(9.0f);
-	//rightATrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
 	
 	auto& rightTrans = rightWallEnt.Add<Transform>();
 	rightTrans.SetRotationY(-45.0f);
-	rightTrans.SetPositionX(40.0f);
+	rightTrans.SetPositionX(38.0f);
 	rightTrans.SetPositionZ(-11.0f);
 	rightTrans.SetPositionY(1.3f);
-	//rightTrans.SetPositionX(39.0f);
-	//rightTrans.SetRotationY(90.0f);
-	//rightTrans.SetPositionY(9.0f);
-	//rightTrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
 	
 	auto& backTrans = backWallEnt.Add<Transform>();
 	backTrans.SetPositionZ(-39.0f);
 	backTrans.SetPositionY(0.0f);
-	//backTrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
 
 	//Player Transform
 	auto& playerTrans = mainPlayer.Add<Transform>();
@@ -109,19 +92,31 @@ void MainMenuLevel::InitScene()
 	playerTrans.SetRotationY(180.0f);
 
 	//Door Transforms
-	//auto& startTrans = startDoor.Add<Transform>();
-	//startTrans.SetPosition(glm::vec3(0.0f, -1.0f, -38.0f));
-	//startTrans.SetScale(glm::vec3(1.5f));
-
-	//auto& optTrans = optionDoor.Add<Transform>();
-	//optTrans.SetPosition(glm::vec3(-30.0f, -1.0f, -27.5f));
-	//optTrans.SetScale(glm::vec3(1.5f));
-	//optTrans.SetRotationY(45.0f);
+	auto& startTrans = startDoor.Add<Transform>();
+	startTrans.SetPosition(glm::vec3(-1.9f, 1.3f, 7.7f));
+	startTrans.SetRotationY(45.0f);
 	
-	//auto& exitTrans = exitDoor.Add<Transform>();
-	//exitTrans.SetPosition(glm::vec3(30.0f, -1.0f, -27.5f));
-	//exitTrans.SetScale(glm::vec3(1.5f));
-	//exitTrans.SetRotationY(-45.0f);
+	auto& exitTrans = exitDoor.Add<Transform>();
+	exitTrans.SetPosition(glm::vec3(1.f, 1.3f, 8.8f));
+	exitTrans.SetRotationY(-45.0f);
+
+	//Coil Transforms
+	auto& coilTrans = coilEnt.Add<Transform>();
+	coilTrans.SetPosition(glm::vec3(-10.f, 1.0f, 0.f));
+	coilTrans.SetScale(glm::vec3(3.0f));
+	coilTrans.SetRotationY(180.0f);
+
+	auto& coilTrans2 = coilEnt2.Add<Transform>();
+	coilTrans2.SetPosition(glm::vec3(10.f, 1.0f, 0.f));
+	coilTrans2.SetScale(glm::vec3(3.0f));
+	coilTrans2.SetRotationY(180.0f);
+
+	//Wire Transforms
+	auto& wireTrans = wireEnt.Add<Transform>();
+	wireTrans.SetPosition(glm::vec3(0.f, 1.0f, 0.f));
+
+	auto& wireTrans2 = wireEnt2.Add<Transform>();
+	wireTrans2.SetPosition(glm::vec3(0.f, 1.0f, 0.f));
 
 	//Text Transforms
 	//auto& sTrans = startEnt.Add<Transform>();
@@ -192,12 +187,16 @@ void MainMenuLevel::InitScene()
 	auto& backMesh = backWallEnt.Add<MeshRenderer>(backWallEnt, *mainMenuBackWall, shader);
 	auto& leftMesh = leftWallEnt.Add<MeshRenderer>(leftWallEnt, *mainMenuLeftWall, shader);
 	auto& rightMesh = rightWallEnt.Add<MeshRenderer>(rightWallEnt, *mainMenuRightWall, shader);
-	//auto& leftAMesh = leftAngledWall.Add<MeshRenderer>(leftAngledWall, *leftWall, shader);
-	//auto& rightAMesh = rightAngledWall.Add<MeshRenderer>(rightAngledWall, *rightWall, shader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *mainMenuFloor, shader);
-	//auto& playMesh = startDoor.Add<MorphRenderer>(startDoor, *doorM, animShader);
-	//auto& exitMesh = exitDoor.Add<MorphRenderer>(exitDoor, *doorM, animShader);
-	//auto& optMesh = optionDoor.Add<MorphRenderer>(optionDoor, *doorM, animShader);
+	auto& playMesh = startDoor.Add<MeshRenderer>(startDoor, *newDoorMesh, shader);
+	auto& exitMesh = exitDoor.Add<MeshRenderer>(exitDoor, *newDoorMesh, shader);
+
+	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
+	auto& coilMesh2 = coilEnt2.Add<MeshRenderer>(coilEnt2, *coil, shader);
+
+	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *mainMenuWire1, shader);
+	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *mainMenuWire2, shader);
+
 	//auto& sMesh = startEnt.Add<MeshRenderer>(startEnt, *startWord, shader);
 	//auto& oMesh = optEnt.Add<MeshRenderer>(optEnt, *optionsWord, shader);
 	//auto& eMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exitWord, shader);
@@ -299,13 +298,17 @@ void MainMenuLevel::Update(float dt)
 	auto& playerTrans = mainPlayer.Get<Transform>();
 	auto& groundTrans = floorEnt.Get<Transform>();
 	auto& leftTrans = leftWallEnt.Get<Transform>();
-	//auto& leftATrans = leftAngledWall.Get<Transform>();
-	//auto& rightATrans = rightAngledWall.Get<Transform>();
 	auto& rightTrans = rightWallEnt.Get<Transform>();
 	auto& backTrans = backWallEnt.Get<Transform>();
-	//auto& startTrans = startDoor.Get<Transform>();
-	//auto& exitTrans = exitDoor.Get<Transform>();
-	//auto& optTrans = optionDoor.Get<Transform>();
+	auto& startTrans = startDoor.Get<Transform>();
+	auto& exitTrans = exitDoor.Get<Transform>();
+
+	auto& coilTrans = coilEnt.Get<Transform>();
+	auto& coilTrans2 = coilEnt2.Get<Transform>();
+
+	auto& wireTrans = wireEnt.Get<Transform>();
+	auto& wireTrans2 = wireEnt2.Get<Transform>();
+
 	//auto& sTrans = startEnt.Get<Transform>();
 	//auto& oTrans = optEnt.Get<Transform>();
 	//auto& eTrans = exitEnt.Get<Transform>();
@@ -317,11 +320,15 @@ void MainMenuLevel::Update(float dt)
 	auto& backMesh = backWallEnt.Get<MeshRenderer>();
 	auto& leftMesh = leftWallEnt.Get<MeshRenderer>();
 	auto& rightMesh = rightWallEnt.Get<MeshRenderer>();
-	//auto& leftAMesh = leftAngledWall.Get<MeshRenderer>();
-	//auto& rightAMesh = rightAngledWall.Get<MeshRenderer>();
-	//auto& startMesh = startDoor.Get<MorphRenderer>();
-	//auto& exitMesh = exitDoor.Get<MorphRenderer>();
-	//auto& optMesh = optionDoor.Get<MorphRenderer>();
+	auto& startMesh = startDoor.Get<MeshRenderer>();
+	auto& exitMesh = exitDoor.Get<MeshRenderer>();
+
+	auto& coilMesh = coilEnt.Get<MeshRenderer>();
+	auto& coilMesh2 = coilEnt2.Get<MeshRenderer>();
+
+	auto& wireMesh = wireEnt.Get<MeshRenderer>();
+	auto& wireMesh2 = wireEnt2.Get<MeshRenderer>();
+
 	//auto& sMesh = startEnt.Get<MeshRenderer>();
 	//auto& oMesh = optEnt.Get<MeshRenderer>();
 	//auto& eMesh = exitEnt.Get<MeshRenderer>();
@@ -331,11 +338,15 @@ void MainMenuLevel::Update(float dt)
 	glm::mat4 transformBack = backTrans.GetModelMatrix();
 	glm::mat4 transformLeft = leftTrans.GetModelMatrix();
 	glm::mat4 transformRight = rightTrans.GetModelMatrix();
-	//glm::mat4 transformLeftA = leftATrans.GetModelMatrix();
-	//glm::mat4 transformRightA = rightATrans.GetModelMatrix();
-	//glm::mat4 transformStart = startTrans.GetModelMatrix();
-	//glm::mat4 transformExit = exitTrans.GetModelMatrix();
-	//glm::mat4 transformOpt = optTrans.GetModelMatrix();
+	glm::mat4 transformStart = startTrans.GetModelMatrix();
+	glm::mat4 transformExit = exitTrans.GetModelMatrix();
+
+	glm::mat4 transformCoil = coilTrans.GetModelMatrix();
+	glm::mat4 transformCoil2 = coilTrans2.GetModelMatrix();
+
+	glm::mat4 transformWire = wireTrans.GetModelMatrix();
+	glm::mat4 transformWire2 = wireTrans2.GetModelMatrix();
+
 	//glm::mat4 transformS = sTrans.GetModelMatrix();
 	//glm::mat4 transformO = oTrans.GetModelMatrix();
 	//glm::mat4 transformE = eTrans.GetModelMatrix();
@@ -382,16 +393,32 @@ void MainMenuLevel::Update(float dt)
 		//doorMat.Albedo->Unbind(1);	
 
 		shader->Bind();
+
 		shader->SetUniform("s_Diffuse", 0);
 		floorMat.Albedo->Bind(0);
 		floorMesh.Render(camera, transformFloor); 
+
 		shader->SetUniform("s_Diffuse", 1);
-		backMesh.Render(camera, transformBack);
 		wallMat.Albedo->Bind(1);
+		backMesh.Render(camera, transformBack);
 		leftMesh.Render(camera, transformLeft);
 		rightMesh.Render(camera, transformRight);
-		//leftAMesh.Render(camera, transformLeftA);
-		//rightAMesh.Render(camera, transformRightA);
+
+		shader->SetUniform("s_Diffuse", 2);
+		newDoorMat.Albedo->Bind(2);
+		startMesh.Render(camera, transformStart);
+		exitMesh.Render(camera, transformExit);
+
+		shader->SetUniform("s_Diffuse", 3);
+		coilMatOff.Albedo->Bind(3);//remember to load in and toggle the other coil texture
+		coilMesh.Render(camera, transformCoil);
+		coilMesh2.Render(camera, transformCoil2);
+
+		shader->SetUniform("s_Diffuse", 4);
+		wireMat.Albedo->Bind(4);//remember to load in and toggle the other wire texture
+		wireMesh.Render(camera, transformWire);
+		wireMesh2.Render(camera, transformWire2);
+
 		//sMesh.Render(camera, transformS);
 		//oMesh.Render(camera, transformO);
 		//eMesh.Render(camera, transformE);
@@ -416,6 +443,12 @@ void MainMenuLevel::Update(float dt)
 		backMesh.Render(camera, transformBack);
 		leftMesh.Render(camera, transformLeft);
 		rightMesh.Render(camera, transformRight);
+		startMesh.Render(camera, transformStart);
+		exitMesh.Render(camera, transformExit);
+		coilMesh.Render(camera, transformCoil);
+		coilMesh2.Render(camera, transformCoil2);
+		wireMesh.Render(camera, transformWire);
+		wireMesh2.Render(camera, transformWire2);
 		//leftAMesh.Render(camera, transformLeftA);
 		//rightAMesh.Render(camera, transformRightA);
 		//sMesh.Render(camera, transformS);
