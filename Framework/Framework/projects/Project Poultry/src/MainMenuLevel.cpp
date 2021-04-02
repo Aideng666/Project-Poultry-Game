@@ -22,7 +22,7 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	floorEnt = Entity::Create();
 	backWallEnt = Entity::Create();
 	leftWallEnt = Entity::Create();
-	//rightWallEnt = Entity::Create();
+	rightWallEnt = Entity::Create();
 	//leftAngledWall = Entity::Create();
 	//rightAngledWall = Entity::Create();
 	//startEnt = Entity::Create();
@@ -69,9 +69,9 @@ void MainMenuLevel::InitScene()
 	auto& leftTrans = leftWallEnt.Add<Transform>();
 	//leftTrans.SetPositionX(-39.0f);
 	leftTrans.SetRotationY(45.0f);
-	leftTrans.SetPositionX(-45.0f);
-	leftTrans.SetPositionZ(-10.0f);
-	leftTrans.SetPositionY(0.0f);
+	leftTrans.SetPositionX(-40.0f);
+	leftTrans.SetPositionZ(-11.0f);
+	leftTrans.SetPositionY(1.3f);
 	//leftTrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
 	
 	//auto& leftATrans = leftAngledWall.Add<Transform>();
@@ -87,8 +87,12 @@ void MainMenuLevel::InitScene()
 	//rightATrans.SetPositionZ(-10.0f);
 	//rightATrans.SetPositionY(9.0f);
 	//rightATrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
-	//
-	//auto& rightTrans = rightWallEnt.Add<Transform>();
+	
+	auto& rightTrans = rightWallEnt.Add<Transform>();
+	rightTrans.SetRotationY(-45.0f);
+	rightTrans.SetPositionX(40.0f);
+	rightTrans.SetPositionZ(-11.0f);
+	rightTrans.SetPositionY(1.3f);
 	//rightTrans.SetPositionX(39.0f);
 	//rightTrans.SetRotationY(90.0f);
 	//rightTrans.SetPositionY(9.0f);
@@ -101,7 +105,7 @@ void MainMenuLevel::InitScene()
 
 	//Player Transform
 	auto& playerTrans = mainPlayer.Add<Transform>();
-	playerTrans.SetPosition(glm::vec3(0.0f, 3.0f, 0.0f));
+	playerTrans.SetPosition(glm::vec3(0.0f, 1.5f, 30.f));
 	playerTrans.SetRotationY(180.0f);
 
 	//Door Transforms
@@ -187,7 +191,7 @@ void MainMenuLevel::InitScene()
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
 	auto& backMesh = backWallEnt.Add<MeshRenderer>(backWallEnt, *mainMenuBackWall, shader);
 	auto& leftMesh = leftWallEnt.Add<MeshRenderer>(leftWallEnt, *mainMenuLeftWall, shader);
-	//auto& rightMesh = rightWallEnt.Add<MeshRenderer>(rightWallEnt, *rightWall, shader);
+	auto& rightMesh = rightWallEnt.Add<MeshRenderer>(rightWallEnt, *mainMenuRightWall, shader);
 	//auto& leftAMesh = leftAngledWall.Add<MeshRenderer>(leftAngledWall, *leftWall, shader);
 	//auto& rightAMesh = rightAngledWall.Add<MeshRenderer>(rightAngledWall, *rightWall, shader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *mainMenuFloor, shader);
@@ -220,7 +224,7 @@ void MainMenuLevel::InitScene()
 
 	//Camera Object
 	auto& camera = camEnt.Add<Camera>();
-	camera.SetPosition(glm::vec3(0, 15, 15)); // Set initial position
+	camera.SetPosition(glm::vec3(0, 15, 40)); // Set initial position
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
@@ -297,7 +301,7 @@ void MainMenuLevel::Update(float dt)
 	auto& leftTrans = leftWallEnt.Get<Transform>();
 	//auto& leftATrans = leftAngledWall.Get<Transform>();
 	//auto& rightATrans = rightAngledWall.Get<Transform>();
-	//auto& rightTrans = rightWallEnt.Get<Transform>();
+	auto& rightTrans = rightWallEnt.Get<Transform>();
 	auto& backTrans = backWallEnt.Get<Transform>();
 	//auto& startTrans = startDoor.Get<Transform>();
 	//auto& exitTrans = exitDoor.Get<Transform>();
@@ -312,7 +316,7 @@ void MainMenuLevel::Update(float dt)
 	auto& floorMesh = floorEnt.Get<MeshRenderer>();
 	auto& backMesh = backWallEnt.Get<MeshRenderer>();
 	auto& leftMesh = leftWallEnt.Get<MeshRenderer>();
-	//auto& rightMesh = rightWallEnt.Get<MeshRenderer>();
+	auto& rightMesh = rightWallEnt.Get<MeshRenderer>();
 	//auto& leftAMesh = leftAngledWall.Get<MeshRenderer>();
 	//auto& rightAMesh = rightAngledWall.Get<MeshRenderer>();
 	//auto& startMesh = startDoor.Get<MorphRenderer>();
@@ -326,7 +330,7 @@ void MainMenuLevel::Update(float dt)
 	glm::mat4 transformFloor = groundTrans.GetModelMatrix();
 	glm::mat4 transformBack = backTrans.GetModelMatrix();
 	glm::mat4 transformLeft = leftTrans.GetModelMatrix();
-	//glm::mat4 transformRight = rightTrans.GetModelMatrix();
+	glm::mat4 transformRight = rightTrans.GetModelMatrix();
 	//glm::mat4 transformLeftA = leftATrans.GetModelMatrix();
 	//glm::mat4 transformRightA = rightATrans.GetModelMatrix();
 	//glm::mat4 transformStart = startTrans.GetModelMatrix();
@@ -385,7 +389,7 @@ void MainMenuLevel::Update(float dt)
 		backMesh.Render(camera, transformBack);
 		wallMat.Albedo->Bind(1);
 		leftMesh.Render(camera, transformLeft);
-		//rightMesh.Render(camera, transformRight);
+		rightMesh.Render(camera, transformRight);
 		//leftAMesh.Render(camera, transformLeftA);
 		//rightAMesh.Render(camera, transformRightA);
 		//sMesh.Render(camera, transformS);
@@ -411,7 +415,7 @@ void MainMenuLevel::Update(float dt)
 		floorMesh.Render(camera, transformFloor); 
 		backMesh.Render(camera, transformBack);
 		leftMesh.Render(camera, transformLeft);
-		//rightMesh.Render(camera, transformRight);
+		rightMesh.Render(camera, transformRight);
 		//leftAMesh.Render(camera, transformLeftA);
 		//rightAMesh.Render(camera, transformRightA);
 		//sMesh.Render(camera, transformS);

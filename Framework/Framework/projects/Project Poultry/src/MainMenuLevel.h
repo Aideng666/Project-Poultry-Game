@@ -20,7 +20,7 @@ private:
 
 	//Entity startDoor, optionDoor, exitDoor;
 	//Entity floorEnt, backWallEnt, leftAngledWall, rightAngledWall, leftWallEnt, rightWallEnt;
-	Entity floorEnt, backWallEnt, leftWallEnt;
+	Entity floorEnt, backWallEnt, leftWallEnt, rightWallEnt;
 	Entity mainPlayer;
 	//Entity startEnt, optEnt, exitEnt;
 
