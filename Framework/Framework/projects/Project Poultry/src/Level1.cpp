@@ -25,7 +25,6 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	rightEnt = Entity::Create();
 	backEnt = Entity::Create();
 	doorEnt = Entity::Create();
-	doorCloseEnt = Entity::Create();
 	completeEnt = Entity::Create();
 	pauseEnt = Entity::Create();
 	optionEnt = Entity::Create();
@@ -72,8 +71,6 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 #pragma endregion
 
 	InitMeshes();
-
-	//hWnd = glfwGetWin32Window(window);
 }
 
 void Level1::InitScene()
@@ -119,10 +116,6 @@ void Level1::InitScene()
 	auto& doorTrans = doorEnt.Add<Transform>();
 	doorTrans.SetPosition(glm::vec3(0.0f, -1.0f, -36.0f));
 	doorTrans.SetScale(glm::vec3(1.5f));
-
-	auto& doorCloseTrans = doorCloseEnt.Add<Transform>();
-	doorCloseTrans.SetPosition(glm::vec3(0.0f, -1.0f, -36.0f));
-	doorCloseTrans.SetScale(glm::vec3(1.5f));
 
 	//Button transforms
 	auto& buttonTrans = buttonEnt.Add<Transform>();
@@ -300,7 +293,6 @@ void Level1::InitScene()
 	auto& rightMesh = rightEnt.Add<MeshRenderer>(rightEnt, *rightWall, shader);
 	auto& backMesh = backEnt.Add<MeshRenderer>(backEnt, *backWall, shader);
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *door1, animShader);
-	auto& doorCloseMesh = doorCloseEnt.Add<MorphRenderer>(doorCloseEnt, *door4, animShader);
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *screen, shader);
 	auto& gateMesh = andEnt.Add<MeshRenderer>(andEnt, *and, shader);
 	auto& buttonMesh = buttonEnt.Add<MorphRenderer>(buttonEnt, *buttonM, animShader);
@@ -331,7 +323,6 @@ void Level1::InitScene()
 
 	entList.push_back(&mainPlayer);
 	entList.push_back(&doorEnt);
-	entList.push_back(&doorCloseEnt);
 	entList.push_back(&buttonEnt);
 	entList.push_back(&buttonEnt2);
 	entList.push_back(&floorEnt);
@@ -526,7 +517,6 @@ void Level1::Update(float dt)
 	glm::mat4 transformRight = rightEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformBack = backEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformDoor = doorEnt.Get<Transform>().GetModelMatrix();
-	glm::mat4 transformDoorClose = doorCloseEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformComplete = completeEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformGate = andEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformButton = buttonEnt.Get<Transform>().GetModelMatrix();
@@ -720,11 +710,6 @@ void Level1::Update(float dt)
 	{
 		levelRetry = true;
 	}
-	
-	untexturedShader->SetUniform("u_LightNum", lightNum);
-	shader->SetUniform("u_LightNum", lightNum);
-	pauseShader->SetUniform("u_LightNum", lightNum);
-	animShader->SetUniform("u_LightNum", lightNum);
 
 	if (lightOn)
 		lightInt = 1;
@@ -759,7 +744,7 @@ void Level1::Update(float dt)
 
 	for (int i = 0; i < entList.size(); i++)
 	{
-		if (i < 5)
+		if (i < 4)
 		{
 			simpleDepthShader->Bind();
 			entList[i]->Get<MorphRenderer>().Render(simpleDepthShader, camera, entList[i]->Get<Transform>().GetModelMatrix(), LightSpaceViewProjection);

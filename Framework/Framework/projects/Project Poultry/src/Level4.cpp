@@ -1053,7 +1053,7 @@ void Level4::Update(float dt)
 			labFloorMat.Albedo->Bind(6);
 			floorEnt.Get<MeshRenderer>().Render(camera, transformGround, LightSpaceViewProjection);
 
-			//Tesla Coil (remember to add the other texture)
+			//Tesla Coil
 			shader->SetUniform("s_Diffuse", 7);
 			if (!doorEnt.Get<Door>().GetOpen())
 			{
