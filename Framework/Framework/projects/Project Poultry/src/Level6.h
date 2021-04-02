@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "Scene.h"
 #include "Wire.h"
 #include "Lever.h"
@@ -39,15 +38,42 @@ private:
 	Entity buttonEnt, buttonEnt2, buttonEnt3;
 	//Column Pipes
 	Entity columnPipeEnt, columnPipeEnt2;
+	//Shelf Pipes
+	Entity shelfPipeEnt, shelfPipeEnt2;
 	//Vents
 	Entity ventEnt, ventEnt2, ventEnt3;
+	//Gates
+	//And-Gate
+	Entity andEnt;
+	//Not-Gate
+	Entity notEnt, notEnt2, notEnt3, notEnt4;
+	//Or-Gate
+	Entity orEnt, orEnt2;
+	//Boxes
+	Entity boxEnt, boxEnt2, boxEnt3, boxEnt4;
+	//Level Complete Ent
+	Entity completeEnt;
 
-	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
-		isPaused = !isPaused;
+	GLfloat time = 0.0f;
 
-		if (isPaused)
-			lightNum = 2;
-		else
-			lightNum = 5;
-	});
+	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		buttonEnt.Get<Lever>().SetPowered(!buttonEnt.Get<Lever>().GetPowered());
+
+		buttonAnimOn = true;
+		isPecking = true;
+		});
+
+	KeyPressWatcher button2Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		buttonEnt2.Get<Lever>().SetPowered(!buttonEnt2.Get<Lever>().GetPowered());
+
+		button2AnimOn = true;
+		isPecking = true;
+		});
+
+	KeyPressWatcher button3Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		buttonEnt3.Get<Lever>().SetPowered(!buttonEnt3.Get<Lever>().GetPowered());
+
+		button3AnimOn = true;
+		isPecking = true;
+		});
 };

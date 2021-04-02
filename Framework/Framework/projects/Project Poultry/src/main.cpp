@@ -257,9 +257,9 @@ int main()
 			scenes.push_back(new Level3("Level 3", window));
 			scenes.push_back(new Level4("Level 4", window));
 			scenes.push_back(new Level5("Level 5", window));
-			//scenes.push_back(new Level6("Level 6", window));
+			scenes.push_back(new Level6("Level 6", window));
 
-			SetActiveScene(1);
+			SetActiveScene(6);
 		}
 
 		currentScene->Update(dt);

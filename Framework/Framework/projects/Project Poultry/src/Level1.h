@@ -29,7 +29,7 @@ private:
 	//Walls
 	Entity leftEnt, rightEnt, backEnt;
 	//Door
-	Entity doorEnt, doorCloseEnt;
+	Entity doorEnt;
 	//Level complete
 	Entity completeEnt;
 	//AND-Gate
@@ -93,6 +93,4 @@ private:
 		else
 			lightOn = true;
 		});
-	//POINT mousePos;
-	//HWND hWnd = glfwGetWin32Window(window);
 };
