@@ -237,6 +237,9 @@ void Scene::InitMeshes()
 	exitWord = ModelManager::FindMesh(exitFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	optionsWord = ModelManager::FindMesh(optFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	mainMenuFloor = ModelManager::FindMesh(mainMenuFloorFile);
+	mainMenuBackWall = ModelManager::FindMesh(mainMenuBackWallFile);
+	mainMenuLeftWall = ModelManager::FindMesh(mainMenuLeftWallFile);
+	mainMenuRightWall = ModelManager::FindMesh(mainMenuRightWallFile);
 
 	//Level 1
 	wireM1L1 = ModelManager::FindMesh(wire1L1File);
@@ -357,16 +360,6 @@ void Scene::LoadTexImage()
 			std::cout << "Image loaded: " << width << " x " << height << std::endl;
 		else std::cout << "Failed to load image" << std::endl;
 }
-
-//Entity Scene::GetFBO()
-//{
-//	return FBO;
-//}
-//
-//Entity Scene::GetGreyscaleEnt()
-//{
-//	return greyscaleEnt;
-//}
 
 std::vector<PostEffect*> Scene::GetEffects()
 {

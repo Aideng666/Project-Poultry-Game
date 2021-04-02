@@ -72,7 +72,7 @@ int main()
 	scenes.push_back(new Level5("Level 5", window));
 	scenes.push_back(new Level6("Level 6", window));
 
-	SetActiveScene(0);
+	SetActiveScene(1);
 	 
 	//Calculates our timer
 	Application::Tick();
@@ -234,10 +234,10 @@ int main()
 		}
 
 
-		if (currentScene == scenes[1])
-		{
-			currentScene->SetActiveEffect(4);
-		}
+		//if (currentScene == scenes[1])
+		//{
+		//	currentScene->SetActiveEffect(4);
+		//}
 
 		if (currentScene->GetComplete())
 		{

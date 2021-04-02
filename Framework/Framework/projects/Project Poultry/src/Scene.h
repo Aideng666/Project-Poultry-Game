@@ -68,9 +68,6 @@ public:
 
 	void LoadTexImage();
 
-	//Entity GetFBO();
-	//Entity GetGreyscaleEnt();
-
 	std::vector<PostEffect*> GetEffects();
 
 	bool GetTextured();
@@ -142,6 +139,9 @@ protected:
 	Mesh* optionsWord;
 	Mesh* exitWord;
 	Mesh* mainMenuFloor;
+	Mesh* mainMenuBackWall;
+	Mesh* mainMenuLeftWall;
+	Mesh* mainMenuRightWall;
 
 	//Level 1 Meshes
 	Mesh* wireM1L1;
@@ -239,7 +239,10 @@ protected:
 	std::string startFile = "Models/Start.obj";
 	std::string exitFile = "Models/Exit.obj";
 	std::string optFile = "Models/Options.obj";
-	std::string mainMenuFloorFile = "Models/MainMenu-Floor.obj";
+	std::string mainMenuFloorFile = "Models/MainMenu_Floor.obj";
+	std::string mainMenuBackWallFile = "Models/MainMenu_BW.obj";
+	std::string mainMenuLeftWallFile = "Models/MainMenu_LW.obj";
+	std::string mainMenuRightWallFile = "Models/MainMenu_RW.obj";
 	
 	//Level 1 Files
 	std::string wire1L1File = "Models/New_Level1Wire1.obj";

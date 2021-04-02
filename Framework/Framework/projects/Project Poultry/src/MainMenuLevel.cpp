@@ -16,18 +16,18 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 {
 #pragma region Entities
 	mainPlayer = Entity::Create();
-	startDoor = Entity::Create();
-	optionDoor = Entity::Create();
-	exitDoor = Entity::Create();
+	//startDoor = Entity::Create();
+	//optionDoor = Entity::Create();
+	//exitDoor = Entity::Create();
 	floorEnt = Entity::Create();
 	backWallEnt = Entity::Create();
 	leftWallEnt = Entity::Create();
-	rightWallEnt = Entity::Create();
-	leftAngledWall = Entity::Create();
-	rightAngledWall = Entity::Create();
-	startEnt = Entity::Create();
-	optEnt = Entity::Create();
-	exitEnt = Entity::Create();
+	//rightWallEnt = Entity::Create();
+	//leftAngledWall = Entity::Create();
+	//rightAngledWall = Entity::Create();
+	//startEnt = Entity::Create();
+	//optEnt = Entity::Create();
+	//exitEnt = Entity::Create();
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
 	sepiaEnt = Entity::Create();
@@ -38,44 +38,7 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	bloomEnt = Entity::Create();
 #pragma endregion
 
-#pragma region Model Manager
-	/*drumstick = ModelManager::FindMesh(drumFile);
-	floor = ModelManager::FindMesh(floorFile);
-	wall = ModelManager::FindMesh(wallFile);
-	doorM = ModelManager::FindMesh(doorFile);
-	start = ModelManager::FindMesh(startFile, glm::vec3(1.0f, 0.0f, 0.0f));
-	exit = ModelManager::FindMesh(exitFile, glm::vec3(1.0f, 0.0f, 0.0f));
-	options = ModelManager::FindMesh(optFile, glm::vec3(1.0f, 0.0f, 0.0f));
-
-	door1 = ModelManager::FindMesh(doorFile1);
-	door2 = ModelManager::FindMesh(doorFile2);
-	door3 = ModelManager::FindMesh(doorFile3);
-	door4 = ModelManager::FindMesh(doorFile4);
-	door5 = ModelManager::FindMesh(doorFile5);
-	door6 = ModelManager::FindMesh(doorFile6);
-	door7 = ModelManager::FindMesh(doorFile7);
-	door8 = ModelManager::FindMesh(doorFile8);
-	door9 = ModelManager::FindMesh(doorFile9);
-	door10 = ModelManager::FindMesh(doorFile10);
-
-	walk1 = ModelManager::FindMesh(walkFile1);
-	walk2 = ModelManager::FindMesh(walkFile2);
-	walk3 = ModelManager::FindMesh(walkFile3);
-	walk4 = ModelManager::FindMesh(walkFile4);
-	walk5 = ModelManager::FindMesh(walkFile5);
-	walk6 = ModelManager::FindMesh(walkFile6);
-	walk7 = ModelManager::FindMesh(walkFile7);
-	walk8 = ModelManager::FindMesh(walkFile8);
-	walk9 = ModelManager::FindMesh(walkFile9);
-	walk10 = ModelManager::FindMesh(walkFile10);
-	walk11 = ModelManager::FindMesh(walkFile11);
-	walk12 = ModelManager::FindMesh(walkFile12);
-	walk13 = ModelManager::FindMesh(walkFile13);
-	walk14 = ModelManager::FindMesh(walkFile14);*/
-
 	InitMeshes();
-#pragma endregion
-
 }
 
 void MainMenuLevel::InitScene()
@@ -92,161 +55,116 @@ void MainMenuLevel::InitScene()
 
 	effects.clear();
 
-#pragma region Shader Stuff
-
-	//glm::vec3 lightPos = glm::vec3(0.0f, 10.0f, 0.0f);
-	//glm::vec3 lightDir = glm::vec3(0.0f, -1.0f, 0.0f);
-	//glm::vec3 lightCol = glm::vec3(1.f);
-	//float     lightAmbientPow = 0.20f;
-	//float     lightSpecularPow = 1.0f;
-	//glm::vec3 ambientCol = glm::vec3(1.0f);
-	//float     ambientPow = 0.1f;
-	//float     shininess = 16.0f;
-
-	//shader = Shader::Create();
-	//shader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
-	//shader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	//shader->Link();
-
-	//SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
-	//animShader = Shader::Create();
-	//animShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
-	//animShader->LoadShaderPartFromFile("Shaders/frag_shader.glsl", GL_FRAGMENT_SHADER);
-	//animShader->Link();
-
-	//SetShaderValues(animShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess);
-
 	InitShaders();
-#pragma endregion
-
-#pragma region Texture Stuff
-
-	/*Texture2D::sptr diffuseDrum = Texture2D::LoadFromFile("Textures/DrumstickTexture.png");
-	Texture2D::sptr diffuseDoor = Texture2D::LoadFromFile("Textures/DoorTexture.png");
-	Texture2D::sptr diffuseFloor = Texture2D::LoadFromFile("Textures/FloorTexture.jpg");
-	Texture2D::sptr diffuseWall = Texture2D::LoadFromFile("Textures/WallTexture.jpg");
-
-	Texture2DDescription desc = Texture2DDescription();
-	desc.Width = 1;
-	desc.Height = 1;
-	desc.Format = InternalFormat::RGB8;
-	Texture2D::sptr texture2 = Texture2D::Create(desc);
-	texture2->Clear();
-
-	drumstickMat.Albedo = diffuseDrum;
-	doorMat.Albedo = diffuseDoor;
-	floorMat.Albedo = diffuseFloor;
-	wallMat.Albedo = diffuseWall;
-	clearMat.Albedo = texture2;*/
 
 	InitTextures();
-#pragma endregion
 
 #pragma region Transforms
 
 	//Floor Transform
 	auto& floorTrans = floorEnt.Add<Transform>();
-	floorTrans.SetScale(glm::vec3(2.0f));
+	//floorTrans.SetScale(glm::vec3(2.0f));
 
 	//Wall Transforms
 	auto& leftTrans = leftWallEnt.Add<Transform>();
-	leftTrans.SetPositionX(-39.0f);
-	leftTrans.SetRotationY(90.0f);
-	leftTrans.SetPositionY(9.0f);
-	leftTrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
-
-	auto& leftATrans = leftAngledWall.Add<Transform>();
-	leftATrans.SetRotationY(45.0f);
-	leftATrans.SetPositionX(-45.0f);
-	leftATrans.SetPositionZ(-10.0f);
-	leftATrans.SetPositionY(9.0f);
-	leftATrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
-
-	auto& rightATrans = rightAngledWall.Add<Transform>();
-	rightATrans.SetRotationY(-45.0f);
-	rightATrans.SetPositionX(45.0f);
-	rightATrans.SetPositionZ(-10.0f);
-	rightATrans.SetPositionY(9.0f);
-	rightATrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
-
-	auto& rightTrans = rightWallEnt.Add<Transform>();
-	rightTrans.SetPositionX(39.0f);
-	rightTrans.SetRotationY(90.0f);
-	rightTrans.SetPositionY(9.0f);
-	rightTrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
-
+	//leftTrans.SetPositionX(-39.0f);
+	leftTrans.SetRotationY(45.0f);
+	leftTrans.SetPositionX(-45.0f);
+	leftTrans.SetPositionZ(-10.0f);
+	leftTrans.SetPositionY(0.0f);
+	//leftTrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
+	
+	//auto& leftATrans = leftAngledWall.Add<Transform>();
+	//leftATrans.SetRotationY(45.0f);
+	//leftATrans.SetPositionX(-45.0f);
+	//leftATrans.SetPositionZ(-10.0f);
+	//leftATrans.SetPositionY(9.0f);
+	//leftATrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
+	//
+	//auto& rightATrans = rightAngledWall.Add<Transform>();
+	//rightATrans.SetRotationY(-45.0f);
+	//rightATrans.SetPositionX(45.0f);
+	//rightATrans.SetPositionZ(-10.0f);
+	//rightATrans.SetPositionY(9.0f);
+	//rightATrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
+	//
+	//auto& rightTrans = rightWallEnt.Add<Transform>();
+	//rightTrans.SetPositionX(39.0f);
+	//rightTrans.SetRotationY(90.0f);
+	//rightTrans.SetPositionY(9.0f);
+	//rightTrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
+	
 	auto& backTrans = backWallEnt.Add<Transform>();
 	backTrans.SetPositionZ(-39.0f);
-	backTrans.SetPositionY(9.0f);
-	backTrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
+	backTrans.SetPositionY(0.0f);
+	//backTrans.SetScale(glm::vec3(1.0f, 5.0f, 1.0f));
 
 	//Player Transform
 	auto& playerTrans = mainPlayer.Add<Transform>();
-	playerTrans.SetPosition(glm::vec3(0.0f, 2.0f, 0.0f));
-	playerTrans.SetRotationY(0.0f);
+	playerTrans.SetPosition(glm::vec3(0.0f, 3.0f, 0.0f));
+	playerTrans.SetRotationY(180.0f);
 
 	//Door Transforms
-	auto& startTrans = startDoor.Add<Transform>();
-	startTrans.SetPosition(glm::vec3(0.0f, -1.0f, -38.0f));
-	startTrans.SetScale(glm::vec3(1.5f));
+	//auto& startTrans = startDoor.Add<Transform>();
+	//startTrans.SetPosition(glm::vec3(0.0f, -1.0f, -38.0f));
+	//startTrans.SetScale(glm::vec3(1.5f));
 
-	auto& optTrans = optionDoor.Add<Transform>();
-	optTrans.SetPosition(glm::vec3(-30.0f, -1.0f, -27.5f));
-	optTrans.SetScale(glm::vec3(1.5f));
-	optTrans.SetRotationY(45.0f);
+	//auto& optTrans = optionDoor.Add<Transform>();
+	//optTrans.SetPosition(glm::vec3(-30.0f, -1.0f, -27.5f));
+	//optTrans.SetScale(glm::vec3(1.5f));
+	//optTrans.SetRotationY(45.0f);
 	
-	auto& exitTrans = exitDoor.Add<Transform>();
-	exitTrans.SetPosition(glm::vec3(30.0f, -1.0f, -27.5f));
-	exitTrans.SetScale(glm::vec3(1.5f));
-	exitTrans.SetRotationY(-45.0f);
+	//auto& exitTrans = exitDoor.Add<Transform>();
+	//exitTrans.SetPosition(glm::vec3(30.0f, -1.0f, -27.5f));
+	//exitTrans.SetScale(glm::vec3(1.5f));
+	//exitTrans.SetRotationY(-45.0f);
 
 	//Text Transforms
-	auto& sTrans = startEnt.Add<Transform>();
-	sTrans.SetPosition(glm::vec3(-4.0f, 1.f, -25.0f));
-	sTrans.SetScale(glm::vec3(4.0f));
+	//auto& sTrans = startEnt.Add<Transform>();
+	//sTrans.SetPosition(glm::vec3(-4.0f, 1.f, -25.0f));
+	//sTrans.SetScale(glm::vec3(4.0f));
 
-	auto& eTrans = exitEnt.Add<Transform>();
-	eTrans.SetRotationY(-45.0f);
-	eTrans.SetPosition(glm::vec3(19.0f, 1.f, -21.0f));
-	eTrans.SetScale(glm::vec3(4.0f));
+	//auto& eTrans = exitEnt.Add<Transform>();
+	//eTrans.SetRotationY(-45.0f);
+	//eTrans.SetPosition(glm::vec3(19.0f, 1.f, -21.0f));
+	//eTrans.SetScale(glm::vec3(4.0f));
 
-	auto& oTrans = optEnt.Add<Transform>();
-	oTrans.SetRotationY(45.0f);
-	oTrans.SetPosition(glm::vec3(-26.0f, 1.f, -13.0f));
-	oTrans.SetScale(glm::vec3(4.0f));
+	//auto& oTrans = optEnt.Add<Transform>();
+	//oTrans.SetRotationY(45.0f);
+	//oTrans.SetPosition(glm::vec3(-26.0f, 1.f, -13.0f));
+	//oTrans.SetScale(glm::vec3(4.0f));
 #pragma endregion
 	
 	//DOORS
-	auto& doorS = startDoor.Add<Door>();
-	doorS.SetOpen(true);
-	auto& doorO = optionDoor.Add<Door>();
-	doorO.SetOpen(true);
-	auto& doorE = exitDoor.Add<Door>();
-	doorE.SetOpen(true);
+	//auto& doorS = startDoor.Add<Door>();
+	//doorS.SetOpen(true);
+	//auto& doorO = optionDoor.Add<Door>();
+	//doorO.SetOpen(true);
+	//auto& doorE = exitDoor.Add<Door>();
+	//doorE.SetOpen(true);
 
 	//AABB
-	auto& leftCol = leftWallEnt.Add<AABB>(leftWallEnt, mainPlayer);
-	auto& leftACol = leftAngledWall.Add<AABB>(leftAngledWall, mainPlayer);
-	auto& rightCol = rightWallEnt.Add<AABB>(rightWallEnt, mainPlayer);
-	auto& rightACol = rightAngledWall.Add<AABB>(rightAngledWall, mainPlayer);
-	auto& backCol = backWallEnt.Add<AABB>(backWallEnt, mainPlayer);
-	auto& startCol = startDoor.Add<AABB>(startDoor, mainPlayer);
-	auto& optCol = optionDoor.Add<AABB>(optionDoor, mainPlayer);
-	auto& exitCol = exitDoor.Add<AABB>(exitDoor, mainPlayer);
+	//auto& leftCol = leftWallEnt.Add<AABB>(leftWallEnt, mainPlayer);
+	//auto& leftACol = leftAngledWall.Add<AABB>(leftAngledWall, mainPlayer);
+	//auto& rightCol = rightWallEnt.Add<AABB>(rightWallEnt, mainPlayer);
+	//auto& rightACol = rightAngledWall.Add<AABB>(rightAngledWall, mainPlayer);
+	//auto& backCol = backWallEnt.Add<AABB>(backWallEnt, mainPlayer);
+	//auto& startCol = startDoor.Add<AABB>(startDoor, mainPlayer);
+	//auto& optCol = optionDoor.Add<AABB>(optionDoor, mainPlayer);
+	//auto& exitCol = exitDoor.Add<AABB>(exitDoor, mainPlayer);
 
 #pragma region Animation Frames
 	//Door Anim
-	doorFrames.push_back(std::unique_ptr<Mesh>(door1));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door2));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door3));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door4));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door5));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door6));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door7));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door8));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
-	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door1));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door2));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door3));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door4));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door5));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door6));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door7));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door8));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door9));
+	//doorFrames.push_back(std::unique_ptr<Mesh>(door10));
 
 	//Walking Anim
 	walkFrames.push_back(std::unique_ptr<Mesh>(walk1));
@@ -267,34 +185,34 @@ void MainMenuLevel::InitScene()
 
 	//Load the meshes
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *drumstick, animShader);
-	auto& backMesh = backWallEnt.Add<MeshRenderer>(backWallEnt, *backWall, shader);
-	auto& leftMesh = leftWallEnt.Add<MeshRenderer>(leftWallEnt, *leftWall, shader);
-	auto& rightMesh = rightWallEnt.Add<MeshRenderer>(rightWallEnt, *rightWall, shader);
-	auto& leftAMesh = leftAngledWall.Add<MeshRenderer>(leftAngledWall, *leftWall, shader);
-	auto& rightAMesh = rightAngledWall.Add<MeshRenderer>(rightAngledWall, *rightWall, shader);
+	auto& backMesh = backWallEnt.Add<MeshRenderer>(backWallEnt, *mainMenuBackWall, shader);
+	auto& leftMesh = leftWallEnt.Add<MeshRenderer>(leftWallEnt, *mainMenuLeftWall, shader);
+	//auto& rightMesh = rightWallEnt.Add<MeshRenderer>(rightWallEnt, *rightWall, shader);
+	//auto& leftAMesh = leftAngledWall.Add<MeshRenderer>(leftAngledWall, *leftWall, shader);
+	//auto& rightAMesh = rightAngledWall.Add<MeshRenderer>(rightAngledWall, *rightWall, shader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *mainMenuFloor, shader);
-	auto& playMesh = startDoor.Add<MorphRenderer>(startDoor, *doorM, animShader);
-	auto& exitMesh = exitDoor.Add<MorphRenderer>(exitDoor, *doorM, animShader);
-	auto& optMesh = optionDoor.Add<MorphRenderer>(optionDoor, *doorM, animShader);
-	auto& sMesh = startEnt.Add<MeshRenderer>(startEnt, *startWord, shader);
-	auto& oMesh = optEnt.Add<MeshRenderer>(optEnt, *optionsWord, shader);
-	auto& eMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exitWord, shader);
+	//auto& playMesh = startDoor.Add<MorphRenderer>(startDoor, *doorM, animShader);
+	//auto& exitMesh = exitDoor.Add<MorphRenderer>(exitDoor, *doorM, animShader);
+	//auto& optMesh = optionDoor.Add<MorphRenderer>(optionDoor, *doorM, animShader);
+	//auto& sMesh = startEnt.Add<MeshRenderer>(startEnt, *startWord, shader);
+	//auto& oMesh = optEnt.Add<MeshRenderer>(optEnt, *optionsWord, shader);
+	//auto& eMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exitWord, shader);
 
 	//Load the animations
-	auto& startAnimator = startDoor.Add<MorphAnimation>(startDoor);
-	startAnimator.SetTime(0.2f);
-	startAnimator.SetFrames(doorFrames);
-	startAnimator.SetLoop(false);
+	//auto& startAnimator = startDoor.Add<MorphAnimation>(startDoor);
+	//startAnimator.SetTime(0.2f);
+	//startAnimator.SetFrames(doorFrames);
+	//startAnimator.SetLoop(false);
 
-	auto& exitAnimator = exitDoor.Add<MorphAnimation>(exitDoor);
-	exitAnimator.SetTime(0.2f);
-	exitAnimator.SetFrames(doorFrames);
-	exitAnimator.SetLoop(false);
+	//auto& exitAnimator = exitDoor.Add<MorphAnimation>(exitDoor);
+	//exitAnimator.SetTime(0.2f);
+	//exitAnimator.SetFrames(doorFrames);
+	//exitAnimator.SetLoop(false);
 
-	auto& optAnimator = optionDoor.Add<MorphAnimation>(optionDoor);
-	optAnimator.SetTime(0.2f);
-	optAnimator.SetFrames(doorFrames);
-	optAnimator.SetLoop(false);
+	//auto& optAnimator = optionDoor.Add<MorphAnimation>(optionDoor);
+	//optAnimator.SetTime(0.2f);
+	//optAnimator.SetFrames(doorFrames);
+	//optAnimator.SetLoop(false);
 
 	auto& walkAnimator = mainPlayer.Add<MorphAnimation>(mainPlayer);
 	walkAnimator.SetTime(0.05f);
@@ -377,48 +295,46 @@ void MainMenuLevel::Update(float dt)
 	auto& playerTrans = mainPlayer.Get<Transform>();
 	auto& groundTrans = floorEnt.Get<Transform>();
 	auto& leftTrans = leftWallEnt.Get<Transform>();
-	auto& leftATrans = leftAngledWall.Get<Transform>();
-	auto& rightATrans = rightAngledWall.Get<Transform>();
-	auto& rightTrans = rightWallEnt.Get<Transform>();
+	//auto& leftATrans = leftAngledWall.Get<Transform>();
+	//auto& rightATrans = rightAngledWall.Get<Transform>();
+	//auto& rightTrans = rightWallEnt.Get<Transform>();
 	auto& backTrans = backWallEnt.Get<Transform>();
-	auto& startTrans = startDoor.Get<Transform>();
-	auto& exitTrans = exitDoor.Get<Transform>();
-	auto& optTrans = optionDoor.Get<Transform>();
-	auto& sTrans = startEnt.Get<Transform>();
-	auto& oTrans = optEnt.Get<Transform>();
-	auto& eTrans = exitEnt.Get<Transform>();
+	//auto& startTrans = startDoor.Get<Transform>();
+	//auto& exitTrans = exitDoor.Get<Transform>();
+	//auto& optTrans = optionDoor.Get<Transform>();
+	//auto& sTrans = startEnt.Get<Transform>();
+	//auto& oTrans = optEnt.Get<Transform>();
+	//auto& eTrans = exitEnt.Get<Transform>();
 
 	auto& camera = camEnt.Get<Camera>();
-
-	//camera.LookAt(glm::vec3(playerTrans.GetPosition()));
 
 	auto& drumMesh = mainPlayer.Get<MorphRenderer>();
 	auto& floorMesh = floorEnt.Get<MeshRenderer>();
 	auto& backMesh = backWallEnt.Get<MeshRenderer>();
 	auto& leftMesh = leftWallEnt.Get<MeshRenderer>();
-	auto& rightMesh = rightWallEnt.Get<MeshRenderer>();
-	auto& leftAMesh = leftAngledWall.Get<MeshRenderer>();
-	auto& rightAMesh = rightAngledWall.Get<MeshRenderer>();
-	auto& startMesh = startDoor.Get<MorphRenderer>();
-	auto& exitMesh = exitDoor.Get<MorphRenderer>();
-	auto& optMesh = optionDoor.Get<MorphRenderer>();
-	auto& sMesh = startEnt.Get<MeshRenderer>();
-	auto& oMesh = optEnt.Get<MeshRenderer>();
-	auto& eMesh = exitEnt.Get<MeshRenderer>();
+	//auto& rightMesh = rightWallEnt.Get<MeshRenderer>();
+	//auto& leftAMesh = leftAngledWall.Get<MeshRenderer>();
+	//auto& rightAMesh = rightAngledWall.Get<MeshRenderer>();
+	//auto& startMesh = startDoor.Get<MorphRenderer>();
+	//auto& exitMesh = exitDoor.Get<MorphRenderer>();
+	//auto& optMesh = optionDoor.Get<MorphRenderer>();
+	//auto& sMesh = startEnt.Get<MeshRenderer>();
+	//auto& oMesh = optEnt.Get<MeshRenderer>();
+	//auto& eMesh = exitEnt.Get<MeshRenderer>();
 
 	glm::mat4 transform = playerTrans.GetModelMatrix();
 	glm::mat4 transformFloor = groundTrans.GetModelMatrix();
 	glm::mat4 transformBack = backTrans.GetModelMatrix();
 	glm::mat4 transformLeft = leftTrans.GetModelMatrix();
-	glm::mat4 transformRight = rightTrans.GetModelMatrix();
-	glm::mat4 transformLeftA = leftATrans.GetModelMatrix();
-	glm::mat4 transformRightA = rightATrans.GetModelMatrix();
-	glm::mat4 transformStart = startTrans.GetModelMatrix();
-	glm::mat4 transformExit = exitTrans.GetModelMatrix();
-	glm::mat4 transformOpt = optTrans.GetModelMatrix();
-	glm::mat4 transformS = sTrans.GetModelMatrix();
-	glm::mat4 transformO = oTrans.GetModelMatrix();
-	glm::mat4 transformE = eTrans.GetModelMatrix();
+	//glm::mat4 transformRight = rightTrans.GetModelMatrix();
+	//glm::mat4 transformLeftA = leftATrans.GetModelMatrix();
+	//glm::mat4 transformRightA = rightATrans.GetModelMatrix();
+	//glm::mat4 transformStart = startTrans.GetModelMatrix();
+	//glm::mat4 transformExit = exitTrans.GetModelMatrix();
+	//glm::mat4 transformOpt = optTrans.GetModelMatrix();
+	//glm::mat4 transformS = sTrans.GetModelMatrix();
+	//glm::mat4 transformO = oTrans.GetModelMatrix();
+	//glm::mat4 transformE = eTrans.GetModelMatrix();
 
 #pragma region PlayerMovement
 	Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
@@ -454,27 +370,27 @@ void MainMenuLevel::Update(float dt)
 		animShader->SetUniform("s_Diffuse", 0);
 		drumstickMat.Albedo->Bind(0);
 		drumMesh.Render(camera, transform);
-		animShader->SetUniform("s_Diffuse", 1);
-		doorMat.Albedo->Bind(1);
-		startMesh.Render(camera, transformStart);
-		exitMesh.Render(camera, transformExit);
-		optMesh.Render(camera, transformOpt);
-		doorMat.Albedo->Unbind(1);	
+		//animShader->SetUniform("s_Diffuse", 1);
+		//doorMat.Albedo->Bind(1);
+		//startMesh.Render(camera, transformStart);
+		//exitMesh.Render(camera, transformExit);
+		//optMesh.Render(camera, transformOpt);
+		//doorMat.Albedo->Unbind(1);	
 
 		shader->Bind();
 		shader->SetUniform("s_Diffuse", 0);
-		wallMat.Albedo->Bind(0);
-		leftMesh.Render(camera, transformLeft);
-		rightMesh.Render(camera, transformRight);
-		backMesh.Render(camera, transformBack);
-		leftAMesh.Render(camera, transformLeftA);
-		rightAMesh.Render(camera, transformRightA);
-		sMesh.Render(camera, transformS);
-		oMesh.Render(camera, transformO);
-		eMesh.Render(camera, transformE);
-		shader->SetUniform("s_Diffuse", 1);
-		floorMat.Albedo->Bind(1);
+		floorMat.Albedo->Bind(0);
 		floorMesh.Render(camera, transformFloor); 
+		shader->SetUniform("s_Diffuse", 1);
+		backMesh.Render(camera, transformBack);
+		wallMat.Albedo->Bind(1);
+		leftMesh.Render(camera, transformLeft);
+		//rightMesh.Render(camera, transformRight);
+		//leftAMesh.Render(camera, transformLeftA);
+		//rightAMesh.Render(camera, transformRightA);
+		//sMesh.Render(camera, transformS);
+		//oMesh.Render(camera, transformO);
+		//eMesh.Render(camera, transformE);
 	}
 	else
 	{
@@ -483,26 +399,26 @@ void MainMenuLevel::Update(float dt)
 		clearMat.Albedo->Bind(0);
 		drumMesh.Render(camera, transform);
 		animShader->SetUniform("s_Diffuse", 1);
-		clearMat.Albedo->Bind(1);
-		startMesh.Render(camera, transformStart);
-		exitMesh.Render(camera, transformExit);
-		optMesh.Render(camera, transformOpt);
-		clearMat.Albedo->Unbind(1); 
+		//clearMat.Albedo->Bind(1);
+		//startMesh.Render(camera, transformStart);
+		//exitMesh.Render(camera, transformExit);
+		//optMesh.Render(camera, transformOpt);
+		//clearMat.Albedo->Unbind(1); 
 
 		shader->Bind();
 		shader->SetUniform("s_Diffuse", 0);
 		clearMat.Albedo->Bind(0);
-		leftMesh.Render(camera, transformLeft);
-		rightMesh.Render(camera, transformRight);
-		backMesh.Render(camera, transformBack);
-		leftAMesh.Render(camera, transformLeftA);
-		rightAMesh.Render(camera, transformRightA);
-		sMesh.Render(camera, transformS);
-		oMesh.Render(camera, transformO);
-		eMesh.Render(camera, transformE);
-		shader->SetUniform("s_Diffuse", 1);
-		clearMat.Albedo->Bind(1);
 		floorMesh.Render(camera, transformFloor); 
+		backMesh.Render(camera, transformBack);
+		leftMesh.Render(camera, transformLeft);
+		//rightMesh.Render(camera, transformRight);
+		//leftAMesh.Render(camera, transformLeftA);
+		//rightAMesh.Render(camera, transformRightA);
+		//sMesh.Render(camera, transformS);
+		//oMesh.Render(camera, transformO);
+		//eMesh.Render(camera, transformE);
+		//shader->SetUniform("s_Diffuse", 0);
+		//clearMat.Albedo->Bind(1);
 	}
 
 #pragma endregion
@@ -513,30 +429,29 @@ void MainMenuLevel::Update(float dt)
 
 	effects[activeEffect]->DrawToScreen();
 
-	startDoor.Get<AABB>().Update();
-	optionDoor.Get<AABB>().Update();
-	exitDoor.Get<AABB>().Update();
-	leftWallEnt.Get<AABB>().Update();
-	rightWallEnt.Get<AABB>().Update();
-	backWallEnt.Get<AABB>().Update();
-	leftAngledWall.Get<AABB>().Update();
-	rightAngledWall.Get<AABB>().Update();
+	//startDoor.Get<AABB>().Update();
+	//optionDoor.Get<AABB>().Update();
+	//exitDoor.Get<AABB>().Update();
+	//leftWallEnt.Get<AABB>().Update();
+	//rightWallEnt.Get<AABB>().Update();
+	//backWallEnt.Get<AABB>().Update();
+	//leftAngledWall.Get<AABB>().Update();
+	//rightAngledWall.Get<AABB>().Update();
 
-	if (startDoor.Get<Door>().GetOpen())
-		startDoor.Get<MorphAnimation>().Update(dt);
-
-	if (exitDoor.Get<Door>().GetOpen())
-		exitDoor.Get<MorphAnimation>().Update(dt);
-
-	if (optionDoor.Get<Door>().GetOpen())
-		optionDoor.Get<MorphAnimation>().Update(dt);
-
-	if (startDoor.Get<AABB>().GetComplete())
-		levelComplete = true;
-
-	if (exitDoor.Get<AABB>().GetComplete())
-		glfwSetWindowShouldClose(window, true);
-
+	//if (startDoor.Get<Door>().GetOpen())
+	//	startDoor.Get<MorphAnimation>().Update(dt);
+	//
+	//if (exitDoor.Get<Door>().GetOpen())
+	//	exitDoor.Get<MorphAnimation>().Update(dt);
+	//
+	//if (optionDoor.Get<Door>().GetOpen())
+	//	optionDoor.Get<MorphAnimation>().Update(dt);
+	//
+	//if (startDoor.Get<AABB>().GetComplete())
+	//	levelComplete = true;
+	//
+	//if (exitDoor.Get<AABB>().GetComplete())
+	//	glfwSetWindowShouldClose(window, true);
 }
 
 void MainMenuLevel::Unload()
