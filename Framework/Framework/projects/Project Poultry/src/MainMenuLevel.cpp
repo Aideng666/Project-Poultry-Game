@@ -105,21 +105,30 @@ void MainMenuLevel::InitScene()
 
 	//Coil Transforms
 	auto& coilTrans = coilEnt.Add<Transform>();
-	coilTrans.SetPosition(glm::vec3(-13.5f, 0.0f, -25.f));
+	coilTrans.SetPosition(glm::vec3(-13.5f, 1.1f, -24.f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 	coilTrans.SetRotationY(180.0f);
 
 	auto& coilTrans2 = coilEnt2.Add<Transform>();
-	coilTrans2.SetPosition(glm::vec3(14.5f, 0.0f, -25.f));
+	coilTrans2.SetPosition(glm::vec3(14.5f, 1.1f, -24.f));
 	coilTrans2.SetScale(glm::vec3(3.0f));
 	coilTrans2.SetRotationY(180.0f);
 
 	//Wire Transforms
 	auto& wireTrans = wireEnt.Add<Transform>();
-	wireTrans.SetPosition(glm::vec3(0.f, 1.0f, 0.f));
+	wireTrans.SetPosition(glm::vec3(0.f, 0.0f, 0.f));
 
 	auto& wireTrans2 = wireEnt2.Add<Transform>();
-	wireTrans2.SetPosition(glm::vec3(0.f, 1.0f, 0.f));
+	wireTrans2.SetPosition(glm::vec3(0.f, 0.0f, 0.f));
+
+	//Button Transforms
+	auto& buttonTrans = buttonEnt.Add<Transform>();
+	buttonTrans.SetPosition(glm::vec3(10.2f, -1.f, 4.8f));
+	buttonTrans.SetRotationY(90.0f);
+
+	auto& buttonTrans2 = buttonEnt2.Add<Transform>();
+	buttonTrans2.SetPosition(glm::vec3(-8.7f, -1.f, 4.8f));
+	buttonTrans2.SetRotationY(90.0f);
 
 	//Text Transforms
 	//auto& sTrans = startEnt.Add<Transform>();
@@ -199,6 +208,9 @@ void MainMenuLevel::InitScene()
 
 	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *mainMenuWire1, shader);
 	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *mainMenuWire2, shader);
+
+	auto& buttonMesh = buttonEnt.Add<MeshRenderer>(buttonEnt, *buttonM, shader);
+	auto& buttonMesh2 = buttonEnt2.Add<MeshRenderer>(buttonEnt2, *buttonM, shader);
 
 	//auto& sMesh = startEnt.Add<MeshRenderer>(startEnt, *startWord, shader);
 	//auto& oMesh = optEnt.Add<MeshRenderer>(optEnt, *optionsWord, shader);
@@ -312,6 +324,9 @@ void MainMenuLevel::Update(float dt)
 	auto& wireTrans = wireEnt.Get<Transform>();
 	auto& wireTrans2 = wireEnt2.Get<Transform>();
 
+	auto& buttonTrans = buttonEnt.Get<Transform>();
+	auto& buttonTrans2 = buttonEnt2.Get<Transform>();
+
 	//auto& sTrans = startEnt.Get<Transform>();
 	//auto& oTrans = optEnt.Get<Transform>();
 	//auto& eTrans = exitEnt.Get<Transform>();
@@ -332,6 +347,9 @@ void MainMenuLevel::Update(float dt)
 	auto& wireMesh = wireEnt.Get<MeshRenderer>();
 	auto& wireMesh2 = wireEnt2.Get<MeshRenderer>();
 
+	auto& buttonMesh = buttonEnt.Get<MeshRenderer>();
+	auto& buttonMesh2 = buttonEnt2.Get<MeshRenderer>();
+
 	//auto& sMesh = startEnt.Get<MeshRenderer>();
 	//auto& oMesh = optEnt.Get<MeshRenderer>();
 	//auto& eMesh = exitEnt.Get<MeshRenderer>();
@@ -349,6 +367,9 @@ void MainMenuLevel::Update(float dt)
 
 	glm::mat4 transformWire = wireTrans.GetModelMatrix();
 	glm::mat4 transformWire2 = wireTrans2.GetModelMatrix();
+
+	glm::mat4 transformButton = buttonTrans.GetModelMatrix();
+	glm::mat4 transformButton2 = buttonTrans2.GetModelMatrix();
 
 	//glm::mat4 transformS = sTrans.GetModelMatrix();
 	//glm::mat4 transformO = oTrans.GetModelMatrix();
@@ -422,6 +443,11 @@ void MainMenuLevel::Update(float dt)
 		wireMesh.Render(camera, transformWire);
 		wireMesh2.Render(camera, transformWire2);
 
+		shader->SetUniform("s_Diffuse", 5);
+		buttonMat.Albedo->Bind(5);
+		buttonMesh.Render(camera, transformButton);
+		buttonMesh2.Render(camera, transformButton2);
+
 		//sMesh.Render(camera, transformS);
 		//oMesh.Render(camera, transformO);
 		//eMesh.Render(camera, transformE);
@@ -452,6 +478,9 @@ void MainMenuLevel::Update(float dt)
 		coilMesh2.Render(camera, transformCoil2);
 		wireMesh.Render(camera, transformWire);
 		wireMesh2.Render(camera, transformWire2);
+		buttonMesh.Render(camera, transformButton);
+		buttonMesh2.Render(camera, transformButton2);
+
 		//leftAMesh.Render(camera, transformLeftA);
 		//rightAMesh.Render(camera, transformRightA);
 		//sMesh.Render(camera, transformS);
