@@ -29,6 +29,9 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	wireEnt = Entity::Create();
 	wireEnt2 = Entity::Create();
 
+	buttonEnt = Entity::Create();
+	buttonEnt2 = Entity::Create();
+
 	//startEnt = Entity::Create();
 	//optEnt = Entity::Create();
 	//exitEnt = Entity::Create();
@@ -102,12 +105,12 @@ void MainMenuLevel::InitScene()
 
 	//Coil Transforms
 	auto& coilTrans = coilEnt.Add<Transform>();
-	coilTrans.SetPosition(glm::vec3(-10.f, 1.0f, 0.f));
+	coilTrans.SetPosition(glm::vec3(-14.f, 1.0f, -22.f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 	coilTrans.SetRotationY(180.0f);
 
 	auto& coilTrans2 = coilEnt2.Add<Transform>();
-	coilTrans2.SetPosition(glm::vec3(10.f, 1.0f, 0.f));
+	coilTrans2.SetPosition(glm::vec3(15.f, 1.0f, -15.f));
 	coilTrans2.SetScale(glm::vec3(3.0f));
 	coilTrans2.SetRotationY(180.0f);
 
