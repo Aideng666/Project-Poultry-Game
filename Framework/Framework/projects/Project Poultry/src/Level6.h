@@ -26,8 +26,7 @@ private:
 	//Walls
 	Entity leftEnt, rightEnt, backEnt;
 	//Wires
-	Entity wireEnt, wireEnt2, wireEnt3, wireEnt4, wireEnt5, wireEnt6, wireEnt7,
-		wireEnt8, wireEnt9;
+	Entity wireEnt, wireEnt2, wireEnt3, wireEnt4, wireEnt5, wireEnt6, wireEnt7, wireEnt8, wireEnt9, wireEnt10, wireEnt11, wireEnt12, wireEnt13, wireEnt14, wireEnt15, wireEnt16, wireEnt17;
 	//Door
 	Entity doorEnt;
 	//Tesla Coil
@@ -35,7 +34,7 @@ private:
 	//Panels
 	Entity panelEnt, panelEnt2;
 	//Buttons
-	Entity buttonEnt, buttonEnt2, buttonEnt3;
+	Entity buttonEnt, buttonEnt2, buttonEnt3, buttonEnt4, buttonEnt5;
 	//Column Pipes
 	Entity columnPipeEnt, columnPipeEnt2;
 	//Shelf Pipes
@@ -44,9 +43,9 @@ private:
 	Entity ventEnt, ventEnt2, ventEnt3;
 	//Gates
 	//And-Gate
-	Entity andEnt;
+	Entity andEnt, andEnt2, andEnt3, andEnt4, andEnt5, andEnt6, andEnt7;
 	//Not-Gate
-	Entity notEnt, notEnt2, notEnt3, notEnt4;
+	Entity notEnt, notEnt2, notEnt3;
 	//Or-Gate
 	Entity orEnt, orEnt2;
 	//Boxes
@@ -74,6 +73,20 @@ private:
 		buttonEnt3.Get<Lever>().SetPowered(!buttonEnt3.Get<Lever>().GetPowered());
 
 		button3AnimOn = true;
+		isPecking = true;
+		});
+
+	KeyPressWatcher button4Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		buttonEnt4.Get<Lever>().SetPowered(!buttonEnt4.Get<Lever>().GetPowered());
+
+		button4AnimOn = true;
+		isPecking = true;
+		});
+
+	KeyPressWatcher button5Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		buttonEnt5.Get<Lever>().SetPowered(!buttonEnt5.Get<Lever>().GetPowered());
+
+		button5AnimOn = true;
 		isPecking = true;
 		});
 };

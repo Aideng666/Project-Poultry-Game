@@ -287,6 +287,12 @@ void Scene::InitMeshes()
 	exitWord = ModelManager::FindMesh(exitFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	optionsWord = ModelManager::FindMesh(optFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	mainMenuFloor = ModelManager::FindMesh(mainMenuFloorFile);
+	mainMenuBackWall = ModelManager::FindMesh(mainMenuBackWallFile);
+	mainMenuLeftWall = ModelManager::FindMesh(mainMenuLeftWallFile);
+	mainMenuRightWall = ModelManager::FindMesh(mainMenuRightWallFile);
+	mainMenuWire1 = ModelManager::FindMesh(mainMenuWire1File);
+	mainMenuWire2 = ModelManager::FindMesh(mainMenuWire2File);
+	WASD = ModelManager::FindMesh(WASDFile);
 
 	//Level 1
 	wireM1L1 = ModelManager::FindMesh(wire1L1File);
@@ -343,6 +349,14 @@ void Scene::InitMeshes()
 	wireM7L6 = ModelManager::FindMesh(wire7L6File);
 	wireM8L6 = ModelManager::FindMesh(wire8L6File);
 	wireM9L6 = ModelManager::FindMesh(wire9L6File);
+	wireM10L6 = ModelManager::FindMesh(wire10L6File);
+	wireM11L6 = ModelManager::FindMesh(wire11L6File);
+	wireM12L6 = ModelManager::FindMesh(wire12L6File);
+	wireM13L6 = ModelManager::FindMesh(wire13L6File);
+	wireM14L6 = ModelManager::FindMesh(wire14L6File);
+	wireM15L6 = ModelManager::FindMesh(wire15L6File);
+	wireM16L6 = ModelManager::FindMesh(wire16L6File);
+	wireM17L6 = ModelManager::FindMesh(wire17L6File);
 
 	entList.clear();
 }
@@ -367,9 +381,8 @@ void Scene::InitAnims()
 	doorFrames.push_back(std::unique_ptr<Mesh>(door8));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door9));
 	doorFrames.push_back(std::unique_ptr<Mesh>(door10));
-	//doorFrames.push_back(std::unique_ptr<Mesh>(door11));
 	
-	//doorCloseFrames.push_back(std::unique_ptr<Mesh>(door11));
+
 	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door10));
 	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door9));
 	doorCloseFrames.push_back(std::unique_ptr<Mesh>(door8));

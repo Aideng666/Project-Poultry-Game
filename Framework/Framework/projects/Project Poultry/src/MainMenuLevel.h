@@ -1,5 +1,7 @@
 #pragma once
 #include "Scene.h"
+#include "Wire.h"
+#include "Lever.h"
 #include "Input.h"
 #include <vector>
 #include <iostream>
@@ -18,27 +20,27 @@ public:
 
 private:
 
-	Entity startDoor, optionDoor, exitDoor;
-	Entity floorEnt, backWallEnt, leftAngledWall, rightAngledWall, leftWallEnt, rightWallEnt;
+	Entity floorEnt, backWallEnt, leftWallEnt, rightWallEnt;
+	Entity startDoor, exitDoor;
 	Entity mainPlayer;
-	Entity startEnt, optEnt, exitEnt;
+	Entity coilEnt, coilEnt2;
+	Entity wireEnt, wireEnt2;
+	Entity buttonEnt, buttonEnt2;
+	Entity startEnt, exitEnt;
 
 	GLfloat time = 0.0f;
 
-	float t = 0.0f;
-	float totalTime;
+	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		buttonEnt.Get<Lever>().SetPowered(!buttonEnt.Get<Lever>().GetPowered());
 
-	float speed = 4.0f;
+		buttonAnimOn = true;
+		isPecking = true;
+		});
 
-	glm::vec3 point1 = glm::vec3(-3.0f, 15.0f, 3.0f);
-	glm::vec3 point2 = glm::vec3(3.0f, 15.0f, 3.0f);
+	KeyPressWatcher button2Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		buttonEnt2.Get<Lever>().SetPowered(!buttonEnt2.Get<Lever>().GetPowered());
 
-	glm::vec3 currentPos = glm::vec3(3.0f, 15.0f, 3.0f);
-
-	bool forwards = true;
-
-	bool camClose = false;
-	bool camFar = false;
-
-	int lightNum = 5;
+		button2AnimOn = true;
+		isPecking = true;
+		});
 };
