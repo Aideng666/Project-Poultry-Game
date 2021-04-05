@@ -26,7 +26,7 @@ namespace freebird
 
 	private:
 		glm::vec2 _windowSize;
-		float _strength = 32.f;
+		float _strength = 64.f;
 		float _time;
 	};
 }

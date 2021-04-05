@@ -155,6 +155,13 @@ protected:
 	Mesh* optionsWord;
 	Mesh* exitWord;
 	Mesh* mainMenuFloor;
+	Mesh* mainMenuBackWall;
+	Mesh* mainMenuLeftWall;
+	Mesh* mainMenuRightWall;
+	Mesh* mainMenuWire1;
+	Mesh* mainMenuWire2;
+	Mesh* WASD;
+
 
 	//Level 1 Meshes
 	Mesh* wireM1L1;
@@ -213,6 +220,14 @@ protected:
 	Mesh* wireM7L6;
 	Mesh* wireM8L6;
 	Mesh* wireM9L6;
+	Mesh* wireM10L6;
+	Mesh* wireM11L6;
+	Mesh* wireM12L6;
+	Mesh* wireM13L6;
+	Mesh* wireM14L6;
+	Mesh* wireM15L6;
+	Mesh* wireM16L6;
+	Mesh* wireM17L6;
 
 	//Files for multiple levels
 	std::string drumFile = "Models/ChickenFrames/Walk/Walk1.obj";
@@ -249,62 +264,76 @@ protected:
 	std::string startFile = "Models/Start.obj";
 	std::string exitFile = "Models/Exit.obj";
 	std::string optFile = "Models/Options.obj";
-	std::string mainMenuFloorFile = "Models/MainMenu-Floor.obj";
+	std::string mainMenuFloorFile = "Models/MainMenu_Floor_Updated.obj";
+	std::string mainMenuBackWallFile = "Models/MainMenu_BW_Updated.obj";
+	std::string mainMenuLeftWallFile = "Models/MainMenu_LW_Updated.obj";
+	std::string mainMenuRightWallFile = "Models/MainMenu_RW_Updated.obj";
+	std::string mainMenuWire1File = "Models/MainMenu_Wire1.obj";
+	std::string mainMenuWire2File = "Models/MainMenu_Wire2.obj";
+	std::string WASDFile = "Models/MainMenu_WASD_Controls.obj";
 
 	//Level 1 Files
-	std::string wire1L1File = "Models/New_Level1Wire1.obj";
-	std::string wire2L1File = "Models/New_Level1Wire2.obj";
-	std::string wire3L1File = "Models/New2_Level1Wire3.obj";
+	std::string wire1L1File = "Models/Wires/New_Level1Wire1.obj";
+	std::string wire2L1File = "Models/Wires/New_Level1Wire2.obj";
+	std::string wire3L1File = "Models/Wires/New2_Level1Wire3.obj";
 
 	//Level 2 files
-	std::string wire1L2File = "Models/Level2Wire1.obj";
-	std::string wire2L2File = "Models/Level2Wire2.obj";
-	std::string wire3L2File = "Models/Level2Wire3.obj";
-	std::string wire4L2File = "Models/Level2Wire4.obj";
-	std::string wire5L2File = "Models/New_Level2Wire5.obj";
+	std::string wire1L2File = "Models/Wires/Level2Wire1.obj";
+	std::string wire2L2File = "Models/Wires/Level2Wire2.obj";
+	std::string wire3L2File = "Models/Wires/Level2Wire3.obj";
+	std::string wire4L2File = "Models/Wires/Level2Wire4.obj";
+	std::string wire5L2File = "Models/Wires/New_Level2Wire5.obj";
 
 	//Level 3 files
 	std::string notFile = "Models/NotGate.obj";
-	std::string wire1L3File = "Models/New_Level3Wire1.obj";
-	std::string wire2L3File = "Models/New_Level3Wire2.obj";
-	std::string wire3L3File = "Models/New_Level3Wire3.obj";
-	std::string wire4L3File = "Models/New_Level3Wire4.obj";
-	std::string wire5L3File = "Models/New_Level3Wire5.obj";
-	std::string wire6L3File = "Models/New_Level3Wire6.obj";
-	std::string wire7L3File = "Models/New_Level3Wire7.obj";
+	std::string wire1L3File = "Models/Wires/New_Level3Wire1.obj";
+	std::string wire2L3File = "Models/Wires/New_Level3Wire2.obj";
+	std::string wire3L3File = "Models/Wires/New_Level3Wire3.obj";
+	std::string wire4L3File = "Models/Wires/New_Level3Wire4.obj";
+	std::string wire5L3File = "Models/Wires/New_Level3Wire5.obj";
+	std::string wire6L3File = "Models/Wires/New_Level3Wire6.obj";
+	std::string wire7L3File = "Models/Wires/New_Level3Wire7.obj";
 
 	//Level 4 files
-	std::string wire1L4File = "Models/Level4Wire1.obj";
-	std::string wire2L4File = "Models/Level4Wire2.obj";
-	std::string wire3L4File = "Models/Level4Wire3.obj";
-	std::string wire4L4File = "Models/Level4Wire4.obj";
-	std::string wire5L4File = "Models/Level4Wire5.obj";
-	std::string wire6L4File = "Models/Level4Wire6.obj";
-	std::string wire7L4File = "Models/Level4Wire7.obj";
-	std::string wire8L4File = "Models/Level4Wire8.obj";
-	std::string wire9L4File = "Models/Level4Wire9.obj";
-	std::string wire10L4File = "Models/Level4Wire10.obj";
+	std::string wire1L4File = "Models/Wires/Level4Wire1.obj";
+	std::string wire2L4File = "Models/Wires/Level4Wire2.obj";
+	std::string wire3L4File = "Models/Wires/Level4Wire3.obj";
+	std::string wire4L4File = "Models/Wires/Level4Wire4.obj";
+	std::string wire5L4File = "Models/Wires/Level4Wire5.obj";
+	std::string wire6L4File = "Models/Wires/Level4Wire6.obj";
+	std::string wire7L4File = "Models/Wires/Level4Wire7.obj";
+	std::string wire8L4File = "Models/Wires/Level4Wire8.obj";
+	std::string wire9L4File = "Models/Wires/Level4Wire9.obj";
+	std::string wire10L4File = "Models/Wires/Level4Wire10.obj";
 
 	//Level 5 files
 	std::string orFile = "Models/OrGate.obj";
-	std::string wire1L5File = "Models/Level5Wire1.obj";
-	std::string wire2L5File = "Models/Level5Wire2.obj";
-	std::string wire3L5File = "Models/Level5Wire3.obj";
-	std::string wire4L5File = "Models/Level5Wire4.obj";
-	std::string wire5L5File = "Models/Level5Wire5.obj";
-	std::string wire6L5File = "Models/Level5Wire6.obj";
-	std::string wire7L5File = "Models/Level5Wire7.obj";
+	std::string wire1L5File = "Models/Wires/Level5Wire1.obj";
+	std::string wire2L5File = "Models/Wires/Level5Wire2.obj";
+	std::string wire3L5File = "Models/Wires/Level5Wire3.obj";
+	std::string wire4L5File = "Models/Wires/Level5Wire4.obj";
+	std::string wire5L5File = "Models/Wires/Level5Wire5.obj";
+	std::string wire6L5File = "Models/Wires/Level5Wire6.obj";
+	std::string wire7L5File = "Models/Wires/Level5Wire7.obj";
 
 	//Level 6 files
-	std::string wire1L6File = "Models/Level6Wire1.obj";
-	std::string wire2L6File = "Models/Level6Wire2.obj";
-	std::string wire3L6File = "Models/Level6Wire3.obj";
-	std::string wire4L6File = "Models/Level6Wire4.obj";
-	std::string wire5L6File = "Models/Level6Wire5.obj";
-	std::string wire6L6File = "Models/Level6Wire6.obj";
-	std::string wire7L6File = "Models/Level6Wire7.obj";
-	std::string wire8L6File = "Models/Level6Wire8.obj";
-	std::string wire9L6File = "Models/Level6Wire9.obj";
+	std::string wire1L6File = "Models/Wires/New_Level6_Wire1.obj";
+	std::string wire2L6File = "Models/Wires/New_Level6_Wire2.obj";
+	std::string wire3L6File = "Models/Wires/New_Level6_Wire3.obj";
+	std::string wire4L6File = "Models/Wires/New_Level6_Wire4.obj";
+	std::string wire5L6File = "Models/Wires/New_Level6_Wire5.obj";
+	std::string wire6L6File = "Models/Wires/New_Level6_Wire6.obj";
+	std::string wire7L6File = "Models/Wires/New_Level6_Wire7.obj";
+	std::string wire8L6File = "Models/Wires/New_Level6_Wire8.obj";
+	std::string wire9L6File = "Models/Wires/New_Level6_Wire9.obj";
+	std::string wire10L6File = "Models/Wires/New_Level6_Wire10.obj";
+	std::string wire11L6File = "Models/Wires/New_Level6_Wire11.obj";
+	std::string wire12L6File = "Models/Wires/New_Level6_Wire12.obj";
+	std::string wire13L6File = "Models/Wires/New_Level6_Wire13.obj";
+	std::string wire14L6File = "Models/Wires/New_Level6_Wire14.obj";
+	std::string wire15L6File = "Models/Wires/New_Level6_Wire15.obj";
+	std::string wire16L6File = "Models/Wires/New_Level6_Wire16.obj";
+	std::string wire17L6File = "Models/Wires/New_Level6_Wire17.obj";
 
 	std::vector<std::function<void()>> imGuiCallbacks;
 
@@ -498,7 +527,10 @@ protected:
 	bool button2AnimOn = false;
 	bool button3AnimOn = false;
 	bool button4AnimOn = false;
+	bool button5AnimOn = false;
 
 	bool doorOpenApplied = true;
+	bool doorOpenApplied2 = true;
 	bool doorClosingApplied = false;
+	bool doorClosingApplied2 = false;
 };
