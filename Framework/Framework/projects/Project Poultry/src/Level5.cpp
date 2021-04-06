@@ -273,7 +273,7 @@ void Level5::InitScene()
 
 	auto& tabletScreenTrans = tabletScreenEnt.Add<Transform>();
 	tabletScreenTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
-	tabletScreenTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
+	tabletScreenTrans.SetScale(glm::vec3(0.18f, 1.0f, 0.18f));
 
 	//Interact text transform
 	auto& tutTrans = tutEnt.Add<Transform>();
@@ -538,10 +538,16 @@ void Level5::InitScene()
 void Level5::Update(float dt)
 {
 	time += dt;
-	untexturedShader->SetUniform("u_Time", time);
-	shader->SetUniform("u_Time", time);
-	pauseShader->SetUniform("u_Time", time);
-	animShader->SetUniform("u_Time", time);
+
+	if (!tabletOpen)
+	{
+		untexturedShader->SetUniform("u_Time", time);
+		shader->SetUniform("u_Time", time);
+		pauseShader->SetUniform("u_Time", time);
+		animShader->SetUniform("u_Time", time);
+	}
+
+
 
 #pragma region Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();

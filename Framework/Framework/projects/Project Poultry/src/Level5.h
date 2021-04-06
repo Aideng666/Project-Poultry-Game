@@ -89,9 +89,9 @@ private:
 	KeyPressWatcher tabletWatch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		tabletOpen = !tabletOpen;
 
-		if (tabletOpen)
-			lightOn = false;
-		else
+		/*if (tabletOpen)
 			lightOn = true;
+		else
+			lightOn = true;*/
 		});
 };
