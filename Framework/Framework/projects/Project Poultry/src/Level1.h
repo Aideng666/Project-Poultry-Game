@@ -93,4 +93,9 @@ private:
 		else
 			lightOn = true;
 		});
+
+	bool isBright = false;
+
+	LUT3D lut;
+	LUT3D brightLut;
 };

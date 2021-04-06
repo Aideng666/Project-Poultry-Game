@@ -70,6 +70,9 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	topViewCamEnt = Entity::Create();
 #pragma endregion
 
+	lut.loadFromFile("GameColorCorrection.cube");
+	brightLut.loadFromFile("BrightMode.cube");
+
 	InitMeshes();
 }
 
@@ -444,9 +447,7 @@ void Level1::InitScene()
 
 	Application::imGuiCallbacks.push_back([&]() {
 
-		ImGui::SliderFloat("X", &theSun._lightDirection.x, -3.0f, 3.0f);
-		ImGui::SliderFloat("Y", &theSun._lightDirection.y, -3.0f, 3.0f);
-		ImGui::SliderFloat("Z", &theSun._lightDirection.z, -3.0f, 3.0f);
+		ImGui::Checkbox("Bright Mode", &isBright);
 
 		});
 	
@@ -1118,10 +1119,20 @@ void Level1::Update(float dt)
 	//gBuffer->Unbind();
 
 	//gBuffer->DrawBuffersToScreen();
+	if (activeEffect == 3 && isBright)
+	{
+		colorCorrectEnt.Get<ColorCorrect>().SetLUT(brightLut);
+	}
+	else if (activeEffect == 3 && !isBright)
+	{	
+		colorCorrectEnt.Get<ColorCorrect>().SetLUT(lut);
+	}
 
-	effects[activeEffect]->ApplyEffect(basicEffect);
+		effects[activeEffect]->ApplyEffect(basicEffect);
+	
+		effects[activeEffect]->DrawToScreen();
+	
 
-	effects[activeEffect]->DrawToScreen();
 
 	//Update the collisions
 	leftEnt.Get<AABB>().Update();
