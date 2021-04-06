@@ -263,37 +263,37 @@ void Level6::InitScene()
 	//Gate transforms
 	//And-Gate
 	auto& gateTrans = andEnt.Add<Transform>();
-	//gateTrans.SetPosition(glm::vec3(-8.9f, 1.2f, 16.5f));
+	gateTrans.SetPosition(glm::vec3(-6.15f, 1.2f, 18.0f));
 	gateTrans.SetRotationY(-90.0f);
 	gateTrans.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans2 = andEnt2.Add<Transform>();
-	//gateTrans2.SetPosition(glm::vec3(-8.9f, 1.2f, 16.5f));
+	gateTrans2.SetPosition(glm::vec3(-20.6f, 1.2f, 12.5f));
 	gateTrans2.SetRotationY(-90.0f);
 	gateTrans2.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans3 = andEnt3.Add<Transform>();
-	//gateTrans3.SetPosition(glm::vec3(-8.9f, 1.2f, 16.5f));
+	gateTrans3.SetPosition(glm::vec3(-14.0f, 1.2f, 1.5f));
 	gateTrans3.SetRotationY(-90.0f);
 	gateTrans3.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans4 = andEnt4.Add<Transform>();
-	//gateTrans4.SetPosition(glm::vec3(-8.9f, 1.2f, 16.5f));
+	gateTrans4.SetPosition(glm::vec3(17.5f, 1.2f, 1.5f));
 	gateTrans4.SetRotationY(-90.0f);
 	gateTrans4.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans5 = andEnt5.Add<Transform>();
-	//gateTrans5.SetPosition(glm::vec3(-8.9f, 1.2f, 16.5f));
+	gateTrans5.SetPosition(glm::vec3(-6.15f, 1.2f, -15.0f));
 	gateTrans5.SetRotationY(-90.0f);
 	gateTrans5.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans6 = andEnt6.Add<Transform>();
-	//gateTrans6.SetPosition(glm::vec3(-8.9f, 1.2f, 16.5f));
+	gateTrans6.SetPosition(glm::vec3(9.5f, 1.2f, -15.0f));
 	gateTrans6.SetRotationY(-90.0f);
 	gateTrans6.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans7 = andEnt7.Add<Transform>();
-	//gateTrans7.SetPosition(glm::vec3(-8.9f, 1.2f, 16.5f));
+	gateTrans7.SetPosition(glm::vec3(1.85f, 1.2f, -23.0f));
 	gateTrans7.SetRotationY(-90.0f);
 	gateTrans7.SetScale(glm::vec3(2.0f));
 
@@ -433,9 +433,9 @@ void Level6::InitScene()
 	auto& button3 = buttonEnt3.Add<Lever>(wireEnt3);
 	button3.SetPowered(false);
 	auto& button4 = buttonEnt4.Add<Lever>(wireEnt4);
-	button4.SetPowered(false);
+	button4.SetPowered(true);
 	auto& button5 = buttonEnt5.Add<Lever>(wireEnt5);
-	button5.SetPowered(false);
+	button5.SetPowered(true);
 
 	//Wires
 	auto& wire = wireEnt.Add<Wire>(buttonEnt);
@@ -656,7 +656,7 @@ void Level6::InitScene()
 	orthoCam.SetFovDegrees(90.0f); // Set an initial FOV
 
 	auto& topCam = topViewCamEnt.Add<Camera>();
-	topCam.SetPosition(glm::vec3(0, 45, 0)); // Set initial position
+	topCam.SetPosition(glm::vec3(0, 45, 8)); // Set initial position
 	topCam.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	topCam.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	topCam.SetFovDegrees(90.0f); // Set an initial FOV
