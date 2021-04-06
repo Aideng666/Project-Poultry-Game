@@ -27,6 +27,7 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	doorEnt = Entity::Create();
 	completeEnt = Entity::Create();
 	pauseEnt = Entity::Create();
+	optionsMenuEnt = Entity::Create();
 	optionEnt = Entity::Create();
 	exitEnt = Entity::Create();
 	retryEnt = Entity::Create();
@@ -79,6 +80,8 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 void Level1::InitScene()
 {
 	Application::SetClearColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+
+	Application::LoadAudio();
 
 	scene = new entt::registry();
 
@@ -229,7 +232,11 @@ void Level1::InitScene()
 
 	auto& tabletScreenTrans = tabletScreenEnt.Add<Transform>();
 	tabletScreenTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
-	tabletScreenTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
+	tabletScreenTrans.SetScale(glm::vec3(0.18f, 1.0f, 0.18f));
+
+	auto& optionsMenuTrans = optionsMenuEnt.Add<Transform>();
+	optionsMenuTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	optionsMenuTrans.SetScale(glm::vec3(0.18f, 1.0f, 0.18f));
 
 	//Interact text transform
 	auto& tutTrans = tutEnt.Add<Transform>();
@@ -322,6 +329,7 @@ void Level1::InitScene()
 	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
 	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
 	auto& tabletScreenMesh = tabletScreenEnt.Add<MeshRenderer>(tabletScreenEnt, *screen, pauseShader);
+	auto& optionsMenuMesh = optionsMenuEnt.Add<MeshRenderer>(optionsMenuEnt, *screen, pauseShader);
 	auto& tabletMesh = tabletEnt.Add<MeshRenderer>(tabletEnt, *tablet, shader);
 
 	entList.push_back(&mainPlayer);
@@ -451,15 +459,28 @@ void Level1::InitScene()
 
 		});
 	
+	AudioEvent& music = AudioEngine::Instance().GetEvent("BG");
+	music.Play();
 }
 
 void Level1::Update(float dt)
 {
+	// Get a ref to the engine
+	AudioEngine& audioEngine = AudioEngine::Instance();
+
+	AudioEvent& walkSound = AudioEngine::Instance().GetEvent("Walk");
+	AudioEvent& doorSound = AudioEngine::Instance().GetEvent("Door");
+	AudioEvent& levelCompleteSound = AudioEngine::Instance().GetEvent("Level Complete");
+
 	time += dt;
-	untexturedShader->SetUniform("u_Time", time);
-	shader->SetUniform("u_Time", time);
-	pauseShader->SetUniform("u_Time", time);
-	animShader->SetUniform("u_Time", time);
+
+	if (!tabletOpen && !isPaused && !optionsOpen)
+	{
+		untexturedShader->SetUniform("u_Time", time);
+		shader->SetUniform("u_Time", time);
+		pauseShader->SetUniform("u_Time", time);
+		animShader->SetUniform("u_Time", time);
+	}
 
 	/*if (forwards)
 		t += dt / totalTime;
@@ -566,7 +587,8 @@ void Level1::Update(float dt)
 		&& !tabletOpen) || tabletOpen)
 		tabletWatch.Poll(window);
 
-	pauseWatch.Poll(window);
+	if (!optionsOpen)
+		pauseWatch.Poll(window);
 
 	if (showLevelComplete)
 	{
@@ -577,9 +599,14 @@ void Level1::Update(float dt)
 	}
 
 #pragma region PlayerMovement
-	if (!showLevelComplete && !isPaused)
+	if (!showLevelComplete && !isPaused && !optionsOpen)
 	{
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+
+		if (isWalking)
+			walkSound.Play();
+		else
+			walkSound.StopImmediately();
 
 		if (!peckingFramesApplied && isPecking)
 		{
@@ -643,7 +670,7 @@ void Level1::Update(float dt)
 	else
 		camRight = false;
 
-	if (!showLevelComplete && !isPaused)
+	if (!showLevelComplete && !isPaused && !optionsOpen)
 	{
 		Input::MoveCamera(window, camEnt, dt);
 	}
@@ -696,23 +723,15 @@ void Level1::Update(float dt)
 		}
 	}
 
-	GetCursorPos(&mousePos);
-	
-	ScreenToClient(hWnd, &mousePos);
-
-	//Exits the game if exit is clicked in pause menu
-	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 597 && mousePos.x > 865 && mousePos.x < 1097)
+	if (isPaused || optionsOpen)
 	{
-		glfwSetWindowShouldClose(window, true);
+		PauseInput();
 	}
 
-	//Retry the level
-	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 595 && mousePos.x > 487 && mousePos.x < 714)
-	{
-		levelRetry = true;
-	}
 
-	if (lightOn)
+	if (pauseLighting)
+		lightInt = 2;
+	else if (lightOn)
 		lightInt = 1;
 	else
 		lightInt = 0;
@@ -822,10 +841,15 @@ void Level1::Update(float dt)
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 1);
-			optionMat.Albedo->Bind(1);
 
-			if (isPaused)
+			if (isPaused && mousePos.y > 403 && mousePos.y < 594 && mousePos.x > 104 && mousePos.x < 336)
 			{
+				optionPressMat.Albedo->Bind(1);
+				optionEnt.Get<MeshRenderer>().Render(orthoCam, transformOptions);
+			}
+			else if (isPaused)
+			{
+				optionMat.Albedo->Bind(1);
 				optionEnt.Get<MeshRenderer>().Render(orthoCam, transformOptions);
 			}
 
@@ -861,6 +885,14 @@ void Level1::Update(float dt)
 			if (tabletOpen)
 			{
 				tabletScreenEnt.Get<MeshRenderer>().Render(orthoCam, transformTabletScreen);
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 5);
+			optionMenuMat.Albedo->Bind(5);
+
+			if (optionsOpen)
+			{
+				optionsMenuEnt.Get<MeshRenderer>().Render(orthoCam, optionsMenuEnt.Get<Transform>().GetModelMatrix());
 			}
 
 			shadowBuffer->UnbindTexture(30);
@@ -1052,6 +1084,11 @@ void Level1::Update(float dt)
 				pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause, LightSpaceViewProjection);
 			}
 
+			if (optionsOpen)
+			{
+				pauseEnt.Get<MeshRenderer>().Render(orthoCam, transformPause, LightSpaceViewProjection);
+			}
+
 			shadowBuffer->UnbindTexture(30);
 
 			shader->Bind();
@@ -1131,8 +1168,6 @@ void Level1::Update(float dt)
 		effects[activeEffect]->ApplyEffect(basicEffect);
 	
 		effects[activeEffect]->DrawToScreen();
-	
-
 
 	//Update the collisions
 	leftEnt.Get<AABB>().Update();
@@ -1156,6 +1191,8 @@ void Level1::Update(float dt)
 	wireEnt2.Get<Wire>().Update();
 	wireEnt3.Get<Wire>().Update();
 
+	audioEngine.Update();
+
 	//Door Logic
 	if (doorEnt.Get<Door>().GetOpen() && doorOpenApplied)
 		doorEnt.Get<MorphAnimation>().Update(dt);
@@ -1165,12 +1202,16 @@ void Level1::Update(float dt)
 	if (doorEnt.Get<AABB>().GetComplete())
 	{
 		lightOn = false;
+		AudioEngine::Instance().GetEvent("BG").StopImmediately();
+		levelCompleteSound.Play();
 		showLevelComplete = true;
 	}
 }
 
 void Level1::Unload()
 {
+	AudioEngine::Instance().Shutdown();
+
 	if (scene != nullptr)
 	{
 		delete scene;

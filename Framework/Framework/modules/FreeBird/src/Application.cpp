@@ -1,5 +1,6 @@
 #include "Application.h"
 #include <Framebuffer.h>
+#include <AudioEngine.h>
 
 namespace freebird
 {
@@ -114,8 +115,8 @@ namespace freebird
 	//Allows use of ESC key to close screen
 	void Application::ProcessInput(GLFWwindow* window)
 	{
-		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-			glfwSetWindowShouldClose(window, true);
+		//if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+			//glfwSetWindowShouldClose(window, true);
 	}
 
 	void Application::Cleanup()
@@ -202,5 +203,26 @@ namespace freebird
 			// Restore our gl context
 			glfwMakeContextCurrent(m_window);
 		}
+	}
+
+	void Application::LoadAudio()
+	{
+		AudioEngine& audioEngine = AudioEngine::Instance();
+
+		audioEngine.Init();
+		//Loads the bank
+		audioEngine.LoadBank("Master");
+
+		//Loads the bus
+		AudioEngine::Instance().LoadBus("MusicBus", "{aa712c3f-3f70-472f-8ddd-d7ee091ff0fe}");
+		AudioEngine::Instance().LoadBus("SoundBus", "{19d186f5-e8be-40df-b1d2-ce3cf6c59f92}");
+
+		//Creates the sound events
+		AudioEvent& BG = AudioEngine::Instance().CreateSoundEvent("BG", "{beba64b3-3176-4f20-9f00-7f32807325b6}"); //Background music
+		AudioEvent& walk = AudioEngine::Instance().CreateSoundEvent("Walk", "{858d6f38-82a8-4477-8e80-5a6b52fd1313}"); //Walk SFX
+		AudioEvent& door = AudioEngine::Instance().CreateSoundEvent("Door", "{24678d0f-f199-4d73-95dc-10657db09e8a}"); //Door SFX
+		AudioEvent& levelComplete = AudioEngine::Instance().CreateSoundEvent("Level Complete", "{03daedd8-d89f-4d92-917f-43d3b74e73ef}"); //Level Complete SFX
+
+		
 	}
 }

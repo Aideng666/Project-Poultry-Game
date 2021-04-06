@@ -195,6 +195,9 @@ void main() {
 
 	switch (u_LightOn)
 	{
+		case 2:
+			frag_color = vec4(sun._ambientPow * 2.0 * inColor * textureColor.rgb, 1.0);
+			break;
 		case 1:
 			frag_color = vec4(result, 1.0);
 			break;

@@ -89,13 +89,15 @@ private:
 		tabletOpen = !tabletOpen;
 
 		if (tabletOpen)
-			lightOn = false;
+			pauseLighting = true;
 		else
-			lightOn = true;
+			pauseLighting = false;
 		});
 
 	bool isBright = false;
 
 	LUT3D lut;
 	LUT3D brightLut;
+
+	AudioEngine& audioEngine = AudioEngine::Instance();
 };

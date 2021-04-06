@@ -61,6 +61,7 @@ Level3::Level3(std::string sceneName, GLFWwindow* wind)
 	tabletScreenEnt = Entity::Create();
 	pauseEnt = Entity::Create();
 	tutEnt = Entity::Create();
+	optionsMenuEnt = Entity::Create();
 
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
@@ -267,13 +268,16 @@ void Level3::InitScene()
 
 	auto& tabletScreenTrans = tabletScreenEnt.Add<Transform>();
 	tabletScreenTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
-	tabletScreenTrans.SetScale(glm::vec3(0.20f, 1.0f, 0.12f));
+	tabletScreenTrans.SetScale(glm::vec3(0.18f, 1.0f, 0.18f));
 
 	//Interact text transform
 	auto& tutTrans = tutEnt.Add<Transform>();
 	tutTrans.SetPosition(glm::vec3(1.0f, 2.0f, 5.0f));
 	tutTrans.SetScale(glm::vec3(1.0f));
 
+	auto& optionsMenuTrans = optionsMenuEnt.Add<Transform>();
+	optionsMenuTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	optionsMenuTrans.SetScale(glm::vec3(0.18f, 1.0f, 0.18f));
 #pragma endregion
 
 	//AABB
@@ -386,6 +390,7 @@ void Level3::InitScene()
 	auto& tabletScreenMesh = tabletScreenEnt.Add<MeshRenderer>(tabletScreenEnt, *screen, pauseShader);
 	auto& tabletMesh = tabletEnt.Add<MeshRenderer>(tabletEnt, *tablet, shader);
 	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
+	auto& optionsMenuMesh = optionsMenuEnt.Add<MeshRenderer>(optionsMenuEnt, *screen, pauseShader);
 
 	entList.push_back(&mainPlayer);
 	entList.push_back(&doorEnt);
@@ -534,10 +539,14 @@ void Level3::InitScene()
 void Level3::Update(float dt)
 {
 	time += dt;
-	animShader->SetUniform("u_Time", time);
-	shader->SetUniform("u_Time", time);
-	pauseShader->SetUniform("u_Time", time);
-	untexturedShader->SetUniform("u_Time", time);
+	
+	if (!tabletOpen && !isPaused && !optionsOpen)
+	{
+		untexturedShader->SetUniform("u_Time", time);
+		shader->SetUniform("u_Time", time);
+		pauseShader->SetUniform("u_Time", time);
+		animShader->SetUniform("u_Time", time);
+	}
 
 	if (points.size() >= 4)
 	{
@@ -664,7 +673,8 @@ void Level3::Update(float dt)
 		&& !tabletOpen) || tabletOpen)
 		tabletWatch.Poll(window);
 
-	pauseWatch.Poll(window);
+	if (!optionsOpen)
+		pauseWatch.Poll(window);
 
 	if (showLevelComplete)
 	{
@@ -808,23 +818,15 @@ void Level3::Update(float dt)
 		}
 	}
 
-	GetCursorPos(&mousePos);
 
-	ScreenToClient(hWnd, &mousePos);
-
-	//Exits the game if exit is clicked in pause menu
-	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 597 && mousePos.x > 865 && mousePos.x < 1097)
+	if (isPaused || optionsOpen)
 	{
-		glfwSetWindowShouldClose(window, true);
+		PauseInput();
 	}
 
-	//Retry the level
-	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 595 && mousePos.x > 487 && mousePos.x < 714)
-	{
-		levelRetry = true;
-	}
-
-	if (lightOn)
+	if (pauseLighting)
+		lightInt = 2;
+	else if (lightOn)
 		lightInt = 1;
 	else
 		lightInt = 0;
@@ -963,6 +965,14 @@ void Level3::Update(float dt)
 			if (tabletOpen)
 			{
 				tabletScreenEnt.Get<MeshRenderer>().Render(orthoCam, transformTabletScreen);
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 5);
+			optionMenuMat.Albedo->Bind(5);
+
+			if (optionsOpen)
+			{
+				optionsMenuEnt.Get<MeshRenderer>().Render(orthoCam, optionsMenuEnt.Get<Transform>().GetModelMatrix());
 			}
 			shadowBuffer->UnbindTexture(30);
 
@@ -1302,6 +1312,8 @@ void Level3::Update(float dt)
 
 void Level3::Unload()
 {
+	AudioEngine::Instance().Shutdown();
+
 	if (scene != nullptr)
 	{
 		delete scene;

@@ -54,6 +54,7 @@ Level2::Level2(std::string sceneName, GLFWwindow* wind)
 	ventEnt2 = Entity::Create();
 	pauseEnt = Entity::Create();
 	tutEnt = Entity::Create();
+	optionsMenuEnt = Entity::Create();
 
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
@@ -242,6 +243,10 @@ void Level2::InitScene()
 	tutTrans.SetPosition(glm::vec3(1.0f, 2.0f, 5.0f));
 	tutTrans.SetScale(glm::vec3(1.0f));
 
+	auto& optionsMenuTrans = optionsMenuEnt.Add<Transform>();
+	optionsMenuTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	optionsMenuTrans.SetScale(glm::vec3(0.18f, 1.0f, 0.18f));
+
 #pragma endregion
 
 	//AABB
@@ -338,6 +343,7 @@ void Level2::InitScene()
 	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
 	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
 	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
+	auto& optionsMenuMesh = optionsMenuEnt.Add<MeshRenderer>(optionsMenuEnt, *screen, pauseShader);
 
 	entList.push_back(&mainPlayer);
 	entList.push_back(&doorEnt);
@@ -470,10 +476,14 @@ void Level2::InitScene()
 void Level2::Update(float dt)
 {
 	time += dt;
-	shader->SetUniform("u_Time", time);
-	pauseShader->SetUniform("u_Time", time);
-	animShader->SetUniform("u_Time", time);
-	untexturedShader->SetUniform("u_Time", time);
+
+	if (!tabletOpen && !isPaused && !optionsOpen)
+	{
+		untexturedShader->SetUniform("u_Time", time);
+		shader->SetUniform("u_Time", time);
+		pauseShader->SetUniform("u_Time", time);
+		animShader->SetUniform("u_Time", time);
+	}
 
 	if (forwards)
 		t += dt / totalTime;
@@ -574,7 +584,8 @@ void Level2::Update(float dt)
 		&& playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans3.GetPositionZ() > -3.0f)
 		button3Watch.Poll(window);
 
-	pauseWatch.Poll(window);
+	if (!optionsOpen)
+		pauseWatch.Poll(window);
 
 	if (showLevelComplete)
 	{
@@ -718,33 +729,15 @@ void Level2::Update(float dt)
 			}
 		}
 
-		GetCursorPos(&mousePos);
-
-		ScreenToClient(hWnd, &mousePos);
-
-		//Exits the game if exit is clicked in pause menu
-		if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 597 && mousePos.x > 865 && mousePos.x < 1097)
+		if (isPaused || optionsOpen)
 		{
-			glfwSetWindowShouldClose(window, true);
+			PauseInput();
 		}
 
-		//Retry the level
-		if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 595 && mousePos.x > 487 && mousePos.x < 714)
-		{
-			levelRetry = true;
-		}
 
-		lightNum = Input::ChangeLighting(window, lightNum);
-
-		if (lightNum < 1 || lightNum > 5)
-			lightNum = 1;
-
-		animShader->SetUniform("u_LightNum", lightNum);
-		shader->SetUniform("u_LightNum", lightNum);
-		pauseShader->SetUniform("u_LightNum", lightNum);
-		untexturedShader->SetUniform("u_LightNum", lightNum);
-
-		if (lightOn)
+		if (pauseLighting)
+			lightInt = 2;
+		else if (lightOn)
 			lightInt = 1;
 		else
 			lightInt = 0;
@@ -876,6 +869,14 @@ void Level2::Update(float dt)
 				{
 					exitMat.Albedo->Bind(3);
 					exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit);
+				}
+
+				pauseShader->SetUniform("s_Diffuse", 5);
+				optionMenuMat.Albedo->Bind(5);
+
+				if (optionsOpen)
+				{
+					optionsMenuEnt.Get<MeshRenderer>().Render(orthoCam, optionsMenuEnt.Get<Transform>().GetModelMatrix());
 				}
 
 				shadowBuffer->UnbindTexture(30);
@@ -1168,6 +1169,8 @@ void Level2::Update(float dt)
 
 void Level2::Unload()
 {
+	AudioEngine::Instance().Shutdown();
+
 	if (scene != nullptr)
 	{
 		delete scene;

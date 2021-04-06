@@ -87,13 +87,4 @@ private:
 		isPecking = true;
 		});
 
-	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
-		isPaused = !isPaused;
-
-		if (isPaused)
-			lightOn = false;
-		else
-			lightOn = true;
-		});
-
 };

@@ -117,21 +117,12 @@ private:
 		isPecking = true;
 		});
 
-	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
-		isPaused = !isPaused;
-
-		if (isPaused)
-			lightOn = false;
-		else
-			lightOn = true;
-		});
-
 	KeyPressWatcher tabletWatch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		tabletOpen = !tabletOpen;
 
 		if (tabletOpen)
-			lightOn = false;
+			pauseLighting = true;
 		else
-			lightOn = true;
+			pauseLighting = false;
 		});
 };

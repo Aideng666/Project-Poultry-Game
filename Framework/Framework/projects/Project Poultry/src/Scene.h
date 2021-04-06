@@ -10,6 +10,9 @@
 #include "AndGate.h"
 #include "OrGate.h"
 #include "NotGate.h"
+#include "XorGate.h"
+#include "NorGate.h"
+#include "XNorGate.h"
 #include "Texture2DData.h"
 #include "Texture2D.h"
 #include <glad\glad.h>
@@ -25,6 +28,7 @@
 #include "DirectionalLight.h"
 #include "UniformBuffer.h"
 #include "BloomEffect.h"
+#include "AudioEngine.h"
 
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
@@ -51,6 +55,8 @@ public:
 	void InitShaders();
 	void InitMeshes();
 	void InitAnims();
+
+	void PauseInput();
 
 	bool GetComplete();
 	void SetComplete(bool complete);
@@ -115,11 +121,11 @@ protected:
 	Entity bloomEnt;
 	Entity gBufferEnt, shadowBufferEnt;
 
-	Entity pauseEnt, optionEnt, exitEnt, retryEnt, tutEnt, completeEnt;
+	Entity pauseEnt, optionEnt, exitEnt, retryEnt, tutEnt, completeEnt, optionsMenuEnt;
 
-	Mat clearMat, pauseMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat, optionPressMat, exitPressMat, retryPressMat;
+	Mat clearMat, pauseMat, optionMenuMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat, optionPressMat, exitPressMat, retryPressMat;
 	Mat buttonMat, drumstickMat, doorMat, doorOnMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
-	Mat andMat, notMat, orMat, wireMatOn, shelfPipeMat, columnPipeMat, labWallMat, labFloorMat;
+	Mat andMat, notMat, orMat, xorMat, norMat, xnorMat, wireMatOn, shelfPipeMat, columnPipeMat, labWallMat, labFloorMat;
 
 	//Meshes for multiple levels
 	Mesh* options;
@@ -229,6 +235,28 @@ protected:
 	Mesh* wireM16L6;
 	Mesh* wireM17L6;
 
+	//Level 7 Meshes
+	Mesh* wireM1L7;
+	Mesh* wireM2L7;
+	Mesh* wireM3L7;
+	Mesh* wireM4L7;
+	Mesh* wireM5L7;
+	Mesh* wireM6L7;
+	Mesh* wireM7L7;
+	Mesh* wireM8L7;
+	Mesh* wireM9L7;
+	Mesh* wireM10L7;
+	Mesh* wireM11L7;
+	Mesh* wireM12L7;
+	Mesh* wireM13L7;
+	Mesh* wireM14L7;
+	Mesh* wireM15L7;
+	Mesh* wireM16L7;
+	Mesh* wireM17L7;
+	Mesh* wireM18L7;
+	Mesh* wireM19L7;
+	Mesh* xor;
+
 	//Files for multiple levels
 	std::string drumFile = "Models/ChickenFrames/Walk/Walk1.obj";
 	std::string floorFile = "Models/Floor.obj";
@@ -317,6 +345,7 @@ protected:
 	std::string wire7L5File = "Models/Wires/Level5Wire7.obj";
 
 	//Level 6 files
+	std::string xorFile = "Models/XorGate.obj";
 	std::string wire1L6File = "Models/Wires/New_Level6_Wire1.obj";
 	std::string wire2L6File = "Models/Wires/New_Level6_Wire2.obj";
 	std::string wire3L6File = "Models/Wires/New_Level6_Wire3.obj";
@@ -335,6 +364,27 @@ protected:
 	std::string wire16L6File = "Models/Wires/New_Level6_Wire16.obj";
 	std::string wire17L6File = "Models/Wires/New_Level6_Wire17.obj";
 
+	//Level 7 files
+	std::string wire1L7File = "Models/Wires/Level7_Wire1.obj";
+	std::string wire2L7File = "Models/Wires/Level7_Wire2.obj";
+	std::string wire3L7File = "Models/Wires/Level7_Wire3.obj";
+	std::string wire4L7File = "Models/Wires/Level7_Wire4.obj";
+	std::string wire5L7File = "Models/Wires/Level7_Wire5.obj";
+	std::string wire6L7File = "Models/Wires/Level7_Wire6.obj";
+	std::string wire7L7File = "Models/Wires/Level7_Wire7.obj";
+	std::string wire8L7File = "Models/Wires/Level7_Wire8.obj";
+	std::string wire9L7File = "Models/Wires/Level7_Wire9.obj";
+	std::string wire10L7File = "Models/Wires/Level7_Wire10.obj";
+	std::string wire11L7File = "Models/Wires/Level7_Wire11.obj";
+	std::string wire12L7File = "Models/Wires/Level7_Wire12.obj";
+	std::string wire13L7File = "Models/Wires/Level7_Wire13.obj";
+	std::string wire14L7File = "Models/Wires/Level7_Wire14.obj";
+	std::string wire15L7File = "Models/Wires/Level7_Wire15.obj";
+	std::string wire16L7File = "Models/Wires/Level7_Wire16.obj";
+	std::string wire17L7File = "Models/Wires/Level7_Wire17.obj";
+	std::string wire18L7File = "Models/Wires/Level7_Wire18.obj";
+	std::string wire19L7File = "Models/Wires/Level7_Wire19.obj";
+
 	std::vector<std::function<void()>> imGuiCallbacks;
 
 	std::vector<Entity> ents;
@@ -351,14 +401,13 @@ protected:
 
 	bool isPaused = false;
 	bool tabletOpen = false;
+	bool optionsOpen = false;
 
 	bool camClose = false;
 	bool camFar = false;
 
 	bool camLeft = false;
 	bool camRight = false;
-
-	int lightNum = 5;
 
 	std::vector<PostEffect*> effects;
 	int activeEffect = 3;
@@ -367,9 +416,9 @@ protected:
 		isPaused = !isPaused;
 
 		if (isPaused)
-			lightOn = false;
+			pauseLighting = true;
 		else
-			lightOn = true;
+			pauseLighting = false;
 		});
 
 	KeyPressWatcher topViewToggle = KeyPressWatcher(GLFW_KEY_LEFT_SHIFT, [&]() {
@@ -509,6 +558,7 @@ protected:
 	std::vector<Entity*> entList;
 
 	bool lightOn = true;
+	bool pauseLighting = false;
 	int lightInt;
 
 	bool isWalking;
@@ -528,6 +578,9 @@ protected:
 	bool button3AnimOn = false;
 	bool button4AnimOn = false;
 	bool button5AnimOn = false;
+	bool button6AnimOn = false;
+	bool button7AnimOn = false;
+	bool button8AnimOn = false;
 
 	bool doorOpenApplied = true;
 	bool doorOpenApplied2 = true;

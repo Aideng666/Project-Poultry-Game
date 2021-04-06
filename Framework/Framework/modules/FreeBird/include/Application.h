@@ -49,6 +49,8 @@ namespace freebird
 		static void ShutdownImGui();
 		static void RenderImGui();
 
+		static void LoadAudio();
+
 		static std::vector<std::function<void()>> imGuiCallbacks;
 
 	protected:
@@ -56,5 +58,9 @@ namespace freebird
 		static GLFWwindow* m_window;
 		static float m_dt;
 		static float m_thisFrame;
+
+		//Audio engine
+		//inline static AudioEngine& m_audioEngine = AudioEngine::Instance();
+
 	};
 }
