@@ -53,15 +53,6 @@ private:
 
 	GLfloat time = 0.0f;
 
-	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
-		isPaused = !isPaused;
-
-		if (isPaused)
-			lightOn = false;
-		else
-			lightOn = true;
-	});
-
 	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		buttonEnt.Get<Lever>().SetPowered(!buttonEnt.Get<Lever>().GetPowered());
 		buttonAnimOn = true;
@@ -89,9 +80,9 @@ private:
 	KeyPressWatcher tabletWatch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		tabletOpen = !tabletOpen;
 
-		/*if (tabletOpen)
-			lightOn = true;
+		if (tabletOpen)
+			pauseLighting = true;
 		else
-			lightOn = true;*/
+			pauseLighting = false;
 		});
 };

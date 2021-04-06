@@ -59,6 +59,9 @@ namespace freebird
 		bool GetBigLevel();
 		void SetBigLevel(bool isBig);
 
+		float GetLevelSize();
+		void SetLevelSize(float size);
+
 
 	private:
 		glm::vec3 position;
@@ -73,5 +76,6 @@ namespace freebird
 		bool canMoveDown = true;
 
 		bool bigLevel = false;
+		float levelSize = 35.0f;
 	};
 }

@@ -53,6 +53,9 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseAnd = Texture2D::LoadFromFile("Textures/AndGate.png");
 	Texture2D::sptr diffuseNot = Texture2D::LoadFromFile("Textures/NotGate.png");
 	Texture2D::sptr diffuseOr = Texture2D::LoadFromFile("Textures/OrGate.png");
+	Texture2D::sptr diffuseXor = Texture2D::LoadFromFile("Textures/XorGateTex.png");
+	Texture2D::sptr diffuseNor = Texture2D::LoadFromFile("Textures/NorGateTex.png");
+	Texture2D::sptr diffuseXNor = Texture2D::LoadFromFile("Textures/XNorGateTex.png");
 	Texture2D::sptr diffuseWire = Texture2D::LoadFromFile("Textures/Wire_Off_Texture.png");
 	Texture2D::sptr diffuseWireOn = Texture2D::LoadFromFile("Textures/Wire_On_Texture.png");
 	Texture2D::sptr diffuseBox = Texture2D::LoadFromFile("Textures/Box_Texture.png");
@@ -66,6 +69,7 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Option.png");
 	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Replay.png");
 	Texture2D::sptr diffuseExit = Texture2D::LoadFromFile("Textures/Buttons/Default/Exit.png");
+	Texture2D::sptr diffuseOptionsMenu = Texture2D::LoadFromFile("Textures/OptionsMenu.png");
 	Texture2D::sptr diffusePressOptions = Texture2D::LoadFromFile("Textures/Buttons/Pressed/Option.png");
 	Texture2D::sptr diffusePressRetry = Texture2D::LoadFromFile("Textures/Buttons/Pressed/Replay.png");
 	Texture2D::sptr diffusePressExit = Texture2D::LoadFromFile("Textures/Buttons/Pressed/Exit.png");
@@ -95,6 +99,9 @@ void Scene::InitTextures()
 	andMat.Albedo = diffuseAnd;
 	notMat.Albedo = diffuseNot;
 	orMat.Albedo = diffuseOr;
+	xorMat.Albedo = diffuseXor;
+	norMat.Albedo = diffuseNor;
+	xnorMat.Albedo = diffuseXNor;
 	wireMat.Albedo = diffuseWire;
 	wireMatOn.Albedo = diffuseWireOn;
 	boxMat.Albedo = diffuseBox;
@@ -104,6 +111,7 @@ void Scene::InitTextures()
 	curvedPipeMat.Albedo = diffusePipeCurved;
 	shelfPipeMat.Albedo = diffusePipeShelf;
 	columnPipeMat.Albedo = diffusePipeColumn;
+	optionMenuMat.Albedo = diffuseOptionsMenu;
 	pauseMat.Albedo = diffusePause;
 	optionMat.Albedo = diffuseOptions;
 	retryMat.Albedo = diffuseRetry;
@@ -262,6 +270,7 @@ void Scene::InitMeshes()
 	retry = ModelManager::FindMesh(pauseButtonFile);
 	and = ModelManager::FindMesh(andFile);
 	not = ModelManager::FindMesh(notFile);
+	xor = ModelManager::FindMesh(xorFile);
 	orMesh = ModelManager::FindMesh(orFile);
 	buttonM = ModelManager::FindMesh(buttonFile);
 	coil = ModelManager::FindMesh(coilFile);
@@ -358,6 +367,27 @@ void Scene::InitMeshes()
 	wireM16L6 = ModelManager::FindMesh(wire16L6File);
 	wireM17L6 = ModelManager::FindMesh(wire17L6File);
 
+	//Level 7
+	wireM1L7 = ModelManager::FindMesh(wire1L7File);
+	wireM2L7 = ModelManager::FindMesh(wire2L7File);
+	wireM3L7 = ModelManager::FindMesh(wire3L7File);
+	wireM4L7 = ModelManager::FindMesh(wire4L7File);
+	wireM5L7 = ModelManager::FindMesh(wire5L7File);
+	wireM6L7 = ModelManager::FindMesh(wire6L7File);
+	wireM7L7 = ModelManager::FindMesh(wire7L7File);
+	wireM8L7 = ModelManager::FindMesh(wire8L7File);
+	wireM9L7 = ModelManager::FindMesh(wire9L7File);
+	wireM10L7 = ModelManager::FindMesh(wire10L7File);
+	wireM11L7 = ModelManager::FindMesh(wire11L7File);
+	wireM12L7 = ModelManager::FindMesh(wire12L7File);
+	wireM13L7 = ModelManager::FindMesh(wire13L7File);
+	wireM14L7 = ModelManager::FindMesh(wire14L7File);
+	wireM15L7 = ModelManager::FindMesh(wire15L7File);
+	wireM16L7 = ModelManager::FindMesh(wire16L7File);
+	wireM17L7 = ModelManager::FindMesh(wire17L7File);
+	wireM18L7 = ModelManager::FindMesh(wire18L7File);
+	wireM19L7 = ModelManager::FindMesh(wire19L7File);
+
 	entList.clear();
 }
 
@@ -445,6 +475,36 @@ void Scene::InitAnims()
 	peckFrames.push_back(std::unique_ptr<Mesh>(peck7));
 	peckFrames.push_back(std::unique_ptr<Mesh>(peck8));
 	peckFrames.push_back(std::unique_ptr<Mesh>(peck9));
+}
+
+void Scene::PauseInput()
+{
+	GetCursorPos(&mousePos);
+
+	ScreenToClient(hWnd, &mousePos);
+
+	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 597 && mousePos.x > 865 && mousePos.x < 1097)
+	{
+		glfwSetWindowShouldClose(window, true);
+	}
+
+	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 595 && mousePos.x > 487 && mousePos.x < 714)
+	{
+		levelRetry = true;
+	}
+
+	if (GetAsyncKeyState(0x01) && isPaused && mousePos.y > 403 && mousePos.y < 594 && mousePos.x > 104 && mousePos.x < 336)
+	{
+		isPaused = false;
+		optionsOpen = true;
+	}
+
+	if (optionsOpen && glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		optionsOpen = false;
+		lightOn = true;
+		pauseLighting = false;
+	}
 }
 
 bool Scene::GetComplete()

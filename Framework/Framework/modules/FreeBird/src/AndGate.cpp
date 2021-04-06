@@ -1,4 +1,5 @@
 #include "AndGate.h"
+#include <iostream>
 
 namespace freebird
 {

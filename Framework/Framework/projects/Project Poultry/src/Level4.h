@@ -54,15 +54,6 @@ private:
 
 	GLfloat time = 0.0f;
 
-	KeyPressWatcher pauseWatch = KeyPressWatcher(GLFW_KEY_P, [&]() {
-		isPaused = !isPaused;
-
-		if (isPaused)
-			lightOn = false;
-		else
-			lightOn = true;
-		});
-
 	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
 		buttonEnt.Get<Lever>().SetPowered(!buttonEnt.Get<Lever>().GetPowered());
 		buttonAnimOn = true;

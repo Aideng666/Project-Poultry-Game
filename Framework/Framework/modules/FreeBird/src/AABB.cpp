@@ -51,16 +51,8 @@ namespace freebird
 			playerEnt.Get<Transform>().SetPositionZ(playerEnt.Get<Transform>().GetPositionZ() + 0.1f);
 		}
 
-		if (!playerEnt.Get<Transform>().GetBigLevel())
-		{
-			if (playerEnt.Get<Transform>().GetPositionZ() > 35.0f)
-				playerEnt.Get<Transform>().SetPositionZ(playerEnt.Get<Transform>().GetPositionZ() - 0.1f);
-		}
-		else
-		{
-			if (playerEnt.Get<Transform>().GetPositionZ() > 45.0f)
-				playerEnt.Get<Transform>().SetPositionZ(playerEnt.Get<Transform>().GetPositionZ() - 0.1f);
-		}
+		if (playerEnt.Get<Transform>().GetPositionZ() > playerEnt.Get<Transform>().GetLevelSize())
+			playerEnt.Get<Transform>().SetPositionZ(playerEnt.Get<Transform>().GetPositionZ() - 0.1f);
 
 		//DOOR COLLISION
 		if (playerEnt.Get<Transform>().GetPositionZ() - thisEnt.Get<Transform>().GetPositionZ() < 2.0f

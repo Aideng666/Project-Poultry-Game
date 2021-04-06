@@ -97,6 +97,16 @@ namespace freebird
 		bigLevel = isBig;
 	}
 
+	float Transform::GetLevelSize()
+	{
+		return levelSize;
+	}
+
+	void Transform::SetLevelSize(float size)
+	{
+		levelSize = size;
+	}
+
 	void Transform::SetPosition(glm::vec3 newPos)
 	{
 		position = newPos;

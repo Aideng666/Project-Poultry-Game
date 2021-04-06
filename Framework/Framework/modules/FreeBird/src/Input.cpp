@@ -233,8 +233,8 @@ namespace freebird
 			if (!topChanged)
 			{
 				camera.SetPosition(topEnt.Get<Camera>().GetPosition()); // Set initial position
-				camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
-				camera.LookAt(glm::vec3(0.0f, 0.0f, topEnt.Get<Camera>().GetPosition().z));
+				camera.SetUp(glm::vec3(0, 0, -1)); //Use a z-up coordinate system
+				camera.LookAt(glm::vec3(0.0f, 0.0f, 0.0f));
 				topChanged = true;
 				camChanged = false;
 			}
