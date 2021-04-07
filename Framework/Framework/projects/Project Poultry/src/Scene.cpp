@@ -477,6 +477,13 @@ void Scene::InitAnims()
 	peckFrames.push_back(std::unique_ptr<Mesh>(peck9));
 }
 
+void Scene::InitLuts()
+{
+	lut.loadFromFile("GameColorCorrection.cube");
+	brightLut.loadFromFile("BrightMode.cube");
+	//colorCorrectLut.loadFromFile("ColorBlindMode.cube");
+}
+
 void Scene::PauseInput()
 {
 	GetCursorPos(&mousePos);
@@ -618,4 +625,24 @@ bool Scene::GetTopView()
 void Scene::SetTopView(bool isTop)
 {
 	topView = isTop;
+}
+
+bool Scene::GetIsBright()
+{
+	return isBright;
+}
+
+bool Scene::GetIsCorrected()
+{
+	return isCorrected;
+}
+
+void Scene::SetIsBright(bool bright)
+{
+	isBright = bright;
+}
+
+void Scene::SetIsCorrected(bool correct)
+{
+	isCorrected = correct;
 }

@@ -71,9 +71,6 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	topViewCamEnt = Entity::Create();
 #pragma endregion
 
-	lut.loadFromFile("GameColorCorrection.cube");
-	brightLut.loadFromFile("BrightMode.cube");
-
 	InitMeshes();
 }
 
@@ -93,6 +90,8 @@ void Level1::InitScene()
 	InitShaders();
 	//Initialize the Textures for the level
 	InitTextures();
+	//Initializes the Luts
+	InitLuts();
 
 #pragma region Transforms
 	//Particle transform
@@ -450,12 +449,6 @@ void Level1::InitScene()
 
 	effects.push_back(bloomEffect);
 #pragma endregion
-
-	Application::imGuiCallbacks.push_back([&]() {
-
-		ImGui::Checkbox("Bright Mode", &isBright);
-
-		});
 	
 	AudioEvent& music = AudioEngine::Instance().GetEvent("BG");
 	music.Play();
@@ -1158,8 +1151,12 @@ void Level1::Update(float dt)
 	{
 		colorCorrectEnt.Get<ColorCorrect>().SetLUT(brightLut);
 	}
-	else if (activeEffect == 3 && !isBright)
+	else if (activeEffect == 3 && isCorrected)
 	{	
+		colorCorrectEnt.Get<ColorCorrect>().SetLUT(colorCorrectLut);
+	}
+	else if (activeEffect == 3 && !isBright && !isCorrected)
+	{
 		colorCorrectEnt.Get<ColorCorrect>().SetLUT(lut);
 	}
 

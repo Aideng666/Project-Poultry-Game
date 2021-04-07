@@ -22,6 +22,8 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	backWallEnt = Entity::Create();
 	leftWallEnt = Entity::Create();
 	rightWallEnt = Entity::Create();
+	leftSideWallEnt = Entity::Create();
+	rightSideWallEnt = Entity::Create();
 	
 	coilEnt = Entity::Create();
 	coilEnt2 = Entity::Create();
@@ -84,9 +86,22 @@ void MainMenuLevel::InitScene()
 	rightTrans.SetPositionX(38.0f);
 	rightTrans.SetPositionZ(-11.0f);
 	rightTrans.SetPositionY(1.3f);
+
+	auto& rightSideTrans = rightSideWallEnt.Add<Transform>();
+	rightSideTrans.SetScale(3.0f, 1.0f, 1.0f);
+	rightSideTrans.SetRotationY(-90.0f);
+	rightSideTrans.SetPositionX(37.0f);
+	rightSideTrans.SetPositionY(0.0f);
+
+	auto& leftSideTrans = leftSideWallEnt.Add<Transform>();
+	leftSideTrans.SetScale(3.0f, 1.0f, 1.0f);
+	leftSideTrans.SetRotationY(90.0f);
+	leftSideTrans.SetPositionX(-36.0f);
+	leftSideTrans.SetPositionY(0.0f);
 	
 	auto& backTrans = backWallEnt.Add<Transform>();
-	backTrans.SetPositionZ(-39.0f);
+	backTrans.SetPositionZ(-33.0f);
+	backTrans.SetScale(3.0f, 1.0f, 1.0f);
 	backTrans.SetPositionY(0.0f);
 
 	//Player Transform
@@ -106,29 +121,29 @@ void MainMenuLevel::InitScene()
 
 	//Coil Transforms
 	auto& coilTrans = coilEnt.Add<Transform>();
-	coilTrans.SetPosition(glm::vec3(-13.5f, 1.1f, -24.f));
+	coilTrans.SetPosition(glm::vec3(-14.5f, 1.1f, -25.f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 	coilTrans.SetRotationY(180.0f);
 
 	auto& coilTrans2 = coilEnt2.Add<Transform>();
-	coilTrans2.SetPosition(glm::vec3(14.5f, 1.1f, -24.f));
+	coilTrans2.SetPosition(glm::vec3(15.5f, 1.1f, -25.f));
 	coilTrans2.SetScale(glm::vec3(3.0f));
 	coilTrans2.SetRotationY(180.0f);
 
 	//Wire Transforms
 	auto& wireTrans = wireEnt.Add<Transform>();
-	wireTrans.SetPosition(glm::vec3(0.f, 0.0f, 0.f));
+	wireTrans.SetPosition(glm::vec3(-1.f, 0.0f, -1.f));
 
 	auto& wireTrans2 = wireEnt2.Add<Transform>();
-	wireTrans2.SetPosition(glm::vec3(0.f, 0.0f, 0.f));
+	wireTrans2.SetPosition(glm::vec3(1.f, 0.0f, -1.f));
 
 	//Button Transforms
 	auto& buttonTrans = buttonEnt.Add<Transform>();
-	buttonTrans.SetPosition(glm::vec3(-8.7f, -1.f, 4.8f));
+	buttonTrans.SetPosition(glm::vec3(-9.7f, -1.f, 3.8f));
 	buttonTrans.SetRotationY(90.0f);
 
 	auto& buttonTrans2 = buttonEnt2.Add<Transform>();
-	buttonTrans2.SetPosition(glm::vec3(10.2f, -1.f, 4.8f));
+	buttonTrans2.SetPosition(glm::vec3(11.2f, -1.f, 3.8f));
 	buttonTrans2.SetRotationY(90.0f);
 
 	//Interact text transform
@@ -155,8 +170,8 @@ void MainMenuLevel::InitScene()
 #pragma endregion
 
 	//AABB
-	//auto& leftCol = leftWallEnt.Add<AABB>(leftWallEnt, mainPlayer);
-	//auto& rightCol = rightWallEnt.Add<AABB>(rightWallEnt, mainPlayer);
+	auto& leftCol = leftSideWallEnt.Add<AABB>(leftSideWallEnt, mainPlayer);
+	auto& rightCol = rightSideWallEnt.Add<AABB>(rightSideWallEnt, mainPlayer);
 	auto& backCol = backWallEnt.Add<AABB>(backWallEnt, mainPlayer);
 	auto& coilCol = coilEnt.Add<AABB>(coilEnt, mainPlayer, 4.0f, 4.0f);
 	coilCol.SetIsAmbient(true);
@@ -199,6 +214,8 @@ void MainMenuLevel::InitScene()
 	auto& backMesh = backWallEnt.Add<MeshRenderer>(backWallEnt, *mainMenuBackWall, shader);
 	auto& leftMesh = leftWallEnt.Add<MeshRenderer>(leftWallEnt, *mainMenuLeftWall, shader);
 	auto& rightMesh = rightWallEnt.Add<MeshRenderer>(rightWallEnt, *mainMenuRightWall, shader);
+	auto& rightSideMesh = rightSideWallEnt.Add<MeshRenderer>(rightSideWallEnt, *mainMenuBackWall, shader);
+	auto& leftSideMesh = leftSideWallEnt.Add<MeshRenderer>(leftSideWallEnt, *mainMenuBackWall, shader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *mainMenuFloor, shader);
 	auto& playMesh = startDoor.Add<MorphRenderer>(startDoor, *door1, animShader);
 	auto& exitMesh = exitDoor.Add<MorphRenderer>(exitDoor, *door1, animShader);
@@ -226,6 +243,8 @@ void MainMenuLevel::InitScene()
 	entList.push_back(&floorEnt);
 	entList.push_back(&leftWallEnt);
 	entList.push_back(&rightWallEnt);
+	entList.push_back(&rightSideWallEnt);
+	entList.push_back(&leftSideWallEnt);
 	entList.push_back(&wireEnt);
 	entList.push_back(&wireEnt2);
 	entList.push_back(&coilEnt);
@@ -336,7 +355,9 @@ void MainMenuLevel::Update(float dt)
 	auto& playerTrans = mainPlayer.Get<Transform>();
 	auto& groundTrans = floorEnt.Get<Transform>();
 	auto& leftTrans = leftWallEnt.Get<Transform>();
+	auto& leftSideTrans = leftSideWallEnt.Get<Transform>();
 	auto& rightTrans = rightWallEnt.Get<Transform>();
+	auto& rightSideTrans = rightSideWallEnt.Get<Transform>();
 	auto& backTrans = backWallEnt.Get<Transform>();
 	auto& startTrans = startDoor.Get<Transform>();
 	auto& exitTrans = exitDoor.Get<Transform>();
@@ -362,6 +383,8 @@ void MainMenuLevel::Update(float dt)
 	auto& floorMesh = floorEnt.Get<MeshRenderer>();
 	auto& backMesh = backWallEnt.Get<MeshRenderer>();
 	auto& leftMesh = leftWallEnt.Get<MeshRenderer>();
+	auto& leftSideMesh = leftSideWallEnt.Get<MeshRenderer>();
+	auto& rightSideMesh = rightSideWallEnt.Get<MeshRenderer>();
 	auto& rightMesh = rightWallEnt.Get<MeshRenderer>();
 	auto& startMesh = startDoor.Get<MorphRenderer>();
 	auto& exitMesh = exitDoor.Get<MorphRenderer>();
@@ -384,7 +407,9 @@ void MainMenuLevel::Update(float dt)
 	glm::mat4 transformFloor = groundTrans.GetModelMatrix();
 	glm::mat4 transformBack = backTrans.GetModelMatrix();
 	glm::mat4 transformLeft = leftTrans.GetModelMatrix();
+	glm::mat4 transformSideLeft = leftSideTrans.GetModelMatrix();
 	glm::mat4 transformRight = rightTrans.GetModelMatrix();
+	glm::mat4 transformSideRight = rightSideTrans.GetModelMatrix();
 	glm::mat4 transformStart = startTrans.GetModelMatrix();
 	glm::mat4 transformExit = exitTrans.GetModelMatrix();
 
@@ -664,6 +689,8 @@ void MainMenuLevel::Update(float dt)
 		backMesh.Render(camera, transformBack);
 		leftMesh.Render(camera, transformLeft);
 		rightMesh.Render(camera, transformRight);
+		rightSideMesh.Render(camera, transformSideRight);
+		leftSideMesh.Render(camera, transformSideLeft);
 
 		shader->SetUniform("s_Diffuse", 3);
 		if (!startDoor.Get<Door>().GetOpen())
@@ -761,6 +788,8 @@ void MainMenuLevel::Update(float dt)
 		backMesh.Render(camera, transformBack);
 		leftMesh.Render(camera, transformLeft);
 		rightMesh.Render(camera, transformRight);
+		rightSideMesh.Render(camera, transformSideRight);
+		leftSideMesh.Render(camera, transformSideLeft);
 		startMesh.Render(camera, transformStart);
 		exitMesh.Render(camera, transformExit);
 		coilMesh.Render(camera, transformCoil);
@@ -795,6 +824,8 @@ void MainMenuLevel::Update(float dt)
 
 	effects[activeEffect]->DrawToScreen();
 
+	leftSideWallEnt.Get<AABB>().Update();
+	rightSideWallEnt.Get<AABB>().Update();
 	startDoor.Get<AABB>().Update();
 	exitDoor.Get<AABB>().Update();
 	backWallEnt.Get<AABB>().Update();

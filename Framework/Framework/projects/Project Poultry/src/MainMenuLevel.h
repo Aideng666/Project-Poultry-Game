@@ -20,7 +20,7 @@ public:
 
 private:
 
-	Entity floorEnt, backWallEnt, leftWallEnt, rightWallEnt;
+	Entity floorEnt, backWallEnt, leftWallEnt, rightWallEnt, leftSideWallEnt, rightSideWallEnt;
 	Entity startDoor, exitDoor;
 	Entity mainPlayer;
 	Entity coilEnt, coilEnt2;
