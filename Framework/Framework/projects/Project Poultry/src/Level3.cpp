@@ -1273,6 +1273,19 @@ void Level3::Update(float dt)
 
 	basicEffect->UnbindBuffer();
 
+	if (activeEffect == 3 && isBright)
+	{
+		colorCorrectEnt.Get<ColorCorrect>().SetLUT(brightLut);
+	}
+	else if (activeEffect == 3 && isCorrected)
+	{
+		colorCorrectEnt.Get<ColorCorrect>().SetLUT(colorCorrectLut);
+	}
+	else if (activeEffect == 3 && !isBright && !isCorrected)
+	{
+		colorCorrectEnt.Get<ColorCorrect>().SetLUT(lut);
+	}
+
 	effects[activeEffect]->ApplyEffect(basicEffect);
 
 	effects[activeEffect]->DrawToScreen();
