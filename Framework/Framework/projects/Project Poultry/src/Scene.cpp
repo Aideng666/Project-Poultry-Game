@@ -481,7 +481,7 @@ void Scene::InitLuts()
 {
 	lut.loadFromFile("GameColorCorrection.cube");
 	brightLut.loadFromFile("BrightMode.cube");
-	//colorCorrectLut.loadFromFile("ColorBlindMode.cube");
+	colorCorrectLut.loadFromFile("ColorBlindMode.cube");
 }
 
 void Scene::PauseInput()
