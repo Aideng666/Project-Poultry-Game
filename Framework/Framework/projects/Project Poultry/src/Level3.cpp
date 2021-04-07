@@ -534,10 +534,20 @@ void Level3::InitScene()
 		currentPos = points[0];
 	
 	StartSegment(0);
+
+	AudioEvent& music = AudioEngine::Instance().GetEvent("BG");
+	music.Play();
 }
 
 void Level3::Update(float dt)
 {
+	// Get a ref to the engine
+	AudioEngine& audioEngine = AudioEngine::Instance();
+
+	AudioEvent& walkSound = AudioEngine::Instance().GetEvent("Walk");
+	AudioEvent& doorSound = AudioEngine::Instance().GetEvent("Door");
+	AudioEvent& levelCompleteSound = AudioEngine::Instance().GetEvent("Level Complete");
+
 	time += dt;
 	
 	if (!tabletOpen && !isPaused && !optionsOpen)
@@ -689,6 +699,11 @@ void Level3::Update(float dt)
 	if (!showLevelComplete && !isPaused)
 	{
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+
+		if (isWalking)
+			walkSound.Play();
+		else
+			walkSound.StopImmediately();
 
 		if (!peckingFramesApplied && isPecking)
 		{
@@ -1297,6 +1312,8 @@ void Level3::Update(float dt)
 	wireEnt7.Get<Wire>().Update();
 	coilEnt.Get<AABB>().Update();
 	
+	audioEngine.Update();
+
 	//Door Logic
 	if (doorEnt.Get<Door>().GetOpen() && doorOpenApplied)
 		doorEnt.Get<MorphAnimation>().Update(dt);
@@ -1306,13 +1323,15 @@ void Level3::Update(float dt)
 	if (doorEnt.Get<AABB>().GetComplete())
 	{
 		lightOn = false;
+		AudioEngine::Instance().GetEvent("BG").StopImmediately();
+		levelCompleteSound.Play();
 		showLevelComplete = true;
 	}
 }
 
 void Level3::Unload()
 {
-	AudioEngine::Instance().Shutdown();
+	//AudioEngine::Instance().Shutdown();
 
 	if (scene != nullptr)
 	{

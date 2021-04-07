@@ -301,7 +301,7 @@ void Scene::InitMeshes()
 	mainMenuRightWall = ModelManager::FindMesh(mainMenuRightWallFile);
 	mainMenuWire1 = ModelManager::FindMesh(mainMenuWire1File);
 	mainMenuWire2 = ModelManager::FindMesh(mainMenuWire2File);
-	WASD = ModelManager::FindMesh(WASDFile);
+	WASD = ModelManager::FindMesh(WASDFile, glm::vec3(1.0f, 0.0f, 0.0f));
 
 	//Level 1
 	wireM1L1 = ModelManager::FindMesh(wire1L1File);

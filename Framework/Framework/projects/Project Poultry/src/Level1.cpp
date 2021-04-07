@@ -81,8 +81,6 @@ void Level1::InitScene()
 {
 	Application::SetClearColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-	Application::LoadAudio();
-
 	scene = new entt::registry();
 
 	Entity::SetReg(scene);
@@ -1193,6 +1191,8 @@ void Level1::Update(float dt)
 
 	audioEngine.Update();
 
+	//std::cout << AudioEngine::Instance().GetBus("MusicBus").GetVolume() << std::endl;
+
 	//Door Logic
 	if (doorEnt.Get<Door>().GetOpen() && doorOpenApplied)
 		doorEnt.Get<MorphAnimation>().Update(dt);
@@ -1210,7 +1210,7 @@ void Level1::Update(float dt)
 
 void Level1::Unload()
 {
-	AudioEngine::Instance().Shutdown();
+	//AudioEngine::Instance().Shutdown();
 
 	if (scene != nullptr)
 	{
