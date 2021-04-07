@@ -32,10 +32,10 @@ MainMenuLevel::MainMenuLevel(std::string sceneName, GLFWwindow* wind)
 	buttonEnt = Entity::Create();
 	buttonEnt2 = Entity::Create();
 
-	//startEnt = Entity::Create();
-	//optEnt = Entity::Create();
-	//exitEnt = Entity::Create();
+	startEnt = Entity::Create();
+	exitEnt = Entity::Create();
 
+	wasdEnt = Entity::Create();
 	tutEnt = Entity::Create();
 
 	FBO = Entity::Create();
@@ -93,6 +93,7 @@ void MainMenuLevel::InitScene()
 	auto& playerTrans = mainPlayer.Add<Transform>();
 	playerTrans.SetPosition(glm::vec3(0.0f, 1.5f, 10.f));
 	playerTrans.SetRotationY(180.0f);
+	playerTrans.SetLevelSize(30.0f);
 
 	//Door Transforms
 	auto& startTrans = startDoor.Add<Transform>();
@@ -136,19 +137,21 @@ void MainMenuLevel::InitScene()
 	tutTrans.SetScale(glm::vec3(1.0f));
 
 	//Text Transforms
-	//auto& sTrans = startEnt.Add<Transform>();
-	//sTrans.SetPosition(glm::vec3(-4.0f, 1.f, -25.0f));
-	//sTrans.SetScale(glm::vec3(4.0f));
+	auto& sTrans = startEnt.Add<Transform>();
+	sTrans.SetPosition(glm::vec3(-31.0f, 21.f, -16.0f));
+	sTrans.SetScale(glm::vec3(4.0f));
+	sTrans.SetRotationY(45.0f);
+	sTrans.SetRotationX(90.0f);
 
-	//auto& eTrans = exitEnt.Add<Transform>();
-	//eTrans.SetRotationY(-45.0f);
-	//eTrans.SetPosition(glm::vec3(19.0f, 1.f, -21.0f));
-	//eTrans.SetScale(glm::vec3(4.0f));
+	auto& eTrans = exitEnt.Add<Transform>();
+	eTrans.SetRotationY(-45.0f);
+	eTrans.SetPosition(glm::vec3(24.0f, 21.f, -19.0f));
+	eTrans.SetScale(glm::vec3(4.0f));
+	eTrans.SetRotationX(90.0f);
 
-	//auto& oTrans = optEnt.Add<Transform>();
-	//oTrans.SetRotationY(45.0f);
-	//oTrans.SetPosition(glm::vec3(-26.0f, 1.f, -13.0f));
-	//oTrans.SetScale(glm::vec3(4.0f));
+	auto& wasdTrans = wasdEnt.Add<Transform>();
+	wasdTrans.SetPosition(glm::vec3(2.0f, 3.f, 7.0f));
+	wasdTrans.SetScale(glm::vec3(2.0f));
 #pragma endregion
 
 	//AABB
@@ -209,25 +212,10 @@ void MainMenuLevel::InitScene()
 	auto& buttonMesh = buttonEnt.Add<MorphRenderer>(buttonEnt, *buttonM, animShader);
 	auto& buttonMesh2 = buttonEnt2.Add<MorphRenderer>(buttonEnt2, *buttonM, animShader);
 
-	//auto& sMesh = startEnt.Add<MeshRenderer>(startEnt, *startWord, shader);
-	//auto& oMesh = optEnt.Add<MeshRenderer>(optEnt, *optionsWord, shader);
-	//auto& eMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exitWord, shader);
-
-	//Load the animations
-	//auto& startAnimator = startDoor.Add<MorphAnimation>(startDoor);
-	//startAnimator.SetTime(0.2f);
-	//startAnimator.SetFrames(doorFrames);
-	//startAnimator.SetLoop(false);
-
-	//auto& exitAnimator = exitDoor.Add<MorphAnimation>(exitDoor);
-	//exitAnimator.SetTime(0.2f);
-	//exitAnimator.SetFrames(doorFrames);
-	//exitAnimator.SetLoop(false);
-
-	//auto& optAnimator = optionDoor.Add<MorphAnimation>(optionDoor);
-	//optAnimator.SetTime(0.2f);
-	//optAnimator.SetFrames(doorFrames);
-	//optAnimator.SetLoop(false);
+	auto& sMesh = startEnt.Add<MeshRenderer>(startEnt, *startWord, untexturedShader);
+	auto& eMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exitWord, untexturedShader);
+	auto& wasdMesh = wasdEnt.Add<MeshRenderer>(wasdEnt, *WASD, untexturedShader);
+	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
 
 
 	entList.push_back(&mainPlayer);
@@ -242,6 +230,9 @@ void MainMenuLevel::InitScene()
 	entList.push_back(&wireEnt2);
 	entList.push_back(&coilEnt);
 	entList.push_back(&coilEnt2);
+	entList.push_back(&startEnt);
+	entList.push_back(&exitEnt);
+	entList.push_back(&wasdEnt);
 
 #pragma endregion 
 
@@ -275,6 +266,12 @@ void MainMenuLevel::InitScene()
 	camera.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	camera.LookAt(glm::vec3(0.0f, 5.0f, -10.0f)); // Look at center of the screen
 	camera.SetFovDegrees(90.0f); // Set an initial FOV
+
+	auto& orthoCam = uiCamEnt.Add<Camera>();
+	orthoCam.SetPosition(glm::vec3(0, 10, 0)); // Set initial position
+	orthoCam.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
+	orthoCam.LookAt(glm::vec3(0.0f)); // Look at center of the screen
+	orthoCam.SetFovDegrees(90.0f); // Set an initial FOV
 
 	//Allocates enough memory for one directional light (we can change this easily, but we only need 1 directional light)
 	directionalLightBuffer.AllocateMemory(sizeof(DirectionalLight));
@@ -333,6 +330,7 @@ void MainMenuLevel::Update(float dt)
 	time += dt;
 	shader->SetUniform("u_Time", time);
 	animShader->SetUniform("u_Time", time);
+	untexturedShader->SetUniform("u_Time", time);
 
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -352,11 +350,13 @@ void MainMenuLevel::Update(float dt)
 	auto& buttonTrans = buttonEnt.Get<Transform>();
 	auto& buttonTrans2 = buttonEnt2.Get<Transform>();
 
-	//auto& sTrans = startEnt.Get<Transform>();
-	//auto& oTrans = optEnt.Get<Transform>();
-	//auto& eTrans = exitEnt.Get<Transform>();
+	auto& sTrans = startEnt.Get<Transform>();
+	auto& eTrans = exitEnt.Get<Transform>();
+	auto& wasdTrans = wasdEnt.Get<Transform>();
+	auto& tutTrans = tutEnt.Get<Transform>();
 
 	auto& camera = camEnt.Get<Camera>();
+	auto& orthoCam = uiCamEnt.Get<Camera>();
 
 	auto& drumMesh = mainPlayer.Get<MorphRenderer>();
 	auto& floorMesh = floorEnt.Get<MeshRenderer>();
@@ -375,9 +375,10 @@ void MainMenuLevel::Update(float dt)
 	auto& buttonMesh = buttonEnt.Get<MorphRenderer>();
 	auto& buttonMesh2 = buttonEnt2.Get<MorphRenderer>();
 
-	//auto& sMesh = startEnt.Get<MeshRenderer>();
-	//auto& oMesh = optEnt.Get<MeshRenderer>();
-	//auto& eMesh = exitEnt.Get<MeshRenderer>();
+	auto& sMesh = startEnt.Get<MeshRenderer>();
+	auto& eMesh = exitEnt.Get<MeshRenderer>();
+	auto& wasdMesh = wasdEnt.Get<MeshRenderer>();
+	auto& tutMesh = tutEnt.Get<MeshRenderer>();
 
 	glm::mat4 transform = playerTrans.GetModelMatrix();
 	glm::mat4 transformFloor = groundTrans.GetModelMatrix();
@@ -396,9 +397,11 @@ void MainMenuLevel::Update(float dt)
 	glm::mat4 transformButton = buttonTrans.GetModelMatrix();
 	glm::mat4 transformButton2 = buttonTrans2.GetModelMatrix();
 
-	//glm::mat4 transformS = sTrans.GetModelMatrix();
-	//glm::mat4 transformO = oTrans.GetModelMatrix();
-	//glm::mat4 transformE = eTrans.GetModelMatrix();
+	glm::mat4 transformS = sTrans.GetModelMatrix();
+	glm::mat4 transformE = eTrans.GetModelMatrix();
+	glm::mat4 transformWASD = wasdTrans.GetModelMatrix();
+	glm::mat4 transformTut = tutTrans.GetModelMatrix();
+
 
 	if (!buttonAnimOn && playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
@@ -710,9 +713,30 @@ void MainMenuLevel::Update(float dt)
 		}
 
 		shadowBuffer->UnbindTexture(30);
-		//sMesh.Render(camera, transformS);
-		//oMesh.Render(camera, transformO);
-		//eMesh.Render(camera, transformE);
+
+		untexturedShader->Bind();
+		shadowBuffer->BindDepthAsTexture(30);
+		sMesh.Render(camera, transformS);
+		eMesh.Render(camera, transformE);
+		wasdMesh.Render(camera, transformWASD);
+
+		if ((playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f
+				&& playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
+				&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f
+				&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
+			|| (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f
+				&& playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
+				&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f
+				&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f))
+		{
+			if (!tabletOpen)
+				tutEnt.Get<MeshRenderer>().Render(orthoCam, transformTut, LightSpaceViewProjection);
+			else
+			{
+
+			}
+		}
+		shadowBuffer->UnbindTexture(30);
 	}
 	else
 	{
@@ -754,6 +778,13 @@ void MainMenuLevel::Update(float dt)
 		//eMesh.Render(camera, transformE);
 		//shader->SetUniform("s_Diffuse", 0);
 		//clearMat.Albedo->Bind(1);
+
+		untexturedShader->Bind();
+		shadowBuffer->BindDepthAsTexture(30);
+		sMesh.Render(camera, transformS);
+		eMesh.Render(camera, transformE);
+		wasdMesh.Render(camera, transformWASD);
+		shadowBuffer->UnbindTexture(30);
 	}
 
 #pragma endregion
@@ -787,20 +818,6 @@ void MainMenuLevel::Update(float dt)
 		exitDoor.Get<MorphAnimation>().Update(dt);
 	if (!exitDoor.Get<Door>().GetOpen() && doorClosingApplied2)
 		exitDoor.Get<MorphAnimation>().Update(dt);
-	//if (startDoor.Get<Door>().GetOpen())
-	//	startDoor.Get<MorphAnimation>().Update(dt);
-	//
-	//if (exitDoor.Get<Door>().GetOpen())
-	//	exitDoor.Get<MorphAnimation>().Update(dt);
-	//
-	//if (optionDoor.Get<Door>().GetOpen())
-	//	optionDoor.Get<MorphAnimation>().Update(dt);
-	//
-	//if (startDoor.Get<AABB>().GetComplete())
-	//	levelComplete = true;
-	//
-	//if (exitDoor.Get<AABB>().GetComplete())
-	//	glfwSetWindowShouldClose(window, true);
 
 	if (startDoor.Get<AABB>().GetComplete())
 	{

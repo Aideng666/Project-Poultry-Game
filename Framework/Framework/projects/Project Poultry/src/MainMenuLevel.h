@@ -27,6 +27,7 @@ private:
 	Entity wireEnt, wireEnt2;
 	Entity buttonEnt, buttonEnt2;
 	Entity startEnt, exitEnt;
+	Entity wasdEnt;
 
 	GLfloat time = 0.0f;
 

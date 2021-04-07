@@ -580,7 +580,7 @@ void Level7::InitScene()
 	orthoCam.SetFovDegrees(90.0f); // Set an initial FOV
 
 	auto& topCam = topViewCamEnt.Add<Camera>();
-	topCam.SetPosition(glm::vec3(0, 50, 0)); // Set initial position
+	topCam.SetPosition(glm::vec3(0, 55, 0)); // Set initial position
 	topCam.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	topCam.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	topCam.SetFovDegrees(90.0f); // Set an initial FOV
@@ -635,10 +635,19 @@ void Level7::InitScene()
 
 	effects.push_back(bloomEffect);
 #pragma endregion
+	AudioEvent& music = AudioEngine::Instance().GetEvent("BG");
+	music.Play();
 }
 
 void Level7::Update(float dt)
 {
+	// Get a ref to the engine
+	AudioEngine& audioEngine = AudioEngine::Instance();
+
+	AudioEvent& walkSound = AudioEngine::Instance().GetEvent("Walk");
+	AudioEvent& doorSound = AudioEngine::Instance().GetEvent("Door");
+	AudioEvent& levelCompleteSound = AudioEngine::Instance().GetEvent("Level Complete");
+
 	time += dt;
 
 	if (!tabletOpen && !isPaused && !optionsOpen)
@@ -805,6 +814,11 @@ void Level7::Update(float dt)
 	if (!showLevelComplete && !isPaused)
 	{
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+
+		if (isWalking)
+			walkSound.Play();
+		else
+			walkSound.StopImmediately();
 
 		if (!peckingFramesApplied && isPecking)
 		{
@@ -1630,11 +1644,21 @@ void Level7::Update(float dt)
 	andEnt6.Get<AndGate>().Update();
 	orEnt.Get<OrGate>().Update();
 	notEnt.Get<NotGate>().Update();
+
+	audioEngine.Update();
+
+	if (doorEnt.Get<AABB>().GetComplete())
+	{
+		lightOn = false;
+		AudioEngine::Instance().GetEvent("BG").StopImmediately();
+		levelCompleteSound.Play();
+		showLevelComplete = true;
+	}
 }
 
 void Level7::Unload()
 {
-	AudioEngine::Instance().Shutdown();
+	//AudioEngine::Instance().Shutdown();
 
 	if (scene != nullptr)
 	{

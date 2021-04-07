@@ -581,10 +581,19 @@ void Level4::InitScene()
 	effects.push_back(bloomEffect);
 #pragma endregion
 
+	AudioEvent& music = AudioEngine::Instance().GetEvent("BG");
+	music.Play();
 }
 
 void Level4::Update(float dt)
 {
+	// Get a ref to the engine
+	AudioEngine& audioEngine = AudioEngine::Instance();
+
+	AudioEvent& walkSound = AudioEngine::Instance().GetEvent("Walk");
+	AudioEvent& doorSound = AudioEngine::Instance().GetEvent("Door");
+	AudioEvent& levelCompleteSound = AudioEngine::Instance().GetEvent("Level Complete");
+
 	time += dt;
 	
 	if (!tabletOpen && !isPaused && !optionsOpen)
@@ -710,6 +719,11 @@ void Level4::Update(float dt)
 	if (!showLevelComplete && !isPaused)
 	{
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+
+		if (isWalking)
+			walkSound.Play();
+		else
+			walkSound.StopImmediately();
 
 		if (!peckingFramesApplied && isPecking)
 		{
@@ -1375,16 +1389,20 @@ void Level4::Update(float dt)
 	wireEnt9.Get<Wire>().Update();
 	wireEnt10.Get<Wire>().Update();
 
+	audioEngine.Update();
+
 	if (doorEnt.Get<AABB>().GetComplete())
 	{
 		lightOn = false;
+		AudioEngine::Instance().GetEvent("BG").StopImmediately();
+		levelCompleteSound.Play();
 		showLevelComplete = true;
 	}
 }
 
 void Level4::Unload()
 {
-	AudioEngine::Instance().Shutdown();
+	//AudioEngine::Instance().Shutdown();
 	if (scene != nullptr)
 	{
 		delete scene;

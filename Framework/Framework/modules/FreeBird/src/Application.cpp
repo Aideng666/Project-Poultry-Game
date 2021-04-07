@@ -217,6 +217,8 @@ namespace freebird
 		AudioEngine::Instance().LoadBus("MusicBus", "{aa712c3f-3f70-472f-8ddd-d7ee091ff0fe}");
 		AudioEngine::Instance().LoadBus("SoundBus", "{19d186f5-e8be-40df-b1d2-ce3cf6c59f92}");
 
+		AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.2f);
+
 		//Creates the sound events
 		AudioEvent& BG = AudioEngine::Instance().CreateSoundEvent("BG", "{beba64b3-3176-4f20-9f00-7f32807325b6}"); //Background music
 		AudioEvent& walk = AudioEngine::Instance().CreateSoundEvent("Walk", "{858d6f38-82a8-4477-8e80-5a6b52fd1313}"); //Walk SFX
