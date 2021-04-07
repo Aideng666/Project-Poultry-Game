@@ -55,6 +55,7 @@ public:
 	void InitShaders();
 	void InitMeshes();
 	void InitAnims();
+	void InitLuts();
 
 	void PauseInput();
 
@@ -100,6 +101,12 @@ public:
 
 	bool GetTopView();
 	void SetTopView(bool isTop);
+
+	bool GetIsBright();
+	bool GetIsCorrected();
+
+	void SetIsBright(bool bright);
+	void SetIsCorrected(bool correct);
 
 protected:
 
@@ -586,4 +593,11 @@ protected:
 	bool doorOpenApplied2 = true;
 	bool doorClosingApplied = false;
 	bool doorClosingApplied2 = false;
+
+
+	bool isBright = false;
+	bool isCorrected = false;
+	LUT3D lut;
+	LUT3D brightLut;
+	LUT3D colorCorrectLut;
 };

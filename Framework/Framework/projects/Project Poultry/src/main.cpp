@@ -81,6 +81,8 @@ int main()
 	int activeEffect = 3;
 	bool isTextured = true;
 	bool isLit = true;
+	bool isBright = false;
+	bool isCorrected = false;
 
 	//ImGui Stuff
 	Application::imGuiCallbacks.push_back([&]() {
@@ -96,6 +98,29 @@ int main()
 		{
 			currentScene->SetLightOn(isLit);
 		}
+
+		if (ImGui::Checkbox("Bright Mode", &isBright))
+		{
+			currentScene->SetIsBright(isBright);
+
+			if (isBright)
+			{
+				isCorrected = false;
+				currentScene->SetIsCorrected(false);
+			}
+		}
+
+		if (ImGui::Checkbox("Color Blind Mode", &isCorrected))
+		{
+			currentScene->SetIsCorrected(isCorrected);
+
+			if (isCorrected)
+			{
+				isBright = false;
+				currentScene->SetIsBright(false);
+			}
+		}
+
 
 		if (ImGui::CollapsingHeader("Effect Controls"))
 		{

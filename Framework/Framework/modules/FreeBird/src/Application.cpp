@@ -211,7 +211,7 @@ namespace freebird
 
 		audioEngine.Init();
 		//Loads the bank
-		audioEngine.LoadBank("Master");
+		audioEngine.LoadBank("Sounds/Master");
 
 		//Loads the bus
 		AudioEngine::Instance().LoadBus("MusicBus", "{aa712c3f-3f70-472f-8ddd-d7ee091ff0fe}");
