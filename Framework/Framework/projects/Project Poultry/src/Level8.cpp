@@ -260,7 +260,7 @@ void Level8::InitScene()
 
 	//Table transform
 	auto& tableTrans = tableEnt.Add<Transform>();
-	tableTrans.SetPosition(glm::vec3(-48.f, 0.5f, -40.f));
+	tableTrans.SetPosition(glm::vec3(-48.f, 3.5f, -40.f));
 	tableTrans.SetScale(glm::vec3(2.2f));
 
 	//Shelf Pipe transforms
@@ -466,6 +466,18 @@ void Level8::InitScene()
 	norCol.SetIsAmbient(true);
 	auto& norCol2 = norEnt2.Add<AABB>(norEnt2, mainPlayer, 5.0f, 3.0f);
 	norCol2.SetIsAmbient(true);
+	auto& boxCol = boxEnt.Add<AABB>(boxEnt, mainPlayer, 5.0f, 5.0f);
+	boxCol.SetIsAmbient(true);
+	auto& boxCol2 = boxEnt2.Add<AABB>(boxEnt2, mainPlayer, 5.0f, 5.0f);
+	boxCol2.SetIsAmbient(true);
+	auto& boxCol3 = boxEnt3.Add<AABB>(boxEnt3, mainPlayer, 5.0f, 5.0f);
+	boxCol3.SetIsAmbient(true);
+	auto& tableCol = tableEnt.Add<AABB>(tableEnt, mainPlayer, 5.0f, 8.5f);
+	tableCol.SetIsAmbient(true);
+	auto& columnPipeCol = columnPipeEnt.Add<AABB>(columnPipeEnt, mainPlayer, 3.0f, 14.5f);
+	columnPipeCol.SetIsAmbient(true);
+	auto& columnPipeCol2 = columnPipeEnt2.Add<AABB>(columnPipeEnt2, mainPlayer, 3.0f, 14.5f);
+	columnPipeCol2.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
@@ -990,7 +1002,7 @@ void Level8::Update(float dt)
 	}
 
 #pragma region PlayerMovement
-	if (!showLevelComplete && !isPaused)
+	if (!showLevelComplete && !isPaused && !tabletOpen)
 	{
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight, isArrow);
 
@@ -1847,7 +1859,7 @@ void Level8::Update(float dt)
 					&& playerTrans.GetPositionZ() - buttonTrans8.GetPositionZ() < 3.0f
 					&& playerTrans.GetPositionZ() - buttonTrans8.GetPositionZ() > -3.0f))
 			{
-				if (!tabletOpen)
+				if (!tabletOpen && !optionsOpen && !isPaused)
 					tutEnt.Get<MeshRenderer>().Render(orthoCam, transformTut, LightSpaceViewProjection);
 				else
 				{
@@ -2025,6 +2037,12 @@ void Level8::Update(float dt)
 	buttonEnt6.Get<AABB>().Update();
 	buttonEnt7.Get<AABB>().Update();
 	buttonEnt8.Get<AABB>().Update();
+	boxEnt.Get<AABB>().Update();
+	boxEnt2.Get<AABB>().Update();
+	boxEnt3.Get<AABB>().Update();
+	columnPipeEnt.Get<AABB>().Update();
+	columnPipeEnt2.Get<AABB>().Update();
+	tableEnt.Get<AABB>().Update();
 
 	//Button Updates
 	buttonEnt.Get<Lever>().Update();

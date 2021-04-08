@@ -316,12 +316,12 @@ void Level7::InitScene()
 
 	//Table transform
 	auto& tableTrans = tableEnt.Add<Transform>();
-	tableTrans.SetPosition(glm::vec3(-37.f, 0.5f, -48.f));
+	tableTrans.SetPosition(glm::vec3(-35.f, 3.5f, -48.f));
 	tableTrans.SetRotationY(-90.f);
 	tableTrans.SetScale(glm::vec3(2.2f));
 
 	auto& tableTrans2 = tableEnt2.Add<Transform>();
-	tableTrans2.SetPosition(glm::vec3(48.f, 0.5f, -25.f));
+	tableTrans2.SetPosition(glm::vec3(48.f, 3.5f, -25.f));
 	tableTrans2.SetRotationY(180.f);
 	tableTrans2.SetScale(glm::vec3(2.2f));
 
@@ -456,6 +456,20 @@ void Level7::InitScene()
 	xorCol2.SetIsAmbient(true);
 	auto& xorCol3 = xorEnt3.Add<AABB>(xorEnt3, mainPlayer, 5.0f, 3.0f);
 	xorCol3.SetIsAmbient(true);
+	auto& boxCol = boxEnt.Add<AABB>(boxEnt, mainPlayer, 5.0f, 5.0f);
+	boxCol.SetIsAmbient(true);
+	auto& boxCol2 = boxEnt2.Add<AABB>(boxEnt2, mainPlayer, 5.0f, 5.0f);
+	boxCol2.SetIsAmbient(true);
+	auto& columnPipeCol = columnPipeEnt.Add<AABB>(columnPipeEnt, mainPlayer, 3.0f, 14.5f);
+	columnPipeCol.SetIsAmbient(true);
+	auto& columnPipeCol2 = columnPipeEnt2.Add<AABB>(columnPipeEnt2, mainPlayer, 3.0f, 14.5f);
+	columnPipeCol2.SetIsAmbient(true);
+	auto& columnPipeCol3 = columnPipeEnt3.Add<AABB>(columnPipeEnt3, mainPlayer, 14.5f, 3.0f);
+	columnPipeCol3.SetIsAmbient(true);
+	auto& tableCol = tableEnt.Add<AABB>(tableEnt, mainPlayer, 8.5f, 5.0f);
+	tableCol.SetIsAmbient(true);
+	auto& tableCol2 = tableEnt2.Add<AABB>(tableEnt2, mainPlayer, 5.0f, 8.5f);
+	tableCol2.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
@@ -980,7 +994,7 @@ void Level7::Update(float dt)
 	}
 
 #pragma region PlayerMovement
-	if (!showLevelComplete && !isPaused)
+	if (!showLevelComplete && !isPaused && !tabletOpen)
 	{
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight, isArrow);
 
@@ -1837,7 +1851,7 @@ void Level7::Update(float dt)
 					&& playerTrans.GetPositionZ() - buttonTrans8.GetPositionZ() < 3.0f
 					&& playerTrans.GetPositionZ() - buttonTrans8.GetPositionZ() > -3.0f))
 			{
-				if (!tabletOpen)
+				if (!tabletOpen && !optionsOpen && !isPaused)
 					tutEnt.Get<MeshRenderer>().Render(orthoCam, transformTut, LightSpaceViewProjection);
 				else
 				{
@@ -2014,6 +2028,13 @@ void Level7::Update(float dt)
 	buttonEnt6.Get<AABB>().Update();
 	buttonEnt7.Get<AABB>().Update();
 	buttonEnt8.Get<AABB>().Update();
+	boxEnt.Get<AABB>().Update();
+	boxEnt2.Get<AABB>().Update();
+	columnPipeEnt.Get<AABB>().Update();
+	columnPipeEnt2.Get<AABB>().Update();
+	columnPipeEnt3.Get<AABB>().Update();
+	tableEnt.Get<AABB>().Update();
+	tableEnt2.Get<AABB>().Update();
 
 	//Button Updates
 	buttonEnt.Get<Lever>().Update();
