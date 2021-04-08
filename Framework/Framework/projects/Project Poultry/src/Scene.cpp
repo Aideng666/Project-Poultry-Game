@@ -80,7 +80,18 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseCoilOff = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_Off.png");
 	Texture2D::sptr diffuseCoilOn = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_On.png");
 	Texture2D::sptr diffuseTable = Texture2D::LoadFromFile("Textures/TableTexture.png");
-
+	Texture2D::sptr diffuseOnToggle = Texture2D::LoadFromFile("Textures/OnToggle.png");
+	Texture2D::sptr diffuseOffToggle = Texture2D::LoadFromFile("Textures/OffToggle.png");
+	Texture2D::sptr diffuseVolume1 = Texture2D::LoadFromFile("Textures/Volume/1.png");
+	Texture2D::sptr diffuseVolume2 = Texture2D::LoadFromFile("Textures/Volume/2.png");
+	Texture2D::sptr diffuseVolume3 = Texture2D::LoadFromFile("Textures/Volume/3.png");
+	Texture2D::sptr diffuseVolume4 = Texture2D::LoadFromFile("Textures/Volume/4.png");
+	Texture2D::sptr diffuseVolume5 = Texture2D::LoadFromFile("Textures/Volume/5.png");
+	Texture2D::sptr diffuseVolume6 = Texture2D::LoadFromFile("Textures/Volume/6.png");
+	Texture2D::sptr diffuseVolume7 = Texture2D::LoadFromFile("Textures/Volume/7.png");
+	Texture2D::sptr diffuseVolume8 = Texture2D::LoadFromFile("Textures/Volume/8.png");
+	Texture2D::sptr diffuseVolume9 = Texture2D::LoadFromFile("Textures/Volume/9.png");
+	Texture2D::sptr diffuseVolume10 = Texture2D::LoadFromFile("Textures/Volume/10.png");
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -128,6 +139,18 @@ void Scene::InitTextures()
 	coilMatOff.Albedo = diffuseCoilOff;
 	coilMatOn.Albedo = diffuseCoilOn;
 	tableMat.Albedo = diffuseTable;
+	toggleOnMat.Albedo = diffuseOnToggle;
+	toggleOffMat.Albedo = diffuseOffToggle;
+	volumeMat1.Albedo = diffuseVolume1;
+	volumeMat2.Albedo = diffuseVolume2;
+	volumeMat3.Albedo = diffuseVolume3;
+	volumeMat4.Albedo = diffuseVolume4;
+	volumeMat5.Albedo = diffuseVolume5;
+	volumeMat6.Albedo = diffuseVolume6;
+	volumeMat7.Albedo = diffuseVolume7;
+	volumeMat8.Albedo = diffuseVolume8;
+	volumeMat9.Albedo = diffuseVolume9;
+	volumeMat10.Albedo = diffuseVolume10;
 	clearMat.Albedo = texture2;
 }
 
@@ -294,6 +317,7 @@ void Scene::InitMeshes()
 	columnPipe = ModelManager::FindMesh(columnPipeFile);
 	tablet = ModelManager::FindMesh(tabletFile);
 	tut = ModelManager::FindMesh(tutFile, glm::vec3(1.0f, 0.0f, 0.0f));
+	optionsButton = ModelManager::FindMesh(optionsButtonFile);
 
 	//Lab Levels(tentative)
 	floorLab = ModelManager::FindMesh(floorL4File);
@@ -565,6 +589,168 @@ void Scene::PauseInput()
 		optionsOpen = false;
 		lightOn = true;
 		pauseLighting = false;
+	}
+
+	if (optionsOpen && GetAsyncKeyState(0x01))
+	{
+		std::cout << mousePos.x << " " << mousePos.y << std::endl;
+	}
+
+	//To Mute
+	if (GetAsyncKeyState(0x01) && optionsOpen && mousePos.y > 291 && mousePos.y < 379 && mousePos.x > 848 && mousePos.x < 959)
+	{
+		Sleep(100);
+		isMute = !isMute;
+	}
+
+	//Bright Mode
+	if (GetAsyncKeyState(0x01) && optionsOpen && mousePos.y > 745 && mousePos.y < 836 && mousePos.x > 848 && mousePos.x < 959)
+	{
+		Sleep(100);
+		isBright = !isBright;
+	}
+
+	//Color Blind Mode
+	if (GetAsyncKeyState(0x01) && optionsOpen && mousePos.y > 653 && mousePos.y < 740 && mousePos.x > 848 && mousePos.x < 959)
+	{
+		Sleep(100);
+		isCorrected = !isCorrected;
+	}
+
+	//Control Change
+	if (GetAsyncKeyState(0x01) && optionsOpen && mousePos.y > 839 && mousePos.y < 932 && mousePos.x > 848 && mousePos.x < 959)
+	{
+		Sleep(100);
+		isArrow = !isArrow;
+	}
+
+	////Increase Sound Effect Volume
+	if (GetAsyncKeyState(0x01) && optionsOpen && mousePos.y > 391 && mousePos.y < 407 && mousePos.x > 927 && mousePos.x < 947)
+	{
+		Sleep(100);
+		if (soundVol < 10)
+			soundVol++;
+	}
+
+	////Decrease Sound Effect Volume
+	if (GetAsyncKeyState(0x01) && optionsOpen && mousePos.y > 451 && mousePos.y < 468 && mousePos.x > 927 && mousePos.x < 947)
+	{
+		Sleep(200);
+
+		if (soundVol > 1)
+			soundVol--;
+	}
+
+	//////Increase Music Volume
+	if (GetAsyncKeyState(0x01) && optionsOpen && mousePos.y > 485 && mousePos.y < 503 && mousePos.x > 927 && mousePos.x < 947)
+	{
+		Sleep(200);
+		if (musicVol < 10)
+			musicVol++;
+	}
+
+	//Decrease Music Volume
+	if (GetAsyncKeyState(0x01) && optionsOpen && mousePos.y > 545 && mousePos.y < 565 && mousePos.x > 927 && mousePos.x < 947)
+	{
+		Sleep(200);
+
+		if (musicVol > 1)
+			musicVol--;
+	}
+
+	if (isMute)
+	{
+		AudioEngine::Instance().GetBus("SoundBus").SetVolume(0.0f);
+		AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.0f);
+	}
+
+	if (!isMute)
+	{
+		switch (soundVol)
+		{
+		case 1:
+			AudioEngine::Instance().GetBus("SoundBus").SetVolume(0.1f);
+			break;
+
+		case 2:
+			AudioEngine::Instance().GetBus("SoundBus").SetVolume(0.2f);
+			break;
+
+		case 3:
+			AudioEngine::Instance().GetBus("SoundBus").SetVolume(0.3f);
+			break;
+
+		case 4:
+			AudioEngine::Instance().GetBus("SoundBus").SetVolume(0.4f);
+			break;
+
+		case 5:
+			AudioEngine::Instance().GetBus("SoundBus").SetVolume(0.5f);
+			break;
+
+		case 6:
+			AudioEngine::Instance().GetBus("SoundBus").SetVolume(0.6f);
+			break;
+
+		case 7:
+			AudioEngine::Instance().GetBus("SoundBus").SetVolume(0.7f);
+			break;
+
+		case 8:
+			AudioEngine::Instance().GetBus("SoundBus").SetVolume(0.8f);
+			break;
+
+		case 9:
+			AudioEngine::Instance().GetBus("SoundBus").SetVolume(0.9f);
+			break;
+
+		case 10:
+			AudioEngine::Instance().GetBus("SoundBus").SetVolume(1.0f);
+			break;
+		}
+
+		switch (musicVol)
+		{
+		case 1:
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.1f);
+			break;
+
+		case 2:
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.2f);
+			break;
+
+		case 3:
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.3f);
+			break;
+
+		case 4:
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.4f);
+			break;
+
+		case 5:
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.5f);
+			break;
+
+		case 6:
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.6f);
+			break;
+
+		case 7:
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.7f);
+			break;
+
+		case 8:
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.8f);
+			break;
+
+		case 9:
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.9f);
+			break;
+
+		case 10:
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(1.0f);
+			break;
+		}
 	}
 }
 

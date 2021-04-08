@@ -129,10 +129,12 @@ protected:
 	Entity gBufferEnt, shadowBufferEnt;
 
 	Entity pauseEnt, optionEnt, exitEnt, retryEnt, tutEnt, completeEnt, optionsMenuEnt;
+	Entity muteEnt, colorBlindEnt, brightEnt, musicEnt, soundEnt, controlsEnt;
 
 	Mat clearMat, pauseMat, optionMenuMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat, optionPressMat, exitPressMat, retryPressMat;
 	Mat buttonMat, drumstickMat, doorMat, doorOnMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
-	Mat andMat, notMat, orMat, xorMat, norMat, xnorMat, wireMatOn, shelfPipeMat, columnPipeMat, labWallMat, labFloorMat, tableMat;
+	Mat andMat, notMat, orMat, xorMat, norMat, xnorMat, wireMatOn, shelfPipeMat, columnPipeMat, labWallMat, labFloorMat, tableMat, toggleOnMat, toggleOffMat, volumeMat;
+	Mat volumeMat1, volumeMat2, volumeMat3, volumeMat4, volumeMat5, volumeMat6, volumeMat7, volumeMat8, volumeMat9, volumeMat10;
 
 	//Meshes for multiple levels
 	Mesh* options;
@@ -156,6 +158,7 @@ protected:
 	Mesh*and;
 	Mesh* shelfPipe;
 	Mesh* columnPipe;
+	Mesh* optionsButton;
 
 	//For bigger "lab" levels
 	Mesh* floorLab;
@@ -333,6 +336,7 @@ protected:
 	std::string tabletFile = "Models/Tablet.obj";
 	std::string tutFile = "Models/Interact.obj";
 	std::string pauseButtonFile = "Models/UI_Buttons.obj";
+	std::string optionsButtonFile = "Models/OptionsButtons.obj";
 	std::string pipeFileS = "Models/New2_StraightPipe.obj";
 	std::string pipeFileC = "Models/New2_CurvedPipe.obj";
 	std::string shelfPipeFile = "Models/ShelfPipe.obj";
@@ -503,6 +507,13 @@ protected:
 	bool isPaused = false;
 	bool tabletOpen = false;
 	bool optionsOpen = false;
+
+	bool isMute = false;
+	int musicVol = 2;
+	int soundVol = 5;
+	bool isBright = false;
+	bool isCorrected = false;
+	bool isArrow = false;
 
 	bool camClose = false;
 	bool camFar = false;
@@ -688,9 +699,6 @@ protected:
 	bool doorClosingApplied = false;
 	bool doorClosingApplied2 = false;
 
-
-	bool isBright = false;
-	bool isCorrected = false;
 	LUT3D lut;
 	LUT3D brightLut;
 	LUT3D colorCorrectLut;
