@@ -78,7 +78,7 @@ int main()
 	scenes.push_back(new Level6("Level 6", window));
 	scenes.push_back(new Level7("Level 7", window));
 
-	SetActiveScene(1);
+	SetActiveScene(7);
 	 
 	//Calculates our timer
 	Application::Tick();

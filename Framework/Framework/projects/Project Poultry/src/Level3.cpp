@@ -197,12 +197,12 @@ void Level3::InitScene()
 
 	//Vent transforms
 	auto& ventTrans = ventEnt.Add<Transform>();
-	ventTrans.SetPosition(glm::vec3(-38.f, 15.f, -22.f));
+	ventTrans.SetPosition(glm::vec3(-38.3f, 15.f, -22.f));
 	ventTrans.SetScale(glm::vec3(0.8f));
 	ventTrans.SetRotationY(180.f);
 
 	auto& ventTrans2 = ventEnt2.Add<Transform>();
-	ventTrans2.SetPosition(glm::vec3(-38.f, 15.f, 22.f));
+	ventTrans2.SetPosition(glm::vec3(-38.3f, 15.f, 22.f));
 	ventTrans2.SetScale(glm::vec3(0.8f));
 	ventTrans2.SetRotationY(180.f);
 
