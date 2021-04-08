@@ -98,6 +98,8 @@ void Level5::InitScene()
 	InitShaders();
 	//Initialize the Textures for the level
 	InitTextures();
+	//Initializes the Luts
+	InitLuts();
 
 #pragma region Transforms
 	//Player transform
@@ -255,17 +257,17 @@ void Level5::InitScene()
 	auto& optionsTrans = optionEnt.Add<Transform>();
 	optionsTrans.SetPosition(glm::vec3(-5.0f, 2.0f, 0.0f));
 	optionsTrans.SetScale(glm::vec3(1.5f));
-	optionsTrans.SetRotationY(96.0f);
+	//optionsTrans.SetRotationY(96.0f);
 
 	auto& retryTrans = retryEnt.Add<Transform>();
 	retryTrans.SetPosition(glm::vec3(0.0f, 2.0f, 0.0f));
 	retryTrans.SetScale(glm::vec3(1.5f));
-	retryTrans.SetRotationY(96.0f);
+	//retryTrans.SetRotationY(96.0f);
 
 	auto& exitTrans = exitEnt.Add<Transform>();
 	exitTrans.SetPosition(glm::vec3(5.0f, 2.0f, 0.0f));
 	exitTrans.SetScale(glm::vec3(1.5f));
-	exitTrans.SetRotationY(96.0f);
+	//exitTrans.SetRotationY(96.0f);
 
 	//Tablet Stuff
 	auto& tabletTrans = tabletEnt.Add<Transform>();
@@ -401,7 +403,7 @@ void Level5::InitScene()
 	auto& panelMesh = panelEnt.Add<MeshRenderer>(panelEnt, *panel, shader);
 
 	auto& tabletScreenMesh = tabletScreenEnt.Add<MeshRenderer>(tabletScreenEnt, *screen, pauseShader);
-	auto& tabletMesh = tabletEnt.Add<MeshRenderer>(tabletEnt, *tablet, shader);
+	auto& tabletMesh = tabletEnt.Add<MeshRenderer>(tabletEnt, *tablet, rimLightShader);
 	auto& optionsMenuMesh = optionsMenuEnt.Add<MeshRenderer>(optionsMenuEnt, *screen, pauseShader);
 
 	entList.push_back(&mainPlayer);
@@ -560,6 +562,7 @@ void Level5::Update(float dt)
 		shader->SetUniform("u_Time", time);
 		pauseShader->SetUniform("u_Time", time);
 		animShader->SetUniform("u_Time", time);
+		rimLightShader->SetUniform("u_Time", time);
 	}
 
 
@@ -845,6 +848,7 @@ void Level5::Update(float dt)
 	shader->SetUniform("u_LightOn", lightInt);
 	pauseShader->SetUniform("u_LightOn", lightInt);
 	animShader->SetUniform("u_LightOn", lightInt);
+	rimLightShader->SetUniform("u_LightOn", lightInt);
 
 	//Post-Effect Stuff
 	auto basicEffect = &FBO.Get<PostEffect>();
@@ -1170,12 +1174,15 @@ void Level5::Update(float dt)
 			pipeEntS2.Get<MeshRenderer>().Render(camera, transformPipe4, LightSpaceViewProjection);
 
 			shader->SetUniform("s_Diffuse", 11);
-			tabletMat.Albedo->Bind(11);
-			tabletEnt.Get<MeshRenderer>().Render(camera, transformTablet, LightSpaceViewProjection);
-
-			shader->SetUniform("s_Diffuse", 12);
-			labFloorMat.Albedo->Bind(12);
+			labFloorMat.Albedo->Bind(11);
 			floorEnt.Get<MeshRenderer>().Render(camera, transformGround, LightSpaceViewProjection);
+			shadowBuffer->UnbindTexture(30);
+
+			rimLightShader->Bind();
+			rimLightShader->SetUniform("s_Diffuse", 1);
+			tabletMat.Albedo->Bind(1);
+			shadowBuffer->BindDepthAsTexture(30);
+			tabletEnt.Get<MeshRenderer>().Render(camera, transformTablet, LightSpaceViewProjection);
 			shadowBuffer->UnbindTexture(30);
 		}
 	}
@@ -1246,6 +1253,13 @@ void Level5::Update(float dt)
 			pipeEntC2.Get<MeshRenderer>().Render(camera, transformPipe2);
 			pipeEntS.Get<MeshRenderer>().Render(camera, transformPipe3);
 			pipeEntS2.Get<MeshRenderer>().Render(camera, transformPipe4);
+			tabletEnt.Get<MeshRenderer>().Render(camera, transformTablet, LightSpaceViewProjection);
+			shadowBuffer->UnbindTexture(30);
+
+			rimLightShader->Bind();
+			rimLightShader->SetUniform("s_Diffuse", 1);
+			clearMat.Albedo->Bind(1);
+			shadowBuffer->BindDepthAsTexture(30);
 			tabletEnt.Get<MeshRenderer>().Render(camera, transformTablet, LightSpaceViewProjection);
 			shadowBuffer->UnbindTexture(30);
 		}

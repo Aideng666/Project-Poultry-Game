@@ -28,7 +28,7 @@ namespace freebird
 
 	void ColorTarget::Unload()
 	{
-		glDeleteTextures(_numAttachments, &_textures[0].GetHandle());
+		//glDeleteTextures(_numAttachments, &_textures[0].GetHandle());
 	}
 
 	Framebuffer::Framebuffer()

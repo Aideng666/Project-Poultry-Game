@@ -92,6 +92,8 @@ void Level2::InitScene()
 	InitShaders();
 	//Initialize the Textures for the level
 	InitTextures();
+	////Initializes the Luts
+	InitLuts();
 
 #pragma region Transforms
 	//Player transform
@@ -228,17 +230,17 @@ void Level2::InitScene()
 	auto& optionsTrans = optionEnt.Add<Transform>();
 	optionsTrans.SetPosition(glm::vec3(-5.0f, 2.0f, 0.0f));
 	optionsTrans.SetScale(glm::vec3(1.5f));
-	optionsTrans.SetRotationY(96.0f);
+	//optionsTrans.SetRotationY(96.0f);
 
 	auto& retryTrans = retryEnt.Add<Transform>();
 	retryTrans.SetPosition(glm::vec3(0.0f, 2.0f, 0.0f));
 	retryTrans.SetScale(glm::vec3(1.5f));
-	retryTrans.SetRotationY(96.0f);
+	///retryTrans.SetRotationY(96.0f);
 
 	auto& exitTrans = exitEnt.Add<Transform>();
 	exitTrans.SetPosition(glm::vec3(5.0f, 2.0f, 0.0f));
 	exitTrans.SetScale(glm::vec3(1.5f));
-	exitTrans.SetRotationY(96.0f);
+	//exitTrans.SetRotationY(96.0f);
 
 	//Interact text transform
 	auto& tutTrans = tutEnt.Add<Transform>();
