@@ -596,7 +596,7 @@ void Scene::PauseInput()
 		optionsOpen = true;
 	}
 
-	if (optionsOpen && glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	if (optionsOpen && (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS))
 	{
 		optionsOpen = false;
 		lightOn = true;

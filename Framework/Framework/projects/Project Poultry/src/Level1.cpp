@@ -641,7 +641,7 @@ void Level1::Update(float dt)
 	}
 
 #pragma region PlayerMovement
-	if (!showLevelComplete && !isPaused && !optionsOpen)
+	if (!showLevelComplete && !isPaused && !optionsOpen && !tabletOpen)
 	{
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight, isArrow);
 
@@ -1237,7 +1237,7 @@ void Level1::Update(float dt)
 					&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f 
 					&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() > -3.0f))
 			{
-				if (!tabletOpen)
+				if (!tabletOpen && !optionsOpen && !isPaused)
 					tutEnt.Get<MeshRenderer>().Render(orthoCam, transformTut, LightSpaceViewProjection);
 				else
 				{
