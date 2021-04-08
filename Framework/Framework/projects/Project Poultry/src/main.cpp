@@ -51,7 +51,7 @@ void SetActiveScene(int sceneNum)
 	currentScene = scenes[sceneNum];
 	level = sceneNum + 1;
 
-	if (level > 8)
+	if (level > 11)
 		level = 1;
 }
 
@@ -78,7 +78,7 @@ int main()
 	scenes.push_back(new Level6("Level 6", window));
 	scenes.push_back(new Level7("Level 7", window));
 
-	SetActiveScene(7);
+	SetActiveScene(8);
 	 
 	//Calculates our timer
 	Application::Tick();
