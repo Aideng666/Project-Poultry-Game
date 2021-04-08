@@ -135,7 +135,7 @@ protected:
 	Entity muteEnt, colorBlindEnt, brightEnt, musicEnt, soundEnt, controlsEnt;
 
 	Mat clearMat, pauseMat, optionMenuMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat, optionPressMat, exitPressMat, retryPressMat;
-	Mat buttonMat, drumstickMat, doorMat, doorOnMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, norTabletScreenMat, xorTabletScreenMat, xnorTabletScreenMat, coilMatOn, coilMatOff;
+	Mat buttonMat, drumstickMat, doorMat, doorOnMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, norTabletScreenMat, xorTabletScreenMat, xnorTabletScreenMat, finalTabletMat, coilMatOn, coilMatOff;
 	Mat andMat, notMat, orMat, xorMat, norMat, xnorMat, wireMatOn, shelfPipeMat, columnPipeMat, labWallMat, labFloorMat, tableMat, toggleOnMat, toggleOffMat, volumeMat;
 	Mat volumeMat1, volumeMat2, volumeMat3, volumeMat4, volumeMat5, volumeMat6, volumeMat7, volumeMat8, volumeMat9, volumeMat10;
 
@@ -316,6 +316,9 @@ protected:
 	Mesh* wireM21L9;
 	Mesh* wireM22L9;
 
+	//Final Level
+	Mesh* finalWire;
+
 
 	//Files for multiple levels
 	std::string drumFile = "Models/ChickenFrames/Walk/Walk1.obj";
@@ -493,6 +496,9 @@ protected:
 	std::string wire20L9File = "Models/Wires/New_Level9_Wire20.obj"; 
 	std::string wire21L9File = "Models/Wires/New_Level9_Wire21.obj"; 
 	std::string wire22L9File = "Models/Wires/New_Level9_Wire22.obj"; 
+
+	//Final Level
+	std::string finalWireFile = "Models/Wires/FinalLevel_Wire1.obj";
 
 	std::vector<std::function<void()>> imGuiCallbacks;
 

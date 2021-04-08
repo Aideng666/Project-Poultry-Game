@@ -1245,19 +1245,6 @@ void Level1::Update(float dt)
 				}
 			}
 
-			/*if (!isPaused)
-			{
-				particleSystem.Update(dt, camera);
-				
-				if (!andEnt.Get<AndGate>().GetOutput())
-				{
-					particleShader->Bind();
-					glDisable(GL_DEPTH_TEST);
-					particleSystem.Draw(camera, particleShader);
-					glEnable(GL_DEPTH_TEST);
-				}
-			}*/
-
 			shadowBuffer->UnbindTexture(30);
 
 			rimLightShader->Bind();
@@ -1368,9 +1355,6 @@ void Level1::Update(float dt)
 
 	basicEffect->UnbindBuffer();
 
-	//gBuffer->Unbind();
-
-	//gBuffer->DrawBuffersToScreen();
 	if (activeEffect == 3 && isBright)
 	{
 		colorCorrectEnt.Get<ColorCorrect>().SetLUT(brightLut);
@@ -1411,8 +1395,6 @@ void Level1::Update(float dt)
 	wireEnt3.Get<Wire>().Update();
 
 	audioEngine.Update();
-
-	//std::cout << AudioEngine::Instance().GetBus("MusicBus").GetVolume() << std::endl;
 
 	//Door Logic
 	if (doorEnt.Get<Door>().GetOpen() && doorOpenApplied)
