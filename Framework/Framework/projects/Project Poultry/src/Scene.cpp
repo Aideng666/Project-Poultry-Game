@@ -80,6 +80,7 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseNorTabletScreen = Texture2D::LoadFromFile("Textures/NorGateTablet.png");
 	Texture2D::sptr diffuseXorTabletScreen = Texture2D::LoadFromFile("Textures/XorGateTablet.png");
 	Texture2D::sptr diffuseXnorTabletScreen = Texture2D::LoadFromFile("Textures/XNorGateTablet.png");
+	Texture2D::sptr diffuseFinalTablet = Texture2D::LoadFromFile("Textures/FinalTablet.png");
 	Texture2D::sptr diffuseCoilOff = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_Off.png");
 	Texture2D::sptr diffuseCoilOn = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_On.png");
 	Texture2D::sptr diffuseTable = Texture2D::LoadFromFile("Textures/TableTexture.png");
@@ -142,6 +143,7 @@ void Scene::InitTextures()
 	norTabletScreenMat.Albedo = diffuseNorTabletScreen;
 	xorTabletScreenMat.Albedo = diffuseXorTabletScreen;
 	xnorTabletScreenMat.Albedo = diffuseXnorTabletScreen;
+	finalTabletMat.Albedo = diffuseFinalTablet;
 	coilMatOff.Albedo = diffuseCoilOff;
 	coilMatOn.Albedo = diffuseCoilOn;
 	tableMat.Albedo = diffuseTable;
@@ -472,6 +474,9 @@ void Scene::InitMeshes()
 	wireM20L9 = ModelManager::FindMesh(wire20L9File);
 	wireM21L9 = ModelManager::FindMesh(wire21L9File);
 	wireM22L9 = ModelManager::FindMesh(wire22L9File);
+
+	//Final Level
+	finalWire = ModelManager::FindMesh(finalWireFile);
 
 	entList.clear();
 }
