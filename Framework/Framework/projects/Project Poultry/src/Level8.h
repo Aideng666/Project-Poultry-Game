@@ -44,6 +44,24 @@ private:
 	//Level Complete Ent
 	Entity completeEnt;
 
+	//Vents
+	Entity bigVentEnt, bigVentEnt2;
+
+	//Table Ent
+	Entity tableEnt;
+
+	//Shelf Pipe
+	Entity shelfPipeEnt, shelfPipeEnt2;
+
+	//Column Pipe
+	Entity columnPipeEnt, columnPipeEnt2;
+
+	//Boxes
+	Entity boxEnt, boxEnt2, boxEnt3;
+
+	//Panels
+	Entity panelEnt, panelEnt2, panelEnt3, panelEnt4;
+
 	GLfloat time = 0.0f;
 
 	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
