@@ -366,6 +366,13 @@ void FinalLevel::Update(float dt)
 		rimLightShader->SetUniform("u_Time", time);
 	}
 
+	std::cout << time << std::endl;
+
+	if (time >= 120.0f)
+	{
+		glfwSetWindowShouldClose(window, true);
+	}
+
 #pragma region Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
 	auto& buttonTrans = buttonEnt.Get<Transform>();
@@ -440,7 +447,7 @@ void FinalLevel::Update(float dt)
 	}
 
 #pragma region PlayerMovement
-	if (!showLevelComplete && !isPaused && !optionsOpen)
+	if (!showLevelComplete && !isPaused && !optionsOpen && !tabletOpen)
 	{
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight, isArrow);
 
@@ -940,7 +947,7 @@ void FinalLevel::Update(float dt)
 					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f
 					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f))
 			{
-				if (!tabletOpen)
+				if (!tabletOpen && !optionsOpen && !isPaused)
 					tutEnt.Get<MeshRenderer>().Render(orthoCam, transformTut, LightSpaceViewProjection);
 				else
 				{
