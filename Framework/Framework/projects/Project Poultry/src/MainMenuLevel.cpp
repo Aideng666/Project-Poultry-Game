@@ -440,12 +440,12 @@ void MainMenuLevel::Update(float dt)
 		button2Watch.Poll(window);
 	}
 
-	pauseWatch.Poll(window);
+	//pauseWatch.Poll(window);
 
 #pragma region PlayerMovement
 	if (!showLevelComplete && !isPaused)
 	{
-		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight, isArrow);
 
 		if (!peckingFramesApplied && isPecking)
 		{

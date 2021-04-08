@@ -76,6 +76,6 @@ namespace freebird
 		bool canMoveDown = true;
 
 		bool bigLevel = false;
-		float levelSize = 35.0f;
+		float levelSize = 32.5f;
 	};
 }

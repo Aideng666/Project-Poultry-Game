@@ -51,7 +51,7 @@ void SetActiveScene(int sceneNum)
 	currentScene = scenes[sceneNum];
 	level = sceneNum + 1;
 
-	if (level > 8)
+	if (level > 11)
 		level = 1;
 }
 
@@ -69,16 +69,16 @@ int main()
 	Application::LoadAudio();
 
 	scenes.push_back(new MainMenu("Main Menu", window));
-	scenes.push_back(new Level9("Level 9", window));
+	//scenes.push_back(new Level1("Level 1", window));
+	/*//scenes.push_back(new Level9("Level 9", window));
 	//scenes.push_back(new Level7("Level 7", window));
 	//scenes.push_back(new Level6("Level 6", window));
 	//scenes.push_back(new MainMenuLevel("Main Menu Level", window));
-	/*scenes.push_back(new Level1("Level 1", window));
 	scenes.push_back(new Level2("Level 2", window));
 	scenes.push_back(new Level3("Level 3", window));*/
 	//scenes.push_back(new Level5("Level 5", window));
 
-	SetActiveScene(1);
+	SetActiveScene(0);
 	 
 	//Calculates our timer
 	Application::Tick();
@@ -237,6 +237,10 @@ int main()
 		//Grabs the time
 		float dt = Application::GetDT();
 
+		if (glfwGetKey(window, GLFW_KEY_KP_9) == GLFW_PRESS)
+		{
+			SetActiveScene(9);
+		}
 		if (glfwGetKey(window, GLFW_KEY_KP_8) == GLFW_PRESS)
 		{
 			SetActiveScene(8);
@@ -296,6 +300,7 @@ int main()
 			scenes.push_back(new Level6("Level 6", window));
 			scenes.push_back(new Level7("Level 7", window));
 			scenes.push_back(new Level8("Level 8", window));
+			scenes.push_back(new Level9("Level 9", window));
 
 			SetActiveScene(level - 1);
 		}
@@ -311,6 +316,7 @@ int main()
 			scenes.push_back(new Level6("Level 6", window));
 			scenes.push_back(new Level7("Level 7", window));
 			scenes.push_back(new Level8("Level 8", window));
+			scenes.push_back(new Level9("Level 9", window));
 
 			SetActiveScene(1);
 		}
