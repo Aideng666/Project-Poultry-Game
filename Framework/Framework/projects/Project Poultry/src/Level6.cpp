@@ -1155,10 +1155,15 @@ void Level6::Update(float dt)
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 1);
-			optionMat.Albedo->Bind(1);
 
-			if (isPaused)
+			if (isPaused && mousePos.y > 403 && mousePos.y < 594 && mousePos.x > 104 && mousePos.x < 336)
 			{
+				optionPressMat.Albedo->Bind(1);
+				optionEnt.Get<MeshRenderer>().Render(orthoCam, transformOptions);
+			}
+			else if (isPaused)
+			{
+				optionMat.Albedo->Bind(1);
 				optionEnt.Get<MeshRenderer>().Render(orthoCam, transformOptions);
 			}
 

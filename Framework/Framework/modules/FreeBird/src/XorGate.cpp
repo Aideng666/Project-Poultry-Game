@@ -9,11 +9,14 @@ namespace freebird
 
     void XorGate::Update()
     {
-        if (((inputEnt1.Has<Wire>() && inputEnt1.Get<Wire>().GetIsPowered()) || (inputEnt2.Has<Wire>() && inputEnt2.Get<Wire>().GetIsPowered()))
-            && !(inputEnt1.Get<Wire>().GetIsPowered() && inputEnt2.Get<Wire>().GetIsPowered()))
+        if (inputEnt1.Has<Wire>() && inputEnt1.Get<Wire>().GetIsPowered() && inputEnt2.Has<Wire>() && inputEnt2.Get<Wire>().GetIsPowered())
+            output = false;
+        else if ((inputEnt1.Has<Wire>() && inputEnt1.Get<Wire>().GetIsPowered()) || (inputEnt2.Has<Wire>() && inputEnt2.Get<Wire>().GetIsPowered()))
             output = true;
         else
             output = false;
+
+
 
         if (outputEnt.Has<Door>() && output)
             outputEnt.Get<Door>().SetOpen(true);

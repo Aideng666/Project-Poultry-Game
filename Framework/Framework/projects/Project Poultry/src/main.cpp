@@ -16,6 +16,8 @@
 #include "Level5.h"
 #include "Level6.h"
 #include "Level7.h"
+#include "Level8.h"
+#include "Level9.h"
 #include "MainMenu.h"
 #include "MainMenuLevel.h"
 #include "Application.h"
@@ -64,6 +66,8 @@ int main()
 	//Sets the clear colour of the window
 	Application::SetClearColor(glm::vec4(0.08f, 0.17f, 0.31f, 1.0f));
 
+	Application::LoadAudio();
+
 	scenes.push_back(new MainMenu("Main Menu", window));
 	scenes.push_back(new MainMenuLevel("Main Menu Level", window));
 	scenes.push_back(new Level1("Level 1", window));
@@ -74,7 +78,7 @@ int main()
 	scenes.push_back(new Level6("Level 6", window));
 	scenes.push_back(new Level7("Level 7", window));
 
-	SetActiveScene(0);
+	SetActiveScene(1);
 	 
 	//Calculates our timer
 	Application::Tick();
@@ -221,8 +225,6 @@ int main()
 
 	Application::InitImGui();
 
-	Application::LoadAudio();
-
 	//Main Loop//
 	while (!Application::IsClosing()) {
 
@@ -293,6 +295,7 @@ int main()
 			scenes.push_back(new Level5("Level 5", window));
 			scenes.push_back(new Level6("Level 6", window));
 			scenes.push_back(new Level7("Level 7", window));
+			scenes.push_back(new Level8("Level 8", window));
 
 			SetActiveScene(level - 1);
 		}
@@ -307,6 +310,7 @@ int main()
 			scenes.push_back(new Level5("Level 5", window));
 			scenes.push_back(new Level6("Level 6", window));
 			scenes.push_back(new Level7("Level 7", window));
+			scenes.push_back(new Level8("Level 8", window));
 
 			SetActiveScene(1);
 		}

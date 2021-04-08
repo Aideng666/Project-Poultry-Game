@@ -1,4 +1,4 @@
-#include "Level7.h"
+#include "Level9.h"
 #include <iostream>
 #include <GLFW\glfw3.h>
 
@@ -12,7 +12,7 @@
 #include <stb_image.h>
 #include <MorphAnimation.h>
 
-Level7::Level7(std::string sceneName, GLFWwindow* wind)
+Level9::Level9(std::string sceneName, GLFWwindow* wind)
 	: Scene(sceneName, wind)
 {
 	mainPlayer = Entity::Create();
@@ -40,6 +40,9 @@ Level7::Level7(std::string sceneName, GLFWwindow* wind)
 	wireEnt17 = Entity::Create();
 	wireEnt18 = Entity::Create();
 	wireEnt19 = Entity::Create();
+	wireEnt20 = Entity::Create();
+	wireEnt21 = Entity::Create();
+	wireEnt22 = Entity::Create();
 
 	doorEnt = Entity::Create();
 
@@ -59,15 +62,18 @@ Level7::Level7(std::string sceneName, GLFWwindow* wind)
 	andEnt3 = Entity::Create();
 	andEnt4 = Entity::Create();
 	andEnt5 = Entity::Create();
-	andEnt6 = Entity::Create();
 
 	orEnt = Entity::Create();
-
-	notEnt = Entity::Create();
+	orEnt2 = Entity::Create();
+	orEnt3 = Entity::Create();
 
 	xorEnt = Entity::Create();
 	xorEnt2 = Entity::Create();
-	xorEnt3 = Entity::Create();
+	xorEnt4 = Entity::Create();
+
+	norEnt = Entity::Create();
+	xnorEnt = Entity::Create();
+	xnorEnt2 = Entity::Create();
 
 	pauseEnt = Entity::Create();
 	optionEnt = Entity::Create();
@@ -93,7 +99,7 @@ Level7::Level7(std::string sceneName, GLFWwindow* wind)
 	InitMeshes();
 }
 
-void Level7::InitScene()
+void Level9::InitScene()
 {
 	Application::SetClearColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
@@ -186,6 +192,15 @@ void Level7::InitScene()
 	auto& wireTrans19 = wireEnt19.Add<Transform>();
 	wireTrans19.SetPosition(glm::vec3(0.f, 1.f, 0.f));
 
+	auto& wireTrans20 = wireEnt20.Add<Transform>();
+	wireTrans20.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans21 = wireEnt21.Add<Transform>();
+	wireTrans21.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
+	auto& wireTrans22 = wireEnt22.Add<Transform>();
+	wireTrans22.SetPosition(glm::vec3(0.f, 1.f, 0.f));
+
 	//Coil Object
 	auto& coilTrans = coilEnt.Add<Transform>();
 	coilTrans.SetPosition(glm::vec3(-18.0f, 1.0f, -48.f));
@@ -194,81 +209,92 @@ void Level7::InitScene()
 
 	//Button transforms
 	auto& buttonTrans = buttonEnt.Add<Transform>();
-	buttonTrans.SetPosition(glm::vec3(-24.0f, -1.0f, 49.f));
+	buttonTrans.SetPosition(glm::vec3(-22.5f, -1.0f, 46.f));
 
 	auto& buttonTrans2 = buttonEnt2.Add<Transform>();
-	buttonTrans2.SetPosition(glm::vec3(-20.0f, -1.0f, 49.0f));
+	buttonTrans2.SetPosition(glm::vec3(-18.5f, -1.0f, 46.0f));
 
 	auto& buttonTrans3 = buttonEnt3.Add<Transform>();
-	buttonTrans3.SetPosition(glm::vec3(-9.0f, -1.0f, 49.f));
+	buttonTrans3.SetPosition(glm::vec3(-9.0f, -1.0f, 46.f));
 
 	auto& buttonTrans4 = buttonEnt4.Add<Transform>();
-	buttonTrans4.SetPosition(glm::vec3(-5.0f, -1.0f, 49.f));
+	buttonTrans4.SetPosition(glm::vec3(-5.0f, -1.0f, 46.f));
 
 	auto& buttonTrans5 = buttonEnt5.Add<Transform>();
-	buttonTrans5.SetPosition(glm::vec3(6.2f, -1.0f, 49.f));
+	buttonTrans5.SetPosition(glm::vec3(6.7f, -1.0f, 46.f));
 
 	auto& buttonTrans6 = buttonEnt6.Add<Transform>();
-	buttonTrans6.SetPosition(glm::vec3(10.2f, -1.0f, 49.f));
+	buttonTrans6.SetPosition(glm::vec3(10.7f, -1.0f, 46.f));
 
 	auto& buttonTrans7 = buttonEnt7.Add<Transform>();
-	buttonTrans7.SetPosition(glm::vec3(21.2f, -1.0f, 49.f));
+	buttonTrans7.SetPosition(glm::vec3(21.0f, -1.0f, 46.f));
 
 	auto& buttonTrans8 = buttonEnt8.Add<Transform>();
-	buttonTrans8.SetPosition(glm::vec3(25.1f, -1.0f, 49.f));
+	buttonTrans8.SetPosition(glm::vec3(24.9f, -1.0f, 46.f));
 
 	auto& gateTrans = andEnt.Add<Transform>();
-	gateTrans.SetPosition(glm::vec3(-6.8f, 1.2f, 26.0f));
+	gateTrans.SetPosition(glm::vec3(-20.0f, 1.f, 26.5f));
 	gateTrans.SetRotationY(-90.0f);
 	gateTrans.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans2 = andEnt2.Add<Transform>();
-	gateTrans2.SetPosition(glm::vec3(8.4f, 1.2f, 26.0f));
+	gateTrans2.SetPosition(glm::vec3(1.1f, 1.f, 8.0f));
 	gateTrans2.SetRotationY(-90.0f);
 	gateTrans2.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans3 = andEnt3.Add<Transform>();
-	gateTrans3.SetPosition(glm::vec3(23.4f, 1.2f, 26.0f));
+	gateTrans3.SetPosition(glm::vec3(9.2f, 1.2f, -6.0f));
 	gateTrans3.SetRotationY(-90.0f);
 	gateTrans3.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans4 = andEnt4.Add<Transform>();
-	gateTrans4.SetPosition(glm::vec3(1.2f, 1.2f, 12.0f));
+	gateTrans4.SetPosition(glm::vec3(21.3f, 1.f, -26.0f));
 	gateTrans4.SetRotationY(-90.0f);
 	gateTrans4.SetScale(glm::vec3(2.0f));
 
 	auto& gateTrans5 = andEnt5.Add<Transform>();
-	gateTrans5.SetPosition(glm::vec3(9.1f, 1.2f, -1.0f));
+	gateTrans5.SetPosition(glm::vec3(0.5f, 1.f, -35.0f));
 	gateTrans5.SetRotationY(-90.0f);
 	gateTrans5.SetScale(glm::vec3(2.0f));
 
-	auto& gateTrans6 = andEnt6.Add<Transform>();
-	gateTrans6.SetPosition(glm::vec3(0.6f, 1.2f, -22.5f));
-	gateTrans6.SetRotationY(-90.0f);
-	gateTrans6.SetScale(glm::vec3(2.0f));
-
-	//Or-Gate
+	//Or-Gates
 	auto& orTrans = orEnt.Add<Transform>();
-	orTrans.SetPosition(glm::vec3(-22.0f, 1.f, 26.0f));
+	orTrans.SetPosition(glm::vec3(-6.7f, 1.2f, 27.0f));
 	orTrans.SetRotationY(-90.0f);
 	orTrans.SetScale(glm::vec3(2.0f));
 
-	//Not-Gate
-	auto& notTrans = notEnt.Add<Transform>();
-	notTrans.SetPosition(glm::vec3(9.0f, 1.f, -14.0f));
-	notTrans.SetRotationY(-90.0f);
-	notTrans.SetScale(glm::vec3(2.0f));
+	auto& orTrans2 = orEnt2.Add<Transform>();
+	orTrans2.SetPosition(glm::vec3(16.8f, 1.2f, 8.0f));
+	orTrans2.SetRotationY(-90.0f);
+	orTrans2.SetScale(glm::vec3(2.0f));
+
+	auto& orTrans3 = orEnt3.Add<Transform>();
+	orTrans3.SetPosition(glm::vec3(29.3f, 1.f, -8.5f));
+	orTrans3.SetRotationY(-90.0f);
+	orTrans3.SetScale(glm::vec3(2.0f));
 
 	//Xor-Gate
 	auto& xorTrans = xorEnt.Add<Transform>();
-	xorTrans.SetPosition(glm::vec3(-14.4f, 1.f, 12.2f));
+	xorTrans.SetPosition(glm::vec3(8.8f, 1.2f, 26.5f));
 
 	auto& xorTrans2 = xorEnt2.Add<Transform>();
-	xorTrans2.SetPosition(glm::vec3(15.8f, 1.f, 12.2f));
+	xorTrans2.SetPosition(glm::vec3(22.3f, 1.f, 27.0f));
 
-	auto& xorTrans3 = xorEnt3.Add<Transform>();
-	xorTrans3.SetPosition(glm::vec3(-6.6f, 1.f, -1.0f));
 
+	auto& xorTrans4 = xorEnt4.Add<Transform>();
+	xorTrans4.SetPosition(glm::vec3(-16.0f, 1.f, -26.0f));
+
+	//Nor-Gates
+	auto& norTrans = norEnt.Add<Transform>();
+	norTrans.SetPosition(glm::vec3(-6.5f, 1.2f, -6.0f));
+
+	//XNor Gate
+	auto& xnorTrans = xnorEnt.Add<Transform>();
+	xnorTrans.SetPosition(glm::vec3(-14.4f, 1.f, 8.0f));
+
+	auto& xnorTrans2 = xnorEnt2.Add<Transform>();
+	xnorTrans2.SetPosition(glm::vec3(-26.7f, 1.f, -8.5f));
+	
 	//Pause UI
 	auto& pauseTrans = pauseEnt.Add<Transform>();
 	pauseTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
@@ -334,18 +360,24 @@ void Level7::InitScene()
 	andCol4.SetIsAmbient(true);
 	auto& andCol5 = andEnt5.Add<AABB>(andEnt5, mainPlayer, 5.0f, 3.0f);
 	andCol5.SetIsAmbient(true);
-	auto& andCol6 = andEnt6.Add<AABB>(andEnt6, mainPlayer, 5.0f, 3.0f);
-	andCol6.SetIsAmbient(true);
-	auto& notCol = notEnt.Add<AABB>(notEnt, mainPlayer, 3.5f, 3.0f);
-	notCol.SetIsAmbient(true);
 	auto& orCol = orEnt.Add<AABB>(orEnt, mainPlayer, 5.0f, 3.0f);
 	orCol.SetIsAmbient(true);
+	auto& orCol2 = orEnt2.Add<AABB>(orEnt2, mainPlayer, 5.0f, 3.0f);
+	orCol2.SetIsAmbient(true);
+	auto& orCol3 = orEnt3.Add<AABB>(orEnt3, mainPlayer, 5.0f, 3.0f);
+	orCol3.SetIsAmbient(true);
 	auto& xorCol = xorEnt.Add<AABB>(xorEnt, mainPlayer, 5.0f, 3.0f);
 	xorCol.SetIsAmbient(true);
 	auto& xorCol2 = xorEnt2.Add<AABB>(xorEnt2, mainPlayer, 5.0f, 3.0f);
 	xorCol2.SetIsAmbient(true);
-	auto& xorCol3 = xorEnt3.Add<AABB>(xorEnt3, mainPlayer, 5.0f, 3.0f);
-	xorCol3.SetIsAmbient(true);
+	auto& xorCol4 = xorEnt4.Add<AABB>(xorEnt4, mainPlayer, 5.0f, 3.0f);
+	xorCol4.SetIsAmbient(true);
+	auto& norCol = norEnt.Add<AABB>(norEnt, mainPlayer, 5.0f, 3.0f);
+	norCol.SetIsAmbient(true);
+	auto& xnorCol = xnorEnt.Add<AABB>(xnorEnt, mainPlayer, 5.0f, 3.0f);
+	xnorCol.SetIsAmbient(true);
+	auto& xnorCol2 = xnorEnt2.Add<AABB>(xnorEnt2, mainPlayer, 5.0f, 3.0f);
+	xnorCol2.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
@@ -360,9 +392,9 @@ void Level7::InitScene()
 	auto& button4 = buttonEnt4.Add<Lever>(wireEnt4);
 	button4.SetPowered(false);
 	auto& button5 = buttonEnt5.Add<Lever>(wireEnt5);
-	button5.SetPowered(true);
+	button5.SetPowered(false);
 	auto& button6 = buttonEnt6.Add<Lever>(wireEnt6);
-	button6.SetPowered(true);
+	button6.SetPowered(false);
 	auto& button7 = buttonEnt7.Add<Lever>(wireEnt7);
 	button7.SetPowered(false);
 	auto& button8 = buttonEnt8.Add<Lever>(wireEnt8);
@@ -377,38 +409,42 @@ void Level7::InitScene()
 	auto& wire6 = wireEnt6.Add<Wire>(buttonEnt6);
 	auto& wire7 = wireEnt7.Add<Wire>(buttonEnt7);
 	auto& wire8 = wireEnt8.Add<Wire>(buttonEnt8);
-	auto& wire9 = wireEnt9.Add<Wire>(orEnt);
-	auto& wire10 = wireEnt10.Add<Wire>(andEnt);
-	auto& wire11 = wireEnt11.Add<Wire>(andEnt2);
-	auto& wire12 = wireEnt12.Add<Wire>(andEnt3);
-	auto& wire13 = wireEnt13.Add<Wire>(xorEnt);
-	auto& wire14 = wireEnt14.Add<Wire>(andEnt4);
-	auto& wire15 = wireEnt15.Add<Wire>(xorEnt2);
-	auto& wire16 = wireEnt16.Add<Wire>(xorEnt3);
-	auto& wire17 = wireEnt17.Add<Wire>(andEnt5);
-	auto& wire18 = wireEnt18.Add<Wire>(notEnt);
-	auto& wire19 = wireEnt19.Add<Wire>(andEnt6);
+	auto& wire9 = wireEnt9.Add<Wire>(andEnt);
+	auto& wire10 = wireEnt10.Add<Wire>(orEnt);
+	auto& wire11 = wireEnt11.Add<Wire>(xorEnt);
+	auto& wire12 = wireEnt12.Add<Wire>(xorEnt2);
+	auto& wire13 = wireEnt13.Add<Wire>(xnorEnt);
+	auto& wire14 = wireEnt14.Add<Wire>(andEnt2);
+	auto& wire15 = wireEnt15.Add<Wire>(orEnt2);
+	auto& wire16 = wireEnt16.Add<Wire>(xnorEnt2);
+	auto& wire17 = wireEnt17.Add<Wire>(norEnt);
+	auto& wire18 = wireEnt18.Add<Wire>(andEnt3);
+	auto& wire19 = wireEnt19.Add<Wire>(orEnt3);
+	auto& wire20 = wireEnt20.Add<Wire>(xorEnt4);
+	auto& wire21 = wireEnt21.Add<Wire>(andEnt4);
+	auto& wire22 = wireEnt22.Add<Wire>(andEnt5);
 
 	//Gates
-	auto& andGate = andEnt.Add<AndGate>(wireEnt3, wireEnt4, wireEnt10);
-	auto& andGate2 = andEnt2.Add<AndGate>(wireEnt5, wireEnt6, wireEnt11);
-	auto& andGate3 = andEnt3.Add<AndGate>(wireEnt7, wireEnt8, wireEnt12);
-	auto& andGate4 = andEnt4.Add<AndGate>(wireEnt10, wireEnt11, wireEnt14);
-	auto& andGate5 = andEnt5.Add<AndGate>(wireEnt14, wireEnt15, wireEnt17);
-	auto& andGate6 = andEnt6.Add<AndGate>(wireEnt16, wireEnt18, doorEnt);
-	auto& orGate = orEnt.Add<OrGate>(wireEnt, wireEnt2, wireEnt9);
-	auto& notGate = notEnt.Add<NotGate>(wireEnt17, wireEnt18);
-	auto& xorGate = xorEnt.Add<XorGate>(wireEnt9, wireEnt10, wireEnt13);
-	auto& xorGate2 = xorEnt2.Add<XorGate>(wireEnt11, wireEnt12, wireEnt15);
-	auto& xorGate3 = xorEnt3.Add<XorGate>(wireEnt13, wireEnt14, wireEnt16);
+	auto& andGate = andEnt.Add<AndGate>(wireEnt, wireEnt2, wireEnt9);
+	auto& andGate2 = andEnt2.Add<AndGate>(wireEnt10, wireEnt11, wireEnt14);
+	auto& andGate3 = andEnt3.Add<AndGate>(wireEnt14, wireEnt15, wireEnt18);
+	auto& andGate4 = andEnt4.Add<AndGate>(wireEnt18, wireEnt19, wireEnt21);
+	auto& andGate5 = andEnt5.Add<AndGate>(wireEnt20, wireEnt21, doorEnt);
+	auto& orGate = orEnt.Add<OrGate>(wireEnt3, wireEnt4, wireEnt10);
+	auto& orGate2 = orEnt2.Add<OrGate>(wireEnt11, wireEnt12, wireEnt15);
+	auto& orGate3 = orEnt3.Add<OrGate>(wireEnt15, wireEnt12, wireEnt19);
+	auto& xorGate = xorEnt.Add<XorGate>(wireEnt5, wireEnt6, wireEnt11);
+	auto& xorGate2 = xorEnt2.Add<XorGate>(wireEnt7, wireEnt8, wireEnt12);
+	auto& xorGate4 = xorEnt4.Add<XorGate>(wireEnt16, wireEnt17, wireEnt20);
+	auto& norGate = norEnt.Add<NorGate>(wireEnt13, wireEnt14, wireEnt17);
+	auto& xnorGate = xnorEnt.Add<XNorGate>(wireEnt9, wireEnt10, wireEnt13);
+	auto& xnorGate2 = xnorEnt2.Add<XNorGate>(wireEnt9, wireEnt13, wireEnt16);
 
 	//Door
 	auto& door = doorEnt.Add<Door>();
 	door.SetOpen(false);
 
 	InitAnims();
-
-#pragma region Mesh Loading
 
 	auto& playerMesh = mainPlayer.Add<MorphRenderer>(mainPlayer, *idle1, animShader);
 	auto& floorMesh = floorEnt.Add<MeshRenderer>(floorEnt, *floorLab, shader);
@@ -418,25 +454,28 @@ void Level7::InitScene()
 
 	auto& doorMesh = doorEnt.Add<MorphRenderer>(doorEnt, *door1, animShader);
 
-	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireM1L7, shader);
-	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireM2L7, shader);
-	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireM3L7, shader);
-	auto& wireMesh4 = wireEnt4.Add<MeshRenderer>(wireEnt4, *wireM4L7, shader);
-	auto& wireMesh5 = wireEnt5.Add<MeshRenderer>(wireEnt5, *wireM5L7, shader);
-	auto& wireMesh6 = wireEnt6.Add<MeshRenderer>(wireEnt6, *wireM6L7, shader);
-	auto& wireMesh7 = wireEnt7.Add<MeshRenderer>(wireEnt7, *wireM7L7, shader);
-	auto& wireMesh8 = wireEnt8.Add<MeshRenderer>(wireEnt8, *wireM8L7, shader);
-	auto& wireMesh9 = wireEnt9.Add<MeshRenderer>(wireEnt9, *wireM9L7, shader);
-	auto& wireMesh10 = wireEnt10.Add<MeshRenderer>(wireEnt10, *wireM10L7, shader);
-	auto& wireMesh11 = wireEnt11.Add<MeshRenderer>(wireEnt11, *wireM11L7, shader);
-	auto& wireMesh12 = wireEnt12.Add<MeshRenderer>(wireEnt12, *wireM12L7, shader);
-	auto& wireMesh13 = wireEnt13.Add<MeshRenderer>(wireEnt13, *wireM13L7, shader);
-	auto& wireMesh14 = wireEnt14.Add<MeshRenderer>(wireEnt14, *wireM14L7, shader);
-	auto& wireMesh15 = wireEnt15.Add<MeshRenderer>(wireEnt15, *wireM15L7, shader);
-	auto& wireMesh16 = wireEnt16.Add<MeshRenderer>(wireEnt16, *wireM16L7, shader);
-	auto& wireMesh17 = wireEnt17.Add<MeshRenderer>(wireEnt17, *wireM17L7, shader);
-	auto& wireMesh18 = wireEnt18.Add<MeshRenderer>(wireEnt18, *wireM18L7, shader);
-	auto& wireMesh19 = wireEnt19.Add<MeshRenderer>(wireEnt19, *wireM19L7, shader);
+	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *wireM1L9, shader);
+	auto& wireMesh2 = wireEnt2.Add<MeshRenderer>(wireEnt2, *wireM2L9, shader);
+	auto& wireMesh3 = wireEnt3.Add<MeshRenderer>(wireEnt3, *wireM3L9, shader);
+	auto& wireMesh4 = wireEnt4.Add<MeshRenderer>(wireEnt4, *wireM4L9, shader);
+	auto& wireMesh5 = wireEnt5.Add<MeshRenderer>(wireEnt5, *wireM5L9, shader);
+	auto& wireMesh6 = wireEnt6.Add<MeshRenderer>(wireEnt6, *wireM6L9, shader);
+	auto& wireMesh7 = wireEnt7.Add<MeshRenderer>(wireEnt7, *wireM7L9, shader);
+	auto& wireMesh8 = wireEnt8.Add<MeshRenderer>(wireEnt8, *wireM8L9, shader);
+	auto& wireMesh9 = wireEnt9.Add<MeshRenderer>(wireEnt9, *wireM9L9, shader);
+	auto& wireMesh10 = wireEnt10.Add<MeshRenderer>(wireEnt10, *wireM10L9, shader);
+	auto& wireMesh11 = wireEnt11.Add<MeshRenderer>(wireEnt11, *wireM11L9, shader);
+	auto& wireMesh12 = wireEnt12.Add<MeshRenderer>(wireEnt12, *wireM12L9, shader);
+	auto& wireMesh13 = wireEnt13.Add<MeshRenderer>(wireEnt13, *wireM13L9, shader);
+	auto& wireMesh14 = wireEnt14.Add<MeshRenderer>(wireEnt14, *wireM14L9, shader);
+	auto& wireMesh15 = wireEnt15.Add<MeshRenderer>(wireEnt15, *wireM15L9, shader);
+	auto& wireMesh16 = wireEnt16.Add<MeshRenderer>(wireEnt16, *wireM16L9, shader);
+	auto& wireMesh17 = wireEnt17.Add<MeshRenderer>(wireEnt17, *wireM17L9, shader);
+	auto& wireMesh18 = wireEnt18.Add<MeshRenderer>(wireEnt18, *wireM18L9, shader);
+	auto& wireMesh19 = wireEnt19.Add<MeshRenderer>(wireEnt19, *wireM19L9, shader);
+	auto& wireMesh20 = wireEnt20.Add<MeshRenderer>(wireEnt20, *wireM20L9, shader);
+	auto& wireMesh21 = wireEnt21.Add<MeshRenderer>(wireEnt21, *wireM21L9, shader);
+	auto& wireMesh22 = wireEnt22.Add<MeshRenderer>(wireEnt22, *wireM22L9, shader);
 
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
 
@@ -454,15 +493,19 @@ void Level7::InitScene()
 	auto& andMesh3 = andEnt3.Add<MeshRenderer>(andEnt3, *and, shader);
 	auto& andMesh4 = andEnt4.Add<MeshRenderer>(andEnt4, *and, shader);
 	auto& andMesh5 = andEnt5.Add<MeshRenderer>(andEnt5, *and, shader);
-	auto& andMesh6 = andEnt6.Add<MeshRenderer>(andEnt6, *and, shader);
 
 	auto& orGateMesh = orEnt.Add<MeshRenderer>(orEnt, *orMesh, shader);
-
-	auto& notMesh = notEnt.Add<MeshRenderer>(notEnt, *not, shader);
+	auto& orGateMesh2 = orEnt2.Add<MeshRenderer>(orEnt2, *orMesh, shader);
+	auto& orGateMesh3 = orEnt3.Add<MeshRenderer>(orEnt3, *orMesh, shader);
 
 	auto& xorMesh = xorEnt.Add<MeshRenderer>(xorEnt, *xor, shader);
 	auto& xorMesh2 = xorEnt2.Add<MeshRenderer>(xorEnt2, *xor, shader);
-	auto& xorMesh3 = xorEnt3.Add<MeshRenderer>(xorEnt3, *xor, shader);
+	auto& xorMesh4 = xorEnt4.Add<MeshRenderer>(xorEnt4, *xor, shader);
+
+	auto& norMesh = norEnt.Add<MeshRenderer>(norEnt, *nor, shader);
+
+	auto& xnorMesh = xnorEnt.Add<MeshRenderer>(xnorEnt, *xnor, shader);
+	auto& xnorMesh2 = xnorEnt2.Add<MeshRenderer>(xnorEnt2, *xnor, shader);
 
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
@@ -471,7 +514,6 @@ void Level7::InitScene()
 	auto& completeMesh = completeEnt.Add<MeshRenderer>(completeEnt, *screen, shader);
 	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
 	auto& optionsMenuMesh = optionsMenuEnt.Add<MeshRenderer>(optionsMenuEnt, *screen, pauseShader);
-#pragma endregion
 
 	entList.push_back(&mainPlayer);
 	entList.push_back(&doorEnt);
@@ -492,12 +534,15 @@ void Level7::InitScene()
 	entList.push_back(&andEnt3);
 	entList.push_back(&andEnt4);
 	entList.push_back(&andEnt5);
-	entList.push_back(&andEnt6);
 	entList.push_back(&orEnt);
-	entList.push_back(&notEnt);
+	entList.push_back(&orEnt2);
+	entList.push_back(&orEnt3);
 	entList.push_back(&xorEnt);
 	entList.push_back(&xorEnt2);
-	entList.push_back(&xorEnt3);
+	entList.push_back(&xorEnt4);
+	entList.push_back(&norEnt);
+	entList.push_back(&xnorEnt);
+	entList.push_back(&xnorEnt2);
 	entList.push_back(&wireEnt);
 	entList.push_back(&wireEnt2);
 	entList.push_back(&wireEnt3);
@@ -517,6 +562,9 @@ void Level7::InitScene()
 	entList.push_back(&wireEnt17);
 	entList.push_back(&wireEnt18);
 	entList.push_back(&wireEnt19);
+	entList.push_back(&wireEnt20);
+	entList.push_back(&wireEnt21);
+	entList.push_back(&wireEnt22);
 	entList.push_back(&coilEnt);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
@@ -582,7 +630,7 @@ void Level7::InitScene()
 	orthoCam.SetFovDegrees(90.0f); // Set an initial FOV
 
 	auto& topCam = topViewCamEnt.Add<Camera>();
-	topCam.SetPosition(glm::vec3(0, 55, 0)); // Set initial position
+	topCam.SetPosition(glm::vec3(0, 58, 0)); // Set initial position
 	topCam.SetUp(glm::vec3(0, 0, -1)); // Use a z-up coordinate system
 	topCam.LookAt(glm::vec3(0.0f)); // Look at center of the screen
 	topCam.SetFovDegrees(90.0f); // Set an initial FOV
@@ -641,7 +689,7 @@ void Level7::InitScene()
 	music.Play();
 }
 
-void Level7::Update(float dt)
+void Level9::Update(float dt)
 {
 	// Get a ref to the engine
 	AudioEngine& audioEngine = AudioEngine::Instance();
@@ -719,6 +767,9 @@ void Level7::Update(float dt)
 	glm::mat4 transformWire17 = wireEnt17.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformWire18 = wireEnt18.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformWire19 = wireEnt19.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire20 = wireEnt20.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire21 = wireEnt21.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformWire22 = wireEnt22.Get<Transform>().GetModelMatrix();
 
 	glm::mat4 transformCoil = coilEnt.Get<Transform>().GetModelMatrix();
 
@@ -736,15 +787,18 @@ void Level7::Update(float dt)
 	glm::mat4 transformAnd3 = andEnt3.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformAnd4 = andEnt4.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformAnd5 = andEnt5.Get<Transform>().GetModelMatrix();
-	glm::mat4 transformAnd6 = andEnt6.Get<Transform>().GetModelMatrix();
 
 	glm::mat4 transformOr = orEnt.Get<Transform>().GetModelMatrix();
-
-	glm::mat4 transformNot = notEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformOr2 = orEnt2.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformOr3 = orEnt3.Get<Transform>().GetModelMatrix();
 
 	glm::mat4 transformXor = xorEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformXor2 = xorEnt2.Get<Transform>().GetModelMatrix();
-	glm::mat4 transformXor3 = xorEnt3.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformXor4 = xorEnt4.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformNor = norEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformXNor = xnorEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformXNor2 = xnorEnt2.Get<Transform>().GetModelMatrix();
 
 	glm::mat4 transformPause = pauseEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformOptions = optionEnt.Get<Transform>().GetModelMatrix();
@@ -1378,6 +1432,39 @@ void Level7::Update(float dt)
 				wireEnt19.Get<MeshRenderer>().Render(camera, transformWire19, LightSpaceViewProjection);
 			}
 
+			if (wireEnt20.Get<Wire>().GetIsPowered())
+			{
+				wireMatOn.Albedo->Bind(0);
+				wireEnt20.Get<MeshRenderer>().Render(camera, transformWire20, LightSpaceViewProjection);
+			}
+			else
+			{
+				wireMat.Albedo->Bind(0);
+				wireEnt20.Get<MeshRenderer>().Render(camera, transformWire20, LightSpaceViewProjection);
+			}
+
+			if (wireEnt21.Get<Wire>().GetIsPowered())
+			{
+				wireMatOn.Albedo->Bind(0);
+				wireEnt21.Get<MeshRenderer>().Render(camera, transformWire21, LightSpaceViewProjection);
+			}
+			else
+			{
+				wireMat.Albedo->Bind(0);
+				wireEnt21.Get<MeshRenderer>().Render(camera, transformWire21, LightSpaceViewProjection);
+			}
+
+			if (wireEnt22.Get<Wire>().GetIsPowered())
+			{
+				wireMatOn.Albedo->Bind(0);
+				wireEnt22.Get<MeshRenderer>().Render(camera, transformWire22, LightSpaceViewProjection);
+			}
+			else
+			{
+				wireMat.Albedo->Bind(0);
+				wireEnt22.Get<MeshRenderer>().Render(camera, transformWire22, LightSpaceViewProjection);
+			}
+
 			//Tesla Coil
 			shader->SetUniform("s_Diffuse", 1);
 			if (!doorEnt.Get<Door>().GetOpen())
@@ -1411,33 +1498,41 @@ void Level7::Update(float dt)
 			andEnt3.Get<MeshRenderer>().Render(camera, transformAnd3, LightSpaceViewProjection);
 			andEnt4.Get<MeshRenderer>().Render(camera, transformAnd4, LightSpaceViewProjection);
 			andEnt5.Get<MeshRenderer>().Render(camera, transformAnd5, LightSpaceViewProjection);
-			andEnt6.Get<MeshRenderer>().Render(camera, transformAnd6, LightSpaceViewProjection);
 
 			//Or-Gate
 			shader->SetUniform("s_Diffuse", 5);
 			orMat.Albedo->Bind(5);
 			orEnt.Get<MeshRenderer>().Render(camera, transformOr, LightSpaceViewProjection);
-
-			//Not-Gate
-			shader->SetUniform("s_Diffuse", 6);
-			notMat.Albedo->Bind(6);
-			notEnt.Get<MeshRenderer>().Render(camera, transformNot, LightSpaceViewProjection);
+			orEnt2.Get<MeshRenderer>().Render(camera, transformOr2, LightSpaceViewProjection);
+			orEnt3.Get<MeshRenderer>().Render(camera, transformOr3, LightSpaceViewProjection);
 
 			//Xor-Gates
-			shader->SetUniform("s_Diffuse", 7);
-			xorMat.Albedo->Bind(7);
+			shader->SetUniform("s_Diffuse", 6);
+			xorMat.Albedo->Bind(6);
 			xorEnt.Get<MeshRenderer>().Render(camera, transformXor, LightSpaceViewProjection);
 			xorEnt2.Get<MeshRenderer>().Render(camera, transformXor2, LightSpaceViewProjection);
-			xorEnt3.Get<MeshRenderer>().Render(camera, transformXor3, LightSpaceViewProjection);
+			xorEnt4.Get<MeshRenderer>().Render(camera, transformXor4, LightSpaceViewProjection);
+
+			//Nor-Gates
+			shader->SetUniform("s_Diffuse", 7);
+			norMat.Albedo->Bind(7);
+			norEnt.Get<MeshRenderer>().Render(camera, transformNor, LightSpaceViewProjection);
+			shadowBuffer->UnbindTexture(30);
+
+			//XNor-Gates
+			shader->SetUniform("s_Diffuse", 8);
+			xnorMat.Albedo->Bind(8);
+			xnorEnt.Get<MeshRenderer>().Render(camera, transformXNor, LightSpaceViewProjection);
+			xnorEnt2.Get<MeshRenderer>().Render(camera, transformXNor2, LightSpaceViewProjection);
 			shadowBuffer->UnbindTexture(30);
 
 			untexturedShader->Bind();
 			shadowBuffer->BindDepthAsTexture(30);
 
 			if ((playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f
-					&& playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
-					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f
-					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
+				&& playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
+				&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f
+				&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
 				|| (playerTrans.GetPositionX() - buttonTrans2.GetPositionX() < 3.0f
 					&& playerTrans.GetPositionX() - buttonTrans2.GetPositionX() > -3.0f
 					&& playerTrans.GetPositionZ() - buttonTrans2.GetPositionZ() < 3.0f
@@ -1541,20 +1636,21 @@ void Level7::Update(float dt)
 			wireEnt16.Get<MeshRenderer>().Render(camera, transformWire16, LightSpaceViewProjection);
 			wireEnt17.Get<MeshRenderer>().Render(camera, transformWire17, LightSpaceViewProjection);
 			wireEnt18.Get<MeshRenderer>().Render(camera, transformWire18, LightSpaceViewProjection);
-			wireEnt19.Get<MeshRenderer>().Render(camera, transformWire19, LightSpaceViewProjection);
 			coilEnt.Get<MeshRenderer>().Render(camera, transformCoil, LightSpaceViewProjection);
 			andEnt.Get<MeshRenderer>().Render(camera, transformAnd, LightSpaceViewProjection);
 			andEnt2.Get<MeshRenderer>().Render(camera, transformAnd2, LightSpaceViewProjection);
 			andEnt3.Get<MeshRenderer>().Render(camera, transformAnd3, LightSpaceViewProjection);
 			andEnt4.Get<MeshRenderer>().Render(camera, transformAnd4, LightSpaceViewProjection);
 			andEnt5.Get<MeshRenderer>().Render(camera, transformAnd5, LightSpaceViewProjection);
-			andEnt6.Get<MeshRenderer>().Render(camera, transformAnd6, LightSpaceViewProjection);
-			orEnt.Get<MeshRenderer>().Render(camera, transformOr, LightSpaceViewProjection);
-			notEnt.Get<MeshRenderer>().Render(camera, transformNot, LightSpaceViewProjection);
 			xorEnt.Get<MeshRenderer>().Render(camera, transformXor, LightSpaceViewProjection);
 			xorEnt2.Get<MeshRenderer>().Render(camera, transformXor2, LightSpaceViewProjection);
-			xorEnt3.Get<MeshRenderer>().Render(camera, transformXor3, LightSpaceViewProjection);
-			shadowBuffer->UnbindTexture(30);
+			xorEnt4.Get<MeshRenderer>().Render(camera, transformXor4, LightSpaceViewProjection);
+			orEnt.Get<MeshRenderer>().Render(camera, transformOr, LightSpaceViewProjection);
+			orEnt2.Get<MeshRenderer>().Render(camera, transformOr2, LightSpaceViewProjection);
+			orEnt3.Get<MeshRenderer>().Render(camera, transformOr3, LightSpaceViewProjection);
+			norEnt.Get<MeshRenderer>().Render(camera, transformNor, LightSpaceViewProjection);
+			xnorEnt.Get<MeshRenderer>().Render(camera, transformXNor, LightSpaceViewProjection);
+			xnorEnt2.Get<MeshRenderer>().Render(camera, transformXNor2, LightSpaceViewProjection);
 		}
 	}
 
@@ -1605,12 +1701,15 @@ void Level7::Update(float dt)
 	andEnt3.Get<AABB>().Update();
 	andEnt4.Get<AABB>().Update();
 	andEnt5.Get<AABB>().Update();
-	andEnt6.Get<AABB>().Update();
 	orEnt.Get<AABB>().Update();
-	notEnt.Get<AABB>().Update();
+	orEnt2.Get<AABB>().Update();
+	orEnt3.Get<AABB>().Update();
 	xorEnt.Get<AABB>().Update();
 	xorEnt2.Get<AABB>().Update();
-	xorEnt3.Get<AABB>().Update();
+	xorEnt4.Get<AABB>().Update();
+	norEnt.Get<AABB>().Update();
+	xnorEnt.Get<AABB>().Update();
+	xnorEnt2.Get<AABB>().Update();
 	coilEnt.Get<AABB>().Update();
 	buttonEnt.Get<AABB>().Update();
 	buttonEnt2.Get<AABB>().Update();
@@ -1651,19 +1750,25 @@ void Level7::Update(float dt)
 	wireEnt17.Get<Wire>().Update();
 	wireEnt18.Get<Wire>().Update();
 	wireEnt19.Get<Wire>().Update();
+	wireEnt20.Get<Wire>().Update();
+	wireEnt21.Get<Wire>().Update();
+	wireEnt22.Get<Wire>().Update();
 
 	//Gate Updates
+	andEnt.Get<AndGate>().Update();
+	orEnt.Get<OrGate>().Update();
 	xorEnt.Get<XorGate>().Update();
 	xorEnt2.Get<XorGate>().Update();
-	xorEnt3.Get<XorGate>().Update();
-	andEnt.Get<AndGate>().Update();
+	xnorEnt.Get<XNorGate>().Update();
 	andEnt2.Get<AndGate>().Update();
+	orEnt2.Get<OrGate>().Update();
+	xnorEnt2.Get<XNorGate>().Update();
+	norEnt.Get<NorGate>().Update();
 	andEnt3.Get<AndGate>().Update();
+	orEnt3.Get<OrGate>().Update();
+	xorEnt4.Get<XorGate>().Update();
 	andEnt4.Get<AndGate>().Update();
 	andEnt5.Get<AndGate>().Update();
-	andEnt6.Get<AndGate>().Update();
-	orEnt.Get<OrGate>().Update();
-	notEnt.Get<NotGate>().Update();
 
 	audioEngine.Update();
 
@@ -1676,10 +1781,8 @@ void Level7::Update(float dt)
 	}
 }
 
-void Level7::Unload()
+void Level9::Unload()
 {
-	//AudioEngine::Instance().Shutdown();
-
 	if (scene != nullptr)
 	{
 		delete scene;
