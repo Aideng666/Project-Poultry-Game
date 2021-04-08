@@ -79,6 +79,8 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseOrTabletScreen = Texture2D::LoadFromFile("Textures/OrGateTablet.png");
 	Texture2D::sptr diffuseCoilOff = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_Off.png");
 	Texture2D::sptr diffuseCoilOn = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_On.png");
+	Texture2D::sptr diffuseTable = Texture2D::LoadFromFile("Textures/TableTexture.png");
+
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -125,6 +127,7 @@ void Scene::InitTextures()
 	orTabletScreenMat.Albedo = diffuseOrTabletScreen;
 	coilMatOff.Albedo = diffuseCoilOff;
 	coilMatOn.Albedo = diffuseCoilOn;
+	tableMat.Albedo = diffuseTable;
 	clearMat.Albedo = texture2;
 }
 
@@ -277,6 +280,7 @@ void Scene::InitMeshes()
 	not = ModelManager::FindMesh(notFile);
 	xor = ModelManager::FindMesh(xorFile);
 	nor = ModelManager::FindMesh(norFile);
+	xnor = ModelManager::FindMesh(xnorFile);
 	orMesh = ModelManager::FindMesh(orFile);
 	buttonM = ModelManager::FindMesh(buttonFile);
 	coil = ModelManager::FindMesh(coilFile);
@@ -413,6 +417,30 @@ void Scene::InitMeshes()
 	wireM16L8 = ModelManager::FindMesh(wire16L8File);
 	wireM17L8 = ModelManager::FindMesh(wire17L8File);
 	wireM18L8 = ModelManager::FindMesh(wire18L8File);
+
+	//Level 9
+	wireM1L9   = ModelManager::FindMesh(wire1L9File);
+	wireM2L9 = ModelManager::FindMesh(wire2L9File);
+	wireM3L9 = ModelManager::FindMesh(wire3L9File);
+	wireM4L9 = ModelManager::FindMesh(wire4L9File);
+	wireM5L9 = ModelManager::FindMesh(wire5L9File);
+	wireM6L9 = ModelManager::FindMesh(wire6L9File);
+	wireM7L9 = ModelManager::FindMesh(wire7L9File);
+	wireM8L9 = ModelManager::FindMesh(wire8L9File);
+	wireM9L9 = ModelManager::FindMesh(wire9L9File);
+	wireM10L9 = ModelManager::FindMesh(wire10L9File);
+	wireM11L9 = ModelManager::FindMesh(wire11L9File);
+	wireM12L9 = ModelManager::FindMesh(wire12L9File);
+	wireM13L9 = ModelManager::FindMesh(wire13L9File);
+	wireM14L9 = ModelManager::FindMesh(wire14L9File);
+	wireM15L9 = ModelManager::FindMesh(wire15L9File);
+	wireM16L9 = ModelManager::FindMesh(wire16L9File);
+	wireM17L9 = ModelManager::FindMesh(wire17L9File);
+	wireM18L9 = ModelManager::FindMesh(wire18L9File);
+	wireM19L9 = ModelManager::FindMesh(wire19L9File);
+	wireM20L9 = ModelManager::FindMesh(wire20L9File);
+	wireM21L9 = ModelManager::FindMesh(wire21L9File);
+	wireM22L9 = ModelManager::FindMesh(wire22L9File);
 
 	entList.clear();
 }

@@ -132,7 +132,7 @@ protected:
 
 	Mat clearMat, pauseMat, optionMenuMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat, optionPressMat, exitPressMat, retryPressMat;
 	Mat buttonMat, drumstickMat, doorMat, doorOnMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
-	Mat andMat, notMat, orMat, xorMat, norMat, xnorMat, wireMatOn, shelfPipeMat, columnPipeMat, labWallMat, labFloorMat;
+	Mat andMat, notMat, orMat, xorMat, norMat, xnorMat, wireMatOn, shelfPipeMat, columnPipeMat, labWallMat, labFloorMat, tableMat;
 
 	//Meshes for multiple levels
 	Mesh* options;
@@ -285,6 +285,31 @@ protected:
 	Mesh* wireM17L8;
 	Mesh* wireM18L8;
 
+	//Level 9
+	Mesh* xnor;
+	Mesh* wireM1L9;
+	Mesh* wireM2L9;
+	Mesh* wireM3L9;
+	Mesh* wireM4L9;
+	Mesh* wireM5L9;
+	Mesh* wireM6L9;
+	Mesh* wireM7L9;
+	Mesh* wireM8L9;
+	Mesh* wireM9L9;
+	Mesh* wireM10L9;
+	Mesh* wireM11L9;
+	Mesh* wireM12L9;
+	Mesh* wireM13L9;
+	Mesh* wireM14L9;
+	Mesh* wireM15L9;
+	Mesh* wireM16L9;
+	Mesh* wireM17L9;
+	Mesh* wireM18L9;
+	Mesh* wireM19L9;
+	Mesh* wireM20L9;
+	Mesh* wireM21L9;
+	Mesh* wireM22L9;
+
 
 	//Files for multiple levels
 	std::string drumFile = "Models/ChickenFrames/Walk/Walk1.obj";
@@ -375,7 +400,6 @@ protected:
 
 	//Level 6 files
 	std::string xorFile = "Models/XorGate.obj";
-	std::string norFile = "Models/NorGate.obj";
 	std::string wire1L6File = "Models/Wires/New_Level6_Wire1.obj";
 	std::string wire2L6File = "Models/Wires/New_Level6_Wire2.obj";
 	std::string wire3L6File = "Models/Wires/New_Level6_Wire3.obj";
@@ -416,6 +440,7 @@ protected:
 	std::string wire19L7File = "Models/Wires/Level7_Wire19.obj";
 
 	//Level 8 files
+	std::string norFile = "Models/NorGate.obj";
 	std::string wire1L8File = "Models/Wires/Level8_Wire1.obj";
 	std::string wire2L8File = "Models/Wires/Level8_Wire2.obj";
 	std::string wire3L8File = "Models/Wires/Level8_Wire3.obj";
@@ -435,6 +460,31 @@ protected:
 	std::string wire17L8File = "Models/Wires/Level8_Wire17.obj";
 	std::string wire18L8File = "Models/Wires/Level8_Wire18.obj";
 	std::string wire19L8File = "Models/Wires/Level8_Wire19.obj";
+
+	//Level 9 files
+	std::string xnorFile = "Models/XNorGate.obj";
+	std::string wire1L9File = "Models/Wires/New_Level9_Wire1.obj"; 
+	std::string wire2L9File = "Models/Wires/New_Level9_Wire2.obj"; 
+	std::string wire3L9File = "Models/Wires/New_Level9_Wire3.obj"; 
+	std::string wire4L9File = "Models/Wires/New_Level9_Wire4.obj"; 
+	std::string wire5L9File = "Models/Wires/New_Level9_Wire5.obj"; 
+	std::string wire6L9File = "Models/Wires/New_Level9_Wire6.obj"; 
+	std::string wire7L9File = "Models/Wires/New_Level9_Wire7.obj"; 
+	std::string wire8L9File = "Models/Wires/New_Level9_Wire8.obj"; 
+	std::string wire9L9File = "Models/Wires/New_Level9_Wire9.obj"; 
+	std::string wire10L9File = "Models/Wires/New_Level9_Wire10.obj"; 
+	std::string wire11L9File = "Models/Wires/New_Level9_Wire11.obj"; 
+	std::string wire12L9File = "Models/Wires/New_Level9_Wire12.obj"; 
+	std::string wire13L9File = "Models/Wires/New_Level9_Wire13.obj"; 
+	std::string wire14L9File = "Models/Wires/New_Level9_Wire14.obj"; 
+	std::string wire15L9File = "Models/Wires/New_Level9_Wire15.obj"; 
+	std::string wire16L9File = "Models/Wires/New_Level9_Wire16.obj"; 
+	std::string wire17L9File = "Models/Wires/New_Level9_Wire17.obj"; 
+	std::string wire18L9File = "Models/Wires/New_Level9_Wire18.obj"; 
+	std::string wire19L9File = "Models/Wires/New_Level9_Wire19.obj"; 
+	std::string wire20L9File = "Models/Wires/New_Level9_Wire20.obj"; 
+	std::string wire21L9File = "Models/Wires/New_Level9_Wire21.obj"; 
+	std::string wire22L9File = "Models/Wires/New_Level9_Wire22.obj"; 
 
 	std::vector<std::function<void()>> imGuiCallbacks;
 
