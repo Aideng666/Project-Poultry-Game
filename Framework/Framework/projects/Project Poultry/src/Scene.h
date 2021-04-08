@@ -159,6 +159,7 @@ protected:
 	Mesh* shelfPipe;
 	Mesh* columnPipe;
 	Mesh* optionsButton;
+	Mesh* table;
 
 	//For bigger "lab" levels
 	Mesh* floorLab;
@@ -178,7 +179,6 @@ protected:
 	Mesh* mainMenuWire2;
 	Mesh* WASD;
 
-
 	//Level 1 Meshes
 	Mesh* wireM1L1;
 	Mesh* wireM2L1;
@@ -194,7 +194,7 @@ protected:
 	Mesh* floorL2;
 
 	//Level 3 Meshes
-	Mesh * not;
+	Mesh* not;
 	Mesh* wireM1L3;
 	Mesh* wireM2L3;
 	Mesh* wireM3L3;
@@ -341,6 +341,7 @@ protected:
 	std::string pipeFileC = "Models/New2_CurvedPipe.obj";
 	std::string shelfPipeFile = "Models/ShelfPipe.obj";
 	std::string columnPipeFile = "Models/New_Column_Pipe.obj";
+	std::string tableFile = "Models/Table.obj";
 
 	std::string labBackWallFile = "Models/BackWall_New.obj";
 	std::string labLeftWallFile = "Models/LeftWall_New.obj";

@@ -46,6 +46,12 @@ private:
 
 	//Boxes
 	Entity boxEnt, boxEnt2;
+	//Column-Pipes
+	Entity columnPipeEnt, columnPipeEnt2, columnPipeEnt3;
+	//Table
+	Entity tableEnt, tableEnt2;
+	//Panels
+	Entity panelEnt, panelEnt2, panelEnt3;
 
 	GLfloat time = 0.0f;
 
