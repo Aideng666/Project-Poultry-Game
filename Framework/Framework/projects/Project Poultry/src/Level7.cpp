@@ -1117,10 +1117,15 @@ void Level7::Update(float dt)
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 1);
-			optionMat.Albedo->Bind(1);
 
-			if (isPaused)
+			if (isPaused && mousePos.y > 403 && mousePos.y < 594 && mousePos.x > 104 && mousePos.x < 336)
 			{
+				optionPressMat.Albedo->Bind(1);
+				optionEnt.Get<MeshRenderer>().Render(orthoCam, transformOptions);
+			}
+			else if (isPaused)
+			{
+				optionMat.Albedo->Bind(1);
 				optionEnt.Get<MeshRenderer>().Render(orthoCam, transformOptions);
 			}
 
@@ -1566,6 +1571,19 @@ void Level7::Update(float dt)
 #pragma endregion
 
 	basicEffect->UnbindBuffer();
+
+	if (activeEffect == 3 && isBright)
+	{
+		colorCorrectEnt.Get<ColorCorrect>().SetLUT(brightLut);
+	}
+	else if (activeEffect == 3 && isCorrected)
+	{
+		colorCorrectEnt.Get<ColorCorrect>().SetLUT(colorCorrectLut);
+	}
+	else if (activeEffect == 3 && !isBright && !isCorrected)
+	{
+		colorCorrectEnt.Get<ColorCorrect>().SetLUT(lut);
+	}
 
 	effects[activeEffect]->ApplyEffect(basicEffect);
 
