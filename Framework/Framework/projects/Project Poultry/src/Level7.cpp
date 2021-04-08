@@ -83,6 +83,9 @@ Level7::Level7(std::string sceneName, GLFWwindow* wind)
 	soundEnt = Entity::Create();
 	controlsEnt = Entity::Create();
 
+	boxEnt = Entity::Create();
+	boxEnt2 = Entity::Create();
+
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
 	sepiaEnt = Entity::Create();
@@ -274,6 +277,13 @@ void Level7::InitScene()
 
 	auto& xorTrans3 = xorEnt3.Add<Transform>();
 	xorTrans3.SetPosition(glm::vec3(-6.6f, 1.f, -1.0f));
+
+	//Box transforms
+	auto& boxTrans = boxEnt.Add<Transform>();
+	boxTrans.SetPosition(glm::vec3(-48.f, 4.6f, 20.f));
+
+	auto& boxTrans2 = boxEnt2.Add<Transform>();
+	boxTrans2.SetPosition(glm::vec3(-48.f, 11.6f, 35.f));
 
 	//Pause UI
 	auto& pauseTrans = pauseEnt.Add<Transform>();
@@ -499,6 +509,9 @@ void Level7::InitScene()
 	auto& xorMesh = xorEnt.Add<MeshRenderer>(xorEnt, *xor, shader);
 	auto& xorMesh2 = xorEnt2.Add<MeshRenderer>(xorEnt2, *xor, shader);
 	auto& xorMesh3 = xorEnt3.Add<MeshRenderer>(xorEnt3, *xor, shader);
+
+	auto& boxMesh = boxEnt.Add<MeshRenderer>(boxEnt, *boxM, shader);
+	auto& boxMesh2 = boxEnt2.Add<MeshRenderer>(boxEnt2, *boxM, shader);
 
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
@@ -788,6 +801,9 @@ void Level7::Update(float dt)
 	glm::mat4 transformXor = xorEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformXor2 = xorEnt2.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformXor3 = xorEnt3.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformBox = boxEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformBox2 = boxEnt2.Get<Transform>().GetModelMatrix();
 
 	glm::mat4 transformPause = pauseEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformOptions = optionEnt.Get<Transform>().GetModelMatrix();
@@ -1647,6 +1663,12 @@ void Level7::Update(float dt)
 			xorEnt3.Get<MeshRenderer>().Render(camera, transformXor3, LightSpaceViewProjection);
 			shadowBuffer->UnbindTexture(30);
 
+			//Boxes
+			shader->SetUniform("s_Diffuse", 8);
+			boxMat.Albedo->Bind(8);
+			boxEnt.Get<MeshRenderer>().Render(camera, transformBox, LightSpaceViewProjection);
+			boxEnt2.Get<MeshRenderer>().Render(camera, transformBox2, LightSpaceViewProjection);
+
 			untexturedShader->Bind();
 			shadowBuffer->BindDepthAsTexture(30);
 
@@ -1770,6 +1792,9 @@ void Level7::Update(float dt)
 			xorEnt.Get<MeshRenderer>().Render(camera, transformXor, LightSpaceViewProjection);
 			xorEnt2.Get<MeshRenderer>().Render(camera, transformXor2, LightSpaceViewProjection);
 			xorEnt3.Get<MeshRenderer>().Render(camera, transformXor3, LightSpaceViewProjection);
+			boxEnt.Get<MeshRenderer>().Render(camera, transformBox, LightSpaceViewProjection);
+			boxEnt2.Get<MeshRenderer>().Render(camera, transformBox2, LightSpaceViewProjection);
+
 			shadowBuffer->UnbindTexture(30);
 		}
 	}

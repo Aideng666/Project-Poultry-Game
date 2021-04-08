@@ -44,6 +44,9 @@ private:
 	//Level Complete Ent
 	Entity completeEnt;
 
+	//Boxes
+	Entity boxEnt, boxEnt2;
+
 	GLfloat time = 0.0f;
 
 	KeyPressWatcher button1Watch = KeyPressWatcher(GLFW_KEY_E, [&]() {
