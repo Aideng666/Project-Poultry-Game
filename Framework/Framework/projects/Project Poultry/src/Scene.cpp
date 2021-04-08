@@ -276,6 +276,7 @@ void Scene::InitMeshes()
 	and = ModelManager::FindMesh(andFile);
 	not = ModelManager::FindMesh(notFile);
 	xor = ModelManager::FindMesh(xorFile);
+	nor = ModelManager::FindMesh(norFile);
 	orMesh = ModelManager::FindMesh(orFile);
 	buttonM = ModelManager::FindMesh(buttonFile);
 	coil = ModelManager::FindMesh(coilFile);
@@ -392,6 +393,26 @@ void Scene::InitMeshes()
 	wireM17L7 = ModelManager::FindMesh(wire17L7File);
 	wireM18L7 = ModelManager::FindMesh(wire18L7File);
 	wireM19L7 = ModelManager::FindMesh(wire19L7File);
+
+	//Level 8
+	wireM1L8 = ModelManager::FindMesh(wire1L8File);
+	wireM2L8 = ModelManager::FindMesh(wire2L8File);
+	wireM3L8 = ModelManager::FindMesh(wire3L8File);
+	wireM4L8 = ModelManager::FindMesh(wire4L8File);
+	wireM5L8 = ModelManager::FindMesh(wire5L8File);
+	wireM6L8 = ModelManager::FindMesh(wire6L8File);
+	wireM7L8 = ModelManager::FindMesh(wire7L8File);
+	wireM8L8 = ModelManager::FindMesh(wire8L8File);
+	wireM9L8 = ModelManager::FindMesh(wire9L8File);
+	wireM10L8 = ModelManager::FindMesh(wire10L8File);
+	wireM11L8 = ModelManager::FindMesh(wire11L8File);
+	wireM12L8 = ModelManager::FindMesh(wire12L8File);
+	wireM13L8 = ModelManager::FindMesh(wire13L8File);
+	wireM14L8 = ModelManager::FindMesh(wire14L8File);
+	wireM15L8 = ModelManager::FindMesh(wire15L8File);
+	wireM16L8 = ModelManager::FindMesh(wire16L8File);
+	wireM17L8 = ModelManager::FindMesh(wire17L8File);
+	wireM18L8 = ModelManager::FindMesh(wire18L8File);
 
 	entList.clear();
 }
