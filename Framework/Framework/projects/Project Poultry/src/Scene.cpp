@@ -324,6 +324,7 @@ void Scene::InitMeshes()
 	tablet = ModelManager::FindMesh(tabletFile);
 	tut = ModelManager::FindMesh(tutFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	optionsButton = ModelManager::FindMesh(optionsButtonFile);
+	table = ModelManager::FindMesh(tableFile);
 
 	//Lab Levels(tentative)
 	floorLab = ModelManager::FindMesh(floorL4File);
