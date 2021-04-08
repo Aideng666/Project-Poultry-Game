@@ -166,13 +166,13 @@ void Level1::InitScene()
 	boxTrans2.SetPosition(glm::vec3(19.f, 4.5f, -33.f));
 
 	auto& boxTrans3 = boxEnt3.Add<Transform>();
-	boxTrans3.SetPosition(glm::vec3(34.f, 4.5f, -9.f));
+	boxTrans3.SetPosition(glm::vec3(35.f, 4.5f, -9.f));
 
 	auto& boxTrans4 = boxEnt4.Add<Transform>();
-	boxTrans4.SetPosition(glm::vec3(34.f, 4.5f, -3.f));
+	boxTrans4.SetPosition(glm::vec3(35.f, 4.5f, -3.f));
 
 	auto& boxTrans5 = boxEnt5.Add<Transform>();
-	boxTrans5.SetPosition(glm::vec3(34.f, 10.5f, -4.f));
+	boxTrans5.SetPosition(glm::vec3(35.f, 10.5f, -4.f));
 	boxTrans5.SetScale(glm::vec3(0.684f));
 
 	//Panel transform
@@ -188,14 +188,14 @@ void Level1::InitScene()
 
 	//Vent transform
 	auto& ventTrans = bigVentEnt.Add<Transform>();
-	ventTrans.SetPosition(glm::vec3(38.f, 12.0f, 22.0f));
+	ventTrans.SetPosition(glm::vec3(38.3f, 12.0f, 22.0f));
 	ventTrans.SetScale(glm::vec3(0.8f));
 
 	auto& ventTrans2 = smallVentEnt.Add<Transform>();
-	ventTrans2.SetPosition(glm::vec3(-38.f, 16.0f, -17.f));
+	ventTrans2.SetPosition(glm::vec3(-38.3f, 16.0f, -17.f));
 
 	auto& ventTrans3 = smallVentEnt2.Add<Transform>();
-	ventTrans3.SetPosition(glm::vec3(-38.f, 16.0f, 6.f));
+	ventTrans3.SetPosition(glm::vec3(-38.3f, 16.0f, 6.f));
 
 	//Pipe transforms
 	auto& pipeTrans = pipeEntS.Add<Transform>();

@@ -195,7 +195,7 @@ void Level5::InitScene()
 
 	//Coil Object
 	auto& coilTrans = coilEnt.Add<Transform>();
-	coilTrans.SetPosition(glm::vec3(-16.0f, 1.0f, -48.f));
+	coilTrans.SetPosition(glm::vec3(-16.0f, 1.0f, -43.f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 	coilTrans.SetRotationY(180.0f);
 

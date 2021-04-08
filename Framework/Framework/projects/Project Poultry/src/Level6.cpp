@@ -256,17 +256,17 @@ void Level6::InitScene()
 
 	//Vent transforms
 	auto& ventTrans = ventEnt.Add<Transform>();
-	ventTrans.SetPosition(glm::vec3(50.8f, 30.f, 10.f));
+	ventTrans.SetPosition(glm::vec3(50.2f, 30.f, 10.f));
 	ventTrans.SetScale(glm::vec3(1.2f));
 	ventTrans.SetRotationZ(180.f);
 
 	auto& ventTrans2 = ventEnt2.Add<Transform>();
-	ventTrans2.SetPosition(glm::vec3(50.8f, 15.f, -40.f));
+	ventTrans2.SetPosition(glm::vec3(50.2f, 15.f, -40.f));
 	ventTrans2.SetScale(glm::vec3(1.2f));
 	ventTrans2.SetRotationZ(180.f);
 
 	auto& ventTrans3 = ventEnt3.Add<Transform>();
-	ventTrans3.SetPosition(glm::vec3(50.8f, 15.f, -25.f));
+	ventTrans3.SetPosition(glm::vec3(50.2f, 15.f, -25.f));
 	ventTrans3.SetScale(glm::vec3(1.2f));
 	ventTrans3.SetRotationZ(180.f);
 

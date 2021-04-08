@@ -181,11 +181,11 @@ void Level4::InitScene()
 
 	//Vent transforms
 	auto& ventTrans = ventEntL.Add<Transform>();
-	ventTrans.SetPosition(glm::vec3(50.5f, 25.f, -17.f));
+	ventTrans.SetPosition(glm::vec3(50.3f, 25.f, -17.f));
 	ventTrans.SetScale(glm::vec3(1.2f));
 
 	auto& ventTrans2 = ventEntS.Add<Transform>();
-	ventTrans2.SetPosition(glm::vec3(50.8f, 25.f, 20.f));
+	ventTrans2.SetPosition(glm::vec3(50.6f, 25.f, 20.f));
 	ventTrans2.SetScale(glm::vec3(1.2f));
 	ventTrans2.SetRotationZ(180.f);
 
@@ -224,7 +224,7 @@ void Level4::InitScene()
 
 	//Coil Object
 	auto& coilTrans = coilEnt.Add<Transform>();
-	coilTrans.SetPosition(glm::vec3(-13.0f, 1.0f, -48.f));
+	coilTrans.SetPosition(glm::vec3(-13.5f, 1.0f, -42.f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 	coilTrans.SetRotationY(180.0f);
 
