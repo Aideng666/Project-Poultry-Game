@@ -77,6 +77,9 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseAndTabletScreen = Texture2D::LoadFromFile("Textures/AndGateTablet.png");
 	Texture2D::sptr diffuseNotTabletScreen = Texture2D::LoadFromFile("Textures/NotGateTablet.png");
 	Texture2D::sptr diffuseOrTabletScreen = Texture2D::LoadFromFile("Textures/OrGateTablet.png");
+	Texture2D::sptr diffuseNorTabletScreen = Texture2D::LoadFromFile("Textures/NorGateTablet.png");
+	Texture2D::sptr diffuseXorTabletScreen = Texture2D::LoadFromFile("Textures/XorGateTablet.png");
+	Texture2D::sptr diffuseXnorTabletScreen = Texture2D::LoadFromFile("Textures/XNorGateTablet.png");
 	Texture2D::sptr diffuseCoilOff = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_Off.png");
 	Texture2D::sptr diffuseCoilOn = Texture2D::LoadFromFile("Textures/Tesla_Coil_Texture_On.png");
 	Texture2D::sptr diffuseTable = Texture2D::LoadFromFile("Textures/TableTexture.png");
@@ -136,6 +139,9 @@ void Scene::InitTextures()
 	andTabletScreenMat.Albedo = diffuseAndTabletScreen;
 	notTabletScreenMat.Albedo = diffuseNotTabletScreen;
 	orTabletScreenMat.Albedo = diffuseOrTabletScreen;
+	norTabletScreenMat.Albedo = diffuseNorTabletScreen;
+	xorTabletScreenMat.Albedo = diffuseXorTabletScreen;
+	xnorTabletScreenMat.Albedo = diffuseXnorTabletScreen;
 	coilMatOff.Albedo = diffuseCoilOff;
 	coilMatOn.Albedo = diffuseCoilOn;
 	tableMat.Albedo = diffuseTable;

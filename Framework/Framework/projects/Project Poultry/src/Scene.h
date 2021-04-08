@@ -127,12 +127,15 @@ protected:
 	Entity filmGrainEnt, pixelateEnt;
 	Entity bloomEnt;
 	Entity gBufferEnt, shadowBufferEnt;
+	//Tablet
+	Entity tabletEnt;
+	Entity tabletScreenEnt;
 
 	Entity pauseEnt, optionEnt, exitEnt, retryEnt, tutEnt, completeEnt, optionsMenuEnt;
 	Entity muteEnt, colorBlindEnt, brightEnt, musicEnt, soundEnt, controlsEnt;
 
 	Mat clearMat, pauseMat, optionMenuMat, boxMat, curvedPipeMat, straightPipeMat, optionMat, exitMat, retryMat, optionPressMat, exitPressMat, retryPressMat;
-	Mat buttonMat, drumstickMat, doorMat, doorOnMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, coilMatOn, coilMatOff;
+	Mat buttonMat, drumstickMat, doorMat, doorOnMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, norTabletScreenMat, xorTabletScreenMat, xnorTabletScreenMat, coilMatOn, coilMatOff;
 	Mat andMat, notMat, orMat, xorMat, norMat, xnorMat, wireMatOn, shelfPipeMat, columnPipeMat, labWallMat, labFloorMat, tableMat, toggleOnMat, toggleOffMat, volumeMat;
 	Mat volumeMat1, volumeMat2, volumeMat3, volumeMat4, volumeMat5, volumeMat6, volumeMat7, volumeMat8, volumeMat9, volumeMat10;
 
