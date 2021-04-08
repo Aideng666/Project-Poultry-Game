@@ -49,9 +49,6 @@ private:
 	Entity smallVentEnt, smallVentEnt2;
 	//Pipe
 	Entity pipeEntS, pipeEntC;
-	//Tablet
-	Entity tabletEnt;
-	Entity tabletScreenEnt;
 	//Particle
 	//Entity particleEnt;
 

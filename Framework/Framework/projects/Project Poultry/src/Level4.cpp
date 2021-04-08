@@ -111,7 +111,7 @@ void Level4::InitScene()
 	auto& playerTrans = mainPlayer.Add<Transform>();
 	playerTrans.SetPosition(glm::vec3(0.0f, 1.1f, 42.0f));
 	playerTrans.SetRotationY(180.0f);
-	playerTrans.SetLevelSize(40.0f);
+	playerTrans.SetLevelSize(45.0f);
 
 	//Floor transform
 	auto& groundTrans = floorEnt.Add<Transform>();
