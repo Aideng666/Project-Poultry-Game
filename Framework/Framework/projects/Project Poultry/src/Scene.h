@@ -113,7 +113,7 @@ protected:
 	entt::registry* scene = nullptr;
 	std::string name = " ";
 
-	Shader::sptr shader, animShader, pauseShader, untexturedShader, particleShader, simpleDepthShader;
+	Shader::sptr shader, animShader, pauseShader, untexturedShader, particleShader, simpleDepthShader, rimLightShader;
 
 	GLFWwindow* window;
 	HWND hWnd;
@@ -285,7 +285,7 @@ protected:
 	std::string ventFileS = "Models/New_VentSmall.obj";
 	std::string tabletFile = "Models/Tablet.obj";
 	std::string tutFile = "Models/Interact.obj";
-	std::string pauseButtonFile = "Models/UI_Button.obj";
+	std::string pauseButtonFile = "Models/UI_Buttons.obj";
 	std::string pipeFileS = "Models/New2_StraightPipe.obj";
 	std::string pipeFileC = "Models/New2_CurvedPipe.obj";
 	std::string shelfPipeFile = "Models/ShelfPipe.obj";

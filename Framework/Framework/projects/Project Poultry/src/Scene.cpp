@@ -66,12 +66,12 @@ void Scene::InitTextures()
 	Texture2D::sptr diffusePipeShelf = Texture2D::LoadFromFile("Textures/ShelfPipeTexture.png");
 	Texture2D::sptr diffusePipeColumn = Texture2D::LoadFromFile("Textures/ColumnPipeTexture.png");
 	Texture2D::sptr diffusePause = Texture2D::LoadFromFile("Textures/PauseMenu.png");
-	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Option.png");
-	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Replay.png");
+	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Options.png");
+	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Retry.png");
 	Texture2D::sptr diffuseExit = Texture2D::LoadFromFile("Textures/Buttons/Default/Exit.png");
 	Texture2D::sptr diffuseOptionsMenu = Texture2D::LoadFromFile("Textures/OptionsMenu.png");
-	Texture2D::sptr diffusePressOptions = Texture2D::LoadFromFile("Textures/Buttons/Pressed/Option.png");
-	Texture2D::sptr diffusePressRetry = Texture2D::LoadFromFile("Textures/Buttons/Pressed/Replay.png");
+	Texture2D::sptr diffusePressOptions = Texture2D::LoadFromFile("Textures/Buttons/Pressed/Options.png");
+	Texture2D::sptr diffusePressRetry = Texture2D::LoadFromFile("Textures/Buttons/Pressed/Retry.png");
 	Texture2D::sptr diffusePressExit = Texture2D::LoadFromFile("Textures/Buttons/Pressed/Exit.png");
 	Texture2D::sptr diffuseTablet = Texture2D::LoadFromFile("Textures/TabletTexture.png");
 	Texture2D::sptr diffuseAndTabletScreen = Texture2D::LoadFromFile("Textures/AndGateTablet.png");
@@ -151,6 +151,12 @@ void Scene::InitShaders()
 	shader->Link();
 	SetShaderValues(shader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess, lightLinearFalloff, lightQuadraticFalloff);
 
+	rimLightShader = Shader::Create();
+	rimLightShader->LoadShaderPartFromFile("Shaders/vertex_shader.glsl", GL_VERTEX_SHADER);
+	rimLightShader->LoadShaderPartFromFile("Shaders/rim_lighting_shader.glsl", GL_FRAGMENT_SHADER);
+	rimLightShader->Link();
+	SetShaderValues(rimLightShader, lightPos, lightDir, lightCol, lightAmbientPow, lightSpecularPow, ambientCol, ambientPow, shininess, lightLinearFalloff, lightQuadraticFalloff);
+
 	//For any objects with animations
 	animShader = Shader::Create();
 	animShader->LoadShaderPartFromFile("Shaders/morph_shader.glsl", GL_VERTEX_SHADER);
@@ -204,7 +210,6 @@ void Scene::InitMeshes()
 	door8 = ModelManager::FindMesh(doorFile8);
 	door9 = ModelManager::FindMesh(doorFile9);
 	door10 = ModelManager::FindMesh(doorFile10);
-	door10 = ModelManager::FindMesh(doorFile11);
 
 	//For Walking Anim
 	walk1 = ModelManager::FindMesh(walkFile1);

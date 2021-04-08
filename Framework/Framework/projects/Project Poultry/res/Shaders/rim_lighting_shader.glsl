@@ -161,12 +161,12 @@ void main() {
 	vec3 result = (
 	(sun._ambientPow * sun._ambientCol.xyz) + // global ambient light
 	(1.0 - shadow) * (diffuse + specular)/* * attenuation*/ // light factors from our single light
-	) * inColor * textureColor.rgb; // Object color
+	)* inColor * textureColor.rgb; // Object color
 
-	//if (/*rimLight < 0.4 && */)
-	//{
-	//	result += rimLight;
-	//}
+	if (rimLight < 0.8)
+	{
+		result += rimLight;
+	}
 
 	switch (u_LightOn)
 	{
