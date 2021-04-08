@@ -29,7 +29,7 @@ namespace freebird
 	{
 	public:
 
-		static bool MovePlayer(GLFWwindow* window, Entity player, Entity camEnt, float dt, bool camFar, bool camClose, bool camLeft, bool camRight);
+		static bool MovePlayer(GLFWwindow* window, Entity player, Entity camEnt, float dt, bool camFar, bool camClose, bool camLeft, bool camRight, bool isArrow);
 		static void MoveCamera(GLFWwindow* window, Entity camEnt, float dt);
 		static int ChangeLighting(GLFWwindow* window, int lightNum);
 		static Camera& ToggleCam(Entity mainPlayer, Entity camEnt, Entity topEnt, bool topView, bool& camChanged, bool& topChanged);

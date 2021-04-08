@@ -30,138 +30,272 @@ namespace freebird
 		return false;
 	}
 
-	bool Input::MovePlayer(GLFWwindow* window, Entity player, Entity camEnt, float dt, bool camFar, bool camClose, bool camLeft, bool camRight)
+	bool Input::MovePlayer(GLFWwindow* window, Entity player, Entity camEnt, float dt, bool camFar, bool camClose, bool camLeft, bool camRight, bool isArrow)
 	{
 		auto& playerTrans = player.Get<Transform>();
 		auto& camera = camEnt.Get<Camera>();
-
-		if (!glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		if (!isArrow)
 		{
-			return false;
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		{
-
-			playerTrans.SetRotationY(225.0f);
-
-			playerTrans.SetPositionX(playerTrans.GetPositionX() - 15 * dt);
-			playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 15 * dt);
-
-			if (camRight)
-				camera.SetPosition(glm::vec3(camera.GetPosition().x - 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
-
-			if (camFar)
-				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 15 * dt));
-
-			return true;
-		}
-
-		else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		{
-
-			playerTrans.SetRotationY(315.0f);
-
-			playerTrans.SetPositionX(playerTrans.GetPositionX() - 15 * dt);
-			playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 15 * dt);
-
-			if (camRight)
-				camera.SetPosition(glm::vec3(camera.GetPosition().x - 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
-
-			if (camClose)
-				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 15 * dt));
-
-			return true;
-		}
-
-		else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		{
-
-			playerTrans.SetRotationY(45.0f);
-
-			playerTrans.SetPositionX(playerTrans.GetPositionX() + 15 * dt);
-			playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 15 * dt);
-
-			if (camLeft)
-				camera.SetPosition(glm::vec3(camera.GetPosition().x + 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
-
-			if (camClose)
-				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 15 * dt));
-
-			return true;
-		}
-
-		else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		{
-
-			playerTrans.SetRotationY(135.0f);
-
-			playerTrans.SetPositionX(playerTrans.GetPositionX() + 15 * dt);
-			playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 15 * dt);
-
-			if (camLeft)
-				camera.SetPosition(glm::vec3(camera.GetPosition().x + 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
-
-			if (camFar)
-				camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 15 * dt));
-
-			return true;
-		}
-
-		else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		{
-
-			if (playerTrans.GetCanMoveLeft())
+			if (!glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 			{
+				return false;
+			}
+
+			if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+			{
+
+				playerTrans.SetRotationY(225.0f);
+
 				playerTrans.SetPositionX(playerTrans.GetPositionX() - 15 * dt);
-				playerTrans.SetRotationY(270.0f);
-				
+				playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 15 * dt);
+
 				if (camRight)
 					camera.SetPosition(glm::vec3(camera.GetPosition().x - 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
-
-				return true;
-			}
-		}
-		else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		{
-
-			if (playerTrans.GetCanMoveRight())
-			{
-				playerTrans.SetPositionX(playerTrans.GetPositionX() + 15 * dt);
-				playerTrans.SetRotationY(90.0f);
-				
-				if (camLeft)
-					camera.SetPosition(glm::vec3(camera.GetPosition().x + 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
-
-				return true;
-			}
-		}
-		else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		{
-
-			if (playerTrans.GetCanMoveUp())
-			{
-				playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 15 * dt);
-				playerTrans.SetRotationY(180.0f);
 
 				if (camFar)
 					camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 15 * dt));
 
 				return true;
 			}
-		}
-		else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		{
 
-			if (playerTrans.GetCanMoveDown())
+			else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 			{
+
+				playerTrans.SetRotationY(315.0f);
+
+				playerTrans.SetPositionX(playerTrans.GetPositionX() - 15 * dt);
 				playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 15 * dt);
-				playerTrans.SetRotationY(0.0f);
+
+				if (camRight)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x - 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
 
 				if (camClose)
 					camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 15 * dt));
 
 				return true;
+			}
+
+			else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+			{
+
+				playerTrans.SetRotationY(45.0f);
+
+				playerTrans.SetPositionX(playerTrans.GetPositionX() + 15 * dt);
+				playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 15 * dt);
+
+				if (camLeft)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x + 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
+
+				if (camClose)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 15 * dt));
+
+				return true;
+			}
+
+			else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+			{
+
+				playerTrans.SetRotationY(135.0f);
+
+				playerTrans.SetPositionX(playerTrans.GetPositionX() + 15 * dt);
+				playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 15 * dt);
+
+				if (camLeft)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x + 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
+
+				if (camFar)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 15 * dt));
+
+				return true;
+			}
+
+			else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+			{
+
+				if (playerTrans.GetCanMoveLeft())
+				{
+					playerTrans.SetPositionX(playerTrans.GetPositionX() - 15 * dt);
+					playerTrans.SetRotationY(270.0f);
+
+					if (camRight)
+						camera.SetPosition(glm::vec3(camera.GetPosition().x - 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
+
+					return true;
+				}
+			}
+			else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+			{
+
+				if (playerTrans.GetCanMoveRight())
+				{
+					playerTrans.SetPositionX(playerTrans.GetPositionX() + 15 * dt);
+					playerTrans.SetRotationY(90.0f);
+
+					if (camLeft)
+						camera.SetPosition(glm::vec3(camera.GetPosition().x + 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
+
+					return true;
+				}
+			}
+			else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+			{
+
+				if (playerTrans.GetCanMoveUp())
+				{
+					playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 15 * dt);
+					playerTrans.SetRotationY(180.0f);
+
+					if (camFar)
+						camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 15 * dt));
+
+					return true;
+				}
+			}
+			else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+			{
+
+				if (playerTrans.GetCanMoveDown())
+				{
+					playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 15 * dt);
+					playerTrans.SetRotationY(0.0f);
+
+					if (camClose)
+						camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 15 * dt));
+
+					return true;
+				}
+			}
+		}
+		else if (isArrow)
+		{
+			if (!glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && !glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+			{
+				return false;
+			}
+
+			if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+			{
+
+				playerTrans.SetRotationY(225.0f);
+
+				playerTrans.SetPositionX(playerTrans.GetPositionX() - 15 * dt);
+				playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 15 * dt);
+
+				if (camRight)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x - 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
+
+				if (camFar)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 15 * dt));
+
+				return true;
+			}
+
+			else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+			{
+
+				playerTrans.SetRotationY(315.0f);
+
+				playerTrans.SetPositionX(playerTrans.GetPositionX() - 15 * dt);
+				playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 15 * dt);
+
+				if (camRight)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x - 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
+
+				if (camClose)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 15 * dt));
+
+				return true;
+			}
+
+			else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+			{
+
+				playerTrans.SetRotationY(45.0f);
+
+				playerTrans.SetPositionX(playerTrans.GetPositionX() + 15 * dt);
+				playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 15 * dt);
+
+				if (camLeft)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x + 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
+
+				if (camClose)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 15 * dt));
+
+				return true;
+			}
+
+			else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+			{
+
+				playerTrans.SetRotationY(135.0f);
+
+				playerTrans.SetPositionX(playerTrans.GetPositionX() + 15 * dt);
+				playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 15 * dt);
+
+				if (camLeft)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x + 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
+
+				if (camFar)
+					camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 15 * dt));
+
+				return true;
+			}
+
+			else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+			{
+
+				if (playerTrans.GetCanMoveLeft())
+				{
+					playerTrans.SetPositionX(playerTrans.GetPositionX() - 15 * dt);
+					playerTrans.SetRotationY(270.0f);
+
+					if (camRight)
+						camera.SetPosition(glm::vec3(camera.GetPosition().x - 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
+
+					return true;
+				}
+			}
+			else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+			{
+
+				if (playerTrans.GetCanMoveRight())
+				{
+					playerTrans.SetPositionX(playerTrans.GetPositionX() + 15 * dt);
+					playerTrans.SetRotationY(90.0f);
+
+					if (camLeft)
+						camera.SetPosition(glm::vec3(camera.GetPosition().x + 15 * dt, camera.GetPosition().y, camera.GetPosition().z));
+
+					return true;
+				}
+			}
+			else if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+			{
+
+				if (playerTrans.GetCanMoveUp())
+				{
+					playerTrans.SetPositionZ(playerTrans.GetPositionZ() - 15 * dt);
+					playerTrans.SetRotationY(180.0f);
+
+					if (camFar)
+						camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z - 15 * dt));
+
+					return true;
+				}
+			}
+			else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+			{
+
+				if (playerTrans.GetCanMoveDown())
+				{
+					playerTrans.SetPositionZ(playerTrans.GetPositionZ() + 15 * dt);
+					playerTrans.SetRotationY(0.0f);
+
+					if (camClose)
+						camera.SetPosition(glm::vec3(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z + 15 * dt));
+
+					return true;
+				}
 			}
 		}
 	}

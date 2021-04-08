@@ -71,6 +71,13 @@ Level4::Level4(std::string sceneName, GLFWwindow* wind)
 	retryEnt = Entity::Create();
 	optionsMenuEnt = Entity::Create();
 
+	muteEnt = Entity::Create();
+	colorBlindEnt = Entity::Create();
+	brightEnt = Entity::Create();
+	musicEnt = Entity::Create();
+	soundEnt = Entity::Create();
+	controlsEnt = Entity::Create();
+
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
 	sepiaEnt = Entity::Create();
@@ -104,7 +111,7 @@ void Level4::InitScene()
 	auto& playerTrans = mainPlayer.Add<Transform>();
 	playerTrans.SetPosition(glm::vec3(0.0f, 1.1f, 42.0f));
 	playerTrans.SetRotationY(180.0f);
-	playerTrans.SetBigLevel(true);
+	playerTrans.SetLevelSize(40.0f);
 
 	//Floor transform
 	auto& groundTrans = floorEnt.Add<Transform>();
@@ -299,6 +306,36 @@ void Level4::InitScene()
 	auto& optionsMenuTrans = optionsMenuEnt.Add<Transform>();
 	optionsMenuTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	optionsMenuTrans.SetScale(glm::vec3(0.18f, 1.0f, 0.18f));
+
+	auto& muteTrans = muteEnt.Add<Transform>();
+	muteTrans.SetPosition(glm::vec3(4.0f, 2.0f, -2.6f));
+	muteTrans.SetScale(glm::vec3(0.3f, 1.0f, 0.3f));
+	muteTrans.SetRotationY(180.0f);
+
+	auto& colorBlindTrans = colorBlindEnt.Add<Transform>();
+	colorBlindTrans.SetPosition(glm::vec3(4.0f, 2.0f, 3.1f));
+	colorBlindTrans.SetScale(glm::vec3(0.3f, 1.0f, 0.3f));
+	colorBlindTrans.SetRotationY(180.0f);
+
+	auto& brightTrans = brightEnt.Add<Transform>();
+	brightTrans.SetPosition(glm::vec3(4.0f, 2.0f, 4.6f));
+	brightTrans.SetScale(glm::vec3(0.3f, 1.0f, 0.3f));
+	brightTrans.SetRotationY(180.0f);
+
+	auto& soundTrans = soundEnt.Add<Transform>();
+	soundTrans.SetPosition(glm::vec3(4.0f, 2.0f, -1.1f));
+	soundTrans.SetScale(glm::vec3(0.3f, 1.0f, 0.3f));
+	soundTrans.SetRotationY(180.0f);
+
+	auto& musicTrans = musicEnt.Add<Transform>();
+	musicTrans.SetPosition(glm::vec3(4.0f, 2.0f, 0.4f));
+	musicTrans.SetScale(glm::vec3(0.3f, 1.0f, 0.3f));
+	musicTrans.SetRotationY(180.0f);
+
+	auto& controlsTrans = controlsEnt.Add<Transform>();
+	controlsTrans.SetPosition(glm::vec3(4.0f, 2.0f, 6.1f));
+	controlsTrans.SetScale(glm::vec3(0.3f, 1.0f, 0.3f));
+	controlsTrans.SetRotationY(180.0f);
 #pragma endregion
 	
 	//AABB
@@ -439,6 +476,13 @@ void Level4::InitScene()
 	auto& retryMesh = retryEnt.Add<MeshRenderer>(retryEnt, *retry, pauseShader);
 	auto& exitMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exit, pauseShader);
 	auto& optionsMenuMesh = optionsMenuEnt.Add<MeshRenderer>(optionsMenuEnt, *screen, pauseShader);
+
+	auto& muteMesh = muteEnt.Add<MeshRenderer>(muteEnt, *optionsButton, pauseShader);
+	auto& musicMesh = musicEnt.Add<MeshRenderer>(musicEnt, *optionsButton, pauseShader);
+	auto& soundMesh = soundEnt.Add<MeshRenderer>(soundEnt, *optionsButton, pauseShader);
+	auto& brightMesh = brightEnt.Add<MeshRenderer>(brightEnt, *optionsButton, pauseShader);
+	auto& colorBlindMesh = colorBlindEnt.Add<MeshRenderer>(colorBlindEnt, *optionsButton, pauseShader);
+	auto& controlsMesh = controlsEnt.Add<MeshRenderer>(controlsEnt, *optionsButton, pauseShader);
 
 	entList.push_back(&mainPlayer);
 	entList.push_back(&doorEnt);
@@ -690,6 +734,13 @@ void Level4::Update(float dt)
 	glm::mat4 transformRetry = retryEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformExit = exitEnt.Get<Transform>().GetModelMatrix();
 
+	glm::mat4 transformMute = muteEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformMusic = musicEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformSound = soundEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformBright = brightEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformColorBlind = colorBlindEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformControls = controlsEnt.Get<Transform>().GetModelMatrix();
+
 	if (!buttonAnimOn && playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
 		button1Watch.Poll(window);
@@ -720,7 +771,7 @@ void Level4::Update(float dt)
 #pragma region PlayerMovement
 	if (!showLevelComplete && !isPaused)
 	{
-		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight);
+		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight, isArrow);
 
 		if (isWalking)
 			walkSound.Play();
@@ -791,7 +842,7 @@ void Level4::Update(float dt)
 
 	if (!showLevelComplete && !isPaused)
 	{
-		Input::MoveCamera(window, camEnt, dt);
+		//Input::MoveCamera(window, camEnt, dt);
 	}
 
 #pragma endregion
@@ -1023,6 +1074,172 @@ void Level4::Update(float dt)
 			if (optionsOpen)
 			{
 				optionsMenuEnt.Get<MeshRenderer>().Render(orthoCam, optionsMenuEnt.Get<Transform>().GetModelMatrix());
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 6);
+
+			if (optionsOpen && !isMute)
+			{
+				toggleOffMat.Albedo->Bind(6);
+				muteEnt.Get<MeshRenderer>().Render(orthoCam, muteEnt.Get<Transform>().GetModelMatrix());
+			}
+			else if (optionsOpen && isMute)
+			{
+				toggleOnMat.Albedo->Bind(6);
+				muteEnt.Get<MeshRenderer>().Render(orthoCam, muteEnt.Get<Transform>().GetModelMatrix());
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 7);
+
+			if (optionsOpen && !isBright)
+			{
+				toggleOffMat.Albedo->Bind(7);
+				brightEnt.Get<MeshRenderer>().Render(orthoCam, brightEnt.Get<Transform>().GetModelMatrix());
+			}
+			else if (optionsOpen && isBright)
+			{
+				toggleOnMat.Albedo->Bind(7);
+				brightEnt.Get<MeshRenderer>().Render(orthoCam, brightEnt.Get<Transform>().GetModelMatrix());
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 8);
+
+			if (optionsOpen && !isCorrected)
+			{
+				toggleOffMat.Albedo->Bind(8);
+				colorBlindEnt.Get<MeshRenderer>().Render(orthoCam, colorBlindEnt.Get<Transform>().GetModelMatrix());
+			}
+			else if (optionsOpen && isCorrected)
+			{
+				toggleOnMat.Albedo->Bind(8);
+				colorBlindEnt.Get<MeshRenderer>().Render(orthoCam, colorBlindEnt.Get<Transform>().GetModelMatrix());
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 9);
+
+			if (optionsOpen && !isArrow)
+			{
+				toggleOffMat.Albedo->Bind(9);
+				controlsEnt.Get<MeshRenderer>().Render(orthoCam, controlsEnt.Get<Transform>().GetModelMatrix());
+			}
+			else if (optionsOpen && isArrow)
+			{
+				toggleOnMat.Albedo->Bind(9);
+				controlsEnt.Get<MeshRenderer>().Render(orthoCam, controlsEnt.Get<Transform>().GetModelMatrix());
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 10);
+			if (optionsOpen)
+			{
+				switch (soundVol)
+				{
+				case 1:
+					volumeMat1.Albedo->Bind(10);
+					soundEnt.Get<MeshRenderer>().Render(orthoCam, soundEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 2:
+					volumeMat2.Albedo->Bind(10);
+					soundEnt.Get<MeshRenderer>().Render(orthoCam, soundEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 3:
+					volumeMat3.Albedo->Bind(10);
+					soundEnt.Get<MeshRenderer>().Render(orthoCam, soundEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 4:
+					volumeMat4.Albedo->Bind(10);
+					soundEnt.Get<MeshRenderer>().Render(orthoCam, soundEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 5:
+					volumeMat5.Albedo->Bind(10);
+					soundEnt.Get<MeshRenderer>().Render(orthoCam, soundEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 6:
+					volumeMat6.Albedo->Bind(10);
+					soundEnt.Get<MeshRenderer>().Render(orthoCam, soundEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 7:
+					volumeMat7.Albedo->Bind(10);
+					soundEnt.Get<MeshRenderer>().Render(orthoCam, soundEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 8:
+					volumeMat8.Albedo->Bind(10);
+					soundEnt.Get<MeshRenderer>().Render(orthoCam, soundEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 9:
+					volumeMat9.Albedo->Bind(10);
+					soundEnt.Get<MeshRenderer>().Render(orthoCam, soundEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 10:
+					volumeMat10.Albedo->Bind(10);
+					soundEnt.Get<MeshRenderer>().Render(orthoCam, soundEnt.Get<Transform>().GetModelMatrix());
+					break;
+				}
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 11);
+			if (optionsOpen)
+			{
+				switch (musicVol)
+				{
+				case 1:
+					volumeMat1.Albedo->Bind(11);
+					musicEnt.Get<MeshRenderer>().Render(orthoCam, musicEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 2:
+					volumeMat2.Albedo->Bind(11);
+					musicEnt.Get<MeshRenderer>().Render(orthoCam, musicEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 3:
+					volumeMat3.Albedo->Bind(11);
+					musicEnt.Get<MeshRenderer>().Render(orthoCam, musicEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 4:
+					volumeMat4.Albedo->Bind(11);
+					musicEnt.Get<MeshRenderer>().Render(orthoCam, musicEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 5:
+					volumeMat5.Albedo->Bind(11);
+					musicEnt.Get<MeshRenderer>().Render(orthoCam, musicEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 6:
+					volumeMat6.Albedo->Bind(11);
+					musicEnt.Get<MeshRenderer>().Render(orthoCam, musicEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 7:
+					volumeMat7.Albedo->Bind(11);
+					musicEnt.Get<MeshRenderer>().Render(orthoCam, musicEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 8:
+					volumeMat8.Albedo->Bind(11);
+					musicEnt.Get<MeshRenderer>().Render(orthoCam, musicEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 9:
+					volumeMat9.Albedo->Bind(11);
+					musicEnt.Get<MeshRenderer>().Render(orthoCam, musicEnt.Get<Transform>().GetModelMatrix());
+					break;
+
+				case 10:
+					volumeMat10.Albedo->Bind(11);
+					musicEnt.Get<MeshRenderer>().Render(orthoCam, musicEnt.Get<Transform>().GetModelMatrix());
+					break;
+				}
 			}
 			shadowBuffer->UnbindTexture(30);
 
@@ -1261,12 +1478,11 @@ void Level4::Update(float dt)
 			animShader->SetUniform("s_Diffuse", 1);
 			clearMat.Albedo->Bind(1);
 			doorEnt.Get<MorphRenderer>().Render(camera, transformDoor, LightSpaceViewProjection);
+			buttonEnt.Get<MorphRenderer>().Render(camera, transformButton, LightSpaceViewProjection);
+			buttonEnt2.Get<MorphRenderer>().Render(camera, transformButton2, LightSpaceViewProjection);
+			buttonEnt3.Get<MorphRenderer>().Render(camera, transformButton3, LightSpaceViewProjection);
+			buttonEnt4.Get<MorphRenderer>().Render(camera, transformButton4, LightSpaceViewProjection);
 			clearMat.Albedo->Unbind(1);
-			shadowBuffer->UnbindTexture(30);
-
-			untexturedShader->Bind();
-			shadowBuffer->BindDepthAsTexture(30);
-			floorEnt.Get<MeshRenderer>().Render(camera, transformGround, LightSpaceViewProjection);
 			shadowBuffer->UnbindTexture(30);
 
 			pauseShader->Bind();
@@ -1293,16 +1509,13 @@ void Level4::Update(float dt)
 			shelfPipeEnt.Get<MeshRenderer>().Render(camera, transformShelfPipe, LightSpaceViewProjection);
 			shelfPipeEnt2.Get<MeshRenderer>().Render(camera, transformShelfPipe2, LightSpaceViewProjection);
 			shelfPipeEnt3.Get<MeshRenderer>().Render(camera, transformShelfPipe3, LightSpaceViewProjection);
+			floorEnt.Get<MeshRenderer>().Render(camera, transformGround, LightSpaceViewProjection);
 			andEnt.Get<MeshRenderer>().Render(camera, transformGate, LightSpaceViewProjection);
 			andEnt2.Get<MeshRenderer>().Render(camera, transformGate2, LightSpaceViewProjection);
 			andEnt3.Get<MeshRenderer>().Render(camera, transformGate3, LightSpaceViewProjection);
 			notEnt.Get<MeshRenderer>().Render(camera, transformNot, LightSpaceViewProjection);
 			notEnt2.Get<MeshRenderer>().Render(camera, transformNot2, LightSpaceViewProjection);
 			notEnt3.Get<MeshRenderer>().Render(camera, transformNot3, LightSpaceViewProjection);
-			buttonEnt.Get<MorphRenderer>().Render(camera, transformButton, LightSpaceViewProjection);
-			buttonEnt2.Get<MorphRenderer>().Render(camera, transformButton2, LightSpaceViewProjection);
-			buttonEnt3.Get<MorphRenderer>().Render(camera, transformButton3, LightSpaceViewProjection);
-			buttonEnt4.Get<MorphRenderer>().Render(camera, transformButton4, LightSpaceViewProjection);
 			coilEnt.Get<MeshRenderer>().Render(camera, transformCoil, LightSpaceViewProjection);
 			wireEnt.Get<MeshRenderer>().Render(camera, transformWire, LightSpaceViewProjection);
 			wireEnt2.Get<MeshRenderer>().Render(camera, transformWire2, LightSpaceViewProjection);
