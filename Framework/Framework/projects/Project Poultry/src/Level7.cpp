@@ -83,6 +83,9 @@ Level7::Level7(std::string sceneName, GLFWwindow* wind)
 	soundEnt = Entity::Create();
 	controlsEnt = Entity::Create();
 
+	tabletEnt = Entity::Create();
+	tabletScreenEnt = Entity::Create();
+
 	boxEnt = Entity::Create();
 	boxEnt2 = Entity::Create();
 
@@ -132,7 +135,7 @@ void Level7::InitScene()
 	auto& playerTrans = mainPlayer.Add<Transform>();
 	playerTrans.SetPosition(glm::vec3(0.0f, 1.1f, 45.f));
 	playerTrans.SetRotationY(180.0f);
-	playerTrans.SetLevelSize(55.0f);
+	playerTrans.SetLevelSize(52.5f);
 
 	//Floor transform
 	auto& groundTrans = floorEnt.Add<Transform>();
@@ -402,6 +405,14 @@ void Level7::InitScene()
 	controlsTrans.SetScale(glm::vec3(0.3f, 1.0f, 0.3f));
 	controlsTrans.SetRotationY(180.0f);
 
+	auto& tabletTrans = tabletEnt.Add<Transform>();
+	tabletTrans.SetPosition(glm::vec3(0.0f, 5.0f, 30.0f));
+	tabletTrans.SetRotationY(180.0f);
+
+	auto& tabletScreenTrans = tabletScreenEnt.Add<Transform>();
+	tabletScreenTrans.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	tabletScreenTrans.SetScale(glm::vec3(0.18f, 1.0f, 0.18f));
+
 	auto& leftCol = leftEnt.Add<AABB>(leftEnt, mainPlayer);
 	auto& rightCol = rightEnt.Add<AABB>(rightEnt, mainPlayer);
 	auto& backCol = backEnt.Add<AABB>(backEnt, mainPlayer);
@@ -591,6 +602,9 @@ void Level7::InitScene()
 	auto& brightMesh = brightEnt.Add<MeshRenderer>(brightEnt, *optionsButton, pauseShader);
 	auto& colorBlindMesh = colorBlindEnt.Add<MeshRenderer>(colorBlindEnt, *optionsButton, pauseShader);
 	auto& controlsMesh = controlsEnt.Add<MeshRenderer>(controlsEnt, *optionsButton, pauseShader);
+
+	auto& tabletScreenMesh = tabletScreenEnt.Add<MeshRenderer>(tabletScreenEnt, *screen, pauseShader);
+	auto& tabletMesh = tabletEnt.Add<MeshRenderer>(tabletEnt, *tablet, rimLightShader);
 #pragma endregion
 
 	entList.push_back(&mainPlayer);
@@ -638,6 +652,7 @@ void Level7::InitScene()
 	entList.push_back(&wireEnt18);
 	entList.push_back(&wireEnt19);
 	entList.push_back(&coilEnt);
+	entList.push_back(&tabletEnt);
 
 	auto& doorAnimator = doorEnt.Add<MorphAnimation>(doorEnt);
 	doorAnimator.SetTime(0.1f);
@@ -778,6 +793,7 @@ void Level7::Update(float dt)
 		shader->SetUniform("u_Time", time);
 		pauseShader->SetUniform("u_Time", time);
 		animShader->SetUniform("u_Time", time);
+		rimLightShader->SetUniform("u_Time", time);
 	}
 
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -802,6 +818,8 @@ void Level7::Update(float dt)
 	rightEnt.Get<Transform>().SetRotationY(90.0f);
 	rightEnt.Get<Transform>().SetPositionY(0.0f);
 	rightEnt.Get<Transform>().SetPositionZ(2.0f);
+
+	tabletEnt.Get<Transform>().SetRotationY(tabletEnt.Get<Transform>().GetRotation().y + 100 * dt);
 
 	auto& camera = camEnt.Get<Camera>();
 	auto& orthoCam = uiCamEnt.Get<Camera>();
@@ -894,6 +912,9 @@ void Level7::Update(float dt)
 	glm::mat4 transformColorBlind = colorBlindEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformControls = controlsEnt.Get<Transform>().GetModelMatrix();
 
+	glm::mat4 transformTablet = tabletEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformTabletScreen = tabletScreenEnt.Get<Transform>().GetModelMatrix();
+
 	if (!buttonAnimOn && playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
 	{
@@ -941,6 +962,11 @@ void Level7::Update(float dt)
 	{
 		button8Watch.Poll(window);
 	}
+
+	if ((playerTrans.GetPositionX() > -3.0f && playerTrans.GetPositionX() < 3.0f
+		&& playerTrans.GetPositionZ() > 27.0f && playerTrans.GetPositionZ() < 33.0f
+		&& !tabletOpen) || tabletOpen)
+		tabletWatch.Poll(window);
 
 	if (!optionsOpen)
 		pauseWatch.Poll(window);
@@ -1166,6 +1192,7 @@ void Level7::Update(float dt)
 	shader->SetUniform("u_LightOn", lightInt);
 	pauseShader->SetUniform("u_LightOn", lightInt);
 	animShader->SetUniform("u_LightOn", lightInt);
+	rimLightShader->SetUniform("u_LightOn", lightInt);
 
 	//Post-Effect Stuff
 	auto basicEffect = &FBO.Get<PostEffect>();
@@ -1294,6 +1321,14 @@ void Level7::Update(float dt)
 			{
 				exitMat.Albedo->Bind(3);
 				exitEnt.Get<MeshRenderer>().Render(orthoCam, transformExit);
+			}
+
+			pauseShader->SetUniform("s_Diffuse", 4);
+			xorTabletScreenMat.Albedo->Bind(4);
+
+			if (tabletOpen)
+			{
+				tabletScreenEnt.Get<MeshRenderer>().Render(orthoCam, transformTabletScreen);
 			}
 
 			pauseShader->SetUniform("s_Diffuse", 5);
@@ -1767,7 +1802,9 @@ void Level7::Update(float dt)
 			untexturedShader->Bind();
 			shadowBuffer->BindDepthAsTexture(30);
 
-			if ((playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f
+			if ((playerTrans.GetPositionX() > -3.0f && playerTrans.GetPositionX() < 3.0f
+					&& playerTrans.GetPositionZ() > 27.0f && playerTrans.GetPositionZ() < 33.0f)
+				|| (playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f
 					&& playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
 					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f
 					&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
@@ -1807,6 +1844,13 @@ void Level7::Update(float dt)
 
 				}
 			}
+			shadowBuffer->UnbindTexture(30);
+
+			rimLightShader->Bind();
+			rimLightShader->SetUniform("s_Diffuse", 1);
+			tabletMat.Albedo->Bind(1);
+			shadowBuffer->BindDepthAsTexture(30);
+			tabletEnt.Get<MeshRenderer>().Render(camera, transformTablet, LightSpaceViewProjection);
 			shadowBuffer->UnbindTexture(30);
 		}
 	}
@@ -1897,6 +1941,13 @@ void Level7::Update(float dt)
 			panelEnt.Get<MeshRenderer>().Render(camera, transformPanel, LightSpaceViewProjection);
 			panelEnt2.Get<MeshRenderer>().Render(camera, transformPanel2, LightSpaceViewProjection);
 			panelEnt3.Get<MeshRenderer>().Render(camera, transformPanel3, LightSpaceViewProjection);
+			shadowBuffer->UnbindTexture(30);
+
+			rimLightShader->Bind();
+			rimLightShader->SetUniform("s_Diffuse", 1);
+			clearMat.Albedo->Bind(1);
+			shadowBuffer->BindDepthAsTexture(30);
+			tabletEnt.Get<MeshRenderer>().Render(camera, transformTablet, LightSpaceViewProjection);
 			shadowBuffer->UnbindTexture(30);
 		}
 	}

@@ -101,4 +101,13 @@ private:
 		button8AnimOn = true;
 		isPecking = true;
 		});
+
+	KeyPressWatcher tabletWatch = KeyPressWatcher(GLFW_KEY_E, [&]() {
+		tabletOpen = !tabletOpen;
+
+		if (tabletOpen)
+			pauseLighting = true;
+		else
+			pauseLighting = false;
+		});
 };
