@@ -213,7 +213,7 @@ void Level9::InitScene()
 
 	//Coil Object
 	auto& coilTrans = coilEnt.Add<Transform>();
-	coilTrans.SetPosition(glm::vec3(-18.0f, 1.0f, -48.f));
+	coilTrans.SetPosition(glm::vec3(-19.3f, 1.0f, -48.f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 	coilTrans.SetRotationY(180.0f);
 
@@ -289,7 +289,6 @@ void Level9::InitScene()
 
 	auto& xorTrans2 = xorEnt2.Add<Transform>();
 	xorTrans2.SetPosition(glm::vec3(22.3f, 1.f, 27.0f));
-
 
 	auto& xorTrans4 = xorEnt4.Add<Transform>();
 	xorTrans4.SetPosition(glm::vec3(-16.0f, 1.f, -26.0f));
