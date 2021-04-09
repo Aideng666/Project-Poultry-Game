@@ -732,6 +732,12 @@ void Level5::Update(float dt)
 		}
 	}
 
+	if (showLevelComplete && !completeSoundPlaying)
+	{
+		AudioEngine::Instance().GetEvent("Level Complete").Play();
+		completeSoundPlaying = true;
+	}
+
 #pragma region PlayerMovement
 	if (!showLevelComplete && !isPaused && !tabletOpen)
 	{
@@ -1568,7 +1574,6 @@ void Level5::Update(float dt)
 		AudioEngine::Instance().GetEvent("BG").StopImmediately();
 		AudioEngine::Instance().GetEvent("Walk").StopImmediately();
 		AudioEngine::Instance().GetEvent("OR Tablet").StopImmediately();
-		AudioEngine::Instance().GetEvent("Level Complete").Play();
 		showLevelComplete = true;
 	}
 }

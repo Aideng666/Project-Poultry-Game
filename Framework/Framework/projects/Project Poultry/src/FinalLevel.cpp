@@ -1232,7 +1232,6 @@ void FinalLevel::Update(float dt)
 
 	if (ending1)
 	{
-		AudioEngine::Instance().GetEvent("Level Complete").Play();
 		shader->Bind();
 		shader->SetUniform("s_Diffuse", 0);
 		goodEndMat.Albedo->Bind(0);
@@ -1242,9 +1241,20 @@ void FinalLevel::Update(float dt)
 		shadowBuffer->UnbindTexture(30);
 	}
 
-	if (ending2)
+	if (ending1 && !completeSoundPlaying)
+	{
+		AudioEngine::Instance().GetEvent("Level Complete").Play();
+		completeSoundPlaying = true;
+	}
+
+	if (ending2 && !completeSoundPlaying)
 	{
 		AudioEngine::Instance().GetEvent("Bad Ending").Play();
+		completeSoundPlaying = true;
+	}
+
+	if (ending2)
+	{
 		shader->Bind();
 		shader->SetUniform("s_Diffuse", 0);
 		badEndMat.Albedo->Bind(0);

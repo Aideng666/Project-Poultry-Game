@@ -511,8 +511,6 @@ void Level1::Update(float dt)
 		rimLightShader->SetUniform("u_Time", time);
 	}
 
-	std::cout << isTalking;
-
 	if (tabletOpen && !isTalking)
 	{
 		AudioEngine::Instance().GetEvent("AND Tablet").Play();
@@ -640,6 +638,12 @@ void Level1::Update(float dt)
 			AudioEngine::Instance().GetEvent("Level Complete").Stop();
 			levelComplete = true;
 		}	
+	}
+
+	if (showLevelComplete && !completeSoundPlaying)
+	{
+		AudioEngine::Instance().GetEvent("Level Complete").Play();
+		completeSoundPlaying = true;
 	}
 
 #pragma region PlayerMovement
@@ -1420,7 +1424,6 @@ void Level1::Update(float dt)
 		AudioEngine::Instance().GetEvent("BG").StopImmediately();
 		AudioEngine::Instance().GetEvent("Walk").StopImmediately();
 		AudioEngine::Instance().GetEvent("AND Tablet").StopImmediately();
-		AudioEngine::Instance().GetEvent("Level Complete").Play();
 		showLevelComplete = true;
 	}
 }

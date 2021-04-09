@@ -72,6 +72,7 @@ public:
 	Shader::sptr GetShader();
 
 	bool GetLoad();
+	void SetLoad(bool load);
 
 	void SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos = glm::vec3(0.f, 0.f, 0.f), 
 		glm::vec3 lightDir = glm::vec3(0.f, 0.f, 0.f), glm::vec3 lightCol = glm::vec3(1.0f, 1.0f, 1.0f),
@@ -712,6 +713,7 @@ protected:
 	bool doorClosingApplied2 = false;
 
 	bool isTalking = false;
+	bool completeSoundPlaying = false;
 
 	LUT3D lut;
 	LUT3D brightLut;

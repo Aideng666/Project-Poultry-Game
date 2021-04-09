@@ -608,16 +608,12 @@ void Scene::PauseInput()
 		pauseLighting = false;
 	}
 
-	if (optionsOpen && GetAsyncKeyState(0x01))
-	{
-		std::cout << mousePos.x << " " << mousePos.y << std::endl;
-	}
-
 	//To Mute
 	if (GetAsyncKeyState(0x01) && optionsOpen && mousePos.y > 291 && mousePos.y < 379 && mousePos.x > 848 && mousePos.x < 959)
 	{
 		Sleep(100);
 		isMute = !isMute;
+		//AudioEngine::Instance().GetBus("MusicBus").SetMute(!AudioEngine::Instance().GetBus("MusicBus").CheckMuted());
 	}
 
 	//Bright Mode
@@ -809,6 +805,11 @@ Shader::sptr Scene::GetShader()
 bool Scene::GetLoad()
 {
 	return loadModels;
+}
+
+void Scene::SetLoad(bool load)
+{
+	loadModels = load;
 }
 
 void Scene::SetShaderValues(Shader::sptr& shader, glm::vec3 lightPos, glm::vec3 lightDir, glm::vec3 lightCol, float lightAmbientPow, float lightSpecularPow, glm::vec3 ambientCol, float ambientPow, float shininess, float lightLinearFalloff, float lightQuadraticFalloff)
