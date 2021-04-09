@@ -4,6 +4,7 @@
 #include <iostream>
 #include <AndGate.h>
 #include <NotGate.h>
+#include <AudioEngine.h>
 
 namespace freebird
 {
@@ -61,6 +62,7 @@ namespace freebird
 			&& playerEnt.Get<Transform>().GetPositionX() - thisEnt.Get<Transform>().GetPositionX() > -8.0f
 			&& thisEnt.Has<Door>() && thisEnt.Get<Door>().GetOpen())
 		{
+			AudioEngine::Instance().GetEvent("Walk").StopImmediately();
 			levelComplete = true;
 		}
 
