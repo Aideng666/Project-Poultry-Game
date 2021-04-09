@@ -332,6 +332,8 @@ void Scene::InitMeshes()
 	tut = ModelManager::FindMesh(tutFile, glm::vec3(1.0f, 0.0f, 0.0f));
 	optionsButton = ModelManager::FindMesh(optionsButtonFile);
 	table = ModelManager::FindMesh(tableFile);
+	pauseControls = ModelManager::FindMesh(pauseControlFile, glm::vec3(1.0f, 0.0f, 0.0f));
+	topViewControls = ModelManager::FindMesh(topViewControlFile, glm::vec3(1.0f, 0.0f, 0.0f));
 
 	//Lab Levels(tentative)
 	floorLab = ModelManager::FindMesh(floorL4File);
@@ -613,7 +615,6 @@ void Scene::PauseInput()
 	{
 		Sleep(100);
 		isMute = !isMute;
-		//AudioEngine::Instance().GetBus("MusicBus").SetMute(!AudioEngine::Instance().GetBus("MusicBus").CheckMuted());
 	}
 
 	//Bright Mode

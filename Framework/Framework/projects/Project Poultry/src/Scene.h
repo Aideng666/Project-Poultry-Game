@@ -166,6 +166,8 @@ protected:
 	Mesh* columnPipe;
 	Mesh* optionsButton;
 	Mesh* table;
+	Mesh* pauseControls;
+	Mesh* topViewControls;
 
 	//For bigger "lab" levels
 	Mesh* floorLab;
@@ -351,6 +353,8 @@ protected:
 	std::string shelfPipeFile = "Models/ShelfPipe.obj";
 	std::string columnPipeFile = "Models/New_Column_Pipe.obj";
 	std::string tableFile = "Models/Table.obj";
+	std::string pauseControlFile = "Models/Pause_Controls.obj";
+	std::string topViewControlFile = "Models/Shift_Controls.obj";
 
 	std::string labBackWallFile = "Models/BackWall_New.obj";
 	std::string labLeftWallFile = "Models/LeftWall_New.obj";
