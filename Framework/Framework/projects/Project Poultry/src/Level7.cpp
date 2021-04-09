@@ -484,9 +484,9 @@ void Level7::InitScene()
 	auto& button4 = buttonEnt4.Add<Lever>(wireEnt4);
 	button4.SetPowered(false);
 	auto& button5 = buttonEnt5.Add<Lever>(wireEnt5);
-	button5.SetPowered(true);
+	button5.SetPowered(false);
 	auto& button6 = buttonEnt6.Add<Lever>(wireEnt6);
-	button6.SetPowered(true);
+	button6.SetPowered(false);
 	auto& button7 = buttonEnt7.Add<Lever>(wireEnt7);
 	button7.SetPowered(false);
 	auto& button8 = buttonEnt8.Add<Lever>(wireEnt8);
@@ -634,7 +634,6 @@ void Level7::InitScene()
 	entList.push_back(&floorEnt);
 	entList.push_back(&leftEnt);
 	entList.push_back(&rightEnt);
-	entList.push_back(&completeEnt);
 	entList.push_back(&andEnt);
 	entList.push_back(&andEnt2);
 	entList.push_back(&andEnt3);
@@ -792,13 +791,6 @@ void Level7::InitScene()
 
 void Level7::Update(float dt)
 {
-	// Get a ref to the engine
-	AudioEngine& audioEngine = AudioEngine::Instance();
-
-	AudioEvent& walkSound = AudioEngine::Instance().GetEvent("Walk");
-	AudioEvent& doorSound = AudioEngine::Instance().GetEvent("Door");
-	AudioEvent& levelCompleteSound = AudioEngine::Instance().GetEvent("Level Complete");
-
 	time += dt;
 
 	if (!tabletOpen && !isPaused && !optionsOpen)
@@ -808,6 +800,12 @@ void Level7::Update(float dt)
 		pauseShader->SetUniform("u_Time", time);
 		animShader->SetUniform("u_Time", time);
 		rimLightShader->SetUniform("u_Time", time);
+	}
+
+	if (tabletOpen && !isTalking)
+	{
+		AudioEngine::Instance().GetEvent("XOR Tablet").Play();
+		isTalking = true;
 	}
 
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -989,6 +987,7 @@ void Level7::Update(float dt)
 	{
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
+			AudioEngine::Instance().GetEvent("Level Complete").Stop();
 			levelComplete = true;
 		}
 	}
@@ -999,9 +998,11 @@ void Level7::Update(float dt)
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight, isArrow);
 
 		if (isWalking)
-			walkSound.Play();
+		{
+			AudioEngine::Instance().GetEvent("Walk").Play();
+		}
 		else
-			walkSound.StopImmediately();
+			AudioEngine::Instance().GetEvent("Walk").StopImmediately();
 
 		if (!peckingFramesApplied && isPecking)
 		{
@@ -1073,6 +1074,7 @@ void Level7::Update(float dt)
 
 	if (buttonAnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1086,6 +1088,7 @@ void Level7::Update(float dt)
 
 	if (button2AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt2.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt2.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1098,6 +1101,7 @@ void Level7::Update(float dt)
 
 	if (button3AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt3.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt3.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1110,6 +1114,7 @@ void Level7::Update(float dt)
 
 	if (button4AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt4.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt4.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1122,6 +1127,7 @@ void Level7::Update(float dt)
 
 	if (button5AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt5.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt5.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1134,6 +1140,7 @@ void Level7::Update(float dt)
 
 	if (button6AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt6.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt6.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1146,6 +1153,7 @@ void Level7::Update(float dt)
 
 	if (button7AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt7.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt7.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1158,6 +1166,7 @@ void Level7::Update(float dt)
 
 	if (button8AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt8.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt8.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1997,12 +2006,6 @@ void Level7::Update(float dt)
 
 	effects[activeEffect]->DrawToScreen();
 
-	//Door Logic
-	if (doorEnt.Get<Door>().GetOpen() && doorOpenApplied)
-		doorEnt.Get<MorphAnimation>().Update(dt);
-	if (!doorEnt.Get<Door>().GetOpen() && doorClosingApplied)
-		doorEnt.Get<MorphAnimation>().Update(dt);
-
 	//Collision Updates
 	backEnt.Get<AABB>().Update();
 	leftEnt.Get<AABB>().Update();
@@ -2080,13 +2083,27 @@ void Level7::Update(float dt)
 	orEnt.Get<OrGate>().Update();
 	notEnt.Get<NotGate>().Update();
 
-	audioEngine.Update();
+	AudioEngine::Instance().Update();
+
+	//Door Logic
+	if (doorEnt.Get<Door>().GetOpen() && doorOpenApplied)
+	{
+		doorEnt.Get<MorphAnimation>().Update(dt);
+		AudioEngine::Instance().GetEvent("Door").Play();
+	}
+	if (!doorEnt.Get<Door>().GetOpen() && doorClosingApplied)
+	{
+		doorEnt.Get<MorphAnimation>().Update(dt);
+		AudioEngine::Instance().GetEvent("Door").Play();
+	}
 
 	if (doorEnt.Get<AABB>().GetComplete())
 	{
 		lightOn = false;
 		AudioEngine::Instance().GetEvent("BG").StopImmediately();
-		levelCompleteSound.Play();
+		AudioEngine::Instance().GetEvent("Walk").StopImmediately();
+		AudioEngine::Instance().GetEvent("XOR Tablet").StopImmediately();
+		AudioEngine::Instance().GetEvent("Level Complete").Play();
 		showLevelComplete = true;
 	}
 }

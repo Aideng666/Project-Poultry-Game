@@ -96,6 +96,9 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseVolume8 = Texture2D::LoadFromFile("Textures/Volume/8.png");
 	Texture2D::sptr diffuseVolume9 = Texture2D::LoadFromFile("Textures/Volume/9.png");
 	Texture2D::sptr diffuseVolume10 = Texture2D::LoadFromFile("Textures/Volume/10.png");
+	Texture2D::sptr diffuseGoodEnd = Texture2D::LoadFromFile("Textures/GoodEnding.png");
+	Texture2D::sptr diffuseBadEnd = Texture2D::LoadFromFile("Textures/BadEnding.png");
+
 
 	Texture2DDescription desc = Texture2DDescription();
 	desc.Width = 1;
@@ -159,6 +162,8 @@ void Scene::InitTextures()
 	volumeMat8.Albedo = diffuseVolume8;
 	volumeMat9.Albedo = diffuseVolume9;
 	volumeMat10.Albedo = diffuseVolume10;
+	goodEndMat.Albedo = diffuseGoodEnd;
+	badEndMat.Albedo = diffuseBadEnd;
 	clearMat.Albedo = texture2;
 }
 

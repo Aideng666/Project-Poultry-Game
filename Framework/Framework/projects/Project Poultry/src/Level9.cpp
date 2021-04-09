@@ -586,7 +586,6 @@ void Level9::InitScene()
 	entList.push_back(&floorEnt);
 	entList.push_back(&leftEnt);
 	entList.push_back(&rightEnt);
-	entList.push_back(&completeEnt);
 	entList.push_back(&andEnt);
 	entList.push_back(&andEnt2);
 	entList.push_back(&andEnt3);
@@ -750,13 +749,6 @@ void Level9::InitScene()
 
 void Level9::Update(float dt)
 {
-	// Get a ref to the engine
-	AudioEngine& audioEngine = AudioEngine::Instance();
-
-	AudioEvent& walkSound = AudioEngine::Instance().GetEvent("Walk");
-	AudioEvent& doorSound = AudioEngine::Instance().GetEvent("Door");
-	AudioEvent& levelCompleteSound = AudioEngine::Instance().GetEvent("Level Complete");
-
 	time += dt;
 
 	if (!tabletOpen && !isPaused && !optionsOpen)
@@ -766,6 +758,12 @@ void Level9::Update(float dt)
 		pauseShader->SetUniform("u_Time", time);
 		animShader->SetUniform("u_Time", time);
 		rimLightShader->SetUniform("u_Time", time);
+	}
+
+	if (tabletOpen && !isTalking)
+	{
+		AudioEngine::Instance().GetEvent("XNOR Tablet").Play();
+		isTalking = true;
 	}
 
 	auto& playerTrans = mainPlayer.Get<Transform>();
@@ -939,6 +937,7 @@ void Level9::Update(float dt)
 	{
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
+			AudioEngine::Instance().GetEvent("Level Complete").Stop();
 			levelComplete = true;
 		}
 	}
@@ -949,9 +948,11 @@ void Level9::Update(float dt)
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight, isArrow);
 
 		if (isWalking)
-			walkSound.Play();
+		{
+			AudioEngine::Instance().GetEvent("Walk").Play();
+		}
 		else
-			walkSound.StopImmediately();
+			AudioEngine::Instance().GetEvent("Walk").StopImmediately();
 
 		if (!peckingFramesApplied && isPecking)
 		{
@@ -1023,6 +1024,7 @@ void Level9::Update(float dt)
 
 	if (buttonAnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1036,6 +1038,7 @@ void Level9::Update(float dt)
 
 	if (button2AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt2.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt2.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1048,6 +1051,7 @@ void Level9::Update(float dt)
 
 	if (button3AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt3.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt3.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1060,6 +1064,7 @@ void Level9::Update(float dt)
 
 	if (button4AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt4.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt4.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1072,6 +1077,7 @@ void Level9::Update(float dt)
 
 	if (button5AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt5.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt5.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1084,6 +1090,7 @@ void Level9::Update(float dt)
 
 	if (button6AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt6.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt6.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1096,6 +1103,7 @@ void Level9::Update(float dt)
 
 	if (button7AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt7.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt7.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1108,6 +1116,7 @@ void Level9::Update(float dt)
 
 	if (button8AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt8.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt8.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1954,12 +1963,6 @@ void Level9::Update(float dt)
 
 	effects[activeEffect]->DrawToScreen();
 
-	//Door Logic
-	if (doorEnt.Get<Door>().GetOpen() && doorOpenApplied)
-		doorEnt.Get<MorphAnimation>().Update(dt);
-	if (!doorEnt.Get<Door>().GetOpen() && doorClosingApplied)
-		doorEnt.Get<MorphAnimation>().Update(dt);
-
 	//Collision Updates
 	backEnt.Get<AABB>().Update();
 	leftEnt.Get<AABB>().Update();
@@ -2039,13 +2042,27 @@ void Level9::Update(float dt)
 	andEnt4.Get<AndGate>().Update();
 	andEnt5.Get<AndGate>().Update();
 
-	audioEngine.Update();
+	AudioEngine::Instance().Update();
+
+	//Door Logic
+	if (doorEnt.Get<Door>().GetOpen() && doorOpenApplied)
+	{
+		doorEnt.Get<MorphAnimation>().Update(dt);
+		AudioEngine::Instance().GetEvent("Door").Play();
+	}
+	if (!doorEnt.Get<Door>().GetOpen() && doorClosingApplied)
+	{
+		doorEnt.Get<MorphAnimation>().Update(dt);
+		AudioEngine::Instance().GetEvent("Door").Play();
+	}
 
 	if (doorEnt.Get<AABB>().GetComplete())
 	{
 		lightOn = false;
 		AudioEngine::Instance().GetEvent("BG").StopImmediately();
-		levelCompleteSound.Play();
+		AudioEngine::Instance().GetEvent("Walk").StopImmediately();
+		AudioEngine::Instance().GetEvent("XNOR Tablet").StopImmediately();
+		AudioEngine::Instance().GetEvent("Level Complete").Play();
 		showLevelComplete = true;
 	}
 }

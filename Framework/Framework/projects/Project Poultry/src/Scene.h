@@ -29,6 +29,7 @@
 #include "UniformBuffer.h"
 #include "BloomEffect.h"
 #include "AudioEngine.h"
+#include "Tree.h"
 
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
@@ -138,6 +139,7 @@ protected:
 	Mat buttonMat, drumstickMat, doorMat, doorOnMat, floorMat, wallMat, completeMat, wireMat, panelMat, ventMat, tabletMat, andTabletScreenMat, notTabletScreenMat, orTabletScreenMat, norTabletScreenMat, xorTabletScreenMat, xnorTabletScreenMat, finalTabletMat, coilMatOn, coilMatOff;
 	Mat andMat, notMat, orMat, xorMat, norMat, xnorMat, wireMatOn, shelfPipeMat, columnPipeMat, labWallMat, labFloorMat, tableMat, toggleOnMat, toggleOffMat, volumeMat;
 	Mat volumeMat1, volumeMat2, volumeMat3, volumeMat4, volumeMat5, volumeMat6, volumeMat7, volumeMat8, volumeMat9, volumeMat10;
+	Mat goodEndMat, badEndMat;
 
 	//Meshes for multiple levels
 	Mesh* options;
@@ -708,6 +710,8 @@ protected:
 	bool doorOpenApplied2 = true;
 	bool doorClosingApplied = false;
 	bool doorClosingApplied2 = false;
+
+	bool isTalking = false;
 
 	LUT3D lut;
 	LUT3D brightLut;
