@@ -484,9 +484,9 @@ void Level7::InitScene()
 	auto& button4 = buttonEnt4.Add<Lever>(wireEnt4);
 	button4.SetPowered(false);
 	auto& button5 = buttonEnt5.Add<Lever>(wireEnt5);
-	button5.SetPowered(false);
+	button5.SetPowered(true);
 	auto& button6 = buttonEnt6.Add<Lever>(wireEnt6);
-	button6.SetPowered(false);
+	button6.SetPowered(true);
 	auto& button7 = buttonEnt7.Add<Lever>(wireEnt7);
 	button7.SetPowered(false);
 	auto& button8 = buttonEnt8.Add<Lever>(wireEnt8);
@@ -990,6 +990,12 @@ void Level7::Update(float dt)
 			AudioEngine::Instance().GetEvent("Level Complete").Stop();
 			levelComplete = true;
 		}
+	}
+
+	if (showLevelComplete && !completeSoundPlaying)
+	{
+		AudioEngine::Instance().GetEvent("Level Complete").Play();
+		completeSoundPlaying = true;
 	}
 
 #pragma region PlayerMovement
@@ -2103,7 +2109,6 @@ void Level7::Update(float dt)
 		AudioEngine::Instance().GetEvent("BG").StopImmediately();
 		AudioEngine::Instance().GetEvent("Walk").StopImmediately();
 		AudioEngine::Instance().GetEvent("XOR Tablet").StopImmediately();
-		AudioEngine::Instance().GetEvent("Level Complete").Play();
 		showLevelComplete = true;
 	}
 }

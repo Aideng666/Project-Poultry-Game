@@ -1001,6 +1001,12 @@ void Level8::Update(float dt)
 		}
 	}
 
+	if (showLevelComplete && !completeSoundPlaying)
+	{
+		AudioEngine::Instance().GetEvent("Level Complete").Play();
+		completeSoundPlaying = true;
+	}
+
 #pragma region PlayerMovement
 	if (!showLevelComplete && !isPaused && !tabletOpen)
 	{
@@ -2109,8 +2115,7 @@ void Level8::Update(float dt)
 		lightOn = false;
 		AudioEngine::Instance().GetEvent("BG").StopImmediately();
 		AudioEngine::Instance().GetEvent("Walk").StopImmediately();
-		AudioEngine::Instance().GetEvent("XOR Tablet").StopImmediately();
-		AudioEngine::Instance().GetEvent("Level Complete").Play();
+		AudioEngine::Instance().GetEvent("NOR Tablet").StopImmediately();
 		showLevelComplete = true;
 	}
 }

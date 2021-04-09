@@ -232,10 +232,8 @@ namespace freebird
 		AudioEvent& xnor = AudioEngine::Instance().CreateSoundEvent("XNOR Tablet", "{a5c875f9-957a-478f-b8ed-15f1d10c9627}"); //Level Complete SFX
 		AudioEvent& and = AudioEngine::Instance().CreateSoundEvent("AND Tablet", "{0bfa8d15-fc77-4d42-98c4-388b50b354c4}"); //Level Complete SFX
 		AudioEvent& nor = AudioEngine::Instance().CreateSoundEvent("NOR Tablet", "{3e58350f-933d-4e2d-b173-c699c6693838}"); //Level Complete SFX
-		AudioEvent& not = AudioEngine::Instance().CreateSoundEvent("NOT Tablet", "{cdb592fd-27a3-4b27-a08d-c527ea4ba90f}"); //Level Complete SFX
-		AudioEvent& or = AudioEngine::Instance().CreateSoundEvent("OR Tablet", "{a160dddb-5f88-435a-9e97-7b8b5d7c0752}"); //Level Complete SFX
+		AudioEvent& not = AudioEngine::Instance().CreateSoundEvent("NOT Tablet", "{a160dddb-5f88-435a-9e97-7b8b5d7c0752}"); //Level Complete SFX
+		AudioEvent& or = AudioEngine::Instance().CreateSoundEvent("OR Tablet", "{cdb592fd-27a3-4b27-a08d-c527ea4ba90f}"); //Level Complete SFX
 		AudioEvent& final = AudioEngine::Instance().CreateSoundEvent("Final", "{86411d33-7249-4246-bcc8-d20dd49fa4fb}"); //Level Complete SFX
-
-		
 	}
 }
