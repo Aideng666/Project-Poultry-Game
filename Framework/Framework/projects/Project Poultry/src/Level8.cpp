@@ -1075,7 +1075,7 @@ void Level8::Update(float dt)
 
 	if (!showLevelComplete && !isPaused)
 	{
-		Input::MoveCamera(window, camEnt, dt);
+		//Input::MoveCamera(window, camEnt, dt);
 	}
 #pragma endregion
 
