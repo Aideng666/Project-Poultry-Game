@@ -214,17 +214,27 @@ namespace freebird
 		audioEngine.LoadBank("Sounds/Master");
 
 		//Loads the bus
-		AudioEngine::Instance().LoadBus("MusicBus", "{aa712c3f-3f70-472f-8ddd-d7ee091ff0fe}");
-		AudioEngine::Instance().LoadBus("SoundBus", "{19d186f5-e8be-40df-b1d2-ce3cf6c59f92}");
+		AudioEngine::Instance().LoadBus("MusicBus", "{28cdec9a-42fc-497b-b433-076d00eae274}");
+		AudioEngine::Instance().LoadBus("SoundBus", "{20359c21-f255-481b-a6f3-3f041ec01384}");
 
 		AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.2f);
 		AudioEngine::Instance().GetBus("SoundBus").SetVolume(0.5f);
 
 		//Creates the sound events
-		AudioEvent& BG = AudioEngine::Instance().CreateSoundEvent("BG", "{beba64b3-3176-4f20-9f00-7f32807325b6}"); //Background music
-		AudioEvent& walk = AudioEngine::Instance().CreateSoundEvent("Walk", "{858d6f38-82a8-4477-8e80-5a6b52fd1313}"); //Walk SFX
-		AudioEvent& door = AudioEngine::Instance().CreateSoundEvent("Door", "{24678d0f-f199-4d73-95dc-10657db09e8a}"); //Door SFX
-		AudioEvent& levelComplete = AudioEngine::Instance().CreateSoundEvent("Level Complete", "{03daedd8-d89f-4d92-917f-43d3b74e73ef}"); //Level Complete SFX
+		AudioEvent& BG = AudioEngine::Instance().CreateSoundEvent("BG", "{e0f75fa3-92a3-4132-861e-d615113c8a29}"); //Background music
+		AudioEvent& walk = AudioEngine::Instance().CreateSoundEvent("Walk", "{db363cf1-6a9e-4aea-9e94-f17d2a6488f8}"); //Walk SFX
+		AudioEvent& door = AudioEngine::Instance().CreateSoundEvent("Door", "{e5355992-2935-419d-9ec2-f7df2e47da77}"); //Door SFX
+		AudioEvent& levelComplete = AudioEngine::Instance().CreateSoundEvent("Level Complete", "{cb5f9171-634a-46b6-ab41-db74532c358a}"); //Level Complete SFX
+		AudioEvent& mainMenu = AudioEngine::Instance().CreateSoundEvent("Main Menu", "{bacb0c7a-487b-45c4-b680-e5b6d98bccd9}"); //Level Complete SFX
+		AudioEvent& button = AudioEngine::Instance().CreateSoundEvent("Button", "{f8ac2019-a031-4c68-a0be-42caaae8a8ee}"); //Level Complete SFX
+		AudioEvent& badEnding = AudioEngine::Instance().CreateSoundEvent("Bad Ending", "{de2c20ab-e9df-40b5-a092-7d46b186f917}"); //Level Complete SFX
+		AudioEvent& xor = AudioEngine::Instance().CreateSoundEvent("XOR Tablet", "{331a559b-f61e-4db2-a21c-cf20a0628795}"); //Level Complete SFX
+		AudioEvent& xnor = AudioEngine::Instance().CreateSoundEvent("XNOR Tablet", "{a5c875f9-957a-478f-b8ed-15f1d10c9627}"); //Level Complete SFX
+		AudioEvent& and = AudioEngine::Instance().CreateSoundEvent("AND Tablet", "{0bfa8d15-fc77-4d42-98c4-388b50b354c4}"); //Level Complete SFX
+		AudioEvent& nor = AudioEngine::Instance().CreateSoundEvent("NOR Tablet", "{3e58350f-933d-4e2d-b173-c699c6693838}"); //Level Complete SFX
+		AudioEvent& not = AudioEngine::Instance().CreateSoundEvent("NOT Tablet", "{cdb592fd-27a3-4b27-a08d-c527ea4ba90f}"); //Level Complete SFX
+		AudioEvent& or = AudioEngine::Instance().CreateSoundEvent("OR Tablet", "{a160dddb-5f88-435a-9e97-7b8b5d7c0752}"); //Level Complete SFX
+		AudioEvent& final = AudioEngine::Instance().CreateSoundEvent("Final", "{86411d33-7249-4246-bcc8-d20dd49fa4fb}"); //Level Complete SFX
 
 		
 	}

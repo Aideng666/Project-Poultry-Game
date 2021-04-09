@@ -350,6 +350,13 @@ void MainMenuLevel::Update(float dt)
 	animShader->SetUniform("u_Time", time);
 	untexturedShader->SetUniform("u_Time", time);
 
+	if (time > 5.0f && !isTalking)
+	{
+		AudioEvent& diologue = AudioEngine::Instance().GetEvent("Main Menu");
+		diologue.Play();
+		isTalking = true;
+	}
+
 	//Transforms
 	auto& playerTrans = mainPlayer.Get<Transform>();
 	auto& groundTrans = floorEnt.Get<Transform>();
@@ -446,6 +453,13 @@ void MainMenuLevel::Update(float dt)
 	{
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight, isArrow);
 
+		if (isWalking)
+		{
+			AudioEngine::Instance().GetEvent("Walk").Play();
+		}
+		else
+			AudioEngine::Instance().GetEvent("Walk").StopImmediately();
+
 		if (!peckingFramesApplied && isPecking)
 		{
 			mainPlayer.Get<MorphRenderer>().SetMesh(*peck1);
@@ -490,6 +504,7 @@ void MainMenuLevel::Update(float dt)
 	//Input::MoveCamera(window, camEnt, dt);
 	if (buttonAnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -503,6 +518,7 @@ void MainMenuLevel::Update(float dt)
 
 	if (button2AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt2.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt2.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -517,6 +533,7 @@ void MainMenuLevel::Update(float dt)
 	{
 		if (startDoor.Get<MorphAnimation>().GetIsDone())
 		{
+			//AudioEngine::Instance().GetEvent("Door").StopImmediately();
 			startDoor.Get<MorphAnimation>().SetFrames(doorCloseFrames);
 			startDoor.Get<MorphAnimation>().SetTime(0.1f);
 			doorClosingApplied = true;
@@ -528,6 +545,7 @@ void MainMenuLevel::Update(float dt)
 	{
 		if (startDoor.Get<MorphAnimation>().GetIsDone())
 		{
+			//AudioEngine::Instance().GetEvent("Door").StopImmediately();
 			startDoor.Get<MorphAnimation>().SetFrames(doorFrames);
 			startDoor.Get<MorphAnimation>().SetTime(0.1f);
 			doorClosingApplied = false;
@@ -837,20 +855,35 @@ void MainMenuLevel::Update(float dt)
 	buttonEnt.Get<Lever>().Update();
 	buttonEnt2.Get<Lever>().Update();
 
+	AudioEngine::Instance().Update();
 
 	//Door Logic
 	if (startDoor.Get<Door>().GetOpen() && doorOpenApplied)
+	{
 		startDoor.Get<MorphAnimation>().Update(dt);
+		AudioEngine::Instance().GetEvent("Door").Play();
+	}
 	if (!startDoor.Get<Door>().GetOpen() && doorClosingApplied)
+	{
 		startDoor.Get<MorphAnimation>().Update(dt);
+		AudioEngine::Instance().GetEvent("Door").Play();
+	}
 
 	if (exitDoor.Get<Door>().GetOpen() && doorOpenApplied2)
+	{
 		exitDoor.Get<MorphAnimation>().Update(dt);
+		AudioEngine::Instance().GetEvent("Door").Play();
+	}
 	if (!exitDoor.Get<Door>().GetOpen() && doorClosingApplied2)
+	{
 		exitDoor.Get<MorphAnimation>().Update(dt);
+		AudioEngine::Instance().GetEvent("Door").Play();
+	}
 
 	if (startDoor.Get<AABB>().GetComplete())
 	{
+		AudioEngine::Instance().GetEvent("Walk").StopImmediately();
+		AudioEngine::Instance().GetEvent("Main Menu").StopImmediately();
 		levelComplete = true;
 	}
 

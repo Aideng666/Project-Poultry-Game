@@ -30,7 +30,7 @@ private:
 	//Door
 	Entity doorEnt;
 	//Tesla Coil
-	Entity coilEnt;
+	Entity coilEnt, coilEnt2, coilEnt3, coilEnt4, coilEnt5, coilEnt6, coilEnt7, coilEnt8, coilEnt9, coilEnt10, coilEnt11;
 	//Buttons
 	Entity buttonEnt;
 	//Level Complete Ent
@@ -55,4 +55,7 @@ private:
 		else
 			pauseLighting = false;
 		});
+
+	bool ending1 = false;
+	bool ending2 = false;
 };

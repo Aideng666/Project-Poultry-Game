@@ -613,7 +613,6 @@ void Level6::InitScene()
 	entList.push_back(&floorEnt);
 	entList.push_back(&leftEnt);
 	entList.push_back(&rightEnt);
-	entList.push_back(&completeEnt);
 	entList.push_back(&andEnt);
 	entList.push_back(&andEnt2);
 	entList.push_back(&andEnt3);
@@ -765,16 +764,12 @@ void Level6::InitScene()
 
 	AudioEvent& music = AudioEngine::Instance().GetEvent("BG");
 	music.Play();
+
+
 }
 
 void Level6::Update(float dt)
 {
-	// Get a ref to the engine
-	AudioEngine& audioEngine = AudioEngine::Instance();
-
-	AudioEvent& walkSound = AudioEngine::Instance().GetEvent("Walk");
-	AudioEvent& doorSound = AudioEngine::Instance().GetEvent("Door");
-	AudioEvent& levelCompleteSound = AudioEngine::Instance().GetEvent("Level Complete");
 
 	time += dt;
 	
@@ -934,6 +929,7 @@ void Level6::Update(float dt)
 	{
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
+			AudioEngine::Instance().GetEvent("Level Complete").Stop();
 			levelComplete = true;
 		}
 	}
@@ -944,9 +940,11 @@ void Level6::Update(float dt)
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight, isArrow);
 
 		if (isWalking)
-			walkSound.Play();
+		{
+			AudioEngine::Instance().GetEvent("Walk").Play();
+		}
 		else
-			walkSound.StopImmediately();
+			AudioEngine::Instance().GetEvent("Walk").StopImmediately();
 
 		if (!peckingFramesApplied && isPecking)
 		{
@@ -1018,6 +1016,7 @@ void Level6::Update(float dt)
 
 	if (buttonAnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1031,6 +1030,7 @@ void Level6::Update(float dt)
 
 	if (button2AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt2.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt2.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1043,6 +1043,7 @@ void Level6::Update(float dt)
 
 	if (button3AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt3.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt3.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1055,6 +1056,7 @@ void Level6::Update(float dt)
 
 	if (button4AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt4.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt4.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1067,6 +1069,7 @@ void Level6::Update(float dt)
 
 	if (button5AnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt5.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt5.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -1717,7 +1720,7 @@ void Level6::Update(float dt)
 					&& playerTrans.GetPositionZ() - buttonTrans5.GetPositionZ() > -3.0f))
 			{
 				if (!tabletOpen && !optionsOpen && !isPaused)
-					tutEnt.Get<MeshRenderer>().Render(orthoCam, transformTut, LightSpaceViewProjection);
+					tutEnt.Get<MeshRenderer>().Render(orthoCam, transformTut);
 				else
 				{
 
@@ -1848,12 +1851,7 @@ void Level6::Update(float dt)
 
 	effects[activeEffect]->DrawToScreen();
 
-	//Door Logic
-	if (doorEnt.Get<Door>().GetOpen() && doorOpenApplied)
-		doorEnt.Get<MorphAnimation>().Update(dt);
-	if (!doorEnt.Get<Door>().GetOpen() && doorClosingApplied)
-		doorEnt.Get<MorphAnimation>().Update(dt);
-
+	
 	backEnt.Get<AABB>().Update();
 	leftEnt.Get<AABB>().Update();
 	rightEnt.Get<AABB>().Update();
@@ -1917,13 +1915,26 @@ void Level6::Update(float dt)
 	notEnt2.Get<NotGate>().Update();
 	notEnt3.Get<NotGate>().Update();
 
-	audioEngine.Update();
+	AudioEngine::Instance().Update();
+
+	//Door Logic
+	if (doorEnt.Get<Door>().GetOpen() && doorOpenApplied)
+	{
+		doorEnt.Get<MorphAnimation>().Update(dt);
+		AudioEngine::Instance().GetEvent("Door").Play();
+	}
+	if (!doorEnt.Get<Door>().GetOpen() && doorClosingApplied)
+	{
+		doorEnt.Get<MorphAnimation>().Update(dt);
+		AudioEngine::Instance().GetEvent("Door").Play();
+	}
 
 	if (doorEnt.Get<AABB>().GetComplete())
 	{
 		lightOn = false;
 		AudioEngine::Instance().GetEvent("BG").StopImmediately();
-		levelCompleteSound.Play();
+		AudioEngine::Instance().GetEvent("Walk").StopImmediately();
+		AudioEngine::Instance().GetEvent("Level Complete").Play();
 		showLevelComplete = true;
 	}
 }

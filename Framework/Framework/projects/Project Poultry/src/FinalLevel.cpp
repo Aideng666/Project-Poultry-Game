@@ -14,10 +14,12 @@
 
 using namespace freebird;
 
+Tree endingTree(0);
 
 FinalLevel::FinalLevel(std::string sceneName, GLFWwindow* wind)
 	: Scene(sceneName, wind)
 {
+
 	mainPlayer = Entity::Create();
 	floorEnt = Entity::Create();
 	leftEnt = Entity::Create();
@@ -33,6 +35,16 @@ FinalLevel::FinalLevel(std::string sceneName, GLFWwindow* wind)
 	buttonEnt = Entity::Create();
 	wireEnt = Entity::Create();
 	coilEnt = Entity::Create();
+	coilEnt2 = Entity::Create();
+	coilEnt3 = Entity::Create();
+	coilEnt4 = Entity::Create();
+	coilEnt5 = Entity::Create();
+	coilEnt6 = Entity::Create();
+	coilEnt7 = Entity::Create();
+	coilEnt8 = Entity::Create();
+	coilEnt9 = Entity::Create();
+	coilEnt10 = Entity::Create();
+	coilEnt11 = Entity::Create();
 	tabletEnt = Entity::Create();
 	tabletScreenEnt = Entity::Create();
 	tutEnt = Entity::Create();
@@ -115,6 +127,56 @@ void FinalLevel::InitScene()
 	coilTrans.SetPosition(glm::vec3(-18.2f, 1.0f, -34.f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 	coilTrans.SetRotationY(180.0f);
+
+	auto& coilTrans2 = coilEnt2.Add<Transform>();
+	coilTrans2.SetPosition(glm::vec3(-16.0f, 30.0f, -49.f));
+	coilTrans2.SetScale(glm::vec3(3.0f));
+	coilTrans2.SetRotationX(90.0f);
+
+	auto& coilTrans3 = coilEnt3.Add<Transform>();
+	coilTrans3.SetPosition(glm::vec3(-12.4f, 30.0f, -49.f));
+	coilTrans3.SetScale(glm::vec3(3.0f));
+	coilTrans3.SetRotationX(90.0f);
+
+	auto& coilTrans4 = coilEnt4.Add<Transform>();
+	coilTrans4.SetPosition(glm::vec3(-8.8f, 30.0f, -49.f));
+	coilTrans4.SetScale(glm::vec3(3.0f));
+	coilTrans4.SetRotationX(90.0f);
+
+	auto& coilTrans5 = coilEnt5.Add<Transform>();
+	coilTrans5.SetPosition(glm::vec3(-5.2f, 30.0f, -49.f));
+	coilTrans5.SetScale(glm::vec3(3.0f));
+	coilTrans5.SetRotationX(90.0f);
+
+	auto& coilTrans6 = coilEnt6.Add<Transform>();
+	coilTrans6.SetPosition(glm::vec3(-1.6f, 30.0f, -49.f));
+	coilTrans6.SetScale(glm::vec3(3.0f));
+	coilTrans6.SetRotationX(90.0f);
+
+	auto& coilTrans7 = coilEnt7.Add<Transform>();
+	coilTrans7.SetPosition(glm::vec3(2.0f, 30.0f, -49.f));
+	coilTrans7.SetScale(glm::vec3(3.0f));
+	coilTrans7.SetRotationX(90.0f);
+
+	auto& coilTrans8 = coilEnt8.Add<Transform>();
+	coilTrans8.SetPosition(glm::vec3(5.6f, 30.0f, -49.f));
+	coilTrans8.SetScale(glm::vec3(3.0f));
+	coilTrans8.SetRotationX(90.0f);
+
+	auto& coilTrans9 = coilEnt9.Add<Transform>();
+	coilTrans9.SetPosition(glm::vec3(9.2f, 30.0f, -49.f));
+	coilTrans9.SetScale(glm::vec3(3.0f));
+	coilTrans9.SetRotationX(90.0f);
+
+	auto& coilTrans10 = coilEnt10.Add<Transform>();
+	coilTrans10.SetPosition(glm::vec3(12.8f, 30.0f, -49.f));
+	coilTrans10.SetScale(glm::vec3(3.0f));
+	coilTrans10.SetRotationX(90.0f);
+
+	auto& coilTrans11 = coilEnt11.Add<Transform>();
+	coilTrans11.SetPosition(glm::vec3(16.4f, 30.0f, -49.f));
+	coilTrans11.SetScale(glm::vec3(3.0f));
+	coilTrans11.SetRotationX(90.0f);
 
 	//Level complete transform
 	auto& completeTrans = completeEnt.Add<Transform>();
@@ -228,6 +290,16 @@ void FinalLevel::InitScene()
 	auto& buttonMesh = buttonEnt.Add<MorphRenderer>(buttonEnt, *buttonM, animShader);
 	auto& wireMesh = wireEnt.Add<MeshRenderer>(wireEnt, *finalWire, shader);
 	auto& coilMesh = coilEnt.Add<MeshRenderer>(coilEnt, *coil, shader);
+	auto& coilMesh2 = coilEnt2.Add<MeshRenderer>(coilEnt2, *coil, shader);
+	auto& coilMesh3 = coilEnt3.Add<MeshRenderer>(coilEnt3, *coil, shader);
+	auto& coilMesh4 = coilEnt4.Add<MeshRenderer>(coilEnt4, *coil, shader);
+	auto& coilMesh5 = coilEnt5.Add<MeshRenderer>(coilEnt5, *coil, shader);
+	auto& coilMesh6 = coilEnt6.Add<MeshRenderer>(coilEnt6, *coil, shader);
+	auto& coilMesh7 = coilEnt7.Add<MeshRenderer>(coilEnt7, *coil, shader);
+	auto& coilMesh8 = coilEnt8.Add<MeshRenderer>(coilEnt8, *coil, shader);
+	auto& coilMesh9 = coilEnt9.Add<MeshRenderer>(coilEnt9, *coil, shader);
+	auto& coilMesh10 = coilEnt10.Add<MeshRenderer>(coilEnt10, *coil, shader);
+	auto& coilMesh11 = coilEnt11.Add<MeshRenderer>(coilEnt11, *coil, shader);
 	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
 	auto& pauseMesh = pauseEnt.Add<MeshRenderer>(pauseEnt, *screen, pauseShader);
 	auto& optionMesh = optionEnt.Add<MeshRenderer>(optionEnt, *options, pauseShader);
@@ -344,17 +416,15 @@ void FinalLevel::InitScene()
 
 	AudioEvent& music = AudioEngine::Instance().GetEvent("BG");
 	music.Play();
+
+	endingTree.AddNode(0);
+	endingTree.AddNode(0);
+
+	endingTree.BFT();
 }
 
 void FinalLevel::Update(float dt)
 {
-	// Get a ref to the engine
-	AudioEngine& audioEngine = AudioEngine::Instance();
-
-	AudioEvent& walkSound = AudioEngine::Instance().GetEvent("Walk");
-	AudioEvent& doorSound = AudioEngine::Instance().GetEvent("Door");
-	AudioEvent& levelCompleteSound = AudioEngine::Instance().GetEvent("Level Complete");
-
 	time += dt;
 
 	if (!tabletOpen && !isPaused && !optionsOpen)
@@ -364,13 +434,33 @@ void FinalLevel::Update(float dt)
 		pauseShader->SetUniform("u_Time", time);
 		animShader->SetUniform("u_Time", time);
 		rimLightShader->SetUniform("u_Time", time);
+	} 
+
+	if (tabletOpen && !isTalking)
+	{
+		AudioEngine::Instance().GetEvent("Final").Play();
+		isTalking = true;
 	}
 
-	std::cout << time << std::endl;
+	if (time >= 80.0f)
+	{
+		AudioEngine::Instance().GetEvent("BG").StopImmediately();
+		endingTree.GetRootNode()->rightNode->_data = 1;
+	}
 
-	if (time >= 120.0f)
+	/*if (time >= 85.0f)
 	{
 		glfwSetWindowShouldClose(window, true);
+	}*/
+
+	if (endingTree.GetRootNode()->leftNode->_data == 1)
+	{
+		ending1 = true;
+	}
+
+	if (endingTree.GetRootNode()->rightNode->_data == 1)
+	{
+		ending2 = true;
 	}
 
 #pragma region Transforms
@@ -409,6 +499,16 @@ void FinalLevel::Update(float dt)
 	glm::mat4 transformButton = buttonEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformWire = wireEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformCoil = coilEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformCoil2 = coilEnt2.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformCoil3 = coilEnt3.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformCoil4 = coilEnt4.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformCoil5 = coilEnt5.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformCoil6 = coilEnt6.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformCoil7 = coilEnt7.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformCoil8 = coilEnt8.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformCoil9 = coilEnt9.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformCoil10 = coilEnt10.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformCoil11 = coilEnt11.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformTut = tutEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformPause = pauseEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformOptions = optionEnt.Get<Transform>().GetModelMatrix();
@@ -437,12 +537,11 @@ void FinalLevel::Update(float dt)
 	if (!optionsOpen)
 		pauseWatch.Poll(window);
 
-	if (showLevelComplete)
+	if (ending1 || ending2)
 	{
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
-			AudioEngine::Instance().GetEvent("Level Complete").StopImmediately();
-			levelComplete = true;
+			glfwSetWindowShouldClose(window, true);
 		}
 	}
 
@@ -452,9 +551,11 @@ void FinalLevel::Update(float dt)
 		isWalking = Input::MovePlayer(window, mainPlayer, camEnt, dt, camFar, camClose, camLeft, camRight, isArrow);
 
 		if (isWalking)
-			walkSound.Play();
+		{
+			AudioEngine::Instance().GetEvent("Walk").Play();
+		}
 		else
-			walkSound.StopImmediately();
+			AudioEngine::Instance().GetEvent("Walk").StopImmediately();
 
 		if (!peckingFramesApplied && isPecking)
 		{
@@ -526,6 +627,7 @@ void FinalLevel::Update(float dt)
 
 	if (buttonAnimOn)
 	{
+		AudioEngine::Instance().GetEvent("Button").Play();
 		if (buttonEnt.Get<MorphAnimation>().GetIsDone())
 		{
 			buttonEnt.Get<MorphAnimation>().SetFrames(buttonFrames);
@@ -934,6 +1036,116 @@ void FinalLevel::Update(float dt)
 				coilEnt.Get<MeshRenderer>().Render(camera, transformCoil, LightSpaceViewProjection);
 			}
 
+			if (time < 8.0f)
+			{
+				coilMatOff.Albedo->Bind(5);
+				coilEnt2.Get<MeshRenderer>().Render(camera, transformCoil2, LightSpaceViewProjection);
+			}
+			else
+			{
+				coilMatOn.Albedo->Bind(5);
+				coilEnt2.Get<MeshRenderer>().Render(camera, transformCoil2, LightSpaceViewProjection);
+			}
+
+			if (time < 16.0f)
+			{
+				coilMatOff.Albedo->Bind(5);
+				coilEnt3.Get<MeshRenderer>().Render(camera, transformCoil3, LightSpaceViewProjection);
+			}
+			else
+			{
+				coilMatOn.Albedo->Bind(5);
+				coilEnt3.Get<MeshRenderer>().Render(camera, transformCoil3, LightSpaceViewProjection);
+			}
+
+			if (time < 24.0f)
+			{
+				coilMatOff.Albedo->Bind(5);
+				coilEnt4.Get<MeshRenderer>().Render(camera, transformCoil4, LightSpaceViewProjection);
+			}
+			else
+			{
+				coilMatOn.Albedo->Bind(5);
+				coilEnt4.Get<MeshRenderer>().Render(camera, transformCoil4, LightSpaceViewProjection);
+			}
+
+			if (time < 32.0f)
+			{
+				coilMatOff.Albedo->Bind(5);
+				coilEnt5.Get<MeshRenderer>().Render(camera, transformCoil5, LightSpaceViewProjection);
+			}
+			else
+			{
+				coilMatOn.Albedo->Bind(5);
+				coilEnt5.Get<MeshRenderer>().Render(camera, transformCoil5, LightSpaceViewProjection);
+			}
+
+			if (time < 40.0f)
+			{
+				coilMatOff.Albedo->Bind(5);
+				coilEnt6.Get<MeshRenderer>().Render(camera, transformCoil6, LightSpaceViewProjection);
+			}
+			else
+			{
+				coilMatOn.Albedo->Bind(5);
+				coilEnt6.Get<MeshRenderer>().Render(camera, transformCoil6, LightSpaceViewProjection);
+			}
+
+			if (time < 48.0f)
+			{
+				coilMatOff.Albedo->Bind(5);
+				coilEnt7.Get<MeshRenderer>().Render(camera, transformCoil7, LightSpaceViewProjection);
+			}
+			else
+			{
+				coilMatOn.Albedo->Bind(5);
+				coilEnt7.Get<MeshRenderer>().Render(camera, transformCoil7, LightSpaceViewProjection);
+			}
+
+			if (time < 56.0f)
+			{
+				coilMatOff.Albedo->Bind(5);
+				coilEnt8.Get<MeshRenderer>().Render(camera, transformCoil8, LightSpaceViewProjection);
+			}
+			else
+			{
+				coilMatOn.Albedo->Bind(5);
+				coilEnt8.Get<MeshRenderer>().Render(camera, transformCoil8, LightSpaceViewProjection);
+			}
+
+			if (time < 64.0f)
+			{
+				coilMatOff.Albedo->Bind(5);
+				coilEnt9.Get<MeshRenderer>().Render(camera, transformCoil9, LightSpaceViewProjection);
+			}
+			else
+			{
+				coilMatOn.Albedo->Bind(5);
+				coilEnt9.Get<MeshRenderer>().Render(camera, transformCoil9, LightSpaceViewProjection);
+			}
+
+			if (time < 72.0f)
+			{
+				coilMatOff.Albedo->Bind(5);
+				coilEnt10.Get<MeshRenderer>().Render(camera, transformCoil10, LightSpaceViewProjection);
+			}
+			else
+			{
+				coilMatOn.Albedo->Bind(5);
+				coilEnt10.Get<MeshRenderer>().Render(camera, transformCoil10, LightSpaceViewProjection);
+			}
+
+			if (time < 80.0f)
+			{
+				coilMatOff.Albedo->Bind(5);
+				coilEnt11.Get<MeshRenderer>().Render(camera, transformCoil11, LightSpaceViewProjection);
+			}
+			else
+			{
+				coilMatOn.Albedo->Bind(5);
+				coilEnt11.Get<MeshRenderer>().Render(camera, transformCoil11, LightSpaceViewProjection);
+			}
+
 			shadowBuffer->UnbindTexture(30);
 
 			//Bind and render the objects with no textures
@@ -1018,11 +1230,24 @@ void FinalLevel::Update(float dt)
 		}
 	}
 
-	if (showLevelComplete)
+	if (ending1)
 	{
+		AudioEngine::Instance().GetEvent("Level Complete").Play();
 		shader->Bind();
 		shader->SetUniform("s_Diffuse", 0);
-		completeMat.Albedo->Bind(0);
+		goodEndMat.Albedo->Bind(0);
+		shadowBuffer->BindDepthAsTexture(30);
+		completeEnt.Get<MeshRenderer>().Render(orthoCam, transformComplete);
+
+		shadowBuffer->UnbindTexture(30);
+	}
+
+	if (ending2)
+	{
+		AudioEngine::Instance().GetEvent("Bad Ending").Play();
+		shader->Bind();
+		shader->SetUniform("s_Diffuse", 0);
+		badEndMat.Albedo->Bind(0);
 		shadowBuffer->BindDepthAsTexture(30);
 		completeEnt.Get<MeshRenderer>().Render(orthoCam, transformComplete);
 
@@ -1061,21 +1286,27 @@ void FinalLevel::Update(float dt)
 	wireEnt.Get<Wire>().Update();
 	orEnt.Get<OrGate>().Update();
 
-	audioEngine.Update();
+	AudioEngine::Instance().Update();
 
 	//Door Logic
 	if (doorEnt.Get<Door>().GetOpen() && doorOpenApplied)
+	{
 		doorEnt.Get<MorphAnimation>().Update(dt);
+		AudioEngine::Instance().GetEvent("Door").Play();
+	}
 	if (!doorEnt.Get<Door>().GetOpen() && doorClosingApplied)
+	{
 		doorEnt.Get<MorphAnimation>().Update(dt);
+		AudioEngine::Instance().GetEvent("Door").Play();
+	}
 
 	if (doorEnt.Get<AABB>().GetComplete())
 	{
 		lightOn = false;
 		AudioEngine::Instance().GetEvent("BG").StopImmediately();
 		AudioEngine::Instance().GetEvent("Walk").StopImmediately();
-		levelCompleteSound.Play();
-		showLevelComplete = true;
+		AudioEngine::Instance().GetEvent("Final").StopImmediately();
+		endingTree.GetRootNode()->leftNode->_data = 1;
 	}
 }
 

@@ -4,11 +4,9 @@
 class Node
 {
 public:
-	Node(int value, std::string data);
-	Node(int value);
+	Node(int data);
 
-	std::string _data;
-	int _value;
+	int _data;
 
 	Node* leftNode;
 	Node* rightNode;
@@ -19,7 +17,7 @@ class Tree
 {
 public:
 	Tree();
-	Tree(Node*& item);
+	Tree(int data) : rootNode(new Node(data)) {}
 
 	~Tree()
 	{
@@ -28,13 +26,15 @@ public:
 
 	void Destroy();
 
-	void AddNode(int value, std::string data = " ");
+	void AddNode(int data);
 
 	bool IsEmpty();
 
 	void BFT();
 
 	int GetHeight(Node* node);
+
+	Node* GetRootNode();
 
 private:
 

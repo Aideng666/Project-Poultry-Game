@@ -2,18 +2,9 @@
 #include <iostream>
 #include <queue>
 
-Node::Node(int value, std::string data)
+Node::Node(int data)
 {
-	_value = value;
 	_data = data;
-	leftNode = nullptr;
-	rightNode = nullptr;
-}
-
-Node::Node(int value)
-{
-	_value = value;
-	_data = " ";
 	leftNode = nullptr;
 	rightNode = nullptr;
 }
@@ -23,19 +14,14 @@ Tree::Tree()
 	rootNode = nullptr;
 }
 
-Tree::Tree(Node*& item)
-{
-	rootNode = item;
-}
-
 void Tree::Destroy()
 {
 	Destroy(rootNode);
 }
 
-void Tree::AddNode(int value, std::string data)
+void Tree::AddNode(int  data)
 {
-	Node* newNode = new Node(value, data);
+	Node* newNode = new Node(data);
 
 	if (rootNode == nullptr)
 	{
@@ -126,4 +112,9 @@ int Tree::GetHeight(Node* node)
 		return 0;
 	else
 		return 1 + std::max(GetHeight(node->leftNode), GetHeight(node->rightNode));
+}
+
+Node* Tree::GetRootNode()
+{
+	return rootNode;
 }
