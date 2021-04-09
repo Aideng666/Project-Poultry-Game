@@ -69,7 +69,7 @@ void Scene::InitTextures()
 	Texture2D::sptr diffuseOptions = Texture2D::LoadFromFile("Textures/Buttons/Default/Options.png");
 	Texture2D::sptr diffuseRetry = Texture2D::LoadFromFile("Textures/Buttons/Default/Retry.png");
 	Texture2D::sptr diffuseExit = Texture2D::LoadFromFile("Textures/Buttons/Default/Exit.png");
-	Texture2D::sptr diffuseOptionsMenu = Texture2D::LoadFromFile("Textures/OptionsMenu.png");
+	Texture2D::sptr diffuseOptionsMenu = Texture2D::LoadFromFile("Textures/OptionsMenu_Fixed.png");
 	Texture2D::sptr diffusePressOptions = Texture2D::LoadFromFile("Textures/Buttons/Pressed/Options.png");
 	Texture2D::sptr diffusePressRetry = Texture2D::LoadFromFile("Textures/Buttons/Pressed/Retry.png");
 	Texture2D::sptr diffusePressExit = Texture2D::LoadFromFile("Textures/Buttons/Pressed/Exit.png");
