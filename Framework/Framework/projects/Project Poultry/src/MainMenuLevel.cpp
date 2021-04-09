@@ -106,9 +106,9 @@ void MainMenuLevel::InitScene()
 
 	//Player Transform
 	auto& playerTrans = mainPlayer.Add<Transform>();
-	playerTrans.SetPosition(glm::vec3(0.0f, 1.5f, 10.f));
+	playerTrans.SetPosition(glm::vec3(0.0f, 1.5f, 15.f));
 	playerTrans.SetRotationY(180.0f);
-	playerTrans.SetLevelSize(25.0f);
+	playerTrans.SetLevelSize(20.0f);
 
 	//Door Transforms
 	auto& startTrans = startDoor.Add<Transform>();
@@ -233,7 +233,6 @@ void MainMenuLevel::InitScene()
 	auto& eMesh = exitEnt.Add<MeshRenderer>(exitEnt, *exitWord, untexturedShader);
 	auto& wasdMesh = wasdEnt.Add<MeshRenderer>(wasdEnt, *WASD, untexturedShader);
 	auto& tutMesh = tutEnt.Add<MeshRenderer>(tutEnt, *tut, untexturedShader);
-
 
 	entList.push_back(&mainPlayer);
 	entList.push_back(&startDoor);

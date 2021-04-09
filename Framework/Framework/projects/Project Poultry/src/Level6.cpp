@@ -576,7 +576,6 @@ void Level6::InitScene()
 	auto& gateMesh6 = andEnt6.Add<MeshRenderer>(andEnt6, *and, shader);
 	auto& gateMesh7 = andEnt7.Add<MeshRenderer>(andEnt7, *and, shader);
 
-
 	auto& orGateMesh = orEnt.Add<MeshRenderer>(orEnt, *orMesh, shader);
 	auto& orGateMesh2 = orEnt2.Add<MeshRenderer>(orEnt2, *orMesh, shader);
 
@@ -854,7 +853,6 @@ void Level6::Update(float dt)
 
 	glm::mat4 transformShelfPipe = shelfPipeEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformShelfPipe2 = shelfPipeEnt2.Get<Transform>().GetModelMatrix();
-
 
 	glm::mat4 transformVent = ventEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformVent2 = ventEnt2.Get<Transform>().GetModelMatrix();

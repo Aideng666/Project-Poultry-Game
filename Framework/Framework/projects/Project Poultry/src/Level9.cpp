@@ -93,6 +93,26 @@ Level9::Level9(std::string sceneName, GLFWwindow* wind)
 	tabletEnt = Entity::Create();
 	tabletScreenEnt = Entity::Create();
 
+	ventEnt = Entity::Create();
+	ventEnt2 = Entity::Create();
+	ventEnt3 = Entity::Create();
+	ventEnt4 = Entity::Create();
+
+	panelEnt = Entity::Create();
+	panelEnt2 = Entity::Create();
+
+	tableEnt = Entity::Create();
+	tableEnt2 = Entity::Create();
+
+	shelfPipeEnt = Entity::Create();
+	shelfPipeEnt2 = Entity::Create();
+	shelfPipeEnt3 = Entity::Create();
+	shelfPipeEnt4 = Entity::Create();
+	shelfPipeEnt5 = Entity::Create();
+	shelfPipeEnt6 = Entity::Create();
+	shelfPipeEnt7 = Entity::Create();
+	shelfPipeEnt8 = Entity::Create();
+
 	FBO = Entity::Create();
 	greyscaleEnt = Entity::Create();
 	sepiaEnt = Entity::Create();
@@ -213,9 +233,61 @@ void Level9::InitScene()
 
 	//Coil Object
 	auto& coilTrans = coilEnt.Add<Transform>();
-	coilTrans.SetPosition(glm::vec3(-18.0f, 1.0f, -48.f));
+	coilTrans.SetPosition(glm::vec3(-19.3f, 1.0f, -48.f));
 	coilTrans.SetScale(glm::vec3(3.0f));
 	coilTrans.SetRotationY(180.0f);
+
+	//Table transform
+	auto& tableTrans = tableEnt.Add<Transform>();
+	tableTrans.SetPosition(glm::vec3(-40.f, 3.5f, 25.f));
+	tableTrans.SetRotationY(180.f);
+	tableTrans.SetScale(glm::vec3(2.2f));
+
+	auto& tableTrans2 = tableEnt2.Add<Transform>();
+	tableTrans2.SetPosition(glm::vec3(-40.f, 3.5f, 40.f));
+	tableTrans2.SetRotationY(180.f);
+	tableTrans2.SetScale(glm::vec3(2.2f));
+
+	//Shelf Pipe transforms
+	auto& shelfPipeTrans = shelfPipeEnt.Add<Transform>();
+	shelfPipeTrans.SetPosition(glm::vec3(-40.f, 28.f, -47.f));
+	shelfPipeTrans.SetRotationY(270.f);
+	shelfPipeTrans.SetScale(glm::vec3(1.5f));
+
+	auto& shelfPipeTrans2 = shelfPipeEnt2.Add<Transform>();
+	shelfPipeTrans2.SetPosition(glm::vec3(-30.f, 28.f, -47.f));
+	shelfPipeTrans2.SetRotationY(270.f);
+	shelfPipeTrans2.SetScale(glm::vec3(1.5f));
+
+	auto& shelfPipeTrans3 = shelfPipeEnt3.Add<Transform>();
+	shelfPipeTrans3.SetPosition(glm::vec3(-20.f, 28.f, -47.f));
+	shelfPipeTrans3.SetRotationY(270.f);
+	shelfPipeTrans3.SetScale(glm::vec3(1.5f));
+
+	auto& shelfPipeTrans4 = shelfPipeEnt4.Add<Transform>();
+	shelfPipeTrans4.SetPosition(glm::vec3(-10.f, 28.f, -47.f));
+	shelfPipeTrans4.SetRotationY(270.f);
+	shelfPipeTrans4.SetScale(glm::vec3(1.5f));
+
+	auto& shelfPipeTrans5 = shelfPipeEnt5.Add<Transform>();
+	shelfPipeTrans5.SetPosition(glm::vec3(0.f, 28.f, -47.f));
+	shelfPipeTrans5.SetRotationY(270.f);
+	shelfPipeTrans5.SetScale(glm::vec3(1.5f));
+
+	auto& shelfPipeTrans6 = shelfPipeEnt6.Add<Transform>();
+	shelfPipeTrans6.SetPosition(glm::vec3(10.f, 28.f, -47.f));
+	shelfPipeTrans6.SetRotationY(270.f);
+	shelfPipeTrans6.SetScale(glm::vec3(1.5f));
+
+	auto& shelfPipeTrans7 = shelfPipeEnt7.Add<Transform>();
+	shelfPipeTrans7.SetPosition(glm::vec3(20.f, 28.f, -47.f));
+	shelfPipeTrans7.SetRotationY(270.f);
+	shelfPipeTrans7.SetScale(glm::vec3(1.5f));
+
+	auto& shelfPipeTrans8 = shelfPipeEnt8.Add<Transform>();
+	shelfPipeTrans8.SetPosition(glm::vec3(30.f, 28.f, -47.f));
+	shelfPipeTrans8.SetRotationY(270.f);
+	shelfPipeTrans8.SetScale(glm::vec3(1.5f));
 
 	//Button transforms
 	auto& buttonTrans = buttonEnt.Add<Transform>();
@@ -267,6 +339,36 @@ void Level9::InitScene()
 	gateTrans5.SetRotationY(-90.0f);
 	gateTrans5.SetScale(glm::vec3(2.0f));
 
+	//Vent transforms
+	auto& ventTrans = ventEnt.Add<Transform>();
+	ventTrans.SetPosition(glm::vec3(50.2f, 25.f, 0.f));
+	ventTrans.SetScale(glm::vec3(1.2f));
+	ventTrans.SetRotationZ(180.f);
+
+	auto& ventTrans2 = ventEnt2.Add<Transform>();
+	ventTrans2.SetPosition(glm::vec3(50.2f, 25.f, 20.f));
+	ventTrans2.SetScale(glm::vec3(1.2f));
+	ventTrans2.SetRotationZ(180.f);
+
+	auto& ventTrans3 = ventEnt3.Add<Transform>();
+	ventTrans3.SetPosition(glm::vec3(-50.2f, 25.f, 0.f));
+	ventTrans3.SetScale(glm::vec3(1.2f));
+
+	auto& ventTrans4 = ventEnt4.Add<Transform>();
+	ventTrans4.SetPosition(glm::vec3(-50.2f, 25.f, 20.f));
+	ventTrans4.SetScale(glm::vec3(1.2f));
+
+	//Panel transforms
+	auto& panelTrans = panelEnt.Add<Transform>();
+	panelTrans.SetScale(glm::vec3(4.0f));
+	panelTrans.SetPosition(glm::vec3(30.f, 7.0f, -51.f));
+	panelTrans.SetRotationY(-90.f);
+
+	auto& panelTrans2 = panelEnt2.Add<Transform>();
+	panelTrans2.SetScale(glm::vec3(4.0f));
+	panelTrans2.SetPosition(glm::vec3(-30.f, 7.0f, -51.f));
+	panelTrans2.SetRotationY(-90.f);
+
 	//Or-Gates
 	auto& orTrans = orEnt.Add<Transform>();
 	orTrans.SetPosition(glm::vec3(-6.7f, 1.2f, 27.0f));
@@ -289,7 +391,6 @@ void Level9::InitScene()
 
 	auto& xorTrans2 = xorEnt2.Add<Transform>();
 	xorTrans2.SetPosition(glm::vec3(22.3f, 1.f, 27.0f));
-
 
 	auto& xorTrans4 = xorEnt4.Add<Transform>();
 	xorTrans4.SetPosition(glm::vec3(-16.0f, 1.f, -26.0f));
@@ -426,6 +527,10 @@ void Level9::InitScene()
 	xnorCol.SetIsAmbient(true);
 	auto& xnorCol2 = xnorEnt2.Add<AABB>(xnorEnt2, mainPlayer, 5.0f, 3.0f);
 	xnorCol2.SetIsAmbient(true);
+	auto& tableCol = tableEnt.Add<AABB>(tableEnt, mainPlayer, 5.0f, 8.5f);
+	tableCol.SetIsAmbient(true);
+	auto& tableCol2 = tableEnt2.Add<AABB>(tableEnt2, mainPlayer, 5.0f, 8.5f);
+	tableCol2.SetIsAmbient(true);
 
 	auto& doorCol = doorEnt.Add<AABB>(doorEnt, mainPlayer);
 	doorCol.SetComplete(false);
@@ -572,6 +677,26 @@ void Level9::InitScene()
 
 	auto& tabletScreenMesh = tabletScreenEnt.Add<MeshRenderer>(tabletScreenEnt, *screen, pauseShader);
 	auto& tabletMesh = tabletEnt.Add<MeshRenderer>(tabletEnt, *tablet, rimLightShader);
+
+	auto& vent = ventEnt.Add<MeshRenderer>(ventEnt, *ventS, shader);
+	auto& vent2 = ventEnt2.Add<MeshRenderer>(ventEnt2, *ventS, shader);
+	auto& vent3 = ventEnt3.Add<MeshRenderer>(ventEnt3, *ventS, shader);
+	auto& vent4 = ventEnt4.Add<MeshRenderer>(ventEnt4, *ventS, shader);
+
+	auto& panelMesh = panelEnt.Add<MeshRenderer>(panelEnt, *panel, shader);
+	auto& panelMesh2 = panelEnt2.Add<MeshRenderer>(panelEnt2, *panel, shader);
+
+	auto& tableMesh = tableEnt.Add<MeshRenderer>(tableEnt, *table, shader);
+	auto& tableMesh2 = tableEnt2.Add<MeshRenderer>(tableEnt2, *table, shader);
+
+	auto& shelfPipeMesh = shelfPipeEnt.Add<MeshRenderer>(shelfPipeEnt, *shelfPipe, shader);
+	auto& shelfPipeMesh2 = shelfPipeEnt2.Add<MeshRenderer>(shelfPipeEnt2, *shelfPipe, shader);
+	auto& shelfPipeMesh3 = shelfPipeEnt3.Add<MeshRenderer>(shelfPipeEnt3, *shelfPipe, shader);
+	auto& shelfPipeMesh4 = shelfPipeEnt4.Add<MeshRenderer>(shelfPipeEnt4, *shelfPipe, shader);
+	auto& shelfPipeMesh5 = shelfPipeEnt5.Add<MeshRenderer>(shelfPipeEnt5, *shelfPipe, shader);
+	auto& shelfPipeMesh6 = shelfPipeEnt6.Add<MeshRenderer>(shelfPipeEnt6, *shelfPipe, shader);
+	auto& shelfPipeMesh7 = shelfPipeEnt7.Add<MeshRenderer>(shelfPipeEnt7, *shelfPipe, shader);
+	auto& shelfPipeMesh8 = shelfPipeEnt8.Add<MeshRenderer>(shelfPipeEnt8, *shelfPipe, shader);
 
 	entList.push_back(&mainPlayer);
 	entList.push_back(&doorEnt);
@@ -876,6 +1001,26 @@ void Level9::Update(float dt)
 
 	glm::mat4 transformTablet = tabletEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformTabletScreen = tabletScreenEnt.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformVent = ventEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformVent2 = ventEnt2.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformVent3 = ventEnt3.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformVent4 = ventEnt4.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformPanel = panelEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformPanel2 = panelEnt2.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformTable = tableEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformTable2 = tableEnt2.Get<Transform>().GetModelMatrix();
+
+	glm::mat4 transformShelfPipe = shelfPipeEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformShelfPipe2 = shelfPipeEnt2.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformShelfPipe3 = shelfPipeEnt3.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformShelfPipe4 = shelfPipeEnt4.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformShelfPipe5 = shelfPipeEnt5.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformShelfPipe6 = shelfPipeEnt6.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformShelfPipe7 = shelfPipeEnt7.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformShelfPipe8 = shelfPipeEnt8.Get<Transform>().GetModelMatrix();
 
 	if (!buttonAnimOn && playerTrans.GetPositionX() - buttonTrans.GetPositionX() < 3.0f && playerTrans.GetPositionX() - buttonTrans.GetPositionX() > -3.0f
 		&& playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() < 3.0f && playerTrans.GetPositionZ() - buttonTrans.GetPositionZ() > -3.0f)
@@ -1787,6 +1932,38 @@ void Level9::Update(float dt)
 			xnorEnt2.Get<MeshRenderer>().Render(camera, transformXNor2, LightSpaceViewProjection);
 			shadowBuffer->UnbindTexture(30);
 
+			//Vents
+			shader->SetUniform("s_Diffuse", 9);
+			ventMat.Albedo->Bind(9);
+			ventEnt.Get<MeshRenderer>().Render(camera, transformVent, LightSpaceViewProjection);
+			ventEnt2.Get<MeshRenderer>().Render(camera, transformVent2, LightSpaceViewProjection);
+			ventEnt3.Get<MeshRenderer>().Render(camera, transformVent3, LightSpaceViewProjection);
+			ventEnt4.Get<MeshRenderer>().Render(camera, transformVent4, LightSpaceViewProjection);
+
+			//Panels
+			shader->SetUniform("s_Diffuse", 10);
+			panelMat.Albedo->Bind(10);
+			panelEnt.Get<MeshRenderer>().Render(camera, transformPanel, LightSpaceViewProjection);
+			panelEnt2.Get<MeshRenderer>().Render(camera, transformPanel2, LightSpaceViewProjection);
+
+			//Table
+			shader->SetUniform("s_Diffuse", 11);
+			tableMat.Albedo->Bind(11);
+			tableEnt.Get<MeshRenderer>().Render(camera, transformTable, LightSpaceViewProjection);
+			tableEnt2.Get<MeshRenderer>().Render(camera, transformTable2, LightSpaceViewProjection);
+
+			//Shelf Pipes
+			shader->SetUniform("s_Diffuse", 12);
+			shelfPipeMat.Albedo->Bind(12);
+			shelfPipeEnt.Get<MeshRenderer>().Render(camera, transformShelfPipe, LightSpaceViewProjection);
+			shelfPipeEnt2.Get<MeshRenderer>().Render(camera, transformShelfPipe2, LightSpaceViewProjection);
+			shelfPipeEnt3.Get<MeshRenderer>().Render(camera, transformShelfPipe3, LightSpaceViewProjection);
+			shelfPipeEnt4.Get<MeshRenderer>().Render(camera, transformShelfPipe4, LightSpaceViewProjection);
+			shelfPipeEnt5.Get<MeshRenderer>().Render(camera, transformShelfPipe5, LightSpaceViewProjection);
+			shelfPipeEnt6.Get<MeshRenderer>().Render(camera, transformShelfPipe6, LightSpaceViewProjection);
+			shelfPipeEnt7.Get<MeshRenderer>().Render(camera, transformShelfPipe7, LightSpaceViewProjection);
+			shelfPipeEnt8.Get<MeshRenderer>().Render(camera, transformShelfPipe8, LightSpaceViewProjection);
+
 			untexturedShader->Bind();
 			shadowBuffer->BindDepthAsTexture(30);
 
@@ -1921,6 +2098,22 @@ void Level9::Update(float dt)
 			norEnt.Get<MeshRenderer>().Render(camera, transformNor, LightSpaceViewProjection);
 			xnorEnt.Get<MeshRenderer>().Render(camera, transformXNor, LightSpaceViewProjection);
 			xnorEnt2.Get<MeshRenderer>().Render(camera, transformXNor2, LightSpaceViewProjection);
+			ventEnt.Get<MeshRenderer>().Render(camera, transformVent, LightSpaceViewProjection);
+			ventEnt2.Get<MeshRenderer>().Render(camera, transformVent2, LightSpaceViewProjection);
+			ventEnt3.Get<MeshRenderer>().Render(camera, transformVent3, LightSpaceViewProjection);
+			ventEnt4.Get<MeshRenderer>().Render(camera, transformVent4, LightSpaceViewProjection);
+			panelEnt.Get<MeshRenderer>().Render(camera, transformPanel, LightSpaceViewProjection);
+			panelEnt2.Get<MeshRenderer>().Render(camera, transformPanel2, LightSpaceViewProjection);
+			tableEnt.Get<MeshRenderer>().Render(camera, transformTable, LightSpaceViewProjection);
+			tableEnt2.Get<MeshRenderer>().Render(camera, transformTable2, LightSpaceViewProjection);
+			shelfPipeEnt.Get<MeshRenderer>().Render(camera, transformShelfPipe, LightSpaceViewProjection);
+			shelfPipeEnt2.Get<MeshRenderer>().Render(camera, transformShelfPipe2, LightSpaceViewProjection);
+			shelfPipeEnt3.Get<MeshRenderer>().Render(camera, transformShelfPipe3, LightSpaceViewProjection);
+			shelfPipeEnt4.Get<MeshRenderer>().Render(camera, transformShelfPipe4, LightSpaceViewProjection);
+			shelfPipeEnt5.Get<MeshRenderer>().Render(camera, transformShelfPipe5, LightSpaceViewProjection);
+			shelfPipeEnt6.Get<MeshRenderer>().Render(camera, transformShelfPipe6, LightSpaceViewProjection);
+			shelfPipeEnt7.Get<MeshRenderer>().Render(camera, transformShelfPipe7, LightSpaceViewProjection);
+			shelfPipeEnt8.Get<MeshRenderer>().Render(camera, transformShelfPipe8, LightSpaceViewProjection);
 			shadowBuffer->UnbindTexture(30);
 
 			rimLightShader->Bind();
@@ -1991,6 +2184,8 @@ void Level9::Update(float dt)
 	buttonEnt6.Get<AABB>().Update();
 	buttonEnt7.Get<AABB>().Update();
 	buttonEnt8.Get<AABB>().Update();
+	tableEnt.Get<AABB>().Update();
+	tableEnt2.Get<AABB>().Update();
 
 	//Button Updates
 	buttonEnt.Get<Lever>().Update();

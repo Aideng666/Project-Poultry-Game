@@ -116,9 +116,9 @@ void Level1::InitScene()
 
 	//Wall transforms
 	auto& leftTrans = leftEnt.Add<Transform>();
-	leftTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
+	leftTrans.SetScale(glm::vec3(2.0f, 2.0f, 1.0f));
 	auto& rightTrans = rightEnt.Add<Transform>();
-	rightTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
+	rightTrans.SetScale(glm::vec3(2.0f, 2.0f, 1.0f));
 	auto& backTrans = backEnt.Add<Transform>();
 	backTrans.SetScale(glm::vec3(1.0f, 2.0f, 1.0f));
 

@@ -71,7 +71,7 @@ int main()
 
 	scenes.push_back(new MainMenu("Main Menu", window));
 
-	SetActiveScene(0);
+	SetActiveScene(1);
 	 
 	//Calculates our timer
 	Application::Tick();
