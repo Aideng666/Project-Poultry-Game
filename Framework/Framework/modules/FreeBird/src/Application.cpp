@@ -217,7 +217,7 @@ namespace freebird
 		AudioEngine::Instance().LoadBus("MusicBus", "{28cdec9a-42fc-497b-b433-076d00eae274}");
 		AudioEngine::Instance().LoadBus("SoundBus", "{20359c21-f255-481b-a6f3-3f041ec01384}");
 
-		AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.2f);
+		AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.1f);
 		AudioEngine::Instance().GetBus("SoundBus").SetVolume(0.5f);
 
 		//Creates the sound events
