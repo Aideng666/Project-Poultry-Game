@@ -49,8 +49,8 @@ private:
 	Entity smallVentEnt, smallVentEnt2;
 	//Pipe
 	Entity pipeEntS, pipeEntC;
-	//Particle
-	//Entity particleEnt;
+	//Controls
+	Entity pauseControlEnt, shiftControlEnt;
 
 	GLfloat time = 0.0f;
 

@@ -53,6 +53,8 @@ Level1::Level1(std::string sceneName, GLFWwindow* wind)
 	tabletEnt = Entity::Create();
 	tabletScreenEnt = Entity::Create();
 	tutEnt = Entity::Create();
+	pauseControlEnt = Entity::Create();
+	shiftControlEnt = Entity::Create();
 	
 	muteEnt	= Entity::Create();
 	colorBlindEnt = Entity::Create();
@@ -278,6 +280,14 @@ void Level1::InitScene()
 	tutTrans.SetPosition(glm::vec3(1.0f, 2.0f, 5.0f));
 	tutTrans.SetScale(glm::vec3(1.0f));
 
+	auto& pauseControlTrans = pauseControlEnt.Add<Transform>();
+	pauseControlTrans.SetPosition(glm::vec3(0.0f, 1.f, 25.0f));
+	pauseControlTrans.SetScale(glm::vec3(2.0f));
+
+	auto& shiftControlTrans = shiftControlEnt.Add<Transform>();
+	shiftControlTrans.SetPosition(glm::vec3(-1.0f, 1.f, 20.0f));
+	shiftControlTrans.SetScale(glm::vec3(1.5f));
+
 #pragma endregion
 
 	//AABB
@@ -372,6 +382,8 @@ void Level1::InitScene()
 	auto& brightMesh = brightEnt.Add<MeshRenderer>(brightEnt, *optionsButton, pauseShader);
 	auto& colorBlindMesh = colorBlindEnt.Add<MeshRenderer>(colorBlindEnt, *optionsButton, pauseShader);
 	auto& controlsMesh = controlsEnt.Add<MeshRenderer>(controlsEnt, *optionsButton, pauseShader);
+	auto& pauseControlMesh = pauseControlEnt.Add<MeshRenderer>(pauseControlEnt, *pauseControls, untexturedShader);
+	auto& shiftControlMesh = shiftControlEnt.Add<MeshRenderer>(shiftControlEnt, *topViewControls, untexturedShader);
 
 	entList.push_back(&mainPlayer);
 	entList.push_back(&doorEnt);
@@ -607,6 +619,8 @@ void Level1::Update(float dt)
 	glm::mat4 transformBright = brightEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformColorBlind = colorBlindEnt.Get<Transform>().GetModelMatrix();
 	glm::mat4 transformControls = controlsEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformPauseControls = pauseControlEnt.Get<Transform>().GetModelMatrix();
+	glm::mat4 transformShiftControls = shiftControlEnt.Get<Transform>().GetModelMatrix();
 
 	//Particle Stuff
 	//auto& particleSystem = particleEnt.Get<ParticleSystem>();
@@ -1254,6 +1268,9 @@ void Level1::Update(float dt)
 
 				}
 			}
+
+			pauseControlEnt.Get<MeshRenderer>().Render(camera, transformPauseControls, LightSpaceViewProjection);
+			shiftControlEnt.Get<MeshRenderer>().Render(camera, transformShiftControls, LightSpaceViewProjection);
 
 			shadowBuffer->UnbindTexture(30);
 
