@@ -726,43 +726,43 @@ void Scene::PauseInput()
 		switch (musicVol)
 		{
 		case 1:
-			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.02f);
-			break;
-
-		case 2:
-			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.04f);
-			break;
-
-		case 3:
-			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.06f);
-			break;
-
-		case 4:
-			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.08f);
-			break;
-
-		case 5:
 			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.1f);
 			break;
 
+		case 2:
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.2f);
+			break;
+
+		case 3:
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.3f);
+			break;
+
+		case 4:
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.4f);
+			break;
+
+		case 5:
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.5f);
+			break;
+
 		case 6:
-			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.12f);
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.6f);
 			break;
 
 		case 7:
-			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.14f);
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.7f);
 			break;
 
 		case 8:
-			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.16f);
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.8f);
 			break;
 
 		case 9:
-			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.18f);
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.9f);
 			break;
 
 		case 10:
-			AudioEngine::Instance().GetBus("MusicBus").SetVolume(0.2f);
+			AudioEngine::Instance().GetBus("MusicBus").SetVolume(1.0f);
 			break;
 		}
 	}

@@ -526,7 +526,7 @@ protected:
 	bool optionsOpen = false;
 
 	bool isMute = false;
-	int musicVol = 5;
+	int musicVol = 2;
 	int soundVol = 5;
 	bool isBright = false;
 	bool isCorrected = false;
